@@ -61,7 +61,7 @@ class Admin extends Controller
         $this->assign('act', $act);
         $this->assign('role', $role);
         $this->assign('role_name', $role_name);
-        dump($role_name);
+    
         return $this->fetch();
       } 
     
