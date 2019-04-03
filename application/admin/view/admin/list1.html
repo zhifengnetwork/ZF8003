@@ -60,7 +60,7 @@
 								<i class="Hui-iconfont">&#xe6df;</i>
 							</a>
 
-							<a title="删除" href="javascript:;" onclick="admin_del(this,'1')" class="ml-5" style="text-decoration:none">
+							<a title="删除" href="javascript:;" onclick="admin_del(this,{$vo['id']})" class="ml-5" style="text-decoration:none">
 								<i class="Hui-iconfont">&#xe6e2;</i>
 							</a>
 						</td>
@@ -98,11 +98,17 @@
 			layer.confirm('确认要删除吗？', function (index) {
 				$.ajax({
 					type: 'POST',
-					url: '',
+					url: "{:url('admin/admin/del')}",
+					data:{'id':id},
 					dataType: 'json',
 					success: function (data) {
-						$(obj).parents("tr").remove();
-						layer.msg('已删除!', { icon: 1, time: 1000 });
+						if(data.status == 1){
+							$(obj).parents("tr").remove();
+							layer.msg('已删除!', { icon: 1, time: 1000 });                              
+						}else{
+							layer.msg('删除失败!', { icon: 2, time: 1000 });
+						}
+
 					},
 					error: function (data) {
 						console.log(data.msg);

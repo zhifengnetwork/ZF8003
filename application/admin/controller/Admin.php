@@ -112,9 +112,9 @@ class Admin extends Controller
             ];            
     		$res = Db::name('admin')->where('id', $data['id'])->update($data1);
     	}
-        if($data['act'] == 'del' && $data['id']>1){
-    		$res = D('admin')->where('id', $data['id'])->delete();
-    	}
+        // if($data['act'] == 'del' && $data['id']>1){
+    	// 	$res = D('admin')->where('id', $data['id'])->delete();
+    	// }
     	
     	if($res){
 			return json(['status'=>1,'msg'=>'操作成功']);
@@ -123,7 +123,20 @@ class Admin extends Controller
             return json(['status'=>-1,'msg'=>'操作失败']);
     	}
     }
-      
+    
+    public function del(){
+        $id = input('post.id');
+        if($id>1){
+            $res = Db::name('admin')->where('id', $id)->delete();
+        }        
+        if($res){
+            return json(['status'=>1,'msg'=>'操作成功']);
+        }else{
+            return json(['status'=>-1,'msg'=>'操作失败']);
+        }
+        // Db::name('admin')->where('name', $data['name'])->select();
+    }
+    
     //   public function edit(){
     //       return $this->fetch();
     //   }       
