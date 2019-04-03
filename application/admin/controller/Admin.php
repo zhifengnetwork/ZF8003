@@ -53,7 +53,7 @@ class Admin extends Controller
       public function edit($id){
       
         $info = Db::name('admin')->where("id", $id)->find();
-        // $info['password'] =  "";
+        $info['password'] =  "";
         $act = empty($id) ? 'add' : 'edit';
         $role = Db::name('admin_group')->select();
         $role_name = Db::name('admin_group')->where('id',$info['group_id'])->value('name');
@@ -106,7 +106,7 @@ class Admin extends Controller
     	if($data['act'] == 'edit'){
             $data1 = [
                 'name'    => $data['name'],
-                'password' => $data['password'],
+                'password' => md5($data['password']),
                 'group_id' => $data['group_id'],
                 'updatetime' => time()
             ];            

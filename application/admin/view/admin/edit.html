@@ -16,14 +16,14 @@
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
                 <div class="formControls col-xs-8 col-sm-9">
-                    <input type="password" class="input-text" autocomplete="off" value="{$info['password']}" placeholder="密码" id="password"
+                    <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" id="password"
                         name="password">
                 </div>
             </div>
             <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
                 <div class="formControls col-xs-8 col-sm-9">
-                    <input type="password" class="input-text" value="{$info['password']}" autocomplete="off" placeholder="确认新密码" id="password2"
+                    <input type="password" class="input-text" value="" autocomplete="off" placeholder="确认新密码" id="password2"
                         name="password2">
                 </div>
             </div>
@@ -100,17 +100,11 @@
                             if (data.status == 1) {
                                 console.log(data.msg);
                                 layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
-                                    parent.location.reload
-                                    var index = parent.layer.getFrameIndex(window.name);
-                                    parent.$('.btn-refresh').click();
-                                    parent.layer.close(index);
+                                    parent.location.reload()
                                 })
                             } else {
-                                layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
-                                    parent.location.reload
-                                    var index = parent.layer.getFrameIndex(window.name);
-                                    parent.$('.btn-refresh').click();
-                                    parent.layer.close(index);
+                                layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
+                                   
                                 })
                             }
 
