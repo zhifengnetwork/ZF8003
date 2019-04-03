@@ -1,15 +1,6 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-	{layout name="layout/head"}
-</head>
-
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<title>资讯列表</title>
-</head>
+﻿<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 资讯管理 <span class="c-gray en">&gt;</span> 资讯列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
@@ -69,7 +60,7 @@
 		</table>
 	</div>
 </div>
-{layout name="layout/footer"}
+{include file="layout/footer"}
 
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
