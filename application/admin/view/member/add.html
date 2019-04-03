@@ -29,7 +29,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所在分组：</label>
 			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box">
-				<select class="select" size="1" name="group">
+				<select class="select" size="1" name="group_id">
 					<option value="" selected>请选择分组</option>
 					{foreach name="group" item="vo"}
 						<option value="{$vo.id}">{$vo.name}</option>
@@ -41,18 +41,18 @@
 			<label class="form-label col-xs-4 col-sm-3">是否为分销商</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="is_distribut" type="radio" id="is_distribut-1">
+					<input type="radio" name="is_distribut" id="is_distribut-1" value="1">
 					<label for="is_distribut-1">是</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="is_distribut-2" name="is_distribut" checked>
+					<input type="radio" name="is_distribut" id="is_distribut-2" value="0" checked>
 					<label for="is_distribut-2">否</label>
 				</div>
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" onclick="submit()">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
 			</div>
 		</div>
 	</form>
@@ -88,9 +88,9 @@ $(function(){
 				required:true,
 				email:true,
 			},
-			group:{
-				required:true,
-			},
+			// group:{
+			// 	required:true,
+			// },
 			
 		},
 		onkeyup:false,
@@ -105,10 +105,19 @@ $(function(){
 				data: $(form).serialize(),
 				
 				success:function(data){
-					console.log(data);
+					if (data.code == 1) {
+						layer.msg(data.msg, {icon: 1, time: 3000},function(){
+							parent.location.reload();
+						});
+					} else {
+						layer.msg(data.msg, {icon: 2, time: 3000});
+					}
+				},
+				error: function(){
+					layer.alert("服务器繁忙, 请联系管理员!");
 				}
 			});
-
+			
 			// var index = parent.layer.getFrameIndex(window.name);
 			//parent.$('.btn-refresh').click();
 			// parent.layer.close(index);

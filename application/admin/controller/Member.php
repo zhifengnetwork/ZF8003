@@ -41,14 +41,47 @@ class Member extends Base
     }
 
     /**
+     * 编辑会员
+     */
+    public function eidt()
+    {
+        $act = "eidt";
+        $group = Db::name('user_group')->select();
+        
+        $this->assign('act',$act);
+        $this->assign('group',$group);
+        return $this->fetch();
+    }
+
+    /**
      * 增删改
      */
     public function handle()
     {
-        // $act = input('cat');
         $data = input('post.');
-        // dump($data);exit;
-        return json($data);
+        $user = new Users;
+
+        if ($data['act'] == "add") {
+            $is_distribut = ($data['is_distribut'] == 1) ? $data['is_distribut'] : 0;
+            $result = array(
+                'nickname'       => $data['username'],
+                'mobile'         => $data['mobile'],
+                'email'          => $data['email'],
+                'group_id'       => $data['group_id'],
+                'is_distributor' => $is_distribut,
+                'register_time'  => time()
+            );
+
+            $bool = $user->save($result);
+
+            if ($bool) {
+                $return = array('code' => 1, 'msg' => "添加成功！");
+            } else {
+                $return = array('code' => 0, 'msg' => "添加失败！");
+            }
+        }
+
+        return json($return);
     }
 }
 
