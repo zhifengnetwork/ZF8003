@@ -136,6 +136,17 @@ class Admin extends Controller
         }
         // Db::name('admin')->where('name', $data['name'])->select();
     }
+
+    public function is_stop(){
+        $id = input('post.id');
+        
+        $res = Db::name('admin')->where('id', $id)->update([ 'is_lock'=> 1]);
+        if($res){
+             return json(['status'=>1,'msg'=>'操作成功']);
+        }else{
+            return json(['status'=>-1,'msg'=>'操作失败']);
+        }
+    }
     
     //   public function edit(){
     //       return $this->fetch();
