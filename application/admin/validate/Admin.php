@@ -1,7 +1,7 @@
 <?php
 namespace app\admin\validate;
 
-use think\validate;
+use \think\Validate;
 //品牌验证器
 
 class Admin extends validate

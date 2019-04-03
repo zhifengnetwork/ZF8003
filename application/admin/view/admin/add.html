@@ -126,7 +126,8 @@ $(function(){
 				data: $(form).serialize(),
 				// dataType: 'json',
 				success: function(data){
-					// layer.msg('添加成功!',{icon:1,time:1000});
+					alert(data);
+
 					if (data.status == 1) {
 						layer.msg(data.msg,{icon: 1,time: 1000},function () {
 							

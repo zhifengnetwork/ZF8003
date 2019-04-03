@@ -3,7 +3,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Db;
-
+use think\Loader;
 class Admin extends Controller
 {
     /**
@@ -51,48 +51,48 @@ class Admin extends Controller
      */
     public function adminHandle(){
         $data = input('post.');
-
+        
         // $this->ajaxReturn(['status'=>1,'msg'=>'操作成功','url'=>U('Admin/Admin/index')]);
-		$adminValidate = Loader::validate('Admin');
+		$adminValidate = Loader::Validate('Admin');
 		if(!$adminValidate->batch()->check($data)){
         	return json(['status'=>-1,'msg'=> $adminValidate->getError(),'result'=>$adminValidate->getError()]);
         }
         if($data['password'] != $data['password2']){
             return json(['status'=>-1,'msg'=>'密码不一致']);
         }
-        // if(isset($data['name']) && !empty($data['name'])){
-        //     $inarr['name'] = trim($data['name']);
-        // }else{
-        //     return json(['status' => -1, 'msg' => '操作失败']);
-        // }
+        // 检测用户名是否存在
 
-        // if(isset($data ['password']) && !empty($data['name'])){
-        //      $inarr['password'] = trim($data['password']);
-        // }else{
-              
-        // }
+        $check_name=Db::name('admin')->where('name',$data['name'])->select();
          
 		if(empty($data['password'])){
 			unset($data['password']);
 		}else{
 			$data['password'] = md5($data['password']);
-		}
+        }
+        /* 添加数据 */
     	if($data['act'] == 'add'){
-            unset($data['id']);  
+            unset($data['id']);
+            // unset($data['act']);
+            unset($data['password2']); 
+            $data1 = [
+                'name'    => $data['name'],
+                'password'=> $data['password'],
+                'group_id'=> $data['group_id'],
+                'addtime' => time() 
+            ];
 
-            $data['addtime'] = time();
-            $r = db('admin')->insert($data);
+            $res =  Db::name('admin')->insert($data1);
     	}
     	
     	if($data['act'] == 'edit'){
-    		$r = D('admin')->where('id', $data['id'])->save($data);
+    		$res = D('admin')->where('id', $data['id'])->save($data);
     	}
         if($data['act'] == 'del' && $data['id']>1){
-    		$r = D('admin')->where('id', $data['id'])->delete();
+    		$res = D('admin')->where('id', $data['id'])->delete();
     	}
     	
-    	if($r){
-			return json(['status'=>1,'msg'=>'操作成功','url'=>U('Admin/Admin/index')]);
+    	if($res){
+			return json(['status'=>1,'msg'=>'操作成功']);
 
 		}else{
             return json(['status'=>-1,'msg'=>'操作失败']);
@@ -108,7 +108,6 @@ class Admin extends Controller
       public function role(){
           return $this->fetch();
       }
-      
       
 
 }
