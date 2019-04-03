@@ -11,7 +11,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="nickname" name="nickname">
 			</div>
 		</div>
 		<div class="row cl">
@@ -88,9 +88,6 @@ $(function(){
 				required:true,
 				email:true,
 			},
-			// group:{
-			// 	required:true,
-			// },
 			
 		},
 		onkeyup:false,
@@ -106,11 +103,11 @@ $(function(){
 				
 				success:function(data){
 					if (data.code == 1) {
-						layer.msg(data.msg, {icon: 1, time: 3000},function(){
+						layer.msg(data.msg, {icon: 1, time: 1000},function(){
 							parent.location.reload();
 						});
 					} else {
-						layer.msg(data.msg, {icon: 2, time: 3000});
+						layer.msg(data.msg, {icon: 2, time: 1000});
 					}
 				},
 				error: function(){

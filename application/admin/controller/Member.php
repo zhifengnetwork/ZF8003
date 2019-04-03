@@ -10,8 +10,8 @@
 namespace app\admin\controller;
 
 use think\Db;
+use think\Loader;
 use app\common\model\Users;
-use app\common\model\UserGroup;
 
 class Member extends Base
 {
@@ -59,25 +59,53 @@ class Member extends Base
     public function handle()
     {
         $data = input('post.');
+        $member = Loader::validate('Member');
         $user = new Users;
-
+        $return = ['status' => 0, 'msg' => '参数错误'];//初始化返回信息
         if ($data['act'] == "add") {
-            $is_distribut = ($data['is_distribut'] == 1) ? $data['is_distribut'] : 0;
-            $result = array(
-                'nickname'       => $data['username'],
-                'mobile'         => $data['mobile'],
-                'email'          => $data['email'],
-                'group_id'       => $data['group_id'],
-                'is_distributor' => $is_distribut,
-                'register_time'  => time()
-            );
+            if (!$member->scene('add')->check($data)) {
+                $return = ['status' => 0, 'msg' => $member->getError()];
+            } else {
+                $is_distribut = ($data['is_distribut'] == 1) ? $data['is_distribut'] : 0;
+                $result = array(
+                    'nickname'       => $data['nickname'],
+                    'mobile'         => $data['mobile'],
+                    'email'          => $data['email'],
+                    'group_id'       => $data['group_id'],
+                    'is_distributor' => $is_distribut,
+                    'register_time'  => time()
+                );
 
-            $bool = $user->save($result);
+                $bool = $user->save($result);
+
+                if ($bool) {
+                    $return = array('code' => 1, 'msg' => "添加成功！");
+                } else {
+                    $return = array('code' => 0, 'msg' => "添加失败！");
+                }
+            } 
+        }
+
+        if ($data['act'] == "del") {
+            $id = json_decode($data['id'],true);
+            $bool = $user->destroy($id);
 
             if ($bool) {
-                $return = array('code' => 1, 'msg' => "添加成功！");
+                $return = array('code' => 1, 'msg' => "删除成功！");
             } else {
-                $return = array('code' => 0, 'msg' => "添加失败！");
+                $return = array('code' => 0, 'msg' => "删除失败！");
+            }
+        }
+
+        if ($data['act'] == "status") {
+            $status = intval($data['status']);
+            $status = ($status == 1) ? $status : 0;
+            $bool = $user->where('id',$data['id'])->update(['status'=>$status]);
+            
+            if ($bool) {
+                $return = array('code' => 1);
+            } else {
+                $return = array('code' => 0);
             }
         }
 
