@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+
+<body>
+    <article class="page-container">
+        <form class="form form-horizontal" id="form-admin-add">
+            <input type="hidden" name="act" id="act" value="{$act}">
+            <input type="hidden" name="id" value="{$info.id}">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="{$info['name']}" placeholder="" id="adminName" name="name">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="password" class="input-text" autocomplete="off" value="{$info['password']}" placeholder="密码" id="password"
+                        name="password">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="password" class="input-text" value="{$info['password']}" autocomplete="off" placeholder="确认新密码" id="password2"
+                        name="password2">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">角色：</label>
+                <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+                        <select class="select" name="group_id" size="1">
+                            {volist name="role" id="vo"}
+                            <option value="{$info.group_id}">{$role_name}</option>
+                            {/volist}
+                        </select>
+                    </span> </div>
+            </div>
+
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                    <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;编辑&nbsp;&nbsp;">
+                    <!-- <div class="btn btn-primary radius"><a href="JavaScript:void(0);" onclick="adsubmit();" id="submitBtn">确认提交</a></div> -->
+                </div>
+            </div>
+        </form>
+    </article>
+
+    <!--_footer 作为公共模版分离出去-->
+    {include file='layout/footer' /}
+
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            $("#form-admin-add").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 16
+                    },
+                    password: {
+                        required: true,
+                        minlength: 4,
+                        maxlength: 16                        
+                    },
+                    password2: {
+                        required: true,
+                        equalTo: "#password",
+                        minlength: 4,
+                        maxlength: 16                        
+                    },
+
+                    group_id: {
+                        required: true,
+                    },
+                },
+                onkeyup: false,
+                focusCleanup: true,
+                success: "valid",
+                submitHandler: function (form) {
+
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('admin/admin/adminHandle')}",
+                        data: $(form).serialize(),
+
+                        success: function (data) {
+
+                            if (data.status == 1) {
+                                console.log(data.msg);
+                                layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+                                    parent.location.reload
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.$('.btn-refresh').click();
+                                    parent.layer.close(index);
+                                })
+                            } else {
+                                layer.msg(data.msg, { icon: 1, time: 1000 }, function () {
+                                    parent.location.reload
+                                    var index = parent.layer.getFrameIndex(window.name);
+                                    parent.$('.btn-refresh').click();
+                                    parent.layer.close(index);
+                                })
+                            }
+
+                        },
+
+                    });
+
+                }
+            });
+        });
+
+
+    </script>
+    <!--/请在上方写此页面业务相关的脚本-->
+</body>
+
+</html>

@@ -8,13 +8,14 @@ class Admin extends validate
 {
 
     protected $rule = [
-        'name'          => 'require',
+        'name'          => 'require|alphaDash',
         'password'      => 'require',
         'password2'     => 'require',
         'group_id'      => 'require',
     ];
     protected $message = [
         'name.require'          => '用户名必填',
+        'name.alphaDash'        => '用户名不能为汉字',
         'password.require'      => '密码必须',
         'password2.require'     => '确认密码必填',
         'group_id.require'      => '请选择角色',
