@@ -1,0 +1,83 @@
+{include file="layout/head"}
+<article class="page-container">
+    <form class="form form-horizontal">
+        
+        <input type="hidden" id="menu_id" value='{if condition="isset($info)"}{$info[id]}{else /}0{/if}' >
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">上级菜单：</label>
+            <div class="formControls col-xs-8 col-sm-9"> 
+                <span class="select-box" style="width:150px;">
+                    <select class="select" id="parent_id" name="parent_id" size="1">
+                        {volist name="menu" id="vo"}
+                        <option value="{$vo.id}">{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </span> 
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="列子：菜单管理" name="name" id="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单图标：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="例子：xe625" name="icon" id="icon">
+                <p>请 <a style="color:blue;" href="http://www.h-ui.net/Hui-3.7-Hui-iconfont.shtml"
+                        target="_bank">打开网站</a>，挑选合适的图标。如：xe625：<i class="Hui-iconfont">&#xe625;</i></p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单地址：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" autocomplete="off" value="" placeholder="例子：admin/system/menu" name="url" id="url">
+                <p style="color:red;">顶级菜单不需要设置地址</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>显示：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input name="is_lock" type="radio" id="sex-1" value="0" checked>
+                    <label for="sex-1">显示</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="sex-2" value="1" name="is_lock">
+                    <label for="sex-2">隐藏</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <a class="btn btn-primary radius" onclick="submit();" type="button">提交</a>
+            </div>
+        </div>
+    </form>
+</article>
+{include file="layout/footer"}
+<script>
+    function submit(){
+        var menu_id = $('#menu_id').val(); 
+        var parent_id = $('#parent_id option:selected').val();
+        var name = $('#name').val();
+        var icon = $('#icon').val();
+        var url = $('#url').val();
+        var is_lock = $('input[name=is_lock]:checked').val();
+
+        if(!name){
+            layer.msg('请填写菜单名称');
+            return false;
+        }
+        if(parent_id > 0 && url == ''){
+            layer.msg('请填写菜单地址');
+            return false;
+        }
+
+        $.post("/admin/system/add_menu",{menu_id:menu_id,parent_id:parent_id,name:name,icon:icon,url:url,is_lock:is_lock},function(res){
+
+            alert(res);
+        });
+    }
+</script>

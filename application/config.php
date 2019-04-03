@@ -240,4 +240,9 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+
+    // 常规基因座
+    'gene' => [
+        'dys19', 'dys385a', 'dys385b', 'dys389ab', 'dys389ab', 'dys389cd', 'dys390', 'dys391', 'dys392', 'dys393', 'dys437', 'dys438', 'dys439', 'dys448', 'dys456', 'dys458', 'dys635', 'gata_h4'
+    ],
 ];
