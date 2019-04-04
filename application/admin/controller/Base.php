@@ -24,7 +24,7 @@ class Base extends Controller
         $this->assign('global_menu_list', $global_menu_list);
     }
 
-
+    # 获取菜单
     public function get_menu(){
 
         $global_menu_list = Db::query("select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0");
