@@ -21,8 +21,8 @@ class Member extends Base
     public function index()
     {
         $user = new Users;
-        $list = $user->select();
-
+        $list = $user->paginate(10);
+        
         $this->assign('list',$list);
         return $this->fetch();
     }
@@ -58,6 +58,21 @@ class Member extends Base
         $this->assign('act',$act);
         $this->assign('info',$user);
         $this->assign('group',$group);
+        return $this->fetch();
+    }
+
+    public function change_password()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        if (!$id) {
+            echo "<script>alert('该用户不存在')</script>";
+            exit;
+        }
+        $act = 'pwd';
+        $info = Db::name('users')->where('id',$id)->field('id,nickname')->find();
+
+        $this->assign('act',$act);
+        $this->assign('info',$info);
         return $this->fetch();
     }
 
@@ -116,12 +131,14 @@ class Member extends Base
                 if ($money) {
                     $result['money'] = $money;
                 }
-            }
-            $bool = false;
-            if ($bool) {
-                $return = array('code' => 1, 'msg' => "修改成功！");
-            } else {
-                $return = array('code' => 0, 'msg' => "修改失败！");
+
+                $bool = $user->where('id',$data['id'])->update($result);
+
+                if ($bool) {
+                    $return = array('code' => 1, 'msg' => "修改成功！");
+                } else {
+                    $return = array('code' => 0, 'msg' => "修改失败！");
+                }
             }
         }
 
@@ -134,6 +151,10 @@ class Member extends Base
             } else {
                 $return = array('code' => 0, 'msg' => "删除失败！");
             }
+        }
+
+        if ($data['act'] == 'pwd') {
+            pwd_encryption($data['password1']);
         }
 
         if ($data['act'] == "status") {
