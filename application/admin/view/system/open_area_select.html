@@ -1,0 +1,112 @@
+{include file="layout/head"}
+<article class="page-container">
+    <form class="form form-horizontal">
+        <div class="row cl">
+            <label class="form-label col-xs-1"></label>
+            <input type="hidden" id="se-hid-area" value="" />
+            <input type="hidden" id="se-hid-area-id" value="" />
+            <span class="select-box" style="width:150px;">
+                <select class="select" id="province" size="1">
+                    <option value="0">请选择</option>
+                    {volist name="province" id="vo"}
+                    <option value="{$vo.id}" >{$vo.name}</option>
+                    {/volist}
+                </select>
+            </span>
+            <span class="select-box" style="width:150px;">
+                <select class="select" id="city" size="1">
+                    <option value="0">请选择</option>
+                </select>
+            </span>
+            <span class="select-box" style="width:150px;">
+                <select class="select" id="district" size="1">
+                    <option value="0">请选择</option>
+                </select>
+            </span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-5"></label>
+            <button class="btn btn-success" id="success">确定</button>
+            <button class="btn btn-default" id="del">取消</button>
+
+        </div>
+        
+
+    </form>
+</article>
+{include file="layout/footer"}
+<script>
+    $('#success').click(function(){
+        var area = $('#se-hid-area').val();
+        var areaid = $('#se-hid-area-id').val();
+
+        parent.area_callback(area,areaid);
+        parent.layer.closeAll();
+    });
+
+    $('#del').click(function(){
+        parent.layer.closeAll();
+    });
+
+
+    $('#province').on('change',function(){
+        var area_id = $('#province').val();
+        var area = $('#province option:selected').html();
+
+        re_ad_option('city');
+        re_ad_option('district');
+        se_ad_option('city',area_id);
+
+        if(area_id > 0){
+            hidden_input_area(area,area_id);
+        }else{
+            hidden_input_area('',area_id);
+        }
+    });
+    $('#city').on('change',function(){
+        var area_id = $('#city').val();
+        var area = $('#city option:selected').html();
+
+        re_ad_option('district');
+        se_ad_option('district',area_id);
+
+        if(area_id > 0){
+            hidden_input_area(area,area_id);
+        }else{
+            var p_area_id = $('#province').val();
+            var p_area = $('#province option:selected').html();
+            hidden_input_area(p_area,p_area_id);
+        }
+    });
+
+    $('#district').on('change',function(){
+        var area_id = $('#district').val();
+        var area = $('#district option:selected').html();
+
+        if(area_id > 0){
+            hidden_input_area(area,area_id);
+        }else{
+            var p_area_id = $('#city').val();
+            var p_area = $('#city option:selected').html();
+            hidden_input_area(p_area,p_area_id);
+        }
+    });
+
+    function hidden_input_area(area,areaid){
+        $('#se-hid-area').val(area);
+        $('#se-hid-area-id').val(areaid);
+    }
+
+    function re_ad_option(area){
+        $('#'+area+' option').remove();
+        var _html = '<option value="0">请选择</option>';
+        $('#'+area).append(_html);
+    }
+
+    function se_ad_option(area,id){
+        $.post('/admin/system/ajax_area',{parent_id:id},function(res){
+            $('#'+area).append(res);
+        });
+    }
+
+</script>

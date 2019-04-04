@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商城管理 <span
+			class="c-gray en">&gt;</span> 运费模板列表 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<form method="GET" action="">
+		<div class="text-c"> 运费模板名称：
+			<input type="text" class="input-text" style="width:250px" placeholder="输入运费模板名称" value="" name="keywords">
+			<button type="submit" class="btn btn-success" id="" name="">
+				<i class="Hui-iconfont">&#xe665;</i>
+				搜索</button>
+		</div>
+		</form>
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<span class="l">
+                 <a href="javascript:;" onclick="freight_add('添加运费模板','{:url('admin/goods/add_freight')}','1200','700')" class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 
+                    添加运费模板
+                </a>
+            </span> 
+            <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+					<th scope="col" colspan="9">运费模板列表</th>
+				</tr>
+				<tr class="text-c">
+                    <th width="40">ID</th>
+                    <th width="150">模板名称</th>
+					<th width="150">描述</th>
+					<th width="130">更新时间</th>
+					<th width="100">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+				{if condition="isset($list) && $list"}
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.desc}</td>
+                    <td>{$vo.time|date="Y-m-d H:i:s",###}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+                        <a title="编辑" href="javascript:;" onclick="freight_edit('运费模板编辑','/admin/system/add_freight?freight_id={$vo.id}','','800','500')"
+                            class="ml-5" style="text-decoration:none">
+                        	<i class="Hui-iconfont">&#xe6df;</i>
+                        </a>
+                        <a title="删除" href="javascript:;" onclick="freight_del(this,'{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe6e2;</i>
+                        </a>
+                    </td>
+                </tr>
+				{/volist}
+				{/if}
+			</tbody>
+		</table>
+		<div class="pages">{$list->render()}</div>
+		{if condition="!isset($list) or !$list"}
+		<p class="no-data">暂无数据</p>
+		{/if}
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		/*
+			参数解释：
+			title	标题
+			url		请求的url
+			id		需要操作的数据id
+			w		弹出层宽度（缺省调默认值）
+			h		弹出层高度（缺省调默认值）
+		*/
+		/*运费模板-增加*/
+		function freight_add(title, url, w, h) {
+			layer_show(title, url, w, h);
+		}
+		/*运费模板-删除*/
+		function freight_del(obj, id) {
+			layer.confirm('确认要删除吗？<p style="color:red;">注意： 运费模板删除后，子运费模板也会被删除</p>', function (index) {
+				$.post('/admin/system/del_freight',{freight_id:id},function(res){
+					var res = JSON.parse(res);
+					if(res.status == 1){
+						layer.msg('操作成功', { icon: 6, time: 1000 });
+						window.location.replace(location.href);
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+			});
+		}
+
+		/*运费模板-编辑*/
+		function freight_edit(title, url, id, w, h) {
+			layer_show(title, url, w, h);
+		}
+	</script>
+</body>
+
+</html>

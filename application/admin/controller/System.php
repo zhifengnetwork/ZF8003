@@ -138,7 +138,33 @@ class System extends Base
         return $this->fetch();
     }
 
+    # 三级联动
+    public function open_area_select(){
+        $province = Db::name('area')->field('`id`,`name`')->where('parent_id',0)->select();
+        
+        $this->assign('province', $province);
+        return $this->fetch();
+    }
 
+    # 三级联动数据返回
+    public function ajax_area(){
+        $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
+        $html = '';
+        if($parent_id > 0){
+            $list = Db::name('area')->field('`id`,`name`')->where('parent_id',$parent_id)->select();
+            
+        }else{
+            $list = Db::name('area')->field('`id`,`name`')->where('parent_id',0)->select();
+            
+        }
+        
+        if(isset($list)){
+            foreach($list as $v){
+                $html .= '<option value="'.$v['id'].'">'.$v['name'].'</option>';
+            }
+        }
 
-
+        return json($html);
+        exit;
+    }
 }
