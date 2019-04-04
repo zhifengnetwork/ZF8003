@@ -1,34 +1,18 @@
 <div class="menu_dropdown bk_2">
-    <dl id="menu-admin">
-        <dt><i class="Hui-iconfont">&#xe62e;</i> 系统设置<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-        <dd>
-            <ul>
-                <li><a data-href="{:url('admin/system/menu')}" data-title="菜单管理" href="javascript:void(0)">菜单管理</a></li>
-            </ul>
-        </dd>
-    </dl>
-    <dl id="menu-member">
-        <dt><i class="Hui-iconfont">&#xe60d;</i> 会员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-        <dd>
-            <ul>
-                <li><a data-href="{:url('admin/member/index')}" data-title="会员列表" href="javascript:;">会员列表</a></li>
-                <li><a data-href="member-del.html" data-title="删除的会员" href="javascript:;">删除的会员</a></li>
-                <li><a data-href="member-level.html" data-title="等级管理" href="javascript:;">等级管理</a></li>
-                <li><a data-href="member-scoreoperation.html" data-title="积分管理" href="javascript:;">积分管理</a></li>
-                <li><a data-href="member-record-browse.html" data-title="浏览记录" href="javascript:void(0)">浏览记录</a></li>
-                <li><a data-href="member-record-download.html" data-title="下载记录" href="javascript:void(0)">下载记录</a></li>
-                <li><a data-href="member-record-share.html" data-title="分享记录" href="javascript:void(0)">分享记录</a></li>
-            </ul>
-        </dd>
-    </dl>
-    <dl id="menu-admin">
-            <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+    {if condition="isset($global_menu_list)"}
+        {volist name="global_menu_list" id="vo"}
+        <dl id="{$vo.id}">
+            <dt><i class="Hui-iconfont">&#{$vo.icon};</i> {$vo.name}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            {if condition="isset($vo.last) && $vo.last"}
             <dd>
                 <ul>
-                    <li><a data-href="{:url('admin/admin/role')}" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
-                    <li><a data-href="{:url('admin/admin/permission')}" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
-                    <li><a data-href="{:url('admin/admin/list1')}" data-title="管理员列表" href="javascript:void(0)">管理员列表</a></li>
-            </ul>
-        </dd>
-    </dl>
+                {volist name="vo.last" id="last"}
+                <li><a data-href="{$last.url}" data-title="{$last.name}" href="javascript:void(0)">{$last.name}</a></li>
+                {/volist}
+                </ul>
+            </dd>
+            {/if}
+        </dl>
+        {/volist}
+    {/if}
 </div>

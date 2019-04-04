@@ -13,9 +13,15 @@ class System extends Base
     # 菜单管理
     public function menu(){
 
+
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+
         $where['id'] = ['>',0];
+        if($keywords){
+            $where['name'] = ['like', "%$keywords%"];
+        }
         
-        $list = Db::name('menu')->where( $where )->paginate(2);
+        $list = Db::name('menu')->where( $where )->paginate(20);
         if($list){
             $pname[0] = '顶级菜单';
 
@@ -37,6 +43,7 @@ class System extends Base
 
         $count = Db::name('menu')->where( $where )->count();
         $this->assign('count', $count);
+        $this->assign('keywords', $keywords);
         return $this->fetch();
     }
 
