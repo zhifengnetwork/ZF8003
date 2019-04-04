@@ -146,7 +146,7 @@ class Member extends Base
             } else {
                 $is_distribut = (intval($data['is_distribut']) == 1) ? intval($data['is_distribut']) : 0;
                 $status = (intval($data['status']) == 1) ? intval($data['status']) : 0;
-                $money = intval($data['money']);
+                $money = floatval($data['money']);
 
                 $result = array(
                     'nickname'       => $data['nickname'],
@@ -161,12 +161,14 @@ class Member extends Base
                 if ($money) {
                     $result['money'] = $money;
                 }
-
+                
                 $bool = $user->where('id',$data['id'])->update($result);
-
+                
                 if ($bool) {
                     $return = array('code' => 1, 'msg' => "修改成功！");
-                } else {
+                } elseif ($bool === 0) {
+                    $return = array('code' => 0, 'msg' => "你没有任何修改");
+                }else { 
                     $return = array('code' => 0, 'msg' => "修改失败！");
                 }
             }
