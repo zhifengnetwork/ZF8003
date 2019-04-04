@@ -154,7 +154,20 @@ class Member extends Base
         }
 
         if ($data['act'] == 'pwd') {
-            pwd_encryption($data['password1']);
+            $pwd1 = pwd_encryption($data['newpassword']);
+            $pwd2 = pwd_encryption($data['newpassword2']);
+
+            if ($pwd1 == $pwd2) {
+                $bool = $user->where('id',$data['id'])->update(['password' => $pwd1]);
+
+                if ($bool) {
+                    $return = array('code' => 1, 'msg' => "成功修改密码！");
+                } else {
+                    $return = array('code' => 0, 'msg' => "修改密码失败！");
+                }
+            } else {
+                $return = array('code' => 0,'msg' => "密码不一致");
+            }
         }
 
         if ($data['act'] == "status") {

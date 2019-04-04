@@ -11,9 +11,11 @@
 
 // 应用公共文件
 
-function pwd_encryption($password = '')
-{
-    if (!$passwrod) {
+/**
+ * 加密
+ */
+function pwd_encryption($password = ''){
+    if (!$password) {
         return false;
     }
 
