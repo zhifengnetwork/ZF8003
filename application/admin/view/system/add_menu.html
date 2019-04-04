@@ -2,14 +2,14 @@
 <article class="page-container">
     <form class="form form-horizontal">
         
-        <input type="hidden" id="menu_id" value='{if condition="isset($info)"}{$info[id]}{else /}0{/if}' >
+        <input type="hidden" id="menu_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">上级菜单：</label>
             <div class="formControls col-xs-8 col-sm-9"> 
                 <span class="select-box" style="width:150px;">
                     <select class="select" id="parent_id" name="parent_id" size="1">
                         {volist name="menu" id="vo"}
-                        <option value="{$vo.id}">{$vo.name}</option>
+                        <option value="{$vo.id}" {if condition="isset($info) && $info.parent_id eq $vo.id"} selected {/if}>{$vo.name}</option>
                         {/volist}
                     </select>
                 </span> 
@@ -18,21 +18,21 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="列子：菜单管理" name="name" id="name">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.name}{/if}" placeholder="列子：菜单管理" name="name" id="name">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单图标：</label>
+            <label class="form-label col-xs-4 col-sm-3">菜单图标：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="例子：xe625" name="icon" id="icon">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.icon}{/if}" placeholder="例子：xe625" name="icon" id="icon">
                 <p>请 <a style="color:blue;" href="http://www.h-ui.net/Hui-3.7-Hui-iconfont.shtml"
                         target="_bank">打开网站</a>，挑选合适的图标。如：xe625：<i class="Hui-iconfont">&#xe625;</i></p>
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单地址：</label>
+            <label class="form-label col-xs-4 col-sm-3">菜单地址：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" autocomplete="off" value="" placeholder="例子：admin/system/menu" name="url" id="url">
+                <input type="text" class="input-text" autocomplete="off" value="{if condition="isset($info)"}{$info.url}{/if}" placeholder="例子：admin/system/menu" name="url" id="url">
                 <p style="color:red;">顶级菜单不需要设置地址</p>
             </div>
         </div>
@@ -40,11 +40,11 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>显示：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
                 <div class="radio-box">
-                    <input name="is_lock" type="radio" id="sex-1" value="0" checked>
+                    <input name="is_lock" type="radio" id="sex-1" value="0" {if condition="(isset($info) && $info.is_lock eq 0) or !isset($info)"}checked{/if} >
                     <label for="sex-1">显示</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" id="sex-2" value="1" name="is_lock">
+                    <input type="radio" id="sex-2" value="1" name="is_lock" {if condition="isset($info) && $info.is_lock eq 1"}checked{/if}>
                     <label for="sex-2">隐藏</label>
                 </div>
             </div>
@@ -77,7 +77,21 @@
 
         $.post("/admin/system/add_menu",{menu_id:menu_id,parent_id:parent_id,name:name,icon:icon,url:url,is_lock:is_lock},function(res){
 
-            alert(res);
+            if(res){
+                var res = JSON.parse(res);
+                if(res.status == 1){
+                    layer.open({
+                        content:res.msg,
+                        end:function(){
+                            parent.layer.closeAll();
+                        }
+                    });
+                }else{
+                    layer.open({
+                        content:res.msg,
+                    });
+                }
+            }
         });
     }
 </script>

@@ -13,16 +13,67 @@ class System extends Base
     # 菜单管理
     public function menu(){
 
+        $where['id'] = ['>',0];
+        
+        $list = Db::name('menu')->where( $where )->paginate(2);
+        if($list){
+            $pname[0] = '顶级菜单';
 
-        
-        $list = Db::name('menu')->paginate(15);
-        $count = count($list);
-        
-        
+            foreach($list as $v){
+                if($v['parent_id'] > 0) $pid[] = $v['parent_id'];
+            }
+            if(isset($pid)){
+                $pid = implode("','", $pid);
+                $plist = Db::query("select `id`,`name` from `zf_menu` where `id` in ('$pid')");
+                
+                foreach($plist as $v){
+                    $pname[$v['id']] = $v['name'];
+                }
+            }
+
+            $this->assign('pname', $pname);
+            $this->assign('list', $list);
+        }
+
+        $count = Db::name('menu')->where( $where )->count();
         $this->assign('count', $count);
-        $this->assign('list', $list);
         return $this->fetch();
     }
+
+    # 菜单状态修改
+    public function menu_islock(){
+        if($_POST){
+            $is_lock = isset($_POST['is_lock']) ? intval($_POST['is_lock']) : 0;
+            $menu_id = isset($_POST['menu_id']) ? intval($_POST['menu_id']) : 0;
+
+            if($menu_id > 0){
+                $res = Db::execute("update `zf_menu` set `is_lock` = '$is_lock' where `id` = '$menu_id'");
+                if($res){
+                    return json_encode(['status' => 1]);
+                }
+            }
+            return json_encode(['status' => 0]);
+            
+        }
+        exit;
+    }
+
+    # 删除菜单
+    public function del_menu(){
+        if($_POST){
+            $menu_id = isset($_POST['menu_id']) ? intval($_POST['menu_id']) : 0;
+            if($menu_id > 0){
+                $res = Db::execute("delete from `zf_menu` where `id` = '$menu_id' or `parent_id` = '$menu_id'");
+                if($res){
+                    return json_encode(['status' => 1]);
+                }
+            }
+            return json_encode(['status' => 0]);
+        }
+        exit;
+    }
+
+
 
     # 添加菜单
     public function add_menu(){
@@ -69,7 +120,7 @@ class System extends Base
         }
 
         $menu[0] = ['id'=>0, 'name' => '顶级菜单'];
-        $res = Db::query("select `id`,`name` from `zf_menu` where `level` = 1 order by `id` asc");
+        $res = Db::query("select `id`,`name` from `zf_menu` where `level` = 1 and `id` != '$menu_id' order by `id` asc");
         if($res){
             foreach($res as $v){
                 $menu[$v['id']] = $v;
