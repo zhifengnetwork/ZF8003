@@ -1,74 +1,93 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
-<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="/__STATIC__/lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="/__STATIC__/h-ui.admin/css/style.css" />
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<title>用户查看</title>
+{include file="layout/head"}
+<title>用户详情</title>
 </head>
-<body>
-<div class="cl pd-20" style=" background-color:#5bacb6">
-	<img class="avatar size-XL l" src="/__STATIC__/h-ui/images/ucnter/avatar-default.jpg">
-	<dl style="margin-left:80px; color:#fff">
-		<dt>
-			<span class="f-18">张三</span>
-			<span class="pl-10 f-12">余额：40</span>
-		</dt>
-		<dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>
-	</dl>
-</div>
-<div class="pd-20">
-	<table class="table">
-		<tbody>
-			<tr>
-				<th class="text-r" width="80">性别：</th>
-				<td>男</td>
-			</tr>
-			<tr>
-				<th class="text-r">手机：</th>
-				<td>13000000000</td>
-			</tr>
-			<tr>
-				<th class="text-r">邮箱：</th>
-				<td>admin@mail.com</td>
-			</tr>
-			<tr>
-				<th class="text-r">地址：</th>
-				<td>北京市 海淀区</td>
-			</tr>
-			<tr>
-				<th class="text-r">注册时间：</th>
-				<td>2014.12.20</td>
-			</tr>
-			<tr>
-				<th class="text-r">积分：</th>
-				<td>330</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="/__STATIC__/lib/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="/__STATIC__/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="/__STATIC__/h-ui.admin/js/H-ui.admin.js"></script> 
-<!--/_footer 作为公共模版分离出去-->
 
-<!--请在下方写此页面业务相关的脚本-->
+<body>
+	<div class="cl pd-20" style=" background-color:#5bacb6">
+		<img class="avatar size-XL l" src="">
+		<dl style="margin-left:80px; color:#fff">
+			<dt>
+				<span class="f-18">{$info.nickname}</span>
+				<span class="pl-10 f-12">余额：{$info.money}</span>
+			</dt>
+			<dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>
+		</dl>
+	</div>
+	<div class="pd-20">
+		<table class="table">
+			<tbody>
+				<tr>
+					<th class="text-r">手机：</th>
+					<td>{$info.mobile}</td>
+				</tr>
+				<tr>
+					<th class="text-r">手机验证：</th>
+					<td>{eq name="$info.mobile_verification" value="1"} <span style="color:blue;">已验证</span> {else/} 未验证
+						{/eq}</td>
+				</tr>
+				<tr>
+					<th class="text-r">邮箱：</th>
+					<td>{$info.email}</td>
+				</tr>
+				<tr>
+					<th class="text-r">邮箱验证：</th>
+					<td>{eq name="$info.email_verification" value="1"}<span style="color:blue;">已验证</span> {else/}
+						未验证{/eq}</td>
+				</tr>
+				<tr>
+					<th class="text-r">积分：</th>
+					<td>{$info.integral}</td>
+				</tr>
+				<tr>
+					<th class="text-r">冻结金额：</th>
+					<td>{$info.freezing_amount}</td>
+				</tr>
+				<tr>
+					<th class="text-r">分组：</th>
+					<td>{$info.group_id|group_name}</td>
+				</tr>
+				<tr>
+					<th class="text-r">分销商：</th>
+					<td>{eq name="$info.is_distributor" value="1"} <span style="color:blue;">是</span> {else/} 否 {/eq}
+					</td>
+				</tr>
+				<tr>
+					<th class="text-r">分销等级：</th>
+					<td>{$info.distributor_level}</td>
+				</tr>
+				<tr>
+					<th class="text-r">上级：</th>
+					<td>{$info.id|first_leader}</td>
+				</tr>
+				<tr>
+					<th class="text-r">状态：</th>
+					<td>{eq name="$info.status" value="1"} <span style="color:blue;">正常</span> {else/} 禁用 {/eq}</td>
+				</tr>
+				<tr>
+					<th class="text-r">注册方式：</th>
+					<td>{if condition="$info.register_method == 'mobile'"} 手机注册 {elseif condition="$info.register_method == 'weixin'"/} 微信注册 {else/} 未知 {/if}</td>
+				</tr>
+				<tr>
+					<th class="text-r">注册时间：</th>
+					<td>{$info.register_time|date="Y-m-d",###}</td>
+				</tr>
+				<tr>
+					<th class="text-r">最后一次登录时间：</th>
+					<td>{$info.login_time|date="Y-m-d H:i:s",###}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	{include file="layout/footer"}
+
+	<script type="text/javascript">
+		var is_avatar = "{$is_avatar}"
+		if (is_avatar == 1) {
+			$(".avatar").attr('src',"{info.avatar}");
+		} else {
+			$(".avatar").attr('src',"/__STATIC__/h-ui/images/ucnter/avatar-default.jpg");
+		}
+	</script>
 </body>
+
 </html>

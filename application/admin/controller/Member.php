@@ -86,6 +86,7 @@ class Member extends Base
         $user = new Users;
         $return = ['status' => 0, 'msg' => '参数错误'];//初始化返回信息
 
+        //添加
         if ($data['act'] == "add") {
             if (!$member->scene('add')->check($data)) {
                 $return = array('status' => 0, 'msg' => $member->getError());
@@ -110,6 +111,7 @@ class Member extends Base
             } 
         }
 
+        //编辑
         if ($data['act'] == "edit") {
             if (!$member->scene('edit')->check($data)) {
                 $return = array('status' => 0, 'msg' => $member->getError());
@@ -142,6 +144,7 @@ class Member extends Base
             }
         }
 
+        //删除
         if ($data['act'] == "del") {
             $id = json_decode($data['id'],true);
             $bool = $user->destroy($id);
@@ -153,6 +156,7 @@ class Member extends Base
             }
         }
 
+        //修改密码
         if ($data['act'] == 'pwd') {
             $pwd1 = pwd_encryption($data['newpassword']);
             $pwd2 = pwd_encryption($data['newpassword2']);
@@ -170,6 +174,7 @@ class Member extends Base
             }
         }
 
+        //更改状态
         if ($data['act'] == "status") {
             $status = intval($data['status']);
             $status = ($status == 1) ? $status : 0;
@@ -183,6 +188,33 @@ class Member extends Base
         }
 
         return json($return);
+    }
+
+    /**
+     * 用户详情
+     */
+    public function show()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        if (!$id) {
+            echo "<script>alert('该用户不存在')</script>";
+            exit;
+        }
+
+        $user = Db::name('users')->where('id',$id)->field('password,openid,unionid,payment_password',true)->find();
+
+        $avatar = $user['avatar'];
+        $is_avatar = 0;
+        $path = ROOT_PATH;
+        
+        if (is_file($path.$avatar)) {
+            $is_avatar = 1;
+        }
+
+        $this->assign('is_avatar',$is_avatar);
+        $this->assign('info',$user);
+
+        return $this->fetch();
     }
 }
 

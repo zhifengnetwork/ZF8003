@@ -47,7 +47,7 @@
                             <td><input type="checkbox" value="{$vo.id}" name="user_id"></td>
                             <td>{$vo.id}</td>
                             <td><u style="cursor:pointer" class="text-primary"
-                                    onclick="member_show('{$vo.nickname}','member-show.html','10001','360','400')">{$vo.nickname}</u></td>
+                                    onclick="member_show('{$vo.nickname}','/admin/member/show?id={$vo.id}','10001','400','600')">{$vo.nickname}</u></td>
                             <td>{$vo.mobile}</td>
                             <td>{$vo.email}</td>
                             <td>{$vo.group_id|group_name}</td>
