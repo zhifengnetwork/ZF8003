@@ -4,17 +4,21 @@
 <body>
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页<span class="c-gray en">&gt;</span> 用户中心 <span
             class="c-gray en">&gt;</span> 用户管理 <a class="btn btn-success radius r"
-            style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+            style="line-height:1.6em;margin-top:3px" href="javascript:reflsh();" title="刷新"><i
                 class="Hui-iconfont">&#xe68f;</i></a></nav>
     <div class="page-container">
-        <div class="text-c"> 日期范围：
-            <input type="text" onfocus="WdatePicker()" id="datemin" class="input-text Wdate" style="width:120px;">
-            -
-            <input type="text" onfocus="WdatePicker()" id="datemax" class="input-text Wdate" style="width:120px;">
-            <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称、电话、邮箱" id="" name="">
-            <button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i>
-                搜用户</button>
-        </div>
+        <form method="GET" action="">
+            <div class="text-c"> 日期范围：
+                <input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]" value="{if condition='isset($seach.datemin)'}{$seach.datemin}{/if}" class="input-text Wdate" style="width:120px;">
+                -
+                <input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]" value="{if condition='isset($seach.datemax)'}{$seach.datemax}{/if}" class="input-text Wdate" style="width:120px;">
+                <input type="text" class="input-text" style="width:250px" value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入会员名称、电话、邮箱" id="m_conditions" name="seach[m_conditions]">
+                <button type="submit" class="btn btn-success radius" id="m_search" name=""><i class="Hui-iconfont">&#xe665;</i>
+                    搜用户</button>
+            </div>
+            
+        </form>
+        
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
                 <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
@@ -86,20 +90,14 @@
 
     <script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
     <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
-    <!-- <script type="text/javascript" src="/__STATIC__/lib/laypage/1.2/laypage.js"></script> -->
     <script type="text/javascript">
-        // $(function () {
-        //     $('.table-sort').dataTable({
-        //         "aaSorting": [[1, "desc"]],//默认第几个排序
-        //         "bStateSave": true,//状态保存
-        //         "aoColumnDefs": [
-        //             //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-        //             { "orderable": false, "aTargets": [0, 8, 9] }// 制定列不参与排序
-        //         ]
-        //     });
-
-        // });
+    
         var url = '{:url("admin/member/handle")}';
+
+        /* 刷新 */
+        function reflsh(){
+            window.location.href="{:url('admin/member/index')}";
+        }
         /*用户-添加*/
         function member_add(title, url, w, h) {
             layer_show(title, url, w, h);
@@ -118,9 +116,6 @@
                     data: {'id':user_id,'act':"status",'status':0},
                     success: function (data) {
                         if (data.code == 1) {
-                            // $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_start(this,id,{$vo.id})" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
-                            // $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
-                            // $(obj).remove();
                             layer.msg('已停用!', { icon: 5, time: 1000 },function(){
                                 window.location.reload();
                             });
@@ -130,7 +125,6 @@
                     },
                     error: function (data) {
                         layer.alert("服务器繁忙, 请联系管理员!");
-                        // console.log(data.msg);
                     },
                 });
             });
@@ -146,9 +140,6 @@
                     data: {'id':user_id,'act':"status",'status':1},
                     success: function (data) {
                         if (data.code == 1) {
-                            // $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id,{$vo.id})" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
-                            // $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-                            // $(obj).remove();
                             layer.msg('已启用!', { icon: 6, time: 1000 },function(){
                                 window.location.reload();
                             });
@@ -158,7 +149,6 @@
                         
                     },
                     error: function (data) {
-                        // console.log(data);
                         layer.alert("服务器繁忙, 请联系管理员!");
                     },
                 });
@@ -216,7 +206,6 @@
                         dataType: 'json',
                         success: function (data) {
                             if (data.code == 1) {
-                                // $(obj).parents("tr").remove();
                                 layer.msg(data.msg, { icon: 1, time: 1000 },function(){
                                     parent.location.reload();
                                 });
@@ -224,7 +213,7 @@
                                 layer.msg(data.msg, { icon: 2, time: 1000 });
                             }
                         },
-                        error: function (data) {
+                        error: function () {
                             layer.alert("服务器繁忙, 请联系管理员!");
                         },
                     });

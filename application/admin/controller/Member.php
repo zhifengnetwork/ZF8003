@@ -20,9 +20,33 @@ class Member extends Base
      */
     public function index()
     {
-        $user = new Users;
-        $list = $user->paginate(10);
+        $where['id'] = ['>', 0];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $page = 10;
         
+        if($seach){
+            $page = 0;
+            if($seach['m_conditions']){
+                $m_conditions = $seach['m_conditions'];
+                $where['nickname'] = ['like',"%$m_conditions%"];
+            }
+            if ($seach['datemin'] && $seach['datemax']){
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax']);
+                $where['register_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif($seach['datemin']){
+                $where['register_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']){
+                $where['register_time'] = ['<= time',strtotime($seach['datemax'])];
+            }
+        }
+        
+        $user = new Users;
+
+        $list = $user->where($where)->paginate($page);
+        $this->assign('seach',$seach);
         $this->assign('list',$list);
         return $this->fetch();
     }
