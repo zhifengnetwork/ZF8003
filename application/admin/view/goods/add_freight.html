@@ -1,9 +1,7 @@
 {include file="layout/head"}
 <article class="page-container">
-    <form class="form form-horizontal">
-        
-        <input type="hidden" id="freight_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
-
+    <form class="form form-horizontal" target="ajaxR" method="POST" action="">    
+        <input type="hidden" id="freight_id" name="freight_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>模板名称：</label>
@@ -14,14 +12,14 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>默认运费：</label>
             <div class="formControls col-xs-8 col-sm-2">
-                <input type="int" class="input-text" value="{if condition="isset($info)"}{$info.name}{/if}" placeholder="默认运费" name="other" id="other">
+                <input type="int" class="input-text" value="{if condition="isset($other)"}{$other}{/if}" placeholder="默认运费" name="other" id="other">
             </div>
             元
         </div>
         
         <div class="row cl">
                 <label class="form-label col-xs-4 col-sm-3">特定地区设置：</label>
-                <div class="formControls col-xs-8 col-sm-9"> 
+                <div class="formControls col-xs-8 col-sm-7"> 
                     <table class="table table-border table-bordered table-bg" >
                         <thead>
                             <tr class="text-c">
@@ -31,37 +29,66 @@
                             </tr>
                         </thead>
                         <tbody class="other-temp">
-                            <tr class="text-c">
-                                <th width="150" class="freight_area">
-                                    <a class="freight_area_select" onclick="freight_area_select(this)">选择地址</a>
-                                    <input type='hidden' class="freight_area_hidden_id" name="areaid[]" value="">
-                                </th>
-                                <th width="150"><input class="input-text" style="text-align:center;" name="area_money[]" type="text" value="" /></th>
-                                <th>
-                                    <a onclick="other_temp_add();"><i class="Hui-iconfont">&#xe600;</i></a> 
-                                </th>
-                            </tr>
+                            {if condition="isset($temp)"}
+                                {foreach name="temp" item="vo" key="k"}
+                                <tr class="text-c">
+                                    <th width="150" class="freight_area">
+                                        <a class="freight_area_select" onclick="freight_area_select(this)">{if condition="isset($aname[$k])"}{$aname[$k]}{else /}{$k}{/if}</a>
+                                        <input type='hidden' class="freight_area_hidden_id" name="areaid[]" value="{$k}">
+                                    </th>
+                                    <th width="150"><input class="input-text" style="text-align:center;" name="area_money[]" type="text" value="{$vo}" /></th>
+                                    <th>
+                                        {if condition="$k eq $one_k"}
+                                        <a onclick="other_temp_add();"><i class="Hui-iconfont">&#xe600;</i></a> 
+                                        {else /}
+                                        <a onclick="other_temp_del(this)"><i class="Hui-iconfont">&#xe6a1;</i></a>
+                                        {/if}
+                                    </th>
+                                </tr>
+                                {/foreach}
+                            {else /}
+                                <tr class="text-c">
+                                    <th width="150" class="freight_area">
+                                        <a class="freight_area_select" onclick="freight_area_select(this)">选择地址</a>
+                                        <input type='hidden' class="freight_area_hidden_id" name="areaid[]" value="">
+                                    </th>
+                                    <th width="150"><input class="input-text" style="text-align:center;" name="area_money[]" type="text" value="" /></th>
+                                    <th>
+                                        <a onclick="other_temp_add();"><i class="Hui-iconfont">&#xe600;</i></a> 
+                                    </th>
+                                </tr>
+                            {/if}
                         </tbody>
                     </table>
                 </div>
             </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么..." ></textarea>
+            <div class="formControls col-xs-8 col-sm-7">
+                <textarea name="desc" cols="" rows="" class="textarea"  placeholder="说点什么..." >{if condition="isset($info)"}{$info.desc}{/if}</textarea>
             </div>
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <a class="btn btn-primary radius" onclick="submit();" type="button">提交</a>
+                <input class="btn btn-primary radius" type="submit" value="提交">
             </div>
         </div>
     </form>
     <input type="hidden" id="area" value="">
     <input type="hidden" id="area-id" value="">
 </article>
+<iframe name="ajaxR" style="display: none;"></iframe>
 {include file="layout/footer"}
 <script>
+    function layermsg(msg,close){
+        layer.msg(msg)
+        if(close > 0){
+            setTimeout(function(){
+                parent.layer.closeAll();
+            },2000);
+        }
+    }
+
     function other_temp_add(){
         var _tpl = '<tr class="text-c">'+
                         '<th width="150" class="freight_area">'+
@@ -80,6 +107,7 @@
 
     function freight_area_select(obj){
         layer.open({
+            title:'选择地址',
             type:2,
             content:'/admin/system/open_area_select',
             area:['550px','200px'],
@@ -102,40 +130,4 @@
         $('#area-id').val(areaid);
     }
 
-    function submit(){
-        var menu_id = $('#menu_id').val(); 
-        var parent_id = $('#parent_id option:selected').val();
-        var name = $('#name').val();
-        var icon = $('#icon').val();
-        var url = $('#url').val();
-        var is_lock = $('input[name=is_lock]:checked').val();
-
-        if(!name){
-            layer.msg('请填写菜单名称');
-            return false;
-        }
-        if(parent_id > 0 && url == ''){
-            layer.msg('请填写菜单地址');
-            return false;
-        }
-
-        $.post("/admin/system/add_menu",{menu_id:menu_id,parent_id:parent_id,name:name,icon:icon,url:url,is_lock:is_lock},function(res){
-
-            if(res){
-                var res = JSON.parse(res);
-                if(res.status == 1){
-                    layer.open({
-                        content:res.msg,
-                        end:function(){
-                            parent.layer.closeAll();
-                        }
-                    });
-                }else{
-                    layer.open({
-                        content:res.msg,
-                    });
-                }
-            }
-        });
-    }
 </script>

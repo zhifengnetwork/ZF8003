@@ -1,0 +1,121 @@
+{include file="layout/head"}
+<article class="page-container">
+    <form class="form form-horizontal">
+        
+        <input type="hidden" id="category_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
+        <input type="hidden" id="parent_id" value='{if condition="isset($info)"}{$info.parent_id}{else /}0{/if}' >
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">上级分类：</label>
+            <div class="formControls col-xs-8 col-sm-9"> 
+                <span class="select-box" style="width:150px;">
+                    <select class="select" id="parent_id_level1" name="parent_id" size="1">
+                        <option value="0">顶级分类</option>
+                        {volist name="cate" id="vo"}
+                        <option value="{$vo.id}" {if condition="$pid eq $vo.id or $info.parent_id eq $vo.id"} selected {/if}>{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </span> 
+                <span class="select-box" style="width:150px;">
+                    <select class="select" id="parent_id_level2" name="parent_id" size="1">
+                        <option value="0">请选择</option>
+                            {volist name="lcate" id="vo"}
+                            <option value="{$vo.id}" {if condition="isset($info) && $info.parent_id eq $vo.id"} selected {/if}>{$vo.name}</option>
+                            {/volist}
+                    </select>
+                </span> 
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.name}{/if}" placeholder="请输入商品分类名称" name="name" id="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">排序：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" autocomplete="off" value="{if condition="isset($info)"}{$info.sort}{/if}" placeholder="从大到小排序" name="sort" id="sort">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>锁定：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input name="is_lock" type="radio" id="sex-1" value="0" {if condition="(isset($info) && $info.is_lock eq 0) or !isset($info)"}checked{/if} >
+                    <label for="sex-1">正常</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="sex-2" value="1" name="is_lock" {if condition="isset($info) && $info.is_lock eq 1"}checked{/if}>
+                    <label for="sex-2">已锁定</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <a class="btn btn-primary radius" onclick="submit();" type="button">提交</a>
+            </div>
+        </div>
+    </form>
+</article>
+{include file="layout/footer"}
+<script>
+    $('#parent_id_level1').on('change', function(){
+
+        var id = $('#parent_id_level1 option:selected').val();
+        $('#parent_id_level2 option').remove();
+        
+        var _html = '<option value="0">请选择</option>';
+        $('#parent_id_level2').append(_html);
+
+        if(id > 0){
+            $.post('/admin/goods/ajax_getLastCate',{cate_id:id},function(res){
+                if(res){
+                    $('#parent_id_level2').append(res);
+                }
+            });
+        }
+
+        $('#parent_id').val(id);
+    });
+
+    $('#parent_id_level2').on('change', function(){
+        var id = $('#parent_id_level2 option:selected').val();
+        if(!id){
+            var id = $('#parent_id_level1 option:selected').val();
+        }
+        $('#parent_id').val(id);
+    });
+
+
+    function submit(){
+        var category_id = $('#category_id').val(); 
+        var parent_id = $('#parent_id').val();
+        var name = $('#name').val();
+        var sort = $('#sort').val();
+        var is_lock = $('input[name=is_lock]:checked').val();
+
+        if(!name){
+            layer.msg('请填写分类名称');
+            return false;
+        }
+
+        $.post("/admin/goods/add_category",{category_id:category_id,parent_id:parent_id,name:name,sort:sort,is_lock:is_lock},function(res){
+
+            if(res){
+                if(res.status == 1){
+                    layer.open({
+                        content:res.msg,
+                        end:function(){
+                            parent.layer.closeAll();
+                        }
+                    });
+                }else{
+                    layer.open({
+                        content:res.msg,
+                    });
+                }
+            }
+        });
+    }
+</script>
