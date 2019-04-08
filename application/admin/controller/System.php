@@ -8,7 +8,17 @@ use think\Db;
 
 class System extends Base
 {
+    # 基本配置
+    public function setting()
+    {
+        return $this->fetch();
+    }
 
+    # 邮箱配置
+    public function smtp()
+    {
+        return $this->fetch();
+    }
 
     # 菜单管理
     public function menu(){
@@ -81,7 +91,6 @@ class System extends Base
         }
         exit;
     }
-
 
 
     # 添加菜单
