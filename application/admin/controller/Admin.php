@@ -4,42 +4,63 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Db;
 use think\Loader;
-class Admin extends Controller
+class Admin extends Base
 {
     /**
      * 管理员列表
      */
     public function list1()
     {
-        // $list = array();
         $page = 10;
-    	$keywords = input('keywords/s');
-    	if(empty($keywords)){
-            // 列出除了超级管理员以外的管理员
-            // $res = Db::name('admin')->where('id','not in','1')->select();
-            $list = Db::name('admin')
-            ->alias('a')
-            ->join('admin_group ad','a.group_id = ad.id')
-            ->field('a.*,ad.name g_name')
-            ->where('a.id','not in','1')
-            ->order('id asc')
-            ->paginate($page);
-            // dump($res);
-    	}else{
-            // $res = DB::name('admin')->where('user_name','like','%'.$keywords.'%')->where('id','not in','1')->order('id')->select();
-            $list = Db::name('admin')
-            ->alias('a')
-            ->join('admin_group ad','a.group_id = ad.id')
-            ->field('a.*,ad.name g_name')
-            ->where('user_name','like','%'.$keywords.'%')
-            ->where('a.id','not in','1')
-            ->order('id desc')
-            ->paginate($page);
-        }
-
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        if($seach){
+            $page = 0;
+            // 搜索条件
+            $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax']); 
+            // 列出数据
+            $list=$this->l_data($where,$page);
+        }else{
+            $list=$this->l_data($where='',$page);
+        }  
     	$this->assign('list',$list);        
         return $this->fetch();
     }
+    
+    // 列出数据
+    public function l_data($where='',$page)
+    {
+        $list = Db::name('admin')
+            ->alias('a')
+            ->join('admin_group ad', 'a.group_id = ad.id')
+            ->field('a.*,ad.name g_name')
+            ->where($where)
+            ->where('a.id', 'not in', '1')
+            ->order('id asc')
+            ->paginate($page);
+            return $list;
+    }
+
+    // 搜索条件
+    public function s_condition($conditions, $datemins, $datemaxs)
+    {
+        $time = " 23:59:59";
+        if ($conditions) {
+            $m_conditions = str_replace(' ', '', $conditions);
+            $where['a.name|ad.name'] = ['like', "%$m_conditions%"];
+        }
+        if ($datemins && $datemaxs) {
+            $datemin = strtotime($datemins);
+            $datemax = strtotime($datemaxs . $time);
+            $where['a.addtime'] = [['>= time', $datemin], ['<= time', $datemax], 'and'];
+        } elseif ($datemins) {
+            $where['a.addtime'] = ['>= time', strtotime($datemin)];
+        } elseif ($datemaxs) {
+            $where['a.addtime'] = ['<= time', strtotime($datemaxs . $time)];
+        }
+        return $where;
+    }
+
+    
     /**
      * 添加或者编辑管理员页面
      */
@@ -76,9 +97,9 @@ class Admin extends Controller
         
         // $this->ajaxReturn(['status'=>1,'msg'=>'操作成功','url'=>U('Admin/Admin/index')]);
 		$adminValidate = Loader::Validate('Admin');
-		if(!$adminValidate->batch()->check($data)){
+		if(!$adminValidate->check($data)){
             $baocuo=$adminValidate->getError();
-        	return json(['status'=>-1,'msg'=> $baocuo['name']]);
+        	return json(['status'=>-1,'msg'=> $baocuo]);
         }
         if ($data['password'] != $data['password2']) {
             return json(['status' => -1, 'msg' => '密码不一致']);
@@ -86,7 +107,6 @@ class Admin extends Controller
 
         // 添加数据 
     	if($data['act'] == 'add'){
-
             // 检测用户名是否存在
             $check_name = Db::name('admin')->where('name', $data['name'])->select();
             if (!empty($check_name)) {
@@ -101,8 +121,8 @@ class Admin extends Controller
                 'group_id'=> $data['group_id'],
                 'addtime' => time() 
             ];
-
             $res =  Db::name('admin')->insert($data1);
+
     	}
     	// 编辑
     	if($data['act'] == 'edit'){
@@ -169,12 +189,12 @@ class Admin extends Controller
       public function permission(){
           return $this->fetch();
       }    
-      public function role(){
-          return $this->fetch();
-      }
+    //   public function role(){
+    //       return $this->fetch();
+    //   }
 
-    public function role_add(){
-   
-         return $this->fetch();
-      }
+    // public function role_add(){
+         
+    //      return $this->fetch();
+    // }
 }

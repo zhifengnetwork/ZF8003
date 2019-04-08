@@ -20,3 +20,13 @@ function first_leader($user_id){
     $name = $name ? $name : "无";
     return $name;
 }
+
+function adminLog($log_info)
+{
+    $add['log_time'] = time();
+    $add['admin_id'] = session('admin_id');
+    $add['log_info'] = $log_info;
+    // $add['log_ip'] = request()->ip();
+    // $add['log_url'] = request()->baseUrl();
+    M('admin_log')->add($add);
+}
