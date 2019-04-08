@@ -29,18 +29,19 @@ class Member extends Base
         //搜索条件
         if($seach){
             $page = 0;
+            $time = " 23:59:59";
             if($seach['m_conditions']){
                 $m_conditions = str_replace(' ', '', $seach['m_conditions']);
                 $where['nickname|mobile|email'] = ['like',"%$m_conditions%"];
             }
             if ($seach['datemin'] && $seach['datemax']) {
                 $datemin = strtotime($seach['datemin']);
-                $datemax = strtotime($seach['datemax']);
+                $datemax = strtotime($seach['datemax'].$time);
                 $where['register_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
             } elseif ($seach['datemin']) {
                 $where['register_time'] = ['>= time',strtotime($seach['datemin'])];
             } elseif ($seach['datemax']) {
-                $where['register_time'] = ['<= time',strtotime($seach['datemax'])];
+                $where['register_time'] = ['<= time',strtotime($seach['datemax'].$time)];
             }
         }
         
