@@ -8,7 +8,7 @@
 		<dl style="margin-left:80px; color:#fff">
 			<dt>
 				<span class="f-18">{$info.nickname}</span>
-				<span class="pl-10 f-12">余额：{$info.money}</span>
+				<span class="pl-10 f-14">ID：{$info.id}</span>
 			</dt>
 			<dd class="pt-10 f-12" style="margin-left:0">这家伙很懒，什么也没有留下</dd>
 		</dl>
@@ -33,6 +33,10 @@
 					<th class="text-r">邮箱验证：</th>
 					<td>{eq name="$info.email_verification" value="1"}<span style="color:blue;">已验证</span> {else/}
 						未验证{/eq}</td>
+				</tr>
+				<tr>
+					<th class="text-r">余额：</th>
+					<td>{$info.money}</td>
 				</tr>
 				<tr>
 					<th class="text-r">积分：</th>
@@ -61,7 +65,7 @@
 				</tr>
 				<tr>
 					<th class="text-r">状态：</th>
-					<td>{eq name="$info.status" value="1"} <span style="color:blue;">正常</span> {else/} 禁用 {/eq}</td>
+					<td>{eq name="$info.status" value="1"} <span style="color:blue;">正常</span> {else/} 已加入黑名单 {/eq}</td>
 				</tr>
 				<tr>
 					<th class="text-r">注册方式：</th>
