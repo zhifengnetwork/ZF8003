@@ -1,0 +1,111 @@
+{include file="layout/head"}
+<article class="page-container">
+    <form class="form form-horizontal">
+        <div class="row cl">
+            <label class="form-label col-xs-1"></label>
+            <input type="hidden" id="se-hid-cate" value="" />
+            <input type="hidden" id="se-hid-cate-id" value="" />
+            <span class="select-box" style="width:150px;">
+                <select class="select" id="cate1" size="1">
+                    <option value="0">请选择</option>
+                    {volist name="cate" id="vo"}
+                    <option value="{$vo.id}" >{$vo.name}</option>
+                    {/volist}
+                </select>
+            </span>
+            <span class="select-box" style="width:150px;">
+                <select class="select" id="cate2" size="1">
+                    <option value="0">请选择</option>
+                </select>
+            </span>
+            <span class="select-box" style="width:150px;">
+                <select class="select" id="cate3" size="1">
+                    <option value="0">请选择</option>
+                </select>
+            </span>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-5"></label>
+            <button class="btn btn-success" id="success">确定</button>
+            <button class="btn btn-default" id="del">取消</button>
+
+        </div>
+        
+
+    </form>
+</article>
+{include file="layout/footer"}
+<script>
+    $('#success').click(function(){
+        var cate = $('#se-hid-cate').val();
+        var cateid = $('#se-hid-cate-id').val();
+
+        parent.open_callback(cate,cateid);
+        parent.layer.closeAll();
+    });
+
+    $('#del').click(function(){
+        parent.layer.closeAll();
+    });
+
+
+    $('#cate1').on('change',function(){
+        var cate_id = $('#cate1').val();
+        var cate = $('#cate1 option:selected').html();
+
+        re_ad_option('cate2');
+        re_ad_option('cate3');
+        se_ad_option('cate2',cate_id);
+        if(cate_id > 0){
+            hidden_input_cate(cate,cate_id);
+        }else{
+            hidden_input_cate('',cate_id);
+        }
+    });
+    $('#cate2').on('change',function(){
+        var cate_id = $('#cate2').val();
+        var cate = $('#cate2 option:selected').html();
+
+        re_ad_option('cate3');
+        se_ad_option('cate3',cate_id);
+
+        if(cate_id > 0){
+            hidden_input_cate(cate,cate_id);
+        }else{
+            var p_cate_id = $('#cate1').val();
+            var p_cate = $('#cate1 option:selected').html();
+            hidden_input_cate(p_cate,p_cate_id);
+        }
+    });
+
+    $('#cate3').on('change',function(){
+        var cate_id = $('#cate3').val();
+        var cate = $('#cate3 option:selected').html();
+
+        if(cate_id > 0){
+            hidden_input_cate(cate,cate_id);
+        }else{
+            var p_cate_id = $('#cate2').val();
+            var p_cate = $('#cate2 option:selected').html();
+            hidden_input_cate(p_cate,p_cate_id);
+        }
+    });
+
+    function hidden_input_cate(cate,cateid){
+        $('#se-hid-cate').val(cate);
+        $('#se-hid-cate-id').val(cateid);
+    }
+
+    function re_ad_option(cate){
+        $('#'+cate+' option').remove();
+        var _html = '<option value="0">请选择</option>';
+        $('#'+cate).append(_html);
+    }
+
+    function se_ad_option(cate,id){
+        $.post('/admin/goods/ajax_goods_category',{parent_id:id},function(res){
+            $('#'+cate).append(res);
+        });
+    }
+
+</script>

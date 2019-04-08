@@ -12,16 +12,18 @@
                     <select class="select" id="parent_id_level1" name="parent_id" size="1">
                         <option value="0">顶级分类</option>
                         {volist name="cate" id="vo"}
-                        <option value="{$vo.id}" {if condition="$pid eq $vo.id or $info.parent_id eq $vo.id"} selected {/if}>{$vo.name}</option>
+                        <option value="{$vo.id}" {if condition="$pid eq $vo.id or (isset($info) && $info.parent_id eq $vo.id)"} selected {/if}>{$vo.name}</option>
                         {/volist}
                     </select>
                 </span> 
                 <span class="select-box" style="width:150px;">
                     <select class="select" id="parent_id_level2" name="parent_id" size="1">
                         <option value="0">请选择</option>
+                            {if condition="isset($lcate)"}
                             {volist name="lcate" id="vo"}
                             <option value="{$vo.id}" {if condition="isset($info) && $info.parent_id eq $vo.id"} selected {/if}>{$vo.name}</option>
                             {/volist}
+                            {/if}
                     </select>
                 </span> 
             </div>
