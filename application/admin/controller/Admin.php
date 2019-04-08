@@ -11,7 +11,8 @@ class Admin extends Controller
      */
     public function list1()
     {
-    	$list = array();
+        // $list = array();
+        $page = 10;
     	$keywords = input('keywords/s');
     	if(empty($keywords)){
             // 列出除了超级管理员以外的管理员
@@ -21,7 +22,8 @@ class Admin extends Controller
             ->join('admin_group ad','a.group_id = ad.id')
             ->field('a.*,ad.name g_name')
             ->where('a.id','not in','1')
-            ->select();
+            ->order('id asc')
+            ->paginate($page);
             // dump($res);
     	}else{
             // $res = DB::name('admin')->where('user_name','like','%'.$keywords.'%')->where('id','not in','1')->order('id')->select();
@@ -31,8 +33,8 @@ class Admin extends Controller
             ->field('a.*,ad.name g_name')
             ->where('user_name','like','%'.$keywords.'%')
             ->where('a.id','not in','1')
-            ->order('id')
-            ->select();
+            ->order('id desc')
+            ->paginate($page);
         }
 
     	$this->assign('list',$list);        
@@ -123,12 +125,22 @@ class Admin extends Controller
             return json(['status'=>-1,'msg'=>'操作失败']);
     	}
     }
-    
+
+    // 删除和批量删除
     public function del(){
-        $id = input('post.id');
-        if($id>1){
-            $res = Db::name('admin')->where('id', $id)->delete();
-        }        
+        $data = input('post.');
+        if($data['act'] == 'batchdel'){
+            $id = json_decode($data['id'], true);
+            $where['id'] = array('in', $id);
+            $res = Db::name('admin')->where($where)->delete();
+        }else{
+            if ($data['id'] > 1) {
+                $res = Db::name('admin')->where('id', $data['id'])->delete();
+            }else{
+                return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
+            } 
+        }
+       
         if($res){
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
@@ -137,20 +149,23 @@ class Admin extends Controller
         // Db::name('admin')->where('name', $data['name'])->select();
     }
 
-    public function is_stop(){
-        $id = input('post.id');
+    //启用和停用
+    public function is_handle(){
+        $data = input('post.');
+        // dump($data);exit;
+        if($data['status'] == 'stop'){
+            $res = Db::name('admin')->where('id',$data['id'])->update(['is_lock' => 1]);
+        }else{
+            $res = Db::name('admin')->where('id', $data['id'])->update(['is_lock' => 0]);
+        }
         
-        $res = Db::name('admin')->where('id', $id)->update([ 'is_lock'=> 1]);
         if($res){
              return json(['status'=>1,'msg'=>'操作成功']);
         }else{
             return json(['status'=>-1,'msg'=>'操作失败']);
         }
     }
-    
-    //   public function edit(){
-    //       return $this->fetch();
-    //   }       
+ 
       public function permission(){
           return $this->fetch();
       }    
