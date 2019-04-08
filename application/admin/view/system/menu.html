@@ -42,6 +42,7 @@
 						{switch name="$vo.level"}
 							{case value = "1"}{$vo.name}{/case}
 							{case value = "2"}&#8195;&#8195;|--&#8194;{$vo.name}{/case}
+							{default/}{$vo.name}
 						{/switch}
 					</td>
                     <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
