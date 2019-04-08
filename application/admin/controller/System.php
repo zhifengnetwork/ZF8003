@@ -21,24 +21,26 @@ class System extends Base
             $where['name'] = ['like', "%$keywords%"];
         }
         
-        $list = Db::name('menu')->where( $where )->paginate(20);
+        $list = Db::name('menu')->where( $where )->select();
+        
         if($list){
-            $pname[0] = '顶级菜单';
-
-            foreach($list as $v){
-                if($v['parent_id'] > 0) $pid[] = $v['parent_id'];
-            }
-            if(isset($pid)){
-                $pid = implode("','", $pid);
-                $plist = Db::query("select `id`,`name` from `zf_menu` where `id` in ('$pid')");
-                
-                foreach($plist as $v){
-                    $pname[$v['id']] = $v['name'];
+            $result = array();
+            foreach($list as $k1 => $v1){
+                if ($v1['parent_id'] == 0) {
+                    array_push($result,$list[$k1]);
+                    unset($list[$k1]);
+                    if(is_array($list)){
+                        foreach($list as $k2 => $v2){
+                            if($v2['parent_id'] == $v1['id']){
+                                array_push($result,$list[$k2]);
+                                unset($list[$k2]);
+                            }
+                        }
+                    }
                 }
             }
-
-            $this->assign('pname', $pname);
-            $this->assign('list', $list);
+            
+            $this->assign('list', $result);
         }
 
         $count = Db::name('menu')->where( $where )->count();

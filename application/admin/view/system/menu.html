@@ -17,9 +17,7 @@
 		</div>
 		</form>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
-			<span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
-						class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;"
-					onclick="menu_add('添加菜单','{:url('admin/system/add_menu')}','800','500')"
+			<span class="l"><a href="javascript:;" onclick="menu_add('添加菜单','{:url('admin/system/add_menu')}','800','500')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单</a></span> <span
 				class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
 		<table class="table table-border table-bordered table-bg">
@@ -28,11 +26,8 @@
 					<th scope="col" colspan="9">菜单列表</th>
 				</tr>
 				<tr class="text-c">
-					<th width="25"><input type="checkbox" name="" value=""></th>
 					<th width="40">ID</th>
 					<th width="150">菜单名称</th>
-					<th width="90">层级</th>
-					<th width="150">上级菜单</th>
 					<th width="130">加入时间</th>
 					<th width="100">状态</th>
 					<th width="100">操作</th>
@@ -40,13 +35,15 @@
 			</thead>
 			<tbody>
 				{if condition="isset($list) && $list"}
-                {volist name="list" id="vo"}
+				{volist name="list" id="vo"}
                 <tr class="text-c">
-                    <td><input type="checkbox" value="1" name=""></td>
                     <td>{$vo.id}</td>
-                    <td>{$vo.name}</td>
-                    <td>{$vo.level}</td>
-                    <td>{$pname[$vo.parent_id]}</td>
+                    <td class="text-l">
+						{switch name="$vo.level"}
+							{case value = "1"}{$vo.name}{/case}
+							{case value = "2"}&#8195;&#8195;|--&#8194;{$vo.name}{/case}
+						{/switch}
+					</td>
                     <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                     <td class="td-status">
 						{if condition="$vo.is_lock eq 0"}
@@ -81,15 +78,13 @@
 				{/if}
 			</tbody>
 		</table>
-		<div class="pages">{$list->render()}</div>
 		{if condition="!isset($list) or !$list"}
 		<p class="no-data">暂无数据</p>
 		{/if}
 	</div>
-	<!--_footer 作为公共模版分离出去-->
+	
 	{include file='layout/footer' /}
 
-	<!--请在下方写此页面业务相关的脚本-->
 	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 	<script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="/__STATIC__/lib/laypage/1.2/laypage.js"></script>

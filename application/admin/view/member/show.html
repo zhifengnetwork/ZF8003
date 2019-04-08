@@ -65,7 +65,7 @@
 				</tr>
 				<tr>
 					<th class="text-r">状态：</th>
-					<td>{eq name="$info.status" value="1"} <span style="color:blue;">正常</span> {else/} 已加入黑名单 {/eq}</td>
+					<td>{eq name="$info.status" value="1"} <span style="color:blue;">正常</span> {else/} 黑名单 {/eq}</td>
 				</tr>
 				<tr>
 					<th class="text-r">注册方式：</th>
@@ -73,7 +73,7 @@
 				</tr>
 				<tr>
 					<th class="text-r">注册时间：</th>
-					<td>{$info.register_time|date="Y-m-d",###}</td>
+					<td>{$info.register_time|date="Y-m-d H:i:s",###}</td>
 				</tr>
 				<tr>
 					<th class="text-r">最后一次登录时间：</th>
