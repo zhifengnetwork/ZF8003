@@ -160,7 +160,7 @@ class Admin extends Base
                 return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
             } 
         }
-       
+         
         if($res){
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
