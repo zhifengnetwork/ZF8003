@@ -61,7 +61,7 @@
        function fleshVerify() {
             //重载验证码
             document.getElementById('yzm').src = '{:url("admin/Login/entry")}';
-        }
+       }
          
         function login(){
             var username = $("#username").val()
@@ -89,7 +89,7 @@
                     if (data.status == 1) {
                         layer.msg(data.msg, { time: 1000 }, function () {
                             
-                            window.location.href = "{:url('Admin/admin/list1')}";
+                            window.location.href = "/index.php/admin";
                             // var index = parent.layer.getFrameIndex(window.name);
                             // parent.$('.btn-refresh').click();
                             // parent.layer.close(index);
@@ -97,7 +97,7 @@
                         })
                     } else {
                         layer.msg(data.msg, {time: 1000 }, function () {
-                            // window.location.reload();
+                            window.location.reload();
                             // var index = parent.layer.getFrameIndex(window.name);
                             // parent.$('.btn-refresh').click();
                             // parent.layer.close(index);

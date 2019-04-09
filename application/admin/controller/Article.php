@@ -44,14 +44,14 @@ class Article extends Base{
         $save_path = ROOT_PATH . 'public/images/article/';
 
         if($_POST){
-            $article_id = isset($_POST['article_id']) ? intval($_POST['article_id']) : 0;
+            $article_id  = isset($_POST['article_id']) ? intval($_POST['article_id']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
-            $title = isset($_POST['title']) ? trim($_POST['title']) : '';
-            $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
-            $image = isset($_POST['image']) ? trim($_POST['image']) : '';
-            $author = isset($_POST['author']) ? trim($_POST['author']) : '';
-            $source = isset($_POST['source']) ? trim($_POST['source']) : '';
-            $sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
+            $title   = isset($_POST['title']) ? trim($_POST['title']) : '';
+            $desc    = isset($_POST['desc']) ? trim($_POST['desc']) : '';
+            $image   = isset($_POST['image']) ? trim($_POST['image']) : '';
+            $author  = isset($_POST['author']) ? trim($_POST['author']) : '';
+            $source  = isset($_POST['source']) ? trim($_POST['source']) : '';
+            $sort    = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
             $is_lock = isset($_POST['is_lock']) ? intval($_POST['is_lock']) : 0;
             $details = isset($_POST['editorValue']) ? addslashes($_POST['editorValue']) : '';
 

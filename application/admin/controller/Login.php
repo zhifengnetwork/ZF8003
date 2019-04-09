@@ -6,9 +6,20 @@ namespace app\admin\controller;
 use Captcha\Captcha;
 use think\Db;
 use think\Loader;
+use think\Session;
 class Login extends Base
 {
 
+    public function _initialize()
+    {
+        parent::_initialize();
+        // $admin_name = session('admin_name');
+        // if($admin_name){
+        //     $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
+        //     header("refresh:1;url=$url");
+        //     exit;
+        // }        
+    }
     public function index()
     {
         return $this->fetch();
@@ -49,7 +60,7 @@ class Login extends Base
                 return json(['status' => -1, 'msg' => '用户名或者密码不正确']);
             }
         }else{
-            return json(['status' => -1, 'msg' => '用户名或者密码不正确']);
+                return json(['status' => -1, 'msg' => '用户名或者密码不正确']);
         }
        
     }
