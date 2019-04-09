@@ -175,7 +175,9 @@ class Admin extends Base
                 'addtime' => time() 
             ];
             $res =  Db::name('admin')->insert($data1);
-
+            $action = 'add';
+            $desc   = '添加管理员';
+            $log = $this->adminLog($action, $desc);   
     	}
     	// 编辑
     	if($data['act'] == 'edit'){
@@ -185,9 +187,12 @@ class Admin extends Base
                 'group_id' => $data['group_id'],
                 'updatetime' => time()
             ];            
-    		$res = Db::name('admin')->where('id', $data['id'])->update($data1);
+            $res = Db::name('admin')->where('id', $data['id'])->update($data1);
+            $action = 'edit';
+            $desc   = '编辑管理员';
+            $log = $this->adminLog($action, $desc);               
     	}
-    	
+ 	
     	if($res){
 			return json(['status'=>1,'msg'=>'操作成功']);
 
@@ -210,7 +215,12 @@ class Admin extends Base
                 return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
             } 
         }
-         
+
+
+        $action = 'del';
+        $desc   = '删除管理员';
+        $log = $this->adminLog($action, $desc);
+
         if($res){
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
@@ -239,14 +249,18 @@ class Admin extends Base
       public function permission(){
           return $this->fetch();
       }
-    //   public function role(){
-    //       return $this->fetch();
-    //   }
 
-    // public function role_add(){
-
-    //      return $this->fetch();
-    // }
+    function adminLog($action, $desc)
+    {
+        $add['addtime'] = time();
+        $add['admin_id'] = session('admin_id');
+        $add['action'] = $action;
+        $add['desc']   = $desc;
+        // $add['log_ip'] = request()->ip();
+        // $add['log_url'] = request()->baseUrl();
+        Db::name('admin_log')->insert($add);
+        return true;
+    }
     public function logout()
     {
         Session::clear();

@@ -37,7 +37,7 @@ class Role extends Base
             $num = count($list);
             $this->assign('num', $num);
             $this->assign('list', $list);
-            // dump($list);
+
             return $this->fetch();
     }
 
@@ -51,9 +51,9 @@ class Role extends Base
             $list[$key]['chidren']=$chidren;
            
         }
-        // dump($list);
+  
         $this->assign('list', $list);
-        // Db::name('menu')->where()->select();
+     
         
         return $this->fetch();
     }
@@ -77,7 +77,7 @@ class Role extends Base
             $this->assign('info', $role_info);
         } 
 
-        // Db::name('menu')->where()->select();
+   
 
         return $this->fetch();
     }
@@ -94,7 +94,7 @@ class Role extends Base
             if(empty($data['jurisdiction'])){
                 return json(['status' => -1, 'msg' => '请选择权限']);
             } 
-            // unset($data['act']);
+            
             $a = implode(',', $data['jurisdiction']);
 
             $data1=[
@@ -104,6 +104,9 @@ class Role extends Base
             ];
             $res = Db::name('admin_group')->insert($data1);
             //此处插入日志
+            $action = 'add_role';
+            $desc   = '添加角色';
+            $log = $this->adminLog($action, $desc);
         }
         if ($data['act'] == 'edit') {
         
@@ -121,6 +124,9 @@ class Role extends Base
 
             $res = Db::name('admin_group')->where('id',$data['id'])->update($data);
             //此处插入日志
+            $action = 'edit_role';
+            $desc   = '编辑角色';
+            $log = $this->adminLog($action, $desc);
         }
         if($res){
             return json(['status' => 1,  'msg'  => '操作成功']);  
@@ -143,22 +149,25 @@ class Role extends Base
                 return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
             } 
         }
-       
+        $action = 'del_role';
+        $desc   = '删除角色';
+        $log = $this->adminLog($action, $desc);       
         if($res){
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
             return json(['status'=>-1,'msg'=>'操作失败']);
         }
-        // Db::name('admin')->where('name', $data['name'])->select();
+
     }
 
-    function adminLog($log_info)
+    function adminLog($action, $desc)
     {
-        $add['log_time'] = time();
+        $add['addtime'] = time();
         $add['admin_id'] = session('admin_id');
-        $add['log_info'] = $log_info;
-        // $add['log_ip'] = request()->ip();
-        // $add['log_url'] = request()->baseUrl();
-        M('admin_log')->add($add);
+        $add['action'] = $action;
+        $add['desc']   = $desc;
+
+        Db::name('admin_log')->insert($add);
+        return true;
     }
 }
