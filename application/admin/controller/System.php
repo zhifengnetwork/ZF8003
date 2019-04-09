@@ -19,6 +19,7 @@ class System extends Base
             'smtp'      => ['url'=>'smtp','name'=>"邮箱设置"]
         );
 
+        $this->assign('type', 'web_setting');
         $this->assign('list',$this->list);
     }
 
@@ -30,7 +31,7 @@ class System extends Base
     public function setting()
     {
         $data = input('get.');
-        if (isset($data['inc_type'])) {
+        if (isset($data['type'])) {
             dump($data);
         }
         $this->assign('url','setting');

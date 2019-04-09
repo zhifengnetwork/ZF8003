@@ -1,7 +1,7 @@
 ﻿{include file="layout/setting_head"/}
 <div class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
-		<input type="hidden" name="inc_type" value="{$url}">
+		<input type="hidden" name="type" value="{$type}">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
 				{foreach name="list" item="vo"}
@@ -76,7 +76,7 @@
 						<span class="c-red">*</span>
 						联系人：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-linkman" name="linkman" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+						<input type="text" id="website-linkman" name="linkman" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -84,7 +84,7 @@
 						<span class="c-red">*</span>
 						联系电话：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-phone" name="phone" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+						<input type="text" id="website-phone" name="phone" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -92,7 +92,39 @@
 						<span class="c-red">*</span>
 						联系手机：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-mobile" name="mobile" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+						<input type="text" id="website-mobile" name="mobile" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						所在地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<select onblur="get_city(this,0)" id="province" name="province">
+							<option value="0">选择省份</option>
+						</select>
+						<select onblur="get_area(this)" id="city" name="city">
+							<option value="0">选择城市</option>
+						</select>
+						<select id="district" name="district">
+							<option value="0">选择区域</option>
+						</select>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						详细地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-address" name="address" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						客服电话：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-service-tel" name="service_tel" value="" class="input-text">
 					</div>
 				</div>
 			</div>
