@@ -6,6 +6,9 @@ use think\Db;
 use think\Loader;
 class Admin extends Base
 {
+    public function index(){
+
+    }
     /**
      * 管理员列表
      */
@@ -19,24 +22,32 @@ class Admin extends Base
             $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax']); 
             // 列出数据
             $list=$this->l_data($where,$page);
+            $num = count($list);
         }else{
             $list=$this->l_data($where='',$page);
-        }  
+            $num = count($list);
+        }
+        $this->assign('num', $num); 
     	$this->assign('list',$list);        
         return $this->fetch();
     }
     
     // 列出数据
     public function l_data($where='',$page)
-    {
-        $list = Db::name('admin')
-            ->alias('a')
-            ->join('admin_group ad', 'a.group_id = ad.id')
-            ->field('a.*,ad.name g_name')
-            ->where($where)
-            ->where('a.id', 'not in', '1')
-            ->order('id asc')
-            ->paginate($page);
+    {   
+        // if($status == 1){
+            $list = Db::name('admin')
+                ->alias('a')
+                ->join('admin_group ad', 'a.group_id = ad.id')
+                ->field('a.*,ad.name g_name')
+                ->where($where)
+                ->where('a.id', 'not in', '1')
+                ->order('id asc')
+                ->paginate($page);
+        // }else{
+          
+        // }
+
             return $list;
     }
 

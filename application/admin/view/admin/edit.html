@@ -32,8 +32,9 @@
                 <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
                         <select class="select" name="group_id" size="1">
                             {volist name="role" id="vo"}
-                            <option value="{$info.group_id}">{$role_name}</option>
+                            <option value="{$vo.id}" {if condition="($info['group_id']) eq ($vo['id']) "}selected{/if}>{$vo.name}</option>
                             {/volist}
+
                         </select>
                     </span> </div>
             </div>
