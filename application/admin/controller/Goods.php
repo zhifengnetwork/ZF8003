@@ -23,7 +23,7 @@ class Goods extends Base{
             }
             if(isset($cids)){
                 $cids = implode("','", $cids);
-                $cids = Db::query("select `id`,`name` from `zf_goods_category` where `id` in ('$cids')");
+                $cids = Db::query("select `id`,`name` from `zf_category` where `id` in ('$cids')");
                 foreach($cids as $c){
                     $cname[$c['id']] = $c['name'];
                 }
@@ -157,7 +157,7 @@ class Goods extends Base{
         if($goods_id){
             $info = Db::name('goods')->where('id',$goods_id)->find();
             if($info){
-                $cate = Db::name('goods_category')->where('id',$info['cate_id'])->field('name')->find();
+                $cate = Db::name('category')->where('id',$info['cate_id'])->field('name')->find();
                 $info['catename'] = $cate['name'];
                 $info['image'] = explode(',',$info['image']);
                 $image_path = $src_dir.$goods_id.'/';
@@ -173,7 +173,7 @@ class Goods extends Base{
         # 商品分类
         $where['parent_id'] = ['=', 0];
         $where['is_lock'] = ['=', 0];
-        $cate = Db::name('goods_category')->field('id,name')->where($where)->select();
+        $cate = Db::name('category')->field('id,name')->where($where)->select();
 
         $this->assign('freight_temp', $freight_temp);
         $this->assign('cate', $cate);
@@ -211,14 +211,14 @@ class Goods extends Base{
     # 商品分类
     public function category(){
 
-        $where['id'] = ['>', 0];
+        $where['type'] = ['=', 'goods'];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if($keywords){
             $where['name'] = ['like', "%$keywords%"];
         }
 
-        $list = Db::name('goods_category')->where($where)->paginate(15);
-        $count = Db::name('goods_category')->where($where)->count();
+        $list = Db::name('category')->where($where)->paginate(15);
+        $count = Db::name('category')->where($where)->count();
         if($list){
             $pname[0] = '顶级分类';
             foreach($list as $v){
@@ -226,7 +226,7 @@ class Goods extends Base{
             }
             if(isset($pids) && $pids){
                 $pids = implode("','", $pids);
-                $pinfo = Db::query("select `id`,`name` from `zf_goods_category` where `id` in ('$pids')");
+                $pinfo = Db::query("select `id`,`name` from `zf_category` where `id` in ('$pids')");
                 foreach($pinfo as $p){
                     $pname[$p['id']] = $p['name'];
                 }
@@ -258,7 +258,7 @@ class Goods extends Base{
             $parent_ids = '';
 
             if($parent_id > 0){
-                $pinfo = Db::query("select `level`,`parent_ids` from `zf_goods_category` where `id` = '$parent_id' and `level` < 3");
+                $pinfo = Db::query("select `level`,`parent_ids` from `zf_category` where `id` = '$parent_id' and `level` < 3");
                 if(!$pinfo){
                     return json(['status'=> 0,'msg' => '参数错误！']);
                 }
@@ -270,9 +270,9 @@ class Goods extends Base{
 
             $time = time();
             if($category_id > 0){
-                $sql = "update `zf_goods_category` set `name` = '$name', `parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids' where `id` = '$category_id'";
+                $sql = "update `zf_category` set `name` = '$name', `parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids' where `id` = '$category_id'";
             }else{
-                $sql = "insert into `zf_goods_category` (`name`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`) values ('$name','$level','$sort','$parent_id','$parent_ids','$is_lock','$time')";
+                $sql = "insert into `zf_category` (`name`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`) values ('$name','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','goods')";
             }
             $res = Db::execute($sql);
             if($res){
@@ -287,13 +287,14 @@ class Goods extends Base{
        
         $where['parent_id'] = ['=', 0];
         $where['is_lock'] = ['=', 0];
+        $where['type'] = ['=', 'goods'];
         $pid = 0;
 
         $category_id = isset($_GET['category_id']) ? intval($_GET['category_id']) : 0;
         if($category_id > 0){
             $where['id'] = ['neq', $category_id];
-            $info = Db::name('goods_category')->find($category_id);
-            $cate = Db::name('goods_category')->where($where)->select();
+            $info = Db::name('category')->find($category_id);
+            $cate = Db::name('category')->where($where)->select();
             if($info){
 
                 $pid = $info['parent_id'];
@@ -302,7 +303,7 @@ class Goods extends Base{
                     $pids = explode(',',$info['parent_ids']);
                     if(isset($pids[1])){
                         $where['parent_id'] = $pids[0];
-                        $lcate = Db::name('goods_category')->where($where)->select();
+                        $lcate = Db::name('category')->where($where)->select();
                         
                         $pid = $pids[0];
                         $this->assign('lcate',$lcate);
@@ -312,7 +313,7 @@ class Goods extends Base{
                 $this->assign('info', $info);
             }
         }else{
-            $cate = Db::name('goods_category')->where($where)->select();
+            $cate = Db::name('category')->where($where)->select();
         }
         
         $this->assign('pid', $pid);
@@ -327,7 +328,7 @@ class Goods extends Base{
         if($_POST){
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             if($category_id){
-                $res = Db::table('zf_goods_category')->delete($category_id);
+                $res = Db::table('zf_category')->delete($category_id);
                 if($res){
                     return json(['status' => 1]);
                 }
@@ -341,7 +342,7 @@ class Goods extends Base{
 
         $cate_id = isset($_POST['cate_id']) ? intval($_POST['cate_id']) : 0;
         if($cate_id > 0){
-            $list = Db::name('goods_category')->field('`id`,`name`')->where(['parent_id'=>['=',$cate_id], 'is_lock' => ['=', 0]])->select();
+            $list = Db::name('category')->field('`id`,`name`')->where(['parent_id'=>['=',$cate_id], 'is_lock' => ['=', 0]])->select();
             if($list){
                 $tpl = '';
                 foreach($list as $v){
@@ -478,21 +479,24 @@ class Goods extends Base{
 
 
     # 商品分类三级联动
-    public function open_goods_category_select(){
-        $cate = Db::name('goods_category')->field('`id`,`name`')->where(['parent_id'=>['=',0], 'is_lock'=>['=',0]])->select();
+    public function open_category_select(){
+        $where['parent_id'] = ['=', 0];
+        $where['is_lock'] = ['=', 0];
+        $where['type'] = ['=', 'goods'];
+        $cate = Db::name('category')->field('`id`,`name`')->where($where)->select();
         
         $this->assign('cate', $cate);
         return $this->fetch();
     }
 
     # 商品分类三级联动数据返回
-    public function ajax_goods_category(){
+    public function ajax_category(){
         $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
         $html = '';
         $where['is_lock'] = ['=', 0];
         $where['parent_id'] = ['=', $parent_id];
             
-        $list = Db::name('goods_category')->field('`id`,`name`')->where($where)->select();
+        $list = Db::name('category')->field('`id`,`name`')->where($where)->select();
             
         if(isset($list)){
             foreach($list as $v){
