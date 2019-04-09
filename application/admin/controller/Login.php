@@ -12,13 +12,15 @@ class Login extends Base
 
     public function _initialize()
     {
+
         parent::_initialize();
-        // $admin_name = session('admin_name');
-        // if($admin_name){
-        //     $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
-        //     header("refresh:1;url=$url");
-        //     exit;
-        // }        
+        // Session::clear();
+        $admin_name = session('admin_name');
+        if(!empty($admin_name)){
+            $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
+            header("refresh:1;url=$url");
+            exit;
+        }        
     }
     public function index()
     {
@@ -52,9 +54,15 @@ class Login extends Base
             //  判断密码是否相等
             $password = pwd_encryption($data['password']); 
             if($res['password'] === $password){
-            // Session::set('admin_id', $admin_user['id']);
+                
                 Session::set('admin_name', $data['username']);
+                $admin_user = Db::name('admin')->where('name', $data['username'])->find();
+                Session::set('admin_id', $admin_user['id']);
                 // 此处插入日志
+                $action = 'sign';
+                $desc   = '登录';
+                $log = $this->adminLog($action,$desc);
+
                 return json(['status' => 1, 'msg' => '登录成功']);
             }else{
                 return json(['status' => -1, 'msg' => '用户名或者密码不正确']);
@@ -64,4 +72,19 @@ class Login extends Base
         }
        
     }
+
+
+
+    function adminLog($action,$desc)
+    {
+        $add['addtime'] = time();
+        $add['admin_id'] = session('admin_id');
+        $add['action'] = $action;
+        $add['desc']   = $desc; 
+        // $add['log_ip'] = request()->ip();
+        // $add['log_url'] = request()->baseUrl();
+        Db::name('admin_log')->insert($add);
+        return true;
+    }
+
 }
