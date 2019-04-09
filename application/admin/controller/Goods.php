@@ -15,12 +15,54 @@ class Goods extends Base{
 
         $where['is_del'] = ['=', 0];
 
-        $field = '`id`,`name`,`price`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
+        $field = '`id`,`name`,`cate_id`,`price`,`self_price`,`promotion_price`,`promotion_to`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
 
-        $list = Db::name('goods')->field($field)->where($where)->paginate(15);
+        $list = Db::name('goods')->field($field)->where($where)->order('utime desc')->paginate(15);
         $count = Db::name('goods')->where($where)->count();
+        $cname[0] = '';
+        if($list){
+            foreach($list as $v){
+                $cids[] = $v['cate_id'];
+                if($v['freight_temp'] > 0) $ftids[] = $v['freight_temp'];
+            }
+            if(isset($cids)){
+                $cids = implode("','", $cids);
+                $cids = Db::query("select `id`,`name` from `zf_goods_category` where `id` in ('$cids')");
+                foreach($cids as $c){
+                    $cname[$c['id']] = $c['name'];
+                }
+            }
+            if(isset($ftids) && !empty($ftids)){
+                $ftids = implode("','", $ftids);
+                $ftids = Db::query("select `id`,`name` from `zf_freight_temp` where `id` in ('$ftids')");
+                foreach($ftids as $f){
+                    $fname[$f['id']] = $f['name']; 
+                }
+                $this->assign('fname', $fname);
+            }
+
+        }
+
+        $sname = [
+            0   =>  '仓库中',
+            1   =>  '已上架',
+            2   =>  '已下架',
+        ];
         
-        
+        $tname = [
+            0   =>  '普通',
+            1   =>  '新品',
+            2   =>  '热卖',
+            3   =>  '推荐',
+            4   =>  '促销',
+            5   =>  '限时'
+        ];
+
+
+
+        $this->assign('tname', $tname);
+        $this->assign('sname', $sname);
+        $this->assign('cname', $cname);
         $this->assign('list', $list);
         $this->assign('count', $count);
         return $this->fetch();
@@ -29,6 +71,9 @@ class Goods extends Base{
 
     # 添加/编辑商品
     public function add_goods(){
+        $save_dir = ROOT_PATH . 'public/images/goods/';
+        $temp_dir = ROOT_PATH . 'public/images/goods/temp/';
+        $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/goods/';
 
         if($_POST){
             $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
@@ -67,12 +112,10 @@ class Goods extends Base{
 
             $image = implode(',', $images);
             $time = time();
-            $save_dir = ROOT_PATH . 'public/images/goods/';
-            $temp_dir = ROOT_PATH . 'public/images/goods/temp/';
             
             if($goods_id){
 
-                $sql = "update `zf_goods` set `cate_id` = '$category_id', `name` = '$name', `price` = '$price', `self_price` = '$self_price', `image` = '$image', `is_stock` = '$is_stock', `stock` = '$stock', `details` = '$details', `discount` = '$discount', `status` = '$status', `type` = '$type', `promotion_price` = '$promotion_price', `promotion_to` = '$promotion_to', `limit_stime` = '$limit_stime', `limit_etime` = '$limit_etime', `freight` = '$freight', `freight_temp`, `utime` = '$time' where `id` = '$goods_id'";
+                $sql = "update `zf_goods` set `cate_id` = '$category_id', `name` = '$name', `price` = '$price', `self_price` = '$self_price', `image` = '$image', `is_stock` = '$is_stock', `stock` = '$stock', `details` = '$details', `discount` = '$discount', `status` = '$status', `type` = '$type', `promotion_price` = '$promotion_price', `promotion_to` = '$promotion_to', `limit_stime` = '$limit_stime', `limit_etime` = '$limit_etime', `freight` = '$freight', `freight_temp` = '$freight_temp', `utime` = '$time' where `id` = '$goods_id'";
 
             }else{
                 $sql = "insert into `zf_goods` (`cate_id`,`name`,`price`,`self_price`,`image`,`is_stock`,`stock`,`details`,`discount`,`status`,`type`,`promotion_price`,`promotion_to`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`addtime`,`utime`) values('$category_id','$name','$price','$self_price','$image','$is_stock','$stock','$details','$discount','$status','$type','$promotion_price','$promotion_to','$limit_stime','$limit_etime','$freight','$freight_temp','$time','$time')";
@@ -80,21 +123,25 @@ class Goods extends Base{
 
             $res = Db::execute($sql);
             if($res){
-                if(!$goods_id){
+                if (!$goods_id) {
                     $goods_id = Db::name('goods')->getLastInsID();
-                    $i = 0;
-                    vender('topthink.think-image.src');
-                    foreach($images as $k=>$v){
-                        if(!strstr($v,'images-')){
-                            $im = \think\Image::open($temp_dir.$v);
-                            $savename = $save_dir.'/'.$goods_id.'/images-'.$time.$i;
-                            $rim = $im->save($savename);
-                            dump($rim);exit;
-                            $images[$k] = $savename;
-                        }
-                    }
-                    Db::name('goods')->where('id',$goods_id)->update(['image',implode(',',$images)]);
                 }
+                $i = 0;
+                if(!file_exists($save_dir.$goods_id)){
+                    mkdir($save_dir.$goods_id, 0777, true);
+                }
+                foreach($images as $k=>$v){
+                    if(!strstr($v,'images-')){
+                        $im = \think\Image::open($temp_dir.$v);
+                        $savename = $save_dir.$goods_id.'/images-'.$time.$i.'.jpg';
+                        $rim = $im->save($savename);
+                        $images[$k] = '/images-'.$time.$i.'.jpg';
+                        $i++;
+                    }
+                }
+                $images = implode(',', $images);
+                Db::execute("update `zf_goods` set `image` = '$images' where `id` = '$goods_id'");
+                
 
                 echo "<script>parent.ajax_from_callback(1,'操作成功，正在跳转...')</script>";
             }else{
@@ -104,11 +151,19 @@ class Goods extends Base{
             exit;
         }
 
-
         $goods_id = isset($_GET['goods_id']) ? intval($_GET['goods_id']) : 0;
 
         if($goods_id){
             $info = Db::name('goods')->where('id',$goods_id)->find();
+            if($info){
+                $cate = Db::name('goods_category')->where('id',$info['cate_id'])->field('name')->find();
+                $info['catename'] = $cate['name'];
+                $info['image'] = explode(',',$info['image']);
+                $image_path = $src_dir.$goods_id.'/';
+                
+                $this->assign('image_path', $image_path);
+                $this->assign('info', $info);
+            } 
         }
         
         # 运费模板
@@ -123,6 +178,34 @@ class Goods extends Base{
         $this->assign('cate', $cate);
         return $this->fetch();
     }
+
+    # 修改商品状态
+    public function edit_status_goods(){
+        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1,2]) ? intval($_POST['status']) : 99;
+        $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+        if($goods_id && $status < 3){
+            $time = time();
+            $res = Db::name('goods')->where('id',$goods_id)->update(['status' => $status, 'utime' => $time]);
+            if($res){
+                return json(['status' => 1,'utime' => date('Y-m-d H:i:s', $time)]);
+            }
+        }
+        return json(['status' => 0]);
+    }
+
+    # 删除商品（伪）
+    public function del_goods(){
+        $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+        if($goods_id){
+            $time = time();
+            $res = Db::name('goods')->where('id',$goods_id)->update(['is_del' => 1]);
+            if($res){
+                return json(['status' => 1]);
+            }
+        }
+        return json(['status' => 0]);
+    }
+
 
     # 商品分类
     public function category(){
@@ -295,11 +378,16 @@ class Goods extends Base{
         
         if($_POST){
             $freight_id = isset($_POST['freight_id']) ? intval($_POST['freight_id']) : 0;
+            $is_see = isset($_POST['is_see']) ? intval($_POST['is_see']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $other = isset($_POST['other']) && Digital_Verification($_POST['other']) ? $_POST['other'] : 0;
             $areaid = isset($_POST['areaid']) ? $_POST['areaid'] : array();
             $area_money = isset($_POST['area_money']) ? $_POST['area_money'] : array();
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
+
+            if($is_see > 0){
+                exit('???');
+            }
 
             if(!$name){
                 iframe_echo('请输入运费模板名称','layermsg');
@@ -332,6 +420,8 @@ class Goods extends Base{
 
 
         $freight_id = isset($_GET['freight_id']) ? intval($_GET['freight_id']) : 0;
+        $is_see = isset($_GET['is_see']) ? intval($_GET['is_see']) : 0;
+
         if($freight_id){
             $info = Db::name('freight_temp')->where('id', $freight_id)->find();
             if($info){
@@ -364,7 +454,7 @@ class Goods extends Base{
             }
         }
         
-        
+        $this->assign('is_see', $is_see);
         return $this->fetch();
     }
 

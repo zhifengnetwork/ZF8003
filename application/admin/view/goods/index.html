@@ -19,55 +19,106 @@
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
 						class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;"
-					onclick="goods_add('添加商品','{:url('admin/goods/add_goods')}','1366','800')"
+					onclick="goods_add('添加商品','{:url('admin/goods/add_goods')}','1360','800')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a></span> <span
 				class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
 		<table class="table table-border table-bordered table-bg">
 			<thead>
 				<tr>
-					<th scope="col" colspan="9">商品列表</th>
+					<th scope="col" colspan="13">商品列表</th>
 				</tr>
 				<tr class="text-c">
 					<th width="25"><input type="checkbox" name="" value=""></th>
 					<th width="40">ID</th>
-					<th width="150">商品名称</th>
-					<th width="90">层级</th>
-					<th width="150">上级商品</th>
-					<th width="130">加入时间</th>
-					<th width="100">状态</th>
-					<th width="100">操作</th>
+					<th width="200">名称</th>
+					<th width="100">分类</th>
+					<th width="80">价格</th>
+					<th width="80">剩余库存</th>
+					<th width="80">已售出</th>
+					<th width="80">商品类型</th>
+					<th width="40">会员折扣</th>
+					<th width="60">状态</th>
+					<th width="150">运费</th>
+					<th width="130">时间</th>
+					<th width="80">操作</th>
                 </tr>
 			</thead>
 			<tbody>
 				{if condition="isset($list) && $list"}
                 {volist name="list" id="vo"}
                 <tr class="text-c">
-                    <td><input type="checkbox" value="1" name=""></td>
+                    <td><input type="checkbox" value="{$vo.id}" name=""></td>
                     <td>{$vo.id}</td>
                     <td>{$vo.name}</td>
-                    <td>{$vo.level}</td>
-                    <td>{$pname[$vo.parent_id]}</td>
-                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
-                    <td class="td-status">
-						{if condition="$vo.is_lock eq 0"}
-						<span class="label label-success radius">正常</span>
+					<td>{if condition="isset($cname[$vo.cate_id])"}{$cname[$vo.cate_id]}{else /}{$vo.cate_id}{/if}</td>
+					<td>
+						{if condition="$vo.type eq 4"}
+							促销价：{$vo.promotion_price}
+							<p style="text-decoration:line-through;color:#848484;">销售价：{$vo.price}</p>
+							<p style="text-decoration:line-through;color:#848484;">原价：{$vo.self_price}</p>
 						{else /}
-						<span class="label label-default radius">隐藏</span>
+							销售价：{$vo.price} 
+							<p style="text-decoration:line-through;color:#848484;">原价：{$vo.self_price}</p>
 						{/if}
 					</td>
-                    <td class="td-manage" data-id="{$vo.id}">
-						{if condition="$vo.is_lock eq 0"}
-                        <a style="text-decoration:none" onClick="goods_stop(this)" href="javascript:;"
-                            title="隐藏">
-                            <i class="Hui-iconfont">&#xe631;</i>
-						</a>
+					<td>
+						{if condition="$vo.is_stock eq 0"}
+							无库存限制
+							<p style="text-decoration:line-through;color:#848484;">{$vo.stock}</p>
 						{else /}
-						<a style="text-decoration:none" onClick="goods_start(this)" href="javascript:;"
-                            title="显示">
-                            <i class="Hui-iconfont">&#xe615;</i>
-						</a>
+							{$vo.stock}
 						{/if}
-                        <a title="编辑" href="javascript:;" onclick="goods_edit('商品编辑','/admin/system/add_goods?goods_id={$vo.id}','','800','500')"
+					</td>
+					<td>{$vo.sold}</td>
+					<td>
+						{$tname[$vo.type]}
+						{if condition="$vo.type eq 4 && $vo.promotion_to eq 1"}
+							<p style="color:blue;">活动结束自动变更商品类型：普通</p>
+						{/if}
+					</td>
+					<td>{$vo.discount}</td>
+					<td class="td-status">
+						{if condition="$vo.status eq 1"}
+							<span class="label label-success radius">
+						{else /}
+							<span class="label label-default radius">
+						{/if}
+							{$sname[$vo.status]}
+							</span>
+					</td>
+					<td>
+						{if condition="$vo.freight_temp gt 0"}
+							{if condition="isset($fname[$vo.freight_temp])"}
+								<a onclick="layer_show('运费模板：{$fname[$vo.freight_temp]}','/admin/goods/add_freight?freight_id={$vo.freight_temp}&is_see=1','1000','500');">{$fname[$vo.freight_temp]}</a>
+							{else /}
+								<span style="color:red;">运费模板已失效<p>请重新设置</p></span>
+							{/if}
+						{else /}
+							{$vo.freight}
+						{/if}
+					</td>
+                    <td class="td-date">
+						发布于：<br />
+						{$vo.addtime|date="Y-m-d H:i:s",###}
+						<br />
+						最后更新于：<br/>
+						<span class="utime">{$vo.utime|date="Y-m-d H:i:s",###}</span>
+					</td>
+                    
+                    <td class="td-manage" data-id="{$vo.id}">
+						{if condition="$vo.status eq 1"}
+							<a style="text-decoration:none" onClick="goods_stop(this)" href="javascript:;"
+								title="下架商品">
+								<i class="Hui-iconfont">&#xe631;</i>
+							</a>
+
+						{else /}
+							<a style="text-decoration:none" onClick="goods_start(this)" href="javascript:;"
+								title="上架商品">
+								<i class="Hui-iconfont">&#xe615;</i>
+							</a>
+						{/if}
+                        <a title="编辑" href="javascript:;" onclick="goods_edit('商品编辑','/admin/goods/add_goods?goods_id={$vo.id}','','1360','800')"
                             class="ml-5" style="text-decoration:none">
                         	<i class="Hui-iconfont">&#xe6df;</i>
                         </a>
@@ -103,13 +154,20 @@
 		*/
 		/*商品-增加*/
 		function goods_add(title, url, w, h) {
-			layer_show(title, url, w, h);
+			layer_show(title, url, w, h,true);
 		}
+
+		function open_closeAll(){
+			layer.closeAll();
+			window.location.replace(location.href);
+		}
+
+
 		/*商品-删除*/
 		function goods_del(obj, id) {
-			layer.confirm('确认要删除吗？<p style="color:red;">注意： 商品删除后，子商品也会被删除</p>', function (index) {
-				$.post('/admin/system/del_goods',{goods_id:id},function(res){
-					var res = JSON.parse(res);
+			layer.confirm('确认要删除吗？', function (index) {
+				$.post('/admin/goods/del_goods',{goods_id:id},function(res){
+					// var res = JSON.parse(res);
 					if(res.status == 1){
 						layer.msg('操作成功', { icon: 6, time: 1000 });
 						window.location.replace(location.href);
@@ -127,15 +185,16 @@
 		/*商品-停用*/
 		function goods_stop(obj) {
 			var id = $(obj).parents('.td-manage').data('id');
-			layer.confirm('确认要隐藏商品吗？', function (index) {
+			layer.confirm('确认要下架商品吗？', function (index) {
 				//此处请求后台程序，下方是成功后的前台处理……
-				$.post('/admin/system/goods_islock',{is_lock:1,goods_id:id},function(res){
-					var res = JSON.parse(res);
+				$.post('/admin/goods/edit_status_goods',{status:2,goods_id:id},function(res){
+					// var res = JSON.parse(res);
 					if(res.status == 1){
-						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_start(this)" href="javascript:;" title="隐藏" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">隐藏</span>');
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_start(this)" href="javascript:;" title="上架商品" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已下架</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
 						$(obj).remove();
-						layer.msg('已隐藏商品!', { icon: 6, time: 1000 });
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
 						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
 					}
@@ -147,15 +206,16 @@
 		/*商品-启用*/
 		function goods_start(obj) {
 			var id = $(obj).parents('.td-manage').data('id');
-			layer.confirm('确认要启用商品吗？', function (index) {
+			layer.confirm('确认要上架商品吗？', function (index) {
 				//此处请求后台程序，下方是成功后的前台处理……
-				$.post('/admin/system/goods_islock',{is_lock:0,goods_id:id},function(res){
-					var res = JSON.parse(res);
+				$.post('/admin/goods/edit_status_goods',{status:1,goods_id:id},function(res){
+					// var res = JSON.parse(res);
 					if(res.status == 1){
-						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_stop(this)" href="javascript:;" title="显示" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">正常</span>');
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_stop(this)" href="javascript:;" title="下架商品" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已上架</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
 						$(obj).remove();
-						layer.msg('已启用!', { icon: 6, time: 1000 });
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
 						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
 					}

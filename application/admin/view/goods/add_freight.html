@@ -2,6 +2,7 @@
 <article class="page-container">
     <form class="form form-horizontal" target="ajaxR" method="POST" action="">    
         <input type="hidden" id="freight_id" name="freight_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
+        <input type="hidden" id="is_see" name="is_see" value='{$is_see}' >
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>模板名称：</label>
@@ -68,11 +69,13 @@
                 <textarea name="desc" cols="" rows="" class="textarea"  placeholder="说点什么..." >{if condition="isset($info)"}{$info.desc}{/if}</textarea>
             </div>
         </div>
+        {if condition="$is_see eq 0"}
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <input class="btn btn-primary radius" type="submit" value="提交">
             </div>
         </div>
+        {/if}
     </form>
     <input type="hidden" id="area" value="">
     <input type="hidden" id="area-id" value="">
