@@ -19,7 +19,6 @@ class System extends Base
             'smtp'      => ['url'=>'smtp','name'=>"邮箱设置"]
         );
 
-        $this->assign('type', 'web_setting');
         $this->assign('list',$this->list);
     }
 
@@ -31,17 +30,48 @@ class System extends Base
     public function setting()
     {
         $data = input('get.');
-        if (isset($data['type'])) {
-            dump($data);
+        $province = Db::name('area')->where(array('parent_id'=>0))->select();
+        $city = array();
+        $type = "web_setting";
+        $config = Db::name('config')->where('type',$type)->field('name,value')->select();
+
+        if (isset($data['id']) && intval($data['id'] > 0)) {
+
+            $city =  Db::name('area')->where('parent_id',intval($data['id']))->select();
+            $result = $city ? ['code' => 1, 'data' => $city] : ['code' => 0];
+            return json($result);
         }
+        if (isset($data['type'])) {
+            $result1 = $this->setting_handle($data);
+        }
+        
+        $this->assign('type', $type);
+        $this->assign('province',$province);
         $this->assign('url','setting');
         $this->assign('index',0);
+        $this->assign('config',$config);
         return $this->fetch();
+    }
+
+    # 设置处理函数
+    public function setting_handle($data)
+    {
+        $type = $data['type'];
+        array_shift($data);
+        array_shift($data);
+        $result = array();
+        foreach($data as $k1 => $v1){
+            array_push($result,['name'=>$k1,'value'=>$v1,'type'=>$type]);
+        }
+
+        return $result;
     }
 
     #基本设置
     public function basic()
     {
+        $data = input('get.');
+        $this->assign('type', 'basic_setting');
         $this->assign('index',1);
         $this->assign('url','basic');
         return $this->fetch();
@@ -50,7 +80,8 @@ class System extends Base
     # 邮箱配置
     public function smtp()
     {
-        $data = input('post.');
+        $data = input('get.');
+        $this->assign('type', 'smtp_setting');
         $this->assign('url','smtp');
         $this->assign('index',2);
         return $this->fetch();
@@ -250,7 +281,7 @@ class System extends Base
 
     # 商品图片上传
     public function upload_images(){
-        
+        echo "<script>alert(1)</sceript>";die;
         if(isset($_FILES['image'])){
             $module = isset($_POST['module']) ? trim($_POST['module']) : '';
             if(!$module){

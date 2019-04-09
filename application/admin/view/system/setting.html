@@ -1,6 +1,25 @@
 ﻿{include file="layout/setting_head"/}
+<style>
+	#goods-image a{
+		display:block;
+		width: 150px;
+		height: 150px;
+		float:left;
+		margin-right: 5px;
+	}
+	#goods-image a img{
+		display:block;
+		width:100%;
+		height:100%;
+	}
+	.del-up-image{
+		position:relative;
+		left:90%;
+		top:-100%;
+	}
+</style>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
+	<form class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
 		<input type="hidden" name="type" value="{$type}">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
@@ -20,15 +39,17 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">备案号：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-icp" name="icp" placeholder="京ICP备00000000号" value="" class="input-text">
+						<input type="text" id="website-icp" name="icp" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
 						网站Logo：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-logo" name="logo" value="" class="input-text">
+					<div class="formControls col-xs-8 col-sm-9" id="goods-image">
+						<a onclick="upload_image();" id="add-goods-image">
+							<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+						</a>
 					</div>
 				</div>
 				<div class="row cl">
@@ -36,7 +57,7 @@
 						<span class="c-red">*</span>
 						底部版权信息：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-copyright" name="copyright" placeholder="&copy; 2016 H-ui.net" value="" class="input-text">
+						<input type="text" id="website-copyright" name="copyright" placeholder="&copy;" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -51,9 +72,11 @@
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
 						网站标题图标：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-title-logo" name="title_logo" value="" class="input-text">
-					</div>
+					<!-- <div class="formControls col-xs-8 col-sm-9"  class="goods-image">
+						<a onclick="upload_image();" id="add-goods-image">
+							<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+						</a>
+					</div> -->
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
@@ -89,7 +112,7 @@
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
-						<span class="c-red">*</span>
+						<!-- <span class="c-red">*</span> -->
 						联系手机：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" id="website-mobile" name="mobile" value="" class="input-text">
@@ -100,13 +123,16 @@
 						<span class="c-red">*</span>
 						所在地址：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<select onblur="get_city(this,0)" id="province" name="province">
+						<select onclick="get_city()" id="province" name="province">
 							<option value="0">选择省份</option>
+							{foreach name="$province" item="vo"}
+								<option value="{$vo.id}">{$vo.name}</option>
+							{/foreach}
 						</select>
-						<select onblur="get_area(this)" id="city" name="city">
+						<select onblur="get_area()" id="city" name="city">
 							<option value="0">选择城市</option>
 						</select>
-						<select id="district" name="district">
+						<select id="area" name="area">
 							<option value="0">选择区域</option>
 						</select>
 					</div>
@@ -137,4 +163,132 @@
 		</div>
 	</form>
 </div>
+<form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/system/upload_images">
+	<input id="hide-form-file" type="file" name="image" value="" >
+	<input id="hide-form-file" type="text" name="module" value="goods" >
+</form>
+<iframe name="ajaxR" style="display:none;"></iframe>
+<iframe name="ajaxR-from" style="display:none;"></iframe>
+<script>
+	var is_province = 0;
+	var is_city = 0;
+
+	function ajax_from_callback(status,msg){
+        if(status == 1){
+            layer.msg(msg,{icon:6});
+            setTimeout(function(){
+                parent.open_closeAll();
+            },1000);
+        }else{
+            error(msg);
+        }
+    }
+
+    function del_up_image(obj){
+        layer.confirm('确认要删除图片么？', {icon: 3, title:'提示'}, function(index){
+            $(obj).parent('a').remove();
+            var size = $('#goods-image > a').size();
+            if(size < 5){
+                if($("#goods-image #add-goods-image").length == 0) {
+                    //元素不存在时执行的代码
+                    var _html = ''+
+                        '<a onclick="upload_image();" id="add-goods-image">'+
+                            '<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
+                        '</a>';
+                    $('#goods-image').append(_html);
+                }
+                
+            }
+            layer.close(index);
+        });
+    }
+	
+	function upload_image(){
+        var size = $('#goods-image > a').size();
+		
+        if(size > 1){
+            layer.msg('最多只能有一张商品图片');
+            return false;
+        }
+		console.log(size);
+        $('#hide-form-file').click();
+	}
+
+	function iframe_images_callback(status,src='',image=''){
+        if(status == 1){
+            var _html = ''+
+                '<a>'+
+                    '<img class="ex-image" src="'+src+'" />'+
+                    '<input type="hidden" name="images[]" value="'+image+'">'+
+                    '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>'+
+                '</a>';
+            $('#add-goods-image').before(_html);
+
+            var size = $('#goods-image > a').size();
+            if(size > 1){
+                $('#add-goods-image').remove();
+            }
+        }else{
+            layer.msg('图片上传失败！');
+        }
+    }
+	
+	//获取城市
+	function get_city(){
+		var province_id = $("#province option:selected").val();
+
+		if (province_id && (province_id > 0) && (is_province != province_id)) {
+			$.ajax({
+				type: "get",
+				url: "setting",
+				async: false,
+				data: {'id':province_id},
+				success: function(data){
+					if (data.code == 1) {
+						$('#city option:not(:first)').remove(); //删除除第一个子节点以外的节点
+						$('#area option:not(:first)').remove();
+						var html = "";
+						data.data.forEach(function(value,i){
+							html += "<option value='" + value['id'] + "'>" + value['name'] + "</option>";
+						})
+						$('#city').append(html);
+						is_province = province_id;
+					}
+				},
+				error: function(){
+					layer.alert("系统繁忙，请联系管理员！");
+				}
+			});
+		}
+	}
+
+	//获取片区
+	function get_area(){
+		var city_id = $("#city option:selected").val();
+
+		if (city_id && (city_id > 0) && (is_city != city_id)) {
+			$.ajax({
+				type: "get",
+				url: "setting",
+				async: false,
+				data: {'id':city_id},
+				success: function(data){
+					if (data.code == 1) {
+						$('#area option:not(:first)').remove();
+						var html = "";
+						data.data.forEach(function(value,i){
+							html += "<option value='" + value['id'] + "'>" + value['name'] + "</option>";
+						})
+
+						$('#area').append(html);
+						is_city = city_id;
+					}
+				},
+				error: function(){
+					layer.alert("系统繁忙，请联系管理员！");
+				}
+			});
+		}
+	}
+</script>
 {include file="layout/setting_footer"/}
