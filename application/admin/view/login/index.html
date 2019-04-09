@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+
+{include file='layout/head' /}
+<link href="/__STATIC__/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+<body>
+    <input type="hidden" id="TenantId" name="TenantId" value="" />
+    <div class="header"></div>
+    <div class="loginWraper">
+        <div id="loginform" class="loginBox">
+            <form class="form form-horizontal" action="" method="post">
+                <div class="row cl">
+                    <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
+                    <div class="formControls col-xs-8">
+                        <input id="username" name="username" type="text" placeholder="账户" class="input-text size-L">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
+                    <div class="formControls col-xs-8">
+                        <input id="password" name="password" type="password" placeholder="密码" class="input-text size-L">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <div class="formControls col-xs-8 col-xs-offset-3">
+                        <input class="input-text size-L" type="text" placeholder="验证码" name="yzm" id="yzm"
+                            onblur="if(this.value==''){this.value='验证码:'}"
+                            onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
+                        <img src="{:captcha_src()}" onclick="this.src='{:captcha_src()}?x='+Math.random();" />
+                        <!-- <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div> -->
+                </div>
+                <div class="row cl">
+
+                </div>
+                <div class="row cl">
+                    <div class="formControls col-xs-8 col-xs-offset-3">
+                        <span class="btn btn-success radius size-L" id="login" onclick="login()" >&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;</span>
+                        <!-- <input name="" type="submit" class="btn btn-success radius size-L"
+                            value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;"> -->
+                        <input name="" type="reset" class="btn btn-default radius size-L"
+                            value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="footer">Copyright 你的公司名称 by H-ui.admin v3.1</div>
+    {include file='layout/footer' /}
+    <!-- <script type="text/javascript" src="/__STATIC__/lib/layer/2.4/layer.js"></script> -->
+    <!-- <script type="text/javascript" src="/__STATIC__/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/__STATIC__/h-ui/js/H-ui.min.js"></script> -->
+    <!--此乃百度统计代码，请自行删除-->
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?080836300300be57b7f34f4b3e97d911";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+       function fleshVerify() {
+            //重载验证码
+            document.getElementById('yzm').src = '{:url("admin/Login/entry")}';
+        }
+         
+        function login(){
+            var username = $("#username").val()
+            var password = $("#password").val()
+            var yzm = $("#yzm").val()
+            if (!username) {
+                layer.msg('用户名必须填写');
+                return false;
+            }
+            if (!password) {
+                layer.msg('密码必须填写');
+                return false;
+            }   
+            if (!yzm) {
+                layer.msg('验证码必须填写');
+                return false;
+            }                                       
+            $.ajax({
+                type: 'post',
+                url: "{:url('admin/Login/login')}",
+                data: $('form').serialize(),
+
+                success: function (data) {
+
+                    if (data.status == 1) {
+                        layer.msg(data.msg, { time: 1000 }, function () {
+                            
+                            window.location.href = "{:url('Admin/admin/list1')}";
+                            // var index = parent.layer.getFrameIndex(window.name);
+                            // parent.$('.btn-refresh').click();
+                            // parent.layer.close(index);
+                            // parent.location.reload()
+                        })
+                    } else {
+                        layer.msg(data.msg, {time: 1000 }, function () {
+                            // window.location.reload();
+                            // var index = parent.layer.getFrameIndex(window.name);
+                            // parent.$('.btn-refresh').click();
+                            // parent.layer.close(index);
+                            // parent.location.reload
+                        })
+                    }
+
+                },
+
+            });            
+        }
+
+    </script>
+    <!--/此乃百度统计代码，请自行删除
+</body>
+</html>

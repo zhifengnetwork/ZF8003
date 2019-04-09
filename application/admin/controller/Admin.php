@@ -26,24 +26,35 @@ class Admin extends Base
         }else{
             $list=$this->l_data($where='',$page);
             $num = count($list);
+            // $admin_list = Db::name('admin')->select(); 
+            // // dump($admin_list);
+            // $g_list     = Db::name('admin_group')->select();
+            // // dump($g_list);
+            // foreach($admin_list as $key => $value){
+            //     # code...
+                
+            //     foreach ($g_list as $k => $val) {
+            //         # code...
+            //         if($value['group_id'] == $val['id']){
+            //             $value['g_name'] = $val['name'];
+            //         }
+            //     }
+            //     $zuhe[] =$value; 
+            // } 
+            // foreach ($zuhe as $key => $value) {
+            //     # code...
+            // $res = Db::name('admin_group')->where('id',$value['group_id'])->find();
+            // if(!$res){
+            //         $value['g_name'] = '-'; 
+            // }
+            // $comb[] = $value;
+            // }
+            // $num = count($comb);
+
         }
 
-        $admin_list = Db::name('admin')->select(); 
-        // dump($admin_list);
-        $g_list     = Db::name('admin_group')->select();
-        // dump($g_list);
-        foreach($admin_list as $key => $value){
-            # code...
-              foreach ($g_list as $k => $val) {
-                  # code...
-                   if($value['group_id'] == $val['id']){
-                       $value['g_name'] = $val['name'];
-                   }
-              }
-            $zuhe[] =$value; 
-        } 
-        dump($zuhe);
-        $this->assign('zuhe',$zuhe);
+
+        // $this->assign('comb',$comb);
         $this->assign('num', $num); 
     	$this->assign('list',$list);        
         return $this->fetch();
@@ -145,7 +156,7 @@ class Admin extends Base
             unset($data['password2']); 
             $data1 = [
                 'name'    => $data['name'],
-                'password'=> md5($data['password']),
+                'password'=> pwd_encryption($data['password']),
                 'group_id'=> $data['group_id'],
                 'addtime' => time() 
             ];
@@ -156,7 +167,7 @@ class Admin extends Base
     	if($data['act'] == 'edit'){
             $data1 = [
                 'name'    => $data['name'],
-                'password' => md5($data['password']),
+                'password' => pwd_encryption($data['password']),
                 'group_id' => $data['group_id'],
                 'updatetime' => time()
             ];            
