@@ -27,6 +27,23 @@ class Admin extends Base
             $list=$this->l_data($where='',$page);
             $num = count($list);
         }
+
+        $admin_list = Db::name('admin')->select(); 
+        // dump($admin_list);
+        $g_list     = Db::name('admin_group')->select();
+        // dump($g_list);
+        foreach($admin_list as $key => $value){
+            # code...
+              foreach ($g_list as $k => $val) {
+                  # code...
+                   if($value['group_id'] == $val['id']){
+                       $value['g_name'] = $val['name'];
+                   }
+              }
+            $zuhe[] =$value; 
+        } 
+        dump($zuhe);
+        $this->assign('zuhe',$zuhe);
         $this->assign('num', $num); 
     	$this->assign('list',$list);        
         return $this->fetch();
@@ -145,9 +162,6 @@ class Admin extends Base
             ];            
     		$res = Db::name('admin')->where('id', $data['id'])->update($data1);
     	}
-        // if($data['act'] == 'del' && $data['id']>1){
-    	// 	$res = D('admin')->where('id', $data['id'])->delete();
-    	// }
     	
     	if($res){
 			return json(['status'=>1,'msg'=>'操作成功']);
