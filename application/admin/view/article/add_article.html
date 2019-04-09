@@ -1,13 +1,13 @@
 {include file="layout/head"}
 <style>
-    #goods-image a{
+    #article-image a{
         display:block;
         width: 150px;
         height: 150px;
         float:left;
         margin-right: 5px;
     }
-    #goods-image a img{
+    #article-image a img{
         display:block;
         width:100%;
         height:100%;
@@ -23,25 +23,25 @@
 <div class="page-container">
 	<form action="" method="post" class="form form-horizontal" target="ajaxR-from">
 
-        <input type="hidden" id="goods_id" name="goods_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
+        <input type="hidden" id="article_id" name="article_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
         <input type="hidden" id="category_id" name="category_id" value='{if condition="isset($info)"}{$info.cate_id}{else /}0{/if}' >
 
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" {if condition="isset($info)"}value="{$info.name}"{/if} placeholder="商品名称" id="" name="name">
+				<input type="text" class="input-text" {if condition="isset($info)"}value="{$info.title}"{/if} placeholder="文章标题：" id="" name="title">
 			</div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" {if condition="isset($info)"}value="{$info.desc}"{/if} placeholder="商品描述" id="" name="desc">
+                <input type="text" class="input-text" {if condition="isset($info)"}value="{$info.desc}"{/if} placeholder="文章描述" id="" name="desc">
             </div>
         </div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品分类：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
-                <a ref="javascript:;" style="color:blue" id="goods_category" onclick="select_goods_category()">
+                <a ref="javascript:;" style="color:blue" id="article_category" onclick="select_article_category()">
                     {if condition="isset($info)"}
                         {$info.catename}
                     {else /}
@@ -51,154 +51,50 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品展示图：</label>
-            <div class="formControls col-xs-8 col-sm-9" id="goods-image">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章展示图：</label>
+            <div class="formControls col-xs-8 col-sm-9" id="article-image">
                 {if condition="isset($info)"}
-                    {volist name="info.image" id="vo"}
                         <a>
-                            <img class="ex-image" src="{$image_path.$vo}" />
-                            <input type="hidden" name="images[]" value="{$vo}">
+                            <img class="ex-image" src="{$image_path}{$info.image}" />
+                            <input type="hidden" name="images" value="{$vo}">
                             <i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>
                         </a>
-                    {/volist}
-                    {if condition="count($info.image) lt 5"}
-                        <a onclick="upload_image();" id="add-goods-image">
-                            <img src="/public/default_upload_images_add.jpg" alt="上传图片" />
-                        </a>
-                    {/if}
                 {else /}
-                    <a onclick="upload_image();" id="add-goods-image">
+                    <a onclick="upload_image();" id="add-article-image">
                         <img src="/public/default_upload_images_add.jpg" alt="上传图片" />
                     </a>
                 {/if}
             </div>
         </div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">销售价：</label>
+			<label class="form-label col-xs-4 col-sm-2">作者：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" name="price" id="" placeholder="商品销售价" {if condition="isset($info)"} value="{$info.price}" {/if} class="input-text" style="width:90%">
-				元</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">原价：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" name="self_price" id="" placeholder="商品原价" {if condition="isset($info)"} value="{$info.self_price}" {/if} class="input-text" style="width:90%">
-				元</div>
+				<input type="text" name="author" id="" placeholder="文章作者" {if condition="isset($info)"} value="{$info.author}" {/if} class="input-text" style="width:90%">
+				</div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品库存：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <input type="text" name="stock" id="stock" placeholder="商品库存" {if condition="isset($info)"} value="{$info.stock}" {else /}value="0" {/if} class="input-text" style="width:150px;">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="radio-box">
-                    <input type="checkbox" id="is_stock" value="0" name="is_stock" {if condition="isset($info) && $info.is_stock eq 0"}checked{/if}>
-                    <label for="is_stock">无库存限制</label>
+            <label class="form-label col-xs-4 col-sm-2">来源：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="author" id="" placeholder="文章来源" {if condition="isset($info)"} value="{$info.author}" {/if} class="input-text" style="width:90%">
                 </div>
-            </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>会员折扣：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <div class="radio-box">
-                    <input name="discount" type="radio" id="discount-1" value="1" {if condition="(isset($info) && $info.discount eq 1) or !isset($info)"}checked{/if} >
-                    <label for="discount-1">参与会员折扣</label>
-                    <i class="Hui-iconfont" onclick="show_msg('默认享受会员等级相关折扣率')">&#xe6e0;</i>
+            <label class="form-label col-xs-4 col-sm-2">排序值：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="sort" id="" placeholder="文章排序值" {if condition="isset($info)"} value="{$info.price}" {/if} class="input-text" style="width:90%">
                 </div>
-                <div class="radio-box">
-                    <input type="radio" id="discount-2" value="0" name="discount" {if condition="isset($info) && $info.discount eq 0"}checked{/if}>
-                    <label for="discount-2">不参与会员折扣</label>
-                </div>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品类型：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <div class="radio-box"> 
-                    <input type="radio" id="type-1" value="0" name="type" {if condition="(isset($info) && $info.type eq 0) or !isset($info)"}checked{/if} >
-                    <label for="type-1">普通商品</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="type-2" value="1" name="type" {if condition="isset($info) && $info.type eq 1"}checked{/if}>
-                    <label for="type-2">新品</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio"id="type-3" value="2" name="type" {if condition="isset($info) && $info.type eq 2"}checked{/if}>
-                    <label for="type-3">热卖</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="type-4" value="3" name="type" {if condition="isset($info) && $info.type eq 3"}checked{/if}>
-                    <label for="type-4">推荐</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="type-5" value="4" name="type" {if condition="isset($info) && $info.type eq 4"}checked{/if}>
-                    <label for="type-5">促销</label>
-                </div>
-                <div class="radio-box">
-                    <input type="radio" id="type-6" value="5" name="type" {if condition="isset($info) && $info.type eq 5"}checked{/if}>
-                    <label for="type-6">限时</label>
-                </div>
-            </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>状态：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
                 <div class="radio-box"> 
-                    <input type="radio" id="status-1" value="0" name="status" {if condition="(isset($info) && $info.status eq 0) or !isset($info)"}checked{/if} >
-                    <label for="status-1">仓库中</label>
+                    <input type="radio" id="is_lock-1" value="0" name="is_lock" {if condition="(isset($info) && $info.is_lock eq 0) or !isset($info)"}checked{/if} >
+                    <label for="is_lock-1">正常</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" id="status-2" value="1" name="status" {if condition="isset($info) && $info.status eq 1"}checked{/if}>
-                    <label for="status-2">已上架</label>
+                    <input type="radio" id="is_lock-2" value="1" name="is_lock" {if condition="isset($info) && $info.is_lock eq 1"}checked{/if}>
+                    <label for="is_lock-2">锁定</label>
                 </div>
-                <div class="radio-box">
-                    <input type="radio"id="status-3" value="2" name="status" {if condition="isset($info) && $info.status eq 2"}checked{/if}>
-                    <label for="status-3">已下架</label>
-                </div>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">促销价格：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" name="promotion_price" id="" placeholder="商品促销价格" {if condition="isset($info)"} value="{$info.promotion_price}" {/if} class="input-text" style="width:180px">
-                元
-                <div class="radio-box">
-                    <input type="checkbox" id="sex-2" value="1" name="promotion_to" {if condition="isset($info) && $info.promotion_to eq 1"}checked{/if}>
-                    <label for="sex-2">活动结束转普通商品</label>
-                </div>
-                <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 时必填，其余类型无效。</p>
-            </div>
-        </div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">活动开始时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-                <input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal} {if condition="isset($info) && $info.limit_stime gt 0"} value="{$info.limit_stime|date='Y-m-d H:i:s',###}"{/if}  id="datemin" name="limit_stime" class="input-text Wdate" style="width:180px;">
-                <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 或 “限时” 时必填，其余类型无效。</p>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2">活动结束时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-                <input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })" 
-                {/literal} {if condition="isset($info) && $info.limit_etime gt 0"} value="{$info.limit_etime|date='Y-m-d H:i:s',###}"{/if} id="datemax" name="limit_etime" class="input-text Wdate" style="width:180px;">
-                <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 或 “限时” 时必填，其余类型无效。</p>
-			</div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">运费：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" name="freight" id="" placeholder="运费：" {if condition="isset($info)"}value="{$info.freight}"{/if} class="input-text" style="width:180px">
-                元
-                <div class="radio-box">
-                    <span class="select-box" style="width:230px;">
-                        <select class="select" name="freight_temp" size="1">
-                            <option value="0">--选择运费模板--</option>
-                            {volist name="freight_temp" id="vo"}
-                            <option value="{$vo.id}" {if condition="isset($info) && $info.freight_temp eq $vo.id"}selected{/if}>{$vo.name}</option>
-                            {/volist}
-                        </select>
-                    </span>
-                </div>
-                <p style="font-size:12px;color:#b1b1b1;">注意：选择运费模板后，设置的运费将不起作用</p>
             </div>
         </div>
 		<div class="row cl">
@@ -215,7 +111,7 @@
 		</div>
 	</form>
 </div>
-<form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/goods/upload_images">
+<form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/article/upload_images">
     <input id="hide-form-file" type="file" name="image" value="" >
 </form>
 <iframe name="ajaxR" style="display:none;"></iframe>
@@ -244,26 +140,22 @@
     function del_up_image(obj){
         layer.confirm('确认要删除图片么？', {icon: 3, title:'提示'}, function(index){
             $(obj).parent('a').remove();
-            var size = $('#goods-image > a').size();
-            if(size < 5){
-                if($("#goods-image #add-goods-image").length == 0) {
-                    //元素不存在时执行的代码
-                    var _html = ''+
-                        '<a onclick="upload_image();" id="add-goods-image">'+
-                            '<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
-                        '</a>';
-                    $('#goods-image').append(_html);
-                }
-                
+            if($("#article-image #add-article-image").length == 0) {
+                //元素不存在时执行的代码
+                var _html = ''+
+                    '<a onclick="upload_image();" id="add-article-image">'+
+                        '<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
+                    '</a>';
+                $('#article-image').append(_html);
             }
             layer.close(index);
         });
     }
 
     function upload_image(){
-        var size = $('#goods-image > a').size();
-        if(size > 5){
-            layer.msg('最多只能有五张商品图片');
+        var size = $('#article-image > a').size();
+        if(size){
+            layer.msg('最多只能有一张文章展示图片');
             return false;
         }
         $('#hide-form-file').click();
@@ -277,12 +169,10 @@
                     '<input type="hidden" name="images[]" value="'+image+'">'+
                     '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>'+
                 '</a>';
-            $('#add-goods-image').before(_html);
+            $('#add-article-image').before(_html);
 
-            var size = $('#goods-image > a').size();
-            if(size > 5){
-                $('#add-goods-image').remove();
-            }
+            $('#add-article-image').remove();
+            
         }
     }
 
@@ -290,22 +180,18 @@
         layer.msg(msg);
     }
 
-    function select_goods_category(){
+    function select_article_category(){
         layer.open({
-            title:'选择商品分类',
+            title:'选择文章分类',
             type:2,
-            content:'/admin/goods/open_goods_category_select',
+            content:'/admin/system/open_category_select?type=article',
             area:['600','200'],
         });
     }
 
     function open_callback(name,id){
-        $('#goods_category').html(name);
+        $('#article_category').html(name);
         $('#category_id').val(id);
-    }
-
-    function chage_type(obj){
-        alert(123);
     }
 
     $(function(){
@@ -315,7 +201,7 @@
             increaseArea: '20%'
         });
 
-        // 商品详情
+        // 文章详情
         var ue = UE.getEditor('editor');
 
 

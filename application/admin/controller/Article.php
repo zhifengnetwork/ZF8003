@@ -7,6 +7,41 @@ class Article extends Base{
 
     public function index(){
 
+        $where['id'] = ['>', '0'];
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+        if($keywords){
+            $where['title'] = ['like', "%$keywords%"];
+        }
+
+        $list = Db::name('article')->where($where)->order('utime desc')->paginate(15);
+        $count = Db::name('category')->where($where)->count();
+        if($list){
+            $pname[0] = '顶级分类';
+            foreach($list as $v){
+                $pids[] = $v['id'];
+            }
+            if(isset($pids) && $pids){
+                $pids = implode("','", $pids);
+                $pinfo = Db::query("select `id`,`name` from `zf_category` where `id` in ('$pids')");
+                foreach($pinfo as $p){
+                    $pname[$p['id']] = $p['name'];
+                }
+                $this->assign('pname', $pname);
+            }
+        }
+        
+        $this->assign('list', $list);
+        $this->assign('count', $count);
+        $this->assign('keywords', $keywords);
+
+        return $this->fetch();
+    }
+
+    # 增加 / 编辑文章
+    public function add_article(){
+
+
+
 
 
         return $this->fetch();
@@ -21,7 +56,7 @@ class Article extends Base{
             $where['name'] = ['like', "%$keywords%"];
         }
 
-        $list = Db::name('category')->where($where)->paginate(15);
+        $list = Db::name('category')->where($where)->order('id desc')->paginate(15);
         $count = Db::name('category')->where($where)->count();
         if($list){
             $pname[0] = '顶级分类';
