@@ -294,7 +294,7 @@
         layer.open({
             title:'选择商品分类',
             type:2,
-            content:'/admin/goods/open_category_select',
+            content:'/admin/system/open_category_select?type=goods',
             area:['600','200'],
         });
     }
@@ -302,10 +302,6 @@
     function open_callback(name,id){
         $('#goods_category').html(name);
         $('#category_id').val(id);
-    }
-
-    function chage_type(obj){
-        alert(123);
     }
 
     $(function(){

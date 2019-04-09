@@ -103,7 +103,7 @@
     }
 
     function se_ad_option(cate,id){
-        $.post('/admin/goods/ajax_goods_category',{parent_id:id},function(res){
+        $.post('/admin/system/ajax_category',{parent_id:id},function(res){
             $('#'+cate).append(res);
         });
     }

@@ -477,37 +477,6 @@ class Goods extends Base{
     }
 
 
-
-    # 商品分类三级联动
-    public function open_category_select(){
-        $where['parent_id'] = ['=', 0];
-        $where['is_lock'] = ['=', 0];
-        $where['type'] = ['=', 'goods'];
-        $cate = Db::name('category')->field('`id`,`name`')->where($where)->select();
-        
-        $this->assign('cate', $cate);
-        return $this->fetch();
-    }
-
-    # 商品分类三级联动数据返回
-    public function ajax_category(){
-        $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
-        $html = '';
-        $where['is_lock'] = ['=', 0];
-        $where['parent_id'] = ['=', $parent_id];
-            
-        $list = Db::name('category')->field('`id`,`name`')->where($where)->select();
-            
-        if(isset($list)){
-            foreach($list as $v){
-                $html .= '<option value="'.$v['id'].'">'.$v['name'].'</option>';
-            }
-        }
-
-        return json($html);
-        exit;
-    }
-
     # 商品图片上传
     public function upload_images(){
         
