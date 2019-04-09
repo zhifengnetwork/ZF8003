@@ -8,15 +8,47 @@ use think\Db;
 
 class System extends Base
 {
-    # 基本配置
+    private $list;
+
+    public function __construct(){
+        parent::__construct();
+
+        $this->list = array(
+            'shop_info' => ['url'=>'setting','name'=>"商店信息"],
+            'basic'     => ['url'=>'basic','name'=>"基本设置"],
+            'smtp'      => ['url'=>'smtp','name'=>"邮箱设置"]
+        );
+
+        $this->assign('list',$this->list);
+    }
+
+    public function index(){
+
+    }
+
+    # 商店设置
     public function setting()
     {
+        $data = input('post.');
+        if ($data) {
+            dump($data);
+        }
+        $this->assign('index',0);
+        return $this->fetch();
+    }
+
+    #基本设置
+    public function basic()
+    {
+        $this->assign('index',1);
         return $this->fetch();
     }
 
     # 邮箱配置
     public function smtp()
     {
+        $data = input('post.');
+        $this->assign('index',2);
         return $this->fetch();
     }
 

@@ -1,4 +1,4 @@
-﻿{include file="layout/head"}
+﻿{include file="layout/head"/}
 <style>
     .tabBar{border-bottom: 2px solid rgb(221, 215, 179);}
     .tabBar span.current{background-color: rgb(221, 215, 179);}
@@ -6,22 +6,20 @@
 </style>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
 	<span class="c-gray en">&gt;</span>
-	系统管理
+	系统设置
 	<span class="c-gray en">&gt;</span>
-	基本设置
+	网站设置
 	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 </nav>
 <div class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
-                <ul>
-                    <li><span class="current"><a href="{:url('admin/system/setting')}">网站设置</a></span></li>
-                    <li><span><a href="{:url('admin/system/smtp')}">邮件设置</a></span></li>
-                    <li><span><a href="#">其他设置</a></span></li>
-                </ul>
+				{foreach name="list" item="vo"}
+					<span><a href="{$vo.url}">{$vo.name}</a></span>
+				{/foreach}
 			</div>
-			<div class="tabCon">
+			<div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
@@ -29,7 +27,7 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" id="website-title" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
 					</div>
-                </div>
+				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
@@ -49,6 +47,22 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
+						css、js、images路径配置：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-static" placeholder="默认为空，为相对路径" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						上传目录配置：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-uploadfile" placeholder="默认为uploadfile" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
 						底部版权信息：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" id="website-copyright" placeholder="&copy; 2016 H-ui.net" value="" class="input-text">
@@ -59,27 +73,13 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" id="website-icp" placeholder="京ICP备00000000号" value="" class="input-text">
 					</div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">联系人：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" id="website-name" placeholder="联系人" value="" class="input-text">
-                    </div>
-                </div>
-                <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-2">联系电话：</label>
-                    <div class="formControls col-xs-8 col-sm-9">
-                        <input type="text" id="website-mobile" placeholder="联系电话" value="" class="input-text">
-                    </div>
-                </div>
+				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">统计代码：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<textarea class="textarea"></textarea>
 					</div>
 				</div>
-			</div>
-			<div class="tabCon">
 			</div>
 		</div>
 		<div class="row cl">
@@ -90,12 +90,12 @@
 		</div>
 	</form>
 </div>
-{include file="layout/footer"}
-
+{include file="layout/footer"/}
 <script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
 <script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="/__STATIC__/setting/setting.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('.skin-minimal input').iCheck({
@@ -103,8 +103,9 @@ $(function(){
 		radioClass: 'iradio-blue',
 		increaseArea: '20%'
 	});
+	
 	$("#tab-system").Huitab({
-		index:0
+		index:"{$index}"
 	});
 });
 </script>
