@@ -136,8 +136,8 @@ class Goods extends Base{
                         }
                         $im = \think\Image::open($temp_dir.$v);
                         $savename = $save_dir.$goods_id.'/images-'.$time.$i.'.jpg';
-                        $rim = $im->save($savename);
-                        $images[$k] = '/images-'.$time.$i.'.jpg';
+                        $im->save($savename);
+                        $images[$k] = 'images-'.$time.$i.'.jpg';
                         $i++;
                     }
                 }

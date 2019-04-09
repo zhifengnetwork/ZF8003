@@ -56,7 +56,7 @@
                 {if condition="isset($info)"}
                         <a>
                             <img class="ex-image" src="{$image_path}{$info.image}" />
-                            <input type="hidden" name="images" value="{$vo}">
+                            <input type="hidden" name="images" value="{$info.image}">
                             <i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>
                         </a>
                 {else /}
@@ -75,13 +75,13 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">来源：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" name="author" id="" placeholder="文章来源" {if condition="isset($info)"} value="{$info.author}" {/if} class="input-text" style="width:90%">
+                <input type="text" name="source" id="" placeholder="文章来源" {if condition="isset($info)"} value="{$info.source}" {/if} class="input-text" style="width:90%">
                 </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">排序值：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" name="sort" id="" placeholder="文章排序值" {if condition="isset($info)"} value="{$info.price}" {/if} class="input-text" style="width:90%">
+                <input type="text" name="sort" id="" placeholder="文章排序值" {if condition="isset($info)"} value="{$info.sort}" {/if} class="input-text" style="width:90%">
                 </div>
         </div>
         <div class="row cl">
@@ -111,8 +111,9 @@
 		</div>
 	</form>
 </div>
-<form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/article/upload_images">
+<form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/system/upload_images">
     <input id="hide-form-file" type="file" name="image" value="" >
+    <input id="hide-form-file" type="text" name="module" value="article" >
 </form>
 <iframe name="ajaxR" style="display:none;"></iframe>
 <iframe name="ajaxR-from" style="display:none;"></iframe>
@@ -154,7 +155,7 @@
 
     function upload_image(){
         var size = $('#article-image > a').size();
-        if(size){
+        if(size > 1){
             layer.msg('最多只能有一张文章展示图片');
             return false;
         }
@@ -166,13 +167,15 @@
             var _html = ''+
                 '<a>'+
                     '<img class="ex-image" src="'+src+'" />'+
-                    '<input type="hidden" name="images[]" value="'+image+'">'+
+                    '<input type="hidden" name="image" value="'+image+'">'+
                     '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>'+
                 '</a>';
             $('#add-article-image').before(_html);
 
             $('#add-article-image').remove();
             
+        }else{
+            layer.msg('图片上传失败！');
         }
     }
 
