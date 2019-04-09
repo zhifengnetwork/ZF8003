@@ -476,25 +476,4 @@ class Goods extends Base{
         return json(['status' => 0]);
     }
 
-
-    # 商品图片上传
-    public function upload_images(){
-        
-        if(isset($_FILES['image'])){
-            $file = request()->file('image');
-            $files_dir = ROOT_PATH . 'public/images/goods/temp';
-            
-            $info = $file->move($files_dir);
-            if($info){
-                $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/goods/temp/';
-                $savename = str_replace('\\','/',$info->getSaveName());
-                $src_dir .= $savename;
-                echo "<script>parent.iframe_images_callback(1,' $src_dir','$savename')</script>";
-            }else{
-                echo "<script>parent.iframe_images_callback(0,'')</script>";
-            }
-        }
-        exit;
-    }
-
 }

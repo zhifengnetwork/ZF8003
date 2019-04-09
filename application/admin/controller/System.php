@@ -248,6 +248,29 @@ class System extends Base
     }
 
 
-
+    # 商品图片上传
+    public function upload_images(){
+        
+        if(isset($_FILES['image'])){
+            $module = isset($_POST['module']) ? trim($_POST['module']) : '';
+            if(!$module){
+                echo "<script>parent.iframe_images_callback(0,'')</script>";
+                exit;
+            }
+            $file = request()->file('image');
+            $files_dir = ROOT_PATH . 'public/images/'.$module.'/temp';
+            
+            $info = $file->move($files_dir);
+            if($info){
+                $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/'.$module.'/temp/';
+                $savename = str_replace('\\','/',$info->getSaveName());
+                $src_dir .= $savename;
+                echo "<script>parent.iframe_images_callback(1,' $src_dir','$savename')</script>";
+            }else{
+                echo "<script>parent.iframe_images_callback(0,'')</script>";
+            }
+        }
+        exit;
+    }
 
 }
