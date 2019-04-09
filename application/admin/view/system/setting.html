@@ -1,18 +1,7 @@
-﻿{include file="layout/head"/}
-<style>
-    .tabBar{border-bottom: 2px solid rgb(221, 215, 179);}
-    .tabBar span.current{background-color: rgb(221, 215, 179);}
-    .tabBar a{text-decoration:none;}
-</style>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
-	<span class="c-gray en">&gt;</span>
-	系统设置
-	<span class="c-gray en">&gt;</span>
-	网站设置
-	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
-</nav>
+﻿{include file="layout/setting_head"/}
 <div class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
+		<input type="hidden" name="inc_type" value="{$url}">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
 				{foreach name="list" item="vo"}
@@ -25,39 +14,21 @@
 						<span class="c-red">*</span>
 						网站名称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-title" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+						<input type="text" id="website-title" name="web_title" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">备案号：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-icp" name="icp" placeholder="京ICP备00000000号" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
-						关键词：</label>
+						网站Logo：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-Keywords" placeholder="5个左右,8汉字以内,用英文,隔开" value="" class="input-text">
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">
-						<span class="c-red">*</span>
-						描述：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-description" placeholder="空制在80个汉字，160个字符以内" value="" class="input-text">
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">
-						<span class="c-red">*</span>
-						css、js、images路径配置：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-static" placeholder="默认为空，为相对路径" value="" class="input-text">
-					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">
-						<span class="c-red">*</span>
-						上传目录配置：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-uploadfile" placeholder="默认为uploadfile" value="" class="input-text">
+						<input type="text" id="website-logo" name="logo" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -65,19 +36,63 @@
 						<span class="c-red">*</span>
 						底部版权信息：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-copyright" placeholder="&copy; 2016 H-ui.net" value="" class="input-text">
+						<input type="text" id="website-copyright" name="copyright" placeholder="&copy; 2016 H-ui.net" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">备案号：</label>
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						网站标题：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-icp" placeholder="京ICP备00000000号" value="" class="input-text">
+						<input type="text" id="website-title" name="title" value="" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">统计代码：</label>
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						网站标题图标：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<textarea class="textarea"></textarea>
+						<input type="text" id="website-title-logo" name="title_logo" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						关键词：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-Keywords" name="key_words" placeholder="5个左右,8汉字以内,用英文,隔开" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						网站描述：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-description" name="web_desc" placeholder="空制在80个汉字，160个字符以内" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						联系人：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-linkman" name="linkman" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						联系电话：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-phone" name="phone" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
+						联系手机：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" id="website-mobile" name="mobile" placeholder="控制在25个字、50个字节以内" value="" class="input-text">
 					</div>
 				</div>
 			</div>
@@ -90,25 +105,4 @@
 		</div>
 	</form>
 </div>
-{include file="layout/footer"/}
-<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript" src="/__STATIC__/setting/setting.js"></script>
-<script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$("#tab-system").Huitab({
-		index:"{$index}"
-	});
-});
-</script>
-<!--/请在上方写此页面业务相关的脚本-->
-</body>
-</html>
+{include file="layout/setting_footer"/}

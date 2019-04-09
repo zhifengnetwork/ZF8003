@@ -29,10 +29,11 @@ class System extends Base
     # 商店设置
     public function setting()
     {
-        $data = input('post.');
-        if ($data) {
+        $data = input('get.');
+        if (isset($data['inc_type'])) {
             dump($data);
         }
+        $this->assign('url','setting');
         $this->assign('index',0);
         return $this->fetch();
     }
@@ -41,6 +42,7 @@ class System extends Base
     public function basic()
     {
         $this->assign('index',1);
+        $this->assign('url','basic');
         return $this->fetch();
     }
 
@@ -48,6 +50,7 @@ class System extends Base
     public function smtp()
     {
         $data = input('post.');
+        $this->assign('url','smtp');
         $this->assign('index',2);
         return $this->fetch();
     }

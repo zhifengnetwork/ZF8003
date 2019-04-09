@@ -1,18 +1,7 @@
-﻿{include file="layout/head"}
-<style>
-    .tabBar{border-bottom: 2px solid rgb(221, 215, 179);}
-    .tabBar span.current{background-color: rgb(221, 215, 179);}
-    .tabBar a{text-decoration:none;}
-</style>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
-	<span class="c-gray en">&gt;</span>
-	系统管理
-	<span class="c-gray en">&gt;</span>
-	基本设置
-	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
-</nav>
+﻿{include file="layout/setting_head"}
 <div class="page-container">
 	<form class="form form-horizontal" id="form-article-add">
+		<input type="hidden" name="inc_type" value="{$url}">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
 				{foreach name="list" item="vo"}
@@ -66,24 +55,4 @@
 		</div>
 	</form>
 </div>
-{include file="layout/footer"}
-
-<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
-<script type="text/javascript" src="/__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
-<script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	$("#tab-system").Huitab({
-		index:"{$index}"
-	});
-});
-</script>
-<!--/请在上方写此页面业务相关的脚本-->
-</body>
-</html>
+{include file="layout/setting_footer"/}
