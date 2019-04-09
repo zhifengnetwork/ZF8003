@@ -1,8 +1,8 @@
 /**底部nav切换(未-点击)_按循序
  *  *bottomTabArrOne.length来循环
  * **/
-var host = location.href;
-var __static = host + 'public/static/mobile';
+var host = document.location.protocol +'//'+ window.location.host;
+var __static = host + '/public/static/mobile';
 
 var bottomTabArrOne = [
 	"/img/public/bottom_nav/home0_1.png",

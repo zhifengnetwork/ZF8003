@@ -6,10 +6,6 @@ use think\Db;
 
 class Goods extends Base{
 
-
-
-
-
     # 商品列表
     public function index(){
 
@@ -79,6 +75,7 @@ class Goods extends Base{
             $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
             $images = isset($_POST['images']) && is_array($_POST['images']) ? $_POST['images'] : array();
             $price = isset($_POST['price']) && Digital_Verification($_POST['price']) ? Digital_Verification($_POST['price']) : 0.00;
             $self_price = isset($_POST['self_price']) && Digital_Verification($_POST['self_price']) ? Digital_Verification($_POST['self_price']) : 0.00;
@@ -132,6 +129,11 @@ class Goods extends Base{
                 }
                 foreach($images as $k=>$v){
                     if(!strstr($v,'images-')){
+                        if($k == 0){
+                            $thumb = \think\Image::open($temp_dir.$v);
+                            $thumb_path = $goods_id.'/thumb.png';
+                            $thumb->thumb(150,150,\think\Image::THUMB_CENTER)->save($save_dir.$thumb_path);
+                        }
                         $im = \think\Image::open($temp_dir.$v);
                         $savename = $save_dir.$goods_id.'/images-'.$time.$i.'.jpg';
                         $rim = $im->save($savename);
@@ -140,9 +142,8 @@ class Goods extends Base{
                     }
                 }
                 $images = implode(',', $images);
-                Db::execute("update `zf_goods` set `image` = '$images' where `id` = '$goods_id'");
+                Db::execute("update `zf_goods` set `image` = '$images',`thumb` = '$thumb_path' where `id` = '$goods_id'");
                 
-
                 echo "<script>parent.ajax_from_callback(1,'操作成功，正在跳转...')</script>";
             }else{
                 echo "<script>parent.ajax_from_callback(0,'操作失败，请重试！')</script>";

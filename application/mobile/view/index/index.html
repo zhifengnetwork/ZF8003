@@ -80,6 +80,8 @@
 					</a>
 				</div>
 
+
+				{if condition="isset($recom_goods) && $recom_goods"}
 				<!-- 推荐商品 -->
 				<div class="recommend-wrap">
 					<div class="title">
@@ -88,35 +90,25 @@
 					</div>
 					<div class="recommend-list">
 						<ul>
+							{volist name="recom_goods" id="vo"}
 							<li class="listItem">
 								<div class="img-wrap">
-									<img src="__STATIC__/img/home/tupian1@2x.png" />
+									<img src="__GOODSIMG__{$vo.thumb}" />
 								</div>
 								<div class="text">
-									<h3><a href="#">人类基因科普图书籍</a></h3>
-									<p class="dec">生命的语言 揭示人类基因的奥秘 基因科学 基因检测技术书 健康管理 智能诊疗 生活方式关系。</p>
+									<h3><a href="#">{$vo.name}</a></h3>
+									<p class="dec">{$vo.desc}</p>
 									<div class="buy">
-										<span class="price">¥699</span>
+										<span class="price">¥{$vo.price}</span>
 										<a href="#" class="butBtn">立即购买</a>
 									</div>
 								</div>
 							</li>
-							<li class="listItem">
-								<div class="img-wrap">
-									<img src="__STATIC__/img/home/tupian2@2x.png" />
-								</div>
-								<div class="text">
-									<h3><a href="#">新华书店正版图书籍</a></h3>
-									<p class="dec">生物反应器:转基因与代谢途径工程 曾庆平 生命科学/生物学生活，化学工业出版社 文轩网。</p>
-									<div class="buy">
-										<span class="price">¥698</span>
-										<a href="#" class="butBtn">立即购买</a>
-									</div>
-								</div>
-							</li>
+							{/volist}
 						</ul>
 					</div>
 				</div>
+				{/if}
 
 				<!-- 微解读 -->
 				<div class="nscramble-wrap">
