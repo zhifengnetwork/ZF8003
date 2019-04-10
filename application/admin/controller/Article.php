@@ -86,7 +86,7 @@ class Article extends Base{
                         $im = \think\Image::open($temp_path.$image);
                         $savename = $save_path.$article_id.'/images-'.$time.'.jpg';
                         $im->save($savename);
-                        Db::execute("update `zf_article` set `thumb` = '$article_id/thumb.png', `image` = 'images-$time.jpg'");
+                        Db::execute("update `zf_article` set `thumb` = '$article_id/thumb.png', `image` = 'images-$time.jpg' where `id` = '$article_id'");
                     }
                 }
                 echo "<script>parent.ajax_from_callback(1,'操作成功，正在跳转...')</script>";
