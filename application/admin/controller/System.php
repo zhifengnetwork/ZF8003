@@ -8,15 +8,15 @@ use think\Db;
 
 class System extends Base
 {
-    private $list;
+    private $list;//基本设置菜单
 
     public function __construct(){
         parent::__construct();
 
         $this->list = array(
-            'shop_info' => ['url'=>'setting','name'=>"商店信息"],
-            'basic'     => ['url'=>'basic','name'=>"基本设置"],
-            'smtp'      => ['url'=>'smtp','name'=>"邮箱设置"]
+            'shop_info' => ['order'=>0,'url'=>'setting','name'=>"商店信息"],
+            'basic'     => ['order'=>1,'url'=>'basic','name'=>"基本设置"],
+            'smtp'      => ['order'=>2,'url'=>'smtp','name'=>"邮箱设置"]
         );
 
         $this->assign('list',$this->list);
@@ -33,8 +33,9 @@ class System extends Base
         $province = Db::name('area')->where(array('parent_id'=>0))->select();
         $city = array();
         $type = "web_setting";
+        $info = $this->list;
         $config = Db::name('config')->where('type',$type)->field('name,value')->select();
-
+        
         if (isset($data['id']) && intval($data['id'] > 0)) {
 
             $city =  Db::name('area')->where('parent_id',intval($data['id']))->select();
@@ -42,29 +43,59 @@ class System extends Base
             return json($result);
         }
         if (isset($data['type'])) {
-            $result1 = $this->setting_handle($data);
+            $bool = $this->setting_handle($data,$config);
         }
         
         $this->assign('type', $type);
         $this->assign('province',$province);
-        $this->assign('url','setting');
-        $this->assign('index',0);
+        $this->assign('url',$info['shop_info']['url']);
+        $this->assign('index',$info['shop_info']['order']);
         $this->assign('config',$config);
         return $this->fetch();
     }
 
     # 设置处理函数
-    public function setting_handle($data)
+    public function setting_handle($data,$config)
     {
-        $type = $data['type'];
-        array_shift($data);
-        array_shift($data);
-        $result = array();
-        foreach($data as $k1 => $v1){
-            array_push($result,['name'=>$k1,'value'=>$v1,'type'=>$type]);
-        }
+        $bool = false;
+        if (is_array($data)) {
+            $type = $data['type'];
+            array_shift($data);//去除第一个元素
+            array_shift($data);
+            $temp = array();
+            $key_diff = array();
+            $key_same = array();
+            $diff = array();
+            
+            if (is_array($config)) {
+                foreach($config as $k2 => $v2){
+                    $temp[$v2['name']] = $v2['value'];
+                }
+                
+                $key_diff = array_diff_key($data,$temp);//取键名差集
+                $key_same = array_intersect_key($temp,$data);//取键名交集
+                $diff = array_diff($key_same,$data);//取键值差集
+            }
+            
+            $add = array();
+            $update = array();
 
-        return $result;
+            if ($key_diff) {
+                foreach($key_diff as $k1 => $v1){
+                    array_push($add,['name'=>$k1,'value'=>$v1,'type'=>$type]);
+                }
+                $bool = Db::name('config')->insertAll($result);
+            }
+            if ($diff) {
+                foreach($diff as $k3 => $v3){
+                    array_push($update,['name'=>$k3,'value'=>$v3]);
+                }
+                $bool = Db::name('config')->update($result);
+            }
+            
+        }
+        
+        return $bool;
     }
 
     #基本设置
