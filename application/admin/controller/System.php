@@ -281,7 +281,6 @@ class System extends Base
 
     # 商品图片上传
     public function upload_images(){
-        echo "<script>alert(1)</sceript>";die;
         if(isset($_FILES['image'])){
             $module = isset($_POST['module']) ? trim($_POST['module']) : '';
             if(!$module){

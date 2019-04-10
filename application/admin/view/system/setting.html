@@ -1,13 +1,13 @@
 ﻿{include file="layout/setting_head"/}
 <style>
-	#goods-image a{
+	.logo-image a{
 		display:block;
 		width: 150px;
 		height: 150px;
 		float:left;
 		margin-right: 5px;
 	}
-	#goods-image a img{
+	.logo-image a img{
 		display:block;
 		width:100%;
 		height:100%;
@@ -46,7 +46,7 @@
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
 						网站Logo：</label>
-					<div class="formControls col-xs-8 col-sm-9" id="goods-image">
+					<div class="formControls col-xs-8 col-sm-9 logo-image" id="goods-image">
 						<a onclick="upload_image();" id="add-goods-image">
 							<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
 						</a>
@@ -72,11 +72,11 @@
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
 						网站标题图标：</label>
-					<!-- <div class="formControls col-xs-8 col-sm-9"  class="goods-image">
+					<div class="formControls col-xs-8 col-sm-9 logo-image" id="goods-image">
 						<a onclick="upload_image();" id="add-goods-image">
 							<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
 						</a>
-					</div> -->
+					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
@@ -165,24 +165,16 @@
 </div>
 <form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/system/upload_images">
 	<input id="hide-form-file" type="file" name="image" value="" >
-	<input id="hide-form-file" type="text" name="module" value="goods" >
+	<input type="text" name="module" value="setting" >
 </form>
 <iframe name="ajaxR" style="display:none;"></iframe>
 <iframe name="ajaxR-from" style="display:none;"></iframe>
-<script>
-	var is_province = 0;
-	var is_city = 0;
-
-	function ajax_from_callback(status,msg){
-        if(status == 1){
-            layer.msg(msg,{icon:6});
-            setTimeout(function(){
-                parent.open_closeAll();
-            },1000);
-        }else{
-            error(msg);
-        }
-    }
+<script type="text/javascript">
+	window.onload = function() { 
+		$('#hide-form-file').change(function(){
+			$('#hide-form').submit();
+		});
+	}
 
     function del_up_image(obj){
         layer.confirm('确认要删除图片么？', {icon: 3, title:'提示'}, function(index){
@@ -197,7 +189,6 @@
                         '</a>';
                     $('#goods-image').append(_html);
                 }
-                
             }
             layer.close(index);
         });
@@ -210,11 +201,11 @@
             layer.msg('最多只能有一张商品图片');
             return false;
         }
-		console.log(size);
         $('#hide-form-file').click();
 	}
 
 	function iframe_images_callback(status,src='',image=''){
+
         if(status == 1){
             var _html = ''+
                 '<a>'+
@@ -232,6 +223,9 @@
             layer.msg('图片上传失败！');
         }
     }
+
+	var is_province = 0;
+	var is_city = 0;
 	
 	//获取城市
 	function get_city(){
