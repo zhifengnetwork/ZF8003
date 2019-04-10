@@ -37,123 +37,65 @@ class Admin extends Base
             // 搜索条件
             $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax']); 
             // 列出数据
-            $list=$this->l_data($where,$page);
-            $num = count($list);
-        }else{
-            $list=$this->l_data($where='',$page);
-            $num = count($list);
-
-
-            // $admin_list = Db::name('admin')->select(); 
-            // // dump($admin_list);
-            // $g_list     = Db::name('admin_group')->select();
-            // // dump($g_list);
-            // foreach($admin_list as $key => $value){
-            //     # code...
-
-            //     foreach ($g_list as $k => $val) {
-            //         # code...
-            //         if($value['group_id'] == $val['id']){
-            //             $value['g_name'] = $val['name'];
-            //         }
-            //     }
-            //     $zuhe[] =$value; 
-            // } 
-            // foreach ($zuhe as $key => $value) {
-            //     # code...
-            // $res = Db::name('admin_group')->where('id',$value['group_id'])->find();
-            // if(!$res){
-            //         $value['g_name'] = '-'; 
-            // }
-            // $comb[] = $value;
-            // }
-            // $num = count($comb);
-
-            // $paginate = new Paginate();
-            // $p =   $paginate->page($comb, 'adminRes', 'plistpage', 2);
-            // dump($p);
-            // $Page= new \Think\Page($count,25);
-            // $newarray_1 = array_slice($comb,$Page->firstRow,$Page->listRows);
-            // $show= $Page->show();
-            // dump($show);
-
-
-
-            $lista = Db::name('admin')->order('id desc')->paginate(15);
-            dump($lista);
+            $list = Db::name('admin')->where($where)->order('id desc')->paginate(15);
             $cname[0] = '';
-            if ($lista) {
-                foreach ($lista as $v) {
+            if ($list) {
+                foreach ($list as $v) {
                     $cids[] = $v['group_id'];
-                    // if ($v['freight_temp'] > 0) $ftids[] = $v['freight_temp'];
                 }
-                // dump($cids);
+
                 if (isset($cids)) {
                     $cids = implode("','", $cids);
-            
-                    $cids = Db::query("select `id`,`name` from `zf_category` where `id` in ('$cids')");
+                    $cids = Db::query("select `id`,`name` from `zf_admin_group` where `id` in ('$cids')");
                     foreach ($cids as $c) {
                         $cname[$c['id']] = $c['name'];
                     }
                 }
-                // if (isset($ftids) && !empty($ftids)) {
-                //     $ftids = implode("','", $ftids);
-                //     $ftids = Db::query("select `id`,`name` from `zf_freight_temp` where `id` in ('$ftids')");
-                //     foreach ($ftids as $f) {
-                //         $fname[$f['id']] = $f['name'];
-                //     }
-                //     $this->assign('fname', $fname);
-                // }
+            } 
+            $num = count($list);
+        }else{
+            $list = Db::name('admin')->order('id desc')->paginate(15);
+            $num = count($list);
+            $cname[0] = '';
+            if ($list) {
+                foreach ($list as $v) {
+                    $cids[] = $v['group_id'];   
+                } 
+                if (isset($cids)) {
+                    $cids = implode("','", $cids); 
+                    $cids = Db::query("select `id`,`name` from `zf_admin_group` where `id` in ('$cids')");
+                    foreach ($cids as $c) {
+                        $cname[$c['id']] = $c['name'];
+                    }
+                    
+                }
             }
-
-
-
-
-
         }
-
-
+         
+       
         // $this->assign('comb',$comb);
         $this->assign('num', $num); 
+        $this->assign('cname', $cname); 
     	$this->assign('list',$list);        
         return $this->fetch();
     }
     
-    // 列出数据
-    public function l_data($where='',$page)
-    {   
-        // if($status == 1){
-            $list = Db::name('admin')
-                ->alias('a')
-                ->join('admin_group ad', 'a.group_id = ad.id')
-                ->field('a.*,ad.name g_name')
-                ->where($where)
-                // ->where('a.id', 'not in', '1')
-                ->order('id asc')
-                ->paginate($page);
-        // }else{
-          
-        // }
-
-            return $list;
-    }
-
     // 搜索条件
     public function s_condition($conditions, $datemins, $datemaxs)
     {
         $time = " 23:59:59";
         if ($conditions) {
             $m_conditions = str_replace(' ', '', $conditions);
-            $where['a.name|ad.name'] = ['like', "%$m_conditions%"];
+            $where['name'] = ['like', "%$m_conditions%"];
         }
         if ($datemins && $datemaxs) {
             $datemin = strtotime($datemins);
             $datemax = strtotime($datemaxs . $time);
-            $where['a.addtime'] = [['>= time', $datemin], ['<= time', $datemax], 'and'];
+            $where['addtime'] = [['>= time', $datemin], ['<= time', $datemax], 'and'];
         } elseif ($datemins) {
-            $where['a.addtime'] = ['>= time', strtotime($datemin)];
+            $where['addtime'] = ['>= time', strtotime($datemins)];
         } elseif ($datemaxs) {
-            $where['a.addtime'] = ['<= time', strtotime($datemaxs . $time)];
+            $where['addtime'] = ['<= time', strtotime($datemaxs . $time)];
         }
         return $where;
     }
