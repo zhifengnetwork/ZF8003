@@ -29,32 +29,14 @@ class Admin extends Base
      */
     public function list1()
     {
-      
-        $page = 10;
         $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $where = '';
         if($seach){
-            $page = 0;
             // 搜索条件
             $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax'],$seach['role']); 
             // 列出数据
-            $list = Db::name('admin')->where($where)->order('addtime desc')-> paginate(15, false, ['query' => request()->param()]);
-            $cname[0] = '';
-            if ($list) {
-                foreach ($list as $v) {
-                    $cids[] = $v['group_id'];
-                }
-
-                if (isset($cids)) {
-                    $cids = implode("','", $cids);
-                    $cids = Db::query("select `id`,`name` from `zf_admin_group` where `id` in ('$cids')");
-                    foreach ($cids as $c) {
-                        $cname[$c['id']] = $c['name'];
-                    }
-                }
-            } 
-            $num = count($list);
-        }else{
-            $list = Db::name('admin')->order('addtime desc')->paginate(15);
+        }
+            $list = Db::name('admin')->where($where)->order('addtime desc')->paginate(15, false, ['query' => request()->param()]);
             $num = count($list);
             // 防止空值报错
             $cname[0] = '';
@@ -69,11 +51,9 @@ class Admin extends Base
                     foreach ($cids as $c) {
                         $cname[$c['id']] = $c['name'];
                     }
-                    
                 }
             }
-        }
-
+        
         $role = Db::name('admin_group')->select();
         $this->assign('role',$role);
         $this->assign('num', $num); 

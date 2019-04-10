@@ -225,18 +225,20 @@ class Goods extends Base{
         if($list){
             $pname[0] = '顶级分类';
             foreach($list as $v){
-                $pids[] = $v['id'];
+                $pids[] = $v['parent_id'];
             }
+        //    dump($pids);
             if(isset($pids) && $pids){
                 $pids = implode("','", $pids);
                 $pinfo = Db::query("select `id`,`name` from `zf_category` where `id` in ('$pids')");
                 foreach($pinfo as $p){
                     $pname[$p['id']] = $p['name'];
                 }
+                // dump($pname);
                 $this->assign('pname', $pname);
             }
         }
-        
+        // dump($list);
         $this->assign('list', $list);
         $this->assign('count', $count);
         $this->assign('keywords', $keywords);
