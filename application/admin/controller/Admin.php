@@ -37,7 +37,7 @@ class Admin extends Base
             // 搜索条件
             $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax'],$seach['role']); 
             // 列出数据
-            $list = Db::name('admin')->where($where)->order('addtime desc')->paginate(15);
+            $list = Db::name('admin')->where($where)->order('addtime desc')-> paginate(15, false, ['query' => request()->param()]);
             $cname[0] = '';
             if ($list) {
                 foreach ($list as $v) {
