@@ -31,9 +31,10 @@
 				<tr class="text-c">
                     <th width="40">ID</th>
                     <th width="300">标题</th>
-                    <th width="100">分类</th>
+                    <th width="130">分类</th>
                     <th width="100">作者</th>
-                    <th width="150">来源</th>
+					<th width="150">来源</th>
+					<th width="100">类型</th>
 					<th width="100">状态</th>
 					<th width="130">更新时间</th>
 					<th width="100">操作</th>
@@ -47,7 +48,14 @@
                     <td>{$vo.title}</td>
                     <td>{if condition="isset($cname[$vo.cate_id])"}{$cname[$vo.cate_id]}{else}{$vo.cate_id}{/if}</td>
                     <td>{$vo.author}</td>
-                    <td>{$vo.source}</td>
+					<td>{$vo.source}</td>
+					<td class="td-type">
+						{if condition="$vo.type eq 1"}
+							<span class="label label-success radius">栏目推荐</span>
+						{else /}
+							普通
+						{/if}
+					</td>
 					<td class="td-status">
 						{if condition="$vo.is_lock eq 0"}
 						<span class="label label-success radius">正常</span>
@@ -57,6 +65,18 @@
 					</td>
 					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
                     <td class="td-manage" data-id="{$vo.id}">
+						{if condition="$vo.type eq 1"}
+							<a style="text-decoration:none" onClick="article_type_stop(this)" href="javascript:;"
+								title="修改类型：普通">
+								<i class="Hui-iconfont">&#xe630;</i>
+							</a>
+	
+						{else /}
+							<a style="text-decoration:none" onClick="article_type_start(this)" href="javascript:;"
+								title="修改类型：推荐">
+								<i class="Hui-iconfont">&#xe61b;</i>
+							</a>
+						{/if}
                         <a title="编辑" href="javascript:;" onclick="article_edit('文章编辑','/admin/article/add_article?article_id={$vo.id}','','1200','800')"
                             class="ml-5" style="text-decoration:none">
                         	<i class="Hui-iconfont">&#xe6df;</i>
@@ -115,6 +135,47 @@
 		/*文章-编辑*/
 		function article_edit(title, url, id, w, h) {
 			layer_show(title, url, w, h,1);
+		}
+
+		/*类型修改：普通*/
+		function article_type_stop(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要取消首页显示吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/article/edit_type_article',{status:0,id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="article_type_start(this)" href="javascript:;" title="修改类型：普通" style="text-decoration:none"><i class="Hui-iconfont">&#xe61b;</i></a>');
+						$(obj).parents("tr").find(".td-type").html('普通');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+				
+			});
+		}
+
+		/*类型修改：推荐*/
+		function article_type_start(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要推荐到首页显示吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/article/edit_type_article',{status:1,id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="article_type_stop(this)" href="javascript:;" title="修改类型：推荐" style="text-decoration:none"><i class="Hui-iconfont">&#xe630;</i></a>');
+						$(obj).parents("tr").find(".td-type").html('<span class="label label-success radius">栏目推荐</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+			});
 		}
 	</script>
 </body>

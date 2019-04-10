@@ -109,6 +109,19 @@ class Article extends Base{
         return $this->fetch();
     }
 
+    # 修改文章类型显示
+    public function edit_type_article(){
+        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1]) ? intval($_POST['status']) : 99;
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        if($id && $status < 2){
+            $time = time();
+            $res = Db::name('article')->where('id',$id)->update(['type' => $status, 'utime' => $time]);
+            if($res){
+                return json(['status' => 1,'utime' => date('Y-m-d H:i:s', $time)]);
+            }
+        }
+        return json(['status' => 0]);
+    }
 
     /**
      * 删除文章
@@ -171,6 +184,7 @@ class Article extends Base{
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
             $is_lock = isset($_POST['is_lock']) ? intval($_POST['is_lock']) : 0;
+            $is_view = isset($_POST['is_view']) ? intval($_POST['is_view']) : 0;
 
             if(!$name){
                 return json(['status' => 0, 'msg' => '请输入分类名称！']);
@@ -192,9 +206,9 @@ class Article extends Base{
 
             $time = time();
             if($category_id > 0){
-                $sql = "update `zf_category` set `name` = '$name', `parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids' where `id` = '$category_id'";
+                $sql = "update `zf_category` set `name` = '$name', `parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids',`is_view` = '$is_view' where `id` = '$category_id'";
             }else{
-                $sql = "insert into `zf_category` (`name`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`) values ('$name','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','article')";
+                $sql = "insert into `zf_category` (`name`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`,`is_view`) values ('$name','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','article','$is_view')";
             }
             $res = Db::execute($sql);
             if($res){
@@ -242,6 +256,35 @@ class Article extends Base{
         $this->assign('cate', $cate);
         return $this->fetch();
     }
+
+    # 修改分类状态
+    public function edit_status_category(){
+        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1]) ? intval($_POST['status']) : 99;
+        $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+        if($category_id && $status < 2){
+            $time = time();
+            $res = Db::name('category')->where('id',$category_id)->update(['is_lock' => $status, 'time' => $time]);
+            if($res){
+                return json(['status' => 1,'utime' => date('Y-m-d H:i:s', $time)]);
+            }
+        }
+        return json(['status' => 0]);
+    }
+
+    # 修改分类前端显示
+    public function edit_view_category(){
+        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1]) ? intval($_POST['status']) : 99;
+        $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+        if($category_id && $status < 2){
+            $time = time();
+            $res = Db::name('category')->where('id',$category_id)->update(['is_view' => $status, 'time' => $time]);
+            if($res){
+                return json(['status' => 1,'utime' => date('Y-m-d H:i:s', $time)]);
+            }
+        }
+        return json(['status' => 0]);
+    }
+
 
     /**
      * 删除文章分类

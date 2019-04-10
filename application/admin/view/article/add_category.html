@@ -54,6 +54,19 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>首页显示：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input name="is_view" type="radio" id="is_view-1" value="0" {if condition="(isset($info) && $info.is_view eq 0) or !isset($info)"}checked{/if} >
+                    <label for="is_view-1">否</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="is_view-2" value="1" name="is_view" {if condition="isset($info) && $info.is_view eq 1"}checked{/if}>
+                    <label for="is_view-2">显示</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <a class="btn btn-primary radius" onclick="submit();" type="button">提交</a>
             </div>

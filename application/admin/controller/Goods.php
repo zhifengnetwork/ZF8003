@@ -95,7 +95,6 @@ class Goods extends Base{
             $freight_temp = isset($_POST['freight_temp']) ? intval($_POST['freight_temp']) : 0;
             $details = isset($_POST['editorValue']) ? addslashes($_POST['editorValue']) : ''; 
 
-            
             if(!$name){
                 echo "<script>parent.error('请填写商品名称')</script>";
                 exit;
@@ -130,11 +129,12 @@ class Goods extends Base{
                 if(!file_exists($save_dir.$goods_id)){
                     mkdir($save_dir.$goods_id, 0777, true);
                 }
+
+                $thumb_path = $goods_id.'/thumb.png';
                 foreach($images as $k=>$v){
                     if(!strstr($v,'images-')){
                         if($k == 0){
                             $thumb = \think\Image::open($temp_dir.$v);
-                            $thumb_path = $goods_id.'/thumb.png';
                             $thumb->thumb(150,150,\think\Image::THUMB_CENTER)->save($save_dir.$thumb_path);
                         }
                         $im = \think\Image::open($temp_dir.$v);

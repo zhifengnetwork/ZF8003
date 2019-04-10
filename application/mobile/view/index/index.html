@@ -111,48 +111,62 @@
 				{/if}
 
 				<!-- 微解读 -->
-				<div class="nscramble-wrap">
-					<div class="title">
-						<h3>微解读</h3>
-						<a href="#"><span class="more">查看全部{$article_count}项</span></a>
-					</div>
-					<div class="nscramble-list">
-						<li class="nscrambleItem">
-							<a href="#">
-								<img src="__STATIC__/img/home/tupian3@2x.png" />
-								<span class="mask"></span>
-							</a>
-						</li>
-						<li class="nscrambleItem">
-							<a href="#">
-								<img src="__STATIC__/img/home/tupian8@2x.png" />
-								<span class="mask"></span>
-							</a>
-						</li>
-						<li class="nscrambleItem">
-							<a href="#">
-								<img src="__STATIC__/img/home/tupian4@2x.png" />
-								<span class="mask"></span>
-							</a>
-						</li>
-					</div>
-				</div>
-
-				<!-- 问题 -->
-				<div class="question-wrap">
-					<h2>搜索我DNA里的健康风险</h2>
-					<ul class="question-list">
-						{volist name="article" id="vo"}
-							<li>
-								<div class="text">
-									<h3><a href="#">基因检测有什么意义?</a></h3>
-									<p>我们可以从基因检测的遗传密码中探究最真实的自己，比如：“为什么我喝酒会脸红？我有什么天赋？我是节食减肥快，还是跑步减肥快？我体内潜藏了哪些易感致病基因？......</p>
-								</div>
-								<div class="img-wrap">
-									<img src="__STATIC__/img/home/tupian5@2x.png" />
-								</div>
+				{if condition="isset($article)"}
+					<div class="nscramble-wrap">
+						<div class="title">
+							<h3>微解读</h3>
+							<a href="#"><span class="more">查看全部{$article_count}项</span></a>
+						</div>
+						{if condition="isset($article.recom) && $article.recom"}
+						<div class="nscramble-list">
+						{volist name="article.recom" id="vo"}
+							<li class="nscrambleItem">
+								<a href="#">
+									<img src="__IMAGES__article/{$vo.thumb}" />
+									<span class="mask"></span>
+								</a>
 							</li>
 						{/volist}
+						</div>
+						{/if}
+					</div>
+					
+					{if condition="isset($article.list) && $article.list"}
+						{volist name="$article.list" id="vo"}
+							<div class="question-wrap">
+								<h2>{$vo.name}</h2>
+								<ul class="question-list">
+									{volist name="vo.list" id="vl"}
+										<li>
+											<div class="text">
+												<h3><a href="#">{$vl.title}</a></h3>
+												<p>{$vl.desc}</p>
+											</div>
+											<div class="img-wrap">
+												<img src="__IMAGES__article/{$vl.thumb}" />
+											</div>
+										</li>
+									{/volist}
+								</ul>
+							</div>
+						{/volist}
+					{/if}
+
+				{/if}
+
+				<!-- 问题 -->
+				<!-- <div class="question-wrap">
+					<h2>搜索我DNA里的健康风险</h2>
+					<ul class="question-list">
+						<li>
+							<div class="text">
+								<h3><a href="#">基因检测有什么意义?</a></h3>
+								<p>我们可以从基因检测的遗传密码中探究最真实的自己，比如：“为什么我喝酒会脸红？我有什么天赋？我是节食减肥快，还是跑步减肥快？我体内潜藏了哪些易感致病基因？......</p>
+							</div>
+							<div class="img-wrap">
+								<img src="__STATIC__/img/home/tupian5@2x.png" />
+							</div>
+						</li>
 						<li>
 							<div class="text">
 								<h3><a href="#">基因检测有什么意义?</a></h3>
@@ -181,7 +195,7 @@
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 			</div>
 			<!-- 底部导航 -->
 			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>

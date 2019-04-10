@@ -17,9 +17,9 @@
 		</form>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l">
-                 <a href="javascript:;" onclick="category_add('添加文章分类','{:url('admin/article/add_category')}','800','600')" class="btn btn-primary radius">
+                 <a href="javascript:;" onclick="category_add('添加分类','{:url('admin/article/add_category')}','800','600')" class="btn btn-primary radius">
                     <i class="Hui-iconfont">&#xe600;</i> 
-                    添加文章分类
+                    添加分类
                 </a>
             </span> 
             <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
@@ -32,6 +32,7 @@
                     <th width="40">ID</th>
                     <th width="150">分类名称</th>
 					<th width="150">上级分类</th>
+					<th width="150">首页显示</th>
 					<th width="150">状态</th>
 					<th width="130">更新时间</th>
 					<th width="100">操作</th>
@@ -44,6 +45,13 @@
                     <td>{$vo.id}</td>
                     <td>{$vo.name}</td>
 					<td>{if condition="isset($pname[$vo.parent_id])"}{$pname[$vo.parent_id]}{else}{$vo.parent_id}{/if}</td>
+					<td class="td-view">
+						{if condition="$vo.is_view eq 1"}
+						<span class="label label-success radius">显示</span>
+						{else /}
+						<span class="label label-default radius">否</span>
+						{/if}
+					</td>
 					<td class="td-status">
 						{if condition="$vo.is_lock eq 0"}
 						<span class="label label-success radius">正常</span>
@@ -53,6 +61,32 @@
 					</td>
 					<td>{$vo.time|date="Y-m-d H:i:s",###}</td>
                     <td class="td-manage" data-id="{$vo.id}">
+						{if condition="$vo.is_lock eq 0"}
+							<a style="text-decoration:none" onClick="category_stop(this)" href="javascript:;"
+								title="修改分类状态">
+								<i class="Hui-iconfont">&#xe631;</i>
+							</a>
+	
+						{else /}
+							<a style="text-decoration:none" onClick="category_start(this)" href="javascript:;"
+								title="修改分类状态">
+								<i class="Hui-iconfont">&#xe615;</i>
+							</a>
+						{/if}
+
+						{if condition="$vo.is_view eq 1"}
+							<a style="text-decoration:none" onClick="category_view_stop(this)" href="javascript:;"
+								title="取消首页显示">
+								<i class="Hui-iconfont">&#xe630;</i>
+							</a>
+	
+						{else /}
+							<a style="text-decoration:none" onClick="category_view_start(this)" href="javascript:;"
+								title="首页显示">
+								<i class="Hui-iconfont">&#xe61b;</i>
+							</a>
+						{/if}
+
                         <a title="编辑" href="javascript:;" onclick="category_edit('文章分类编辑','/admin/article/add_category?category_id={$vo.id}','','800','500')"
                             class="ml-5" style="text-decoration:none">
                         	<i class="Hui-iconfont">&#xe6df;</i>
@@ -92,7 +126,7 @@
 		*/
 		/*文章分类-增加*/
 		function category_add(title, url, w, h) {
-			layer_show(title, url, w, h);
+			layer_show(title, url, w, h,1);
 		}
 		/*文章分类-删除*/
 		function category_del(obj, id) {
@@ -111,6 +145,88 @@
 		/*文章分类-编辑*/
 		function category_edit(title, url, id, w, h) {
 			layer_show(title, url, w, h,1);
+		}
+
+		/*分类-停用*/
+		function category_stop(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要修改分类状态吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/article/edit_status_category',{status:1,category_id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_start(this)" href="javascript:;" title="修改分类状态" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">锁定</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+				
+			});
+		}
+
+		/*分类-启用*/
+		function category_start(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要修改分类状态吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/article/edit_status_category',{status:0,category_id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_stop(this)" href="javascript:;" title="修改分类状态" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">正常</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+			});
+		}
+
+		/*分类-取消首页显示*/
+		function category_view_stop(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要取消首页显示吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/article/edit_view_category',{status:0,category_id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_view_start(this)" href="javascript:;" title="首页显示" style="text-decoration:none"><i class="Hui-iconfont">&#xe61b;</i></a>');
+						$(obj).parents("tr").find(".td-view").html('<span class="label label-default radius">否</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+				
+			});
+		}
+
+		/*分类-推送到首页显示*/
+		function category_view_start(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要推荐到首页显示吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/article/edit_view_category',{status:1,category_id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_view_stop(this)" href="javascript:;" title="取消首页显示" style="text-decoration:none"><i class="Hui-iconfont">&#xe630;</i></a>');
+						$(obj).parents("tr").find(".td-view").html('<span class="label label-success radius">显示</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+			});
 		}
 	</script>
 </body>

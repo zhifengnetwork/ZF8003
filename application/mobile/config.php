@@ -6,5 +6,6 @@ return [
         '__STATIC__' => '/public/static/mobile',
         '__ROOT__'=>'',
         '__GOODSIMG__' => '/public/images/goods/',
+        '__IMAGES__' => '/public/images/',
     ]
 ];
