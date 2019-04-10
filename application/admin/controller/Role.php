@@ -76,9 +76,6 @@ class Role extends Base
             $this->assign('list', $list);
             $this->assign('info', $role_info);
         } 
-
-   
-
         return $this->fetch();
     }
     public function handle(){

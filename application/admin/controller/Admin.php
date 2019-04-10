@@ -5,6 +5,7 @@ use think\Controller;
 use think\Db;
 use think\Loader;
 use think\Session;
+use think\Paginator;
 class Admin extends Base
 {
     public function _initialize()
@@ -28,6 +29,7 @@ class Admin extends Base
      */
     public function list1()
     {
+      
         $page = 10;
         $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
         if($seach){
@@ -40,13 +42,15 @@ class Admin extends Base
         }else{
             $list=$this->l_data($where='',$page);
             $num = count($list);
+
+
             // $admin_list = Db::name('admin')->select(); 
             // // dump($admin_list);
             // $g_list     = Db::name('admin_group')->select();
             // // dump($g_list);
             // foreach($admin_list as $key => $value){
             //     # code...
-                
+
             //     foreach ($g_list as $k => $val) {
             //         # code...
             //         if($value['group_id'] == $val['id']){
@@ -64,6 +68,47 @@ class Admin extends Base
             // $comb[] = $value;
             // }
             // $num = count($comb);
+
+            // $paginate = new Paginate();
+            // $p =   $paginate->page($comb, 'adminRes', 'plistpage', 2);
+            // dump($p);
+            // $Page= new \Think\Page($count,25);
+            // $newarray_1 = array_slice($comb,$Page->firstRow,$Page->listRows);
+            // $show= $Page->show();
+            // dump($show);
+
+
+
+            $lista = Db::name('admin')->order('id desc')->paginate(15);
+            dump($lista);
+            $cname[0] = '';
+            if ($lista) {
+                foreach ($lista as $v) {
+                    $cids[] = $v['group_id'];
+                    // if ($v['freight_temp'] > 0) $ftids[] = $v['freight_temp'];
+                }
+                // dump($cids);
+                if (isset($cids)) {
+                    $cids = implode("','", $cids);
+            
+                    $cids = Db::query("select `id`,`name` from `zf_category` where `id` in ('$cids')");
+                    foreach ($cids as $c) {
+                        $cname[$c['id']] = $c['name'];
+                    }
+                }
+                // if (isset($ftids) && !empty($ftids)) {
+                //     $ftids = implode("','", $ftids);
+                //     $ftids = Db::query("select `id`,`name` from `zf_freight_temp` where `id` in ('$ftids')");
+                //     foreach ($ftids as $f) {
+                //         $fname[$f['id']] = $f['name'];
+                //     }
+                //     $this->assign('fname', $fname);
+                // }
+            }
+
+
+
+
 
         }
 
@@ -83,7 +128,7 @@ class Admin extends Base
                 ->join('admin_group ad', 'a.group_id = ad.id')
                 ->field('a.*,ad.name g_name')
                 ->where($where)
-                ->where('a.id', 'not in', '1')
+                // ->where('a.id', 'not in', '1')
                 ->order('id asc')
                 ->paginate($page);
         // }else{

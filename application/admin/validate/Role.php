@@ -8,16 +8,16 @@ class Role extends validate
 {
 
     protected $rule = [
-        'name'          => 'require|chsAlpha|length:4,16|unique:admin_group',
+        'name'          => 'require|chsAlpha|length:2,16|unique:admin_group',
         'jurisdiction'  => 'require'
         // 'password'      => 'require|length:4,16',
         // 'password2'     => 'require|length:4,16',
         // 'group_id'      => 'require',
     ];
     protected $message = [
-        'name.require'          => '用户名必填',
-        'name.chsAlpha'        => '用户名只能汉字字母',
-        'name.length'           => '用户名长度4-16位',
+        'name.require'          => '角色名必填',
+        'name.chsAlpha'        => '角色名只能汉字字母',
+        'name.length'           => '角色名长度2-16位',
         'name.unique'           =>  '已存在此角色',
         'jurisdiction'          => '请选择权限'
         // 'password.length' => '密码长度4-16',

@@ -14,6 +14,7 @@ class Goods extends Base{
         $field = '`id`,`name`,`cate_id`,`price`,`self_price`,`promotion_price`,`promotion_to`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
 
         $list = Db::name('goods')->field($field)->where($where)->order('utime desc')->paginate(15);
+        
         $count = Db::name('goods')->where($where)->count();
         $cname[0] = '';
         if($list){
@@ -21,6 +22,7 @@ class Goods extends Base{
                 $cids[] = $v['cate_id'];
                 if($v['freight_temp'] > 0) $ftids[] = $v['freight_temp'];
             }
+           
             if(isset($cids)){
                 $cids = implode("','", $cids);
                 $cids = Db::query("select `id`,`name` from `zf_category` where `id` in ('$cids')");
@@ -34,6 +36,7 @@ class Goods extends Base{
                 foreach($ftids as $f){
                     $fname[$f['id']] = $f['name']; 
                 }
+               
                 $this->assign('fname', $fname);
             }
 
