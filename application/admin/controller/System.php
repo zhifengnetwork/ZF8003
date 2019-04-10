@@ -4,7 +4,9 @@
  */
 
 namespace app\admin\Controller;
+
 use think\Db;
+use think\Exception;
 
 class System extends Base
 {
@@ -29,21 +31,58 @@ class System extends Base
     # 商店设置
     public function setting()
     {
-        $data = input('get.');
+        $type = "web_setting";
+        $temp = $this->get_setting($type);
+        $config = $this->handle_setting($temp);
+
+        if($_POST){
+            $data = input('post.');
+            if (isset($data['type'])) {
+                if (isset($data['web_logo'])) {
+                    if (isset($config['web_logo']) && ($data['web_logo'] == $config['web_logo'])) {
+                        $num = 1;
+                    } else {
+                        $logo = $this->move_img($data['web_logo'],'web_logo');
+                        $data['web_logo'] = $logo;
+                    }
+                }
+                if (isset($data['title_logo'])) {
+                    if (isset($config['title_logo']) && ($data['title_logo'] == $config['title_logo'])) {
+                        $num = 1;
+                    } else {
+                        $title_logo = $this->move_img($data['title_logo'],'title_logo');
+                        $data['title_logo'] = $title_logo;
+                    }
+                }
+
+                $bool = $this->setting_handle($data);
+                $temp = $this->get_setting($type);
+                $config = $this->handle_setting($temp);
+            }
+        }
+        
         $province = Db::name('area')->where(array('parent_id'=>0))->select();
         $city = array();
-        $type = "web_setting";
         $info = $this->list;
-        $config = Db::name('config')->where('type',$type)->field('name,value')->select();
-        
         if (isset($data['id']) && intval($data['id'] > 0)) {
-
             $city =  Db::name('area')->where('parent_id',intval($data['id']))->select();
             $result = $city ? ['code' => 1, 'data' => $city] : ['code' => 0];
             return json($result);
         }
-        if (isset($data['type'])) {
-            $bool = $this->setting_handle($data,$config);
+        
+        if (isset($config['province'])) {
+            $province_name = Db::name('area')->where('id',$config['province'])->value('name');
+            $config['province'] = $province_name;
+
+            if (isset($config['city'])) {
+                $city_name = Db::name('area')->where('id',$config['city'])->value('name');
+                $config['city'] = $city_name;
+            }
+
+            if (isset($config['area'])) {
+                $area_name = Db::name('area')->where('id',$config['area'])->value('name');
+                $config['area'] = $area_name;
+            }
         }
         
         $this->assign('type', $type);
@@ -55,47 +94,123 @@ class System extends Base
     }
 
     # 设置处理函数
-    public function setting_handle($data,$config)
+    public function setting_handle($data)
     {
         $bool = false;
         if (is_array($data)) {
             $type = $data['type'];
             array_shift($data);//去除第一个元素
-            array_shift($data);
             $temp = array();
             $key_diff = array();
             $key_same = array();
-            $diff = array();
+            $id = array();
+            $config = $this->get_setting($type);
             
-            if (is_array($config)) {
+            if ($config) {
                 foreach($config as $k2 => $v2){
                     $temp[$v2['name']] = $v2['value'];
+                    $id[$v2['name']] = $v2['id'];
                 }
                 
                 $key_diff = array_diff_key($data,$temp);//取键名差集
-                $key_same = array_intersect_key($temp,$data);//取键名交集
-                $diff = array_diff($key_same,$data);//取键值差集
+                $key_same = array_intersect_key($data,$temp);//取键名交集
             }
             
             $add = array();
             $update = array();
-
-            if ($key_diff) {
-                foreach($key_diff as $k1 => $v1){
-                    array_push($add,['name'=>$k1,'value'=>$v1,'type'=>$type]);
-                }
-                $bool = Db::name('config')->insertAll($result);
-            }
-            if ($diff) {
-                foreach($diff as $k3 => $v3){
-                    array_push($update,['name'=>$k3,'value'=>$v3]);
-                }
-                $bool = Db::name('config')->update($result);
-            }
+            Db::startTrans();//开启事务
             
+            try {
+                if ($key_diff) {
+                    foreach($key_diff as $k1 => $v1){
+                        array_push($add,['name'=>$k1,'value'=>trim($v1),'type'=>$type]);
+                    }
+                    $bool = Db::name('config')->insertAll($add);
+                }
+                if ($key_same) {
+                    foreach($key_same as $k3 => $v3){
+                        array_push($update,['id'=>$id[$k3],'value'=>$v3]);
+                        $bool = Db::name('config')->update(['id'=>$id[$k3],'value'=>trim($v3)]);
+                    }
+                }
+                
+                Db::commit();//提交事务
+            } catch (\Exception $e) {
+                Db::rollback();//事务回滚
+            }
         }
         
         return $bool;
+    }
+
+    #获取配置信息
+    public function get_setting($type)
+    {
+        $result = Db::name('config')->where('type',$type)->field('id,name,value')->select();
+        return $result;
+    }
+
+    #处理配置信息
+    public function handle_setting($data)
+    {
+        $result = array();
+        if (is_array($data)) {
+            foreach($data as $key => $value){
+                $result[$value['name']] = $value['value'];
+            }
+        }
+        
+        return $result;
+    }
+
+    # 移动图片
+    public function move_img($img,$name='')
+    {
+        $img_path = '';
+        $path = ROOT_PATH . 'public/images/setting/';
+        $dir = 'temp/';
+
+        if (is_file($path.$dir.$img)) {
+            $image = \think\Image::open($path.$dir.$img);
+            $bool = $image->save($path.$name.'.jpg');
+            if($bool){
+                $img_path = '/public/images/setting/'.$name.'.jpg';
+            }
+        }
+
+        return $img_path;
+    }
+
+    # 删除图片
+    public function del_img()
+    {
+        $data = input('post.');
+        $path = 'public/images/setting/';
+        $is_del = false;
+        
+        if (isset($data['type'])) {
+            $info = $this->get_setting($data['type']);
+            $result = $this->handle_setting($info);
+            
+            if (isset($data['img']) && $data['img']) {
+                $file_path = ROOT_PATH . $path . $data['img'];
+                if (isset($data['name']) && (isset($result[$data['name']]))){
+                    if ($data['img'] == $result[$data['name']]) {
+                        $name = $data['name'];
+                        $bool = Db::name('config')->where('name',$name)->where('type',$data['type'])->update(['value'=>""]);
+                        $file_path = $bool ? ROOT_PATH . $result[$data['name']] : '';
+                    }
+                }
+                
+                if (is_file($file_path)) {
+                    $is_del = @unlink($file_path);
+                }
+            }
+        }
+
+        $code = $is_del ? ['code' => 1] : ['code' => 0];
+
+        return json($code);
     }
 
     #基本设置

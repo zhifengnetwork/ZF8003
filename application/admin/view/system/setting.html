@@ -19,7 +19,7 @@
 	}
 </style>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add" enctype="multipart/form-data">
+	<form method="POST" class="form form-horizontal" id="form-article-add">
 		<input type="hidden" name="type" value="{$type}">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
@@ -33,7 +33,7 @@
 						<span class="c-red">*</span>
 						网站名称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-title" name="web_name" placeholder="控制在25个字、50个字节以内" value="{$config.web_name ?? ''}" class="input-text">
+						<input type="text" id="website-web_name" name="web_name" placeholder="控制在25个字、50个字节以内" value="{$config.web_name ?? ''}" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -47,9 +47,17 @@
 						<span class="c-red">*</span>
 						网站Logo：</label>
 					<div class="formControls col-xs-8 col-sm-9 logo-image" id="logo-image-1">
-						<a onclick="upload_image(1);" id="add-goods-image-1">
-							<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
-						</a>
+						{empty name="$config.web_logo"}
+							<a onclick="upload_image(1);" id="add-goods-image-1">
+								<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+							</a>
+						{else/}
+							<a>
+								<img src="{$config.web_logo}" alt="上传图片"/>
+								<input type="hidden" id="website-web_logo" name="web_logo" value="{$config.web_logo}" class="input-text">
+                    			<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,1,'{$config.web_logo}')">&#xe6e2;</i>
+							</a>
+						{/empty}
 					</div>
 				</div>
 				<div class="row cl">
@@ -65,7 +73,7 @@
 						<span class="c-red">*</span>
 						网站标题：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-title" name="web_title" value="{$config.web_title ?? ''}" class="input-text">
+						<input type="text" id="website-web_title" name="web_title" value="{$config.web_title ?? ''}" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -73,9 +81,17 @@
 						<span class="c-red">*</span>
 						网站标题图标：</label>
 					<div class="formControls col-xs-8 col-sm-9 logo-image" id="logo-image-2">
-						<a onclick="upload_image(2);" id="add-goods-image-2">
-							<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
-						</a>
+						{empty name="$config.title_logo"}
+							<a onclick="upload_image(2);" id="add-goods-image-2">
+								<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+							</a>
+						{else/}
+							<a>
+								<img src="{$config.title_logo}" alt="上传图片"/>
+								<input type="hidden" id="website-title_logo" name="title_logo" value="{$config.title_logo}" class="input-text">
+                    			<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,2,'{$config.title_logo}')">&#xe6e2;</i>
+							</a>
+						{/empty}
 					</div>
 				</div>
 				<div class="row cl">
@@ -91,7 +107,7 @@
 						<span class="c-red">*</span>
 						网站描述：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="website-description" name="web_desc" placeholder="空制在80个汉字，160个字符以内" value="{$config.web_desc ?? ''}" class="input-text">
+						<input type="text" id="website-web_desc" name="web_desc" placeholder="空制在80个汉字，160个字符以内" value="{$config.web_desc ?? ''}" class="input-text">
 					</div>
 				</div>
 				<div class="row cl">
@@ -124,16 +140,16 @@
 						所在地址：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<select onclick="get_city()" id="province" name="province">
-							<option value="0">选择省份</option>
+							<option value="0">{empty name="$config.province"} 选择省份 {else/} {$config.province}{/empty}</option>
 							{foreach name="$province" item="vo"}
 								<option value="{$vo.id}">{$vo.name}</option>
 							{/foreach}
 						</select>
 						<select onblur="get_area()" id="city" name="city">
-							<option value="0">选择城市</option>
+							<option value="0">{empty name="$config.city"} 选择城市 {else/} {$config.city}{/empty}</option>
 						</select>
 						<select id="area" name="area">
-							<option value="0">选择区域</option>
+							<option value="0">{empty name="$config.area"} 选择区域 {else/} {$config.area}{/empty}</option>
 						</select>
 					</div>
 				</div>
@@ -169,7 +185,6 @@
 	<input type="text" name="module" value="setting" >
 </form>
 <iframe name="ajaxR" style="display:none;"></iframe>
-<iframe name="ajaxR-from" style="display:none;"></iframe>
 <script type="text/javascript">
 	window.onload = function() { 
 		$('#hide-form-file').change(function(){
@@ -178,24 +193,47 @@
 	}
 
 	//删除图片
-    function del_up_image(obj,num){
+    function del_up_image(obj,num,img){
         layer.confirm('确认要删除图片么？', {icon: 3, title:'提示'}, function(index){
-            $(obj).parent('a').remove();
 			var str1 = '#logo-image-'
 			var str2 = '#add-goods-image-'
 			var str_logo = str1 + num + ' > a';
 			var str3 = str1 + num + ' ' + str2 + num;
-            var size = $(str_logo).size();
-            if(size < 1){
+			var size = $(str_logo).size();
+			var type = "{$type}";
+			var name = (num == 1) ? 'web_logo' : 'title_logo';
+            if(size > 0){
                 if($(str3).length == 0) {
-                    //元素不存在时执行的代码
-                    var _html = ''+
-                        '<a onclick="upload_image(' + num + ');" id="' + str2 + '">'+
-                            '<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
-                        '</a>';
-                    $(str_logo).append(_html);
-                }
-            }
+					$.ajax({
+						type: "post",
+						url: "del_img",
+						data: {'img':img,'type':type,'name':name},
+						success: function(data){
+							if (data.code == 1) {
+								layer.msg('删除成功！', {icon: 1, time: 1000},function(){
+									window.location.href = "/admin/system/setting";
+									//元素不存在时执行的代码
+									
+									// var _html = ''+
+									// 	'<a onclick="upload_image(' + num + ');" id="' + str2 + '">'+
+									// 		'<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
+									// 	'</a>';
+									// $(str_logo).append(_html);
+								});
+							} else {
+								layer.msg('删除失败！', {icon: 2, time: 1000});
+							}
+						},
+						error: function(){
+							layer.alert("系统繁忙，请稍等！");
+						}
+					});
+                } else {
+					layer.msg('删除失败！', {icon: 2, time: 1000});
+				}
+            } else {
+				layer.msg('删除失败！', {icon: 2, time: 1000});
+			}
             layer.close(index);
         });
     }
@@ -217,7 +255,7 @@
 
         if(status == 1){
 			var flag = $('#logo-flag').val();
-			var name = 'logo';
+			var name = 'web_logo';
 			if (flag == 2) {
 				name = 'title_logo';
 			}
@@ -225,8 +263,8 @@
             var _html = ''+
                 '<a>'+
                     '<img class="ex-image" src="'+src+'" />'+
-                    '<input type="hidden" name="' + name + '" value="'+image+'">'+
-                    '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,' + flag + ')">&#xe6e2;</i>'+
+                    '<input type="hidden" id="website-' + name + '" name="' + name + '" value="'+image+'" class="input-text">'+
+                    '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,' + flag + ',' + image + ')">&#xe6e2;</i>'+
                 '</a>';
 
 			var str1 = '#add-goods-image-' + flag;
@@ -251,7 +289,7 @@
 
 		if (province_id && (province_id > 0) && (is_province != province_id)) {
 			$.ajax({
-				type: "get",
+				type: "post",
 				url: "setting",
 				async: false,
 				data: {'id':province_id},
@@ -260,6 +298,7 @@
 						$('#city option:not(:first)').remove(); //删除除第一个子节点以外的节点
 						$('#area option:not(:first)').remove();
 						var html = "";
+						//遍历数组
 						data.data.forEach(function(value,i){
 							html += "<option value='" + value['id'] + "'>" + value['name'] + "</option>";
 						})
@@ -268,7 +307,7 @@
 					}
 				},
 				error: function(){
-					layer.alert("系统繁忙，请联系管理员！");
+					layer.alert("系统繁忙，请稍等！");
 				}
 			});
 		}
@@ -280,7 +319,7 @@
 
 		if (city_id && (city_id > 0) && (is_city != city_id)) {
 			$.ajax({
-				type: "get",
+				type: "post",
 				url: "setting",
 				async: false,
 				data: {'id':city_id},
@@ -288,6 +327,7 @@
 					if (data.code == 1) {
 						$('#area option:not(:first)').remove();
 						var html = "";
+						//遍历数组
 						data.data.forEach(function(value,i){
 							html += "<option value='" + value['id'] + "'>" + value['name'] + "</option>";
 						})
@@ -297,7 +337,7 @@
 					}
 				},
 				error: function(){
-					layer.alert("系统繁忙，请联系管理员！");
+					layer.alert("系统繁忙，请稍等！");
 				}
 			});
 		}
