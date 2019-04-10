@@ -36,6 +36,21 @@ class Article extends Base{
         return $this->fetch();
     } 
 
+    # 示例报告
+    public function example(){
+
+
+
+
+
+
+        return $this->fetch();
+    }
+
+
+
+
+
 
     #文章详情
     public function details(){
