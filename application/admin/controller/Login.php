@@ -3,10 +3,11 @@
  * 后台管理系统首页
  */
 namespace app\admin\controller;
-use Captcha\Captcha;
+use think\captcha\Captcha;
 use think\Db;
 use think\Loader;
 use think\Session;
+use think\Config;
 class Login extends Base
 {
 
@@ -28,10 +29,9 @@ class Login extends Base
     }
 
     public function entry(){
-        $captcha = new Captcha();
+        $captcha = new Captcha(Config::get('captcha'));
         return $captcha->entry();
     }
-
 
     public function login(){
         $data = input('post.');
