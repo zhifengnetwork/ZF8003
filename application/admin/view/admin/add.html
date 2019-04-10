@@ -54,6 +54,7 @@
 		<label class="form-label col-xs-4 col-sm-3">角色：</label>
 		<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
 			<select class="select" name="group_id" size="1">
+				<option value="">请选择角色</option>
 				{volist name="role" id="vo"}
 				<option value="{$vo.id}">{$vo.name}</option>
 				{/volist}
@@ -86,34 +87,46 @@ $(function(){
 	});
 	
 	$("#form-admin-add").validate({
-		rules:{
-			name:{
-				required:true,
-				minlength:4,
-				maxlength:16
-			},
-			password:{
-				required:true,
-				minlength: 4,
-				maxlength: 16				
-			},
-			password2:{
-				required:true,
-				equalTo: "#password",
-				minlength: 4,
-				maxlength: 16				
-			},
+		// rules:{
+		// 	name:{
+		// 		required:true,
+		// 		minlength:4,
+		// 		maxlength:16
+		// 	},
+		// 	password:{
+		// 		required:true,
+		// 		minlength: 4,
+		// 		maxlength: 16				
+		// 	},
+		// 	password2:{
+		// 		required:true,
+		// 		equalTo: "#password",
+		// 		minlength: 4,
+		// 		maxlength: 16				
+		// 	},
 
-			group_id:{
-				required:true,
-			},
-		},
-		onkeyup:false,
-		focusCleanup:true,
+
+		// },
+		// onkeyup:false,
+		// focusCleanup:true,
 		success:"valid",
 
 		submitHandler:function(form){
-		 
+			var username = $("#adminName").val()
+			var password = $("#password").val()
+			var password2 = $("#password2").val()
+			if (!username) {
+				layer.msg('用户名必须填写',{ icon: 2, time: 1000 });
+				return false;
+			}
+			if (!password) {
+				layer.msg('密码必须填写',{ icon: 2, time: 1000 });
+				return false;
+			}
+			if (!password2) {
+				layer.msg('确认密码必须填写',{ icon: 2, time: 1000 });
+				return false;
+			}    		 
 			$.ajax({
 				type: 'post',
 				url: "{:url('admin/admin/adminHandle')}",

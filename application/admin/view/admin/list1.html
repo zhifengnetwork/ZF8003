@@ -9,7 +9,16 @@
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 		<form method="GET" action="">
-			<div class="text-c"> 日期范围：
+
+			<div class="text-c"> 
+				角色：
+			<select class="input-text" style="width:120px;" name="seach[role]">
+				<option value="">请选择角色</option>
+				{volist name="role" id="ro"}	
+				<option value="{$ro.id}">{$ro.name}</option>
+				{/volist}
+			</select>
+				日期范围：
 				<input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]"
 					value="{if condition='isset($seach.datemin)'}{$seach.datemin}{/if}" class="input-text Wdate"
 					style="width:120px;">
@@ -67,7 +76,7 @@
 						<td>{$vo.name}</td>
 						<!-- <td>13000000000</td>
 						<td>admin@mail.com</td> -->
-						<td>{if condition="isset($cname[$vo.group_id])"}{$cname[$vo.group_id]}{else /}-{/if}</td>
+						<td>{if condition="isset($cname[$vo.group_id]) AND ($vo.is_super neq 1)"}{$cname[$vo.group_id]}{elseif condition="$vo.is_super eq 1"/}超级管理员{else /}-{/if}</td>
 						<td>{:date('Y-m-d,H:s:i',$vo.addtime)}</td>
 						
 						<td class="td-status">
@@ -82,24 +91,26 @@
 						<td class="td-manage">
 
 							{if condition="$vo.is_lock == 1"}
-							<a style="text-decoration:none" onClick="admin_start(this,'{$vo.id}')" href="javascript:;" title="启用"><i
+							<a style="text-decoration:none"  onClick="admin_start(this,'{$vo.id}')" href="javascript:;" title="启用"><i
 									class="Hui-iconfont">&#xe631;</i></a>
 
 							{else/}
-							<a style="text-decoration:none" onClick="admin_stop(this,'{$vo.id}')" href="javascript:;" title="停用"><i
+
+							<a style="text-decoration:none" {if condition="$vo.is_super == 1"} {else/} onClick="admin_stop(this,'{$vo.id}')" {/if} href="javascript:;" title="停用"><i
 									class="Hui-iconfont">&#xe6e1;</i></a>
+
 							{/if}
 
 							<!-- <a style="text-decoration:none" onClick="admin_stop(this,{$vo['id']})" href="javascript:;" title="停用">
 								<i class="Hui-iconfont">&#xe631;</i>
 							</a> -->
 
-							<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','{:url('Admin/edit',array('id'=>$vo['id']))}','1','800','500')" class="ml-5"
+							<a title="编辑" href="javascript:;"  onclick="admin_edit('管理员编辑','{:url('Admin/edit',array('id'=>$vo['id']))}','1','800','500')" class="ml-5"
 								style="text-decoration:none">
 								<i class="Hui-iconfont">&#xe6df;</i>
 							</a>
 
-							<a title="删除" href="javascript:;" onclick="admin_del(this,{$vo['id']})" class="ml-5" style="text-decoration:none">
+							<a title="删除" href="javascript:;" {if condition="$vo.is_super == 1"} {else/} onclick="admin_del(this,{$vo['id']})" {/if} class="ml-5" style="text-decoration:none">
 								<i class="Hui-iconfont">&#xe6e2;</i>
 							</a>
 						</td>

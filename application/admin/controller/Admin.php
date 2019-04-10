@@ -35,9 +35,9 @@ class Admin extends Base
         if($seach){
             $page = 0;
             // 搜索条件
-            $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax']); 
+            $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax'],$seach['role']); 
             // 列出数据
-            $list = Db::name('admin')->where($where)->order('id desc')->paginate(15);
+            $list = Db::name('admin')->where($where)->order('addtime desc')->paginate(15);
             $cname[0] = '';
             if ($list) {
                 foreach ($list as $v) {
@@ -54,9 +54,11 @@ class Admin extends Base
             } 
             $num = count($list);
         }else{
-            $list = Db::name('admin')->order('id desc')->paginate(15);
+            $list = Db::name('admin')->order('addtime desc')->paginate(15);
             $num = count($list);
+            // 防止空值报错
             $cname[0] = '';
+
             if ($list) {
                 foreach ($list as $v) {
                     $cids[] = $v['group_id'];   
@@ -71,9 +73,9 @@ class Admin extends Base
                 }
             }
         }
-         
-       
-        // $this->assign('comb',$comb);
+
+        $role = Db::name('admin_group')->select();
+        $this->assign('role',$role);
         $this->assign('num', $num); 
         $this->assign('cname', $cname); 
     	$this->assign('list',$list);        
@@ -81,7 +83,7 @@ class Admin extends Base
     }
     
     // 搜索条件
-    public function s_condition($conditions, $datemins, $datemaxs)
+    public function s_condition($conditions, $datemins, $datemaxs,$role)
     {
         $time = " 23:59:59";
         if ($conditions) {
@@ -96,6 +98,8 @@ class Admin extends Base
             $where['addtime'] = ['>= time', strtotime($datemins)];
         } elseif ($datemaxs) {
             $where['addtime'] = ['<= time', strtotime($datemaxs . $time)];
+        } elseif ($role) {
+            $where['group_id'] = $role;
         }
         return $where;
     }
@@ -144,7 +148,9 @@ class Admin extends Base
         if ($data['password'] != $data['password2']) {
             return json(['status' => -1, 'msg' => '密码不一致']);
         }
-
+        if (!isset($data['group_id'])) {
+            return json(['status' => -1, 'msg' => '请选择角色']);
+        }          
         // 添加数据 
     	if($data['act'] == 'add'){
             // 检测用户名是否存在
@@ -191,19 +197,21 @@ class Admin extends Base
     // 删除和批量删除
     public function del(){
         $data = input('post.');
+        dump($data);exit;
         if($data['act'] == 'batchdel'){
             $id = json_decode($data['id'], true);
             $where['id'] = array('in', $id);
             $res = Db::name('admin')->where($where)->delete();
         }else{
-            if ($data['id'] > 1) {
-                $res = Db::name('admin')->where('id', $data['id'])->delete();
-            }else{
+            $is_super = Db::name('admin')->where('id',$data['id'])->value('is_super');
+            if ($is_super == 1) {
                 return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
+            }else{
+                $res = Db::name('admin')->where('id', $data['id'])->delete();
+               
             } 
         }
-
-
+        // 日志
         $action = 'del';
         $desc   = '删除管理员';
         $log = $this->adminLog($action, $desc);
