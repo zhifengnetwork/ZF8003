@@ -1,0 +1,42 @@
+.yongjingbiao{
+	
+	width: 100%;
+	
+	
+	
+}
+.yongjingbiao li{
+	
+	width: 92%;
+	margin: auto;
+	display: flex;
+	text-align: center;
+	height: .8rem;
+	line-height: .8rem;
+	border-bottom: 1px solid #ccc;
+	color: #777777;
+	font-size: .27rem;
+	
+}
+.yongjingbiao li span:nth-child(1){
+	
+	flex: 2;
+	
+	
+	
+	
+}
+.yongjingbiao li span:nth-child(2){
+	
+	flex: 3;
+	
+	
+}
+.yongjingbiao li span:nth-child(3){
+	
+	flex: 2;
+	
+	
+	
+	
+}

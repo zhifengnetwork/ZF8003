@@ -1,0 +1,82 @@
+body{background: #eceef3;}
+
+.heredity_info{
+	padding: 0 .2rem;
+}
+.heredity_info .info_title{
+	height: .9rem;
+	line-height: .9rem;
+    font-size: .24rem;
+    letter-spacing: .04rem;
+}
+.heredity_info .info_img{
+	width: 100%;
+	height: 5rem;
+	border-radius: .2rem;
+	overflow: hidden;
+}
+.heredity_info .info_img img{
+	width: 100%;
+	height: 100%;
+}
+.heredity_info .info_content{
+	width: 100%; /* 必须定义宽度 */
+    letter-spacing: .02rem;
+	word-break: break-word; /* 文本行的任意字内断开 */
+	word-wrap: break-word; /* IE */
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap; /* HP printers */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: pre; /* CSS2 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+}
+
+/* 底部点赞、评论盒子 */
+.bottom-bar {
+    width: 100%;
+    height: .98rem;
+    border-top: .02rem solid #d1d3d7;
+    background-color: #fff;
+    font-size: .32rem;
+    display: -webkit-box;/* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+    display: -moz-box; /* Firefox 17- */
+    display: -webkit-flex;/* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+    display: -moz-flex;/* Firefox 18+ */
+    display: -ms-flexbox; /* IE 10 */
+    display:flex;/* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* 点赞评论公共样式 */
+.operation-bar .praiseBtn .praise-icon {
+    width: .26rem;
+    height: .26rem;
+    display: inline-block;
+    background: url(../../img/public/praise@2x.png) no-repeat;
+    background-size: 100%;
+}
+
+.operation-bar .commentBtn .discuss-icon {
+    width: .26rem;
+    height: .26rem;
+    display: inline-block;
+    background: url(../../img/public/comments@2x.png) no-repeat;
+    background-size: 100%;
+}
+
+.operation-bar span {
+    margin-right: .1rem;
+    color: #454545;
+    font-size: .26rem;
+    display: inline-flex;
+    align-items: center;
+    min-width: .9rem;
+}
+
+.operation-bar span .num {
+    font-style: normal;
+    margin-left: .05rem;
+}

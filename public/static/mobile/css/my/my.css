@@ -4,7 +4,7 @@
 	margin: 0;
 	
 }
-.wrap_frame{
+/*.wrap_frame{
 	
 	background: #F7F7F7;
     position: absolute;
@@ -13,7 +13,7 @@
     left: 0;
     right: 0;	
 	
-}
+}*/
 
 .my_header{
 	
@@ -22,7 +22,7 @@
 	line-height: 1rem;
 	font-size: .3rem;
 	text-align: center;
-	color: white;
+	color: #0d0d0e;
 	background:#37AFE6;
 	
 	
@@ -36,6 +36,10 @@
     /*border:1px solid green;*/
     background: url(../../img/my/tupian@2x.png);
     background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
+    -ms-background-size:cover;
+    -webkit-background-size:cover;
     text-align: center;
     position: relative;
   
@@ -76,14 +80,19 @@ ul li:last-child{
 	
 	
 }
-li p{
+li a{
 	
 	font-size: .3rem; 
 	position: absolute;
 	left: .8rem;
 	top: 50%;
 	transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	-moz-transform: translate(0,-50%);
+	-ms-transform: translate(0,-50%);
+	-webkit-transform: translate(0,-50%);
 	display: inline-block;
+	color: black;
 	
 }
 .img2{
@@ -93,6 +102,10 @@ li p{
 	position: absolute;
 	top: 50%;
 	transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	-moz-transform: translate(0,-50%);
+	-ms-transform: translate(0,-50%);
+	-webkit-transform: translate(0,-50%);
 	right: .2rem;
 	
 }

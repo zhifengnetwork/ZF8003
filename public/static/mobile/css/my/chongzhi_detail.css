@@ -1,0 +1,48 @@
+.teamlistbiao{
+	
+	width: 100%;
+	
+	
+	
+}
+.teamlistbiao li{
+	
+	width: 92%;
+	margin: auto;
+	display: flex;
+	text-align: center;
+	height: .8rem;
+	line-height: .8rem;
+	border-bottom: 1px solid #ccc;
+	color: #777777;
+	font-size: .29rem;
+	
+}
+.teamlistbiao li span:nth-child(1){
+	
+	flex: 2;
+	
+	
+	
+	
+}
+.teamlistbiao li span:nth-child(2){
+	
+	flex: 2;
+	
+	
+}
+.teamlistbiao li span:nth-child(3){
+	
+	flex: 2;
+	
+	
+	
+	
+}
+.teamlistbiao li span:nth-child(4){
+	
+	flex: 2;
+	color: #37AFE6;
+	
+}

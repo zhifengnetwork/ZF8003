@@ -1,0 +1,173 @@
+/* 皮肤管理页 */
+
+.skin-list {
+    margin-top: .2rem;
+}
+
+.skin-list .list-item {
+    height: 1.62rem;
+    background-color: #fff;
+    margin-bottom: .3rem;
+}
+
+.skin-list .list-item a {
+    display: -webkit-box;/* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+    display: -moz-box; /* Firefox 17- */
+    display: -webkit-flex;/* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+    display: -moz-flex;/* Firefox 18+ */
+    display: -ms-flexbox; /* IE 10 */
+    display:flex;/* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+    align-items: center;
+    height: 100%;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+}
+
+.skin-list .list-item .img-wrap {
+    width: 1.1rem;
+    margin-right: .25rem;
+}
+
+.skin-list .list-item .img-wrap img {
+    width: 100%;
+    border-radius: 50%;
+}
+
+.skin-list .list-item .text {
+    -prefix-box-flex: 1; 
+    -webkit-box-flex: 1; 
+    -webkit-flex: 1; 
+    -moz-box-flex: 1; 
+    -ms-flex: 1; 
+    flex: 1;
+}
+
+.skin-list .list-item .text h3 {
+    color: #0d0d0e;
+    line-height: .5rem;
+    font-weight: 700;
+    font-size: .28rem;
+}
+
+.skin-list .list-item .text p {
+    color: #474747;
+    font-size: .26rem;
+}
+
+/* 微解读页 */
+
+.unscramble-list .list-item {
+    height: 1.62rem;
+    margin-top: .2rem;
+    background-color: #fff;
+    padding: .25rem .2rem;
+    box-sizing: border-box;
+    display: -webkit-box;/* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+    display: -moz-box; /* Firefox 17- */
+    display: -webkit-flex;/* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+    display: -moz-flex;/* Firefox 18+ */
+    display: -ms-flexbox; /* IE 10 */
+    display:flex;/* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+}
+
+.unscramble-list .list-item .text {
+    flex: 1;
+}
+
+.unscramble-list .list-item .text h3 {
+    margin-bottom: .45rem;
+    font-size: .28rem;
+}
+
+.unscramble-list .list-item .text h3 a {
+    color: #0d0d0e;
+}
+
+.unscramble-list .list-item .img-wrap {
+    width: 1.7rem;
+    height: 1.1rem;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: .08rem;
+}
+
+.unscramble-list .list-item .img-wrap img {
+    width: 100%;
+}
+
+/* 皮肤管理详情页\微解读详情页 */
+
+.details-wrap {
+    padding: .2rem;
+    box-sizing: border-box;
+    color: #0d0d0e;
+    line-height: .35rem;
+}
+
+.details-wrap h1 {
+    font-size: .3rem;
+    font-weight: 700;
+    line-height: .45rem;
+}
+
+.details-wrap p {
+    font-size: .24rem;
+    margin-bottom: .1rem;
+}
+
+.details-wrap img {
+    width: 100%;
+    margin: .25rem auto;
+}
+
+/* 底部点赞、评论盒子 */
+.bottom-bar {
+    width: 100%;
+    height: .98rem;
+    border-top: .02rem solid #d1d3d7;
+    background-color: #fff;
+    font-size: .32rem;
+    display: -webkit-box;/* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+    display: -moz-box; /* Firefox 17- */
+    display: -webkit-flex;/* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+    display: -moz-flex;/* Firefox 18+ */
+    display: -ms-flexbox; /* IE 10 */
+    display:flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    margin-top: 1.8rem;
+}
+
+/* 点赞评论公共样式 */
+
+.operation-bar .praiseBtn .praise-icon {
+    width: .26rem;
+    height: .26rem;
+    display: inline-block;
+    background: url(../../img/public/praise@2x.png) no-repeat;
+    background-size: 100%;
+}
+
+.operation-bar .commentBtn .discuss-icon {
+    width: .26rem;
+    height: .26rem;
+    display: inline-block;
+    background: url(../../img/public/comments@2x.png) no-repeat;
+    background-size: 100%;
+}
+
+.operation-bar span {
+    margin-right: .1rem;
+    color: #454545;
+    font-size: .26rem;
+    display: inline-flex;
+    align-items: center;
+    min-width: .9rem;
+}
+
+.operation-bar span .num {
+    font-style: normal;
+    margin-left: .05rem;
+}

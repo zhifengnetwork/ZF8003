@@ -1,0 +1,42 @@
+.performancedetail{
+	
+	width: 100%;
+	
+	
+	
+}
+.performancedetail li{
+	
+	width: 92%;
+	margin: auto;
+	display: flex;
+	text-align: center;
+	height: .8rem;
+	line-height: .8rem;
+	border-bottom: 1px solid #ccc;
+	color: #777777;
+	font-size: .27rem;
+	
+}
+.performancedetail li span:nth-child(1){
+	
+	flex: 2;
+	
+	
+	
+	
+}
+.performancedetail li span:nth-child(2){
+	
+	flex: 3;
+	
+	
+}
+.performancedetail li span:nth-child(3){
+	
+	flex: 2;
+	
+	
+	
+	
+}

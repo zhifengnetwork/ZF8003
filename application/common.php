@@ -11,6 +11,13 @@
 
 // 应用公共文件
 
+
+function layer_error($msg){
+    echo "<script>layer.msg('$msg',{icon:3});window.history.go(-1);</script>";
+    exit;
+}
+
+
 /**
  * 加密
  */

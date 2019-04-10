@@ -1,0 +1,94 @@
+.yuqian{
+	
+	width: 94%;
+	height: 2rem;
+	margin: 0 auto;
+	background: #37AFE6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: .1rem;
+	font-size:.4rem;
+	color: white;
+	margin-top: .2rem;	
+}
+.yuqian div p{
+	
+	text-align: center;
+	
+}
+.chongzhi{
+	
+	width: 94%;
+	margin: 0 auto;
+	font-size: .3rem;
+	margin-top: .3rem;
+	font-weight: bolder;
+	border: 1px solid #E1E1E1;
+	padding-top: .16rem;
+	padding-bottom: .16rem;
+	border-radius: .1rem;
+	
+	
+	
+}
+.chongzhi span{
+	
+	padding-left: .3rem;
+	
+}
+.chongzhi input{
+	
+	border: none;
+	outline: none;
+	background: #F5F5F5;
+	font-size:.28rem;
+	width: 4.5rem;
+	
+}
+.jinger{
+	
+	display: flex;
+	justify-content: space-around;
+	margin-top: .2rem;
+	
+
+}
+.jinger_span{
+	
+	display: inline-block;
+	width: 1.5rem;
+	text-align: center;
+	border: 1px solid #E1E1E1;
+	border-radius: .1rem;
+	height: .6rem;
+	line-height: .6rem;
+	
+	
+	
+	
+}
+.next{
+	
+	
+	width: 94%;
+	height: .8rem;
+	margin: 0 auto;
+	text-align: center;
+	line-height: .8rem;
+	border-radius: .4rem;
+	margin-top: 1.3rem;
+	color: white;
+	background: #37AFE6;
+	font-size: .3rem;
+	
+	
+}
+
+.select{
+	
+	color: #37AFE6;
+	border: 1px solid #37AFE6;
+	
+	
+}

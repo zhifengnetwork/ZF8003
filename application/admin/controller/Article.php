@@ -149,7 +149,7 @@ class Article extends Base{
             $where['name'] = ['like', "%$keywords%"];
         }
 
-        $list = Db::name('category')->where($where)->order('id desc')->paginate(15);
+        $list = Db::name('category')->where($where)->order('time desc')->paginate(15);
         $count = Db::name('category')->where($where)->count();
         if($list){
             $pname[0] = '顶级分类';
@@ -172,20 +172,21 @@ class Article extends Base{
         return $this->fetch();
     }
 
-
-
-
     # 增加/编辑文章分类
     public function add_category(){
+        $temp_dir = ROOT_PATH . 'public/images/category/temp/';
+        $save_dir = ROOT_PATH . 'public/images/category/';
+        $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/category/';
 
         if($_POST){
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
+            $thumb = isset($_POST['thumb']) ? trim($_POST['thumb']) : '';
             $sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
             $is_lock = isset($_POST['is_lock']) ? intval($_POST['is_lock']) : 0;
             $is_view = isset($_POST['is_view']) ? intval($_POST['is_view']) : 0;
-
             if(!$name){
                 return json(['status' => 0, 'msg' => '请输入分类名称！']);
             }
@@ -206,12 +207,22 @@ class Article extends Base{
 
             $time = time();
             if($category_id > 0){
-                $sql = "update `zf_category` set `name` = '$name', `parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids',`is_view` = '$is_view' where `id` = '$category_id'";
+                $sql = "update `zf_category` set `name` = '$name', `desc` = '$desc',`parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids',`is_view` = '$is_view', `time` = '$time' where `id` = '$category_id'";
             }else{
-                $sql = "insert into `zf_category` (`name`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`,`is_view`) values ('$name','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','article','$is_view')";
+                $sql = "insert into `zf_category` (`name`,`desc`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`,`is_view`) values ('$name','$desc','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','article','$is_view')";
             }
             $res = Db::execute($sql);
             if($res){
+                if (!$category_id) {
+                    $category_id = Db::name('category')->getLastInsID();
+                }
+                if($thumb && !strstr($thumb,$category_id.'-thumb')){
+                    $thumb = \think\Image::open($temp_dir.$thumb);
+                    $thumb->thumb(150,150,\think\Image::THUMB_CENTER)->save($save_dir.$category_id.'-thumb.jpg');
+
+                    Db::name('category')->where('id',$category_id)->update(['thumb' => $category_id.'-thumb.jpg']);
+                }
+
                 return json(['status' => 1, 'msg' => '操作成功！']);
             }else{
                 return json(['status'=> 0, 'msg' => '操作失败，请重试！']);
@@ -252,6 +263,7 @@ class Article extends Base{
             $cate = Db::name('category')->where($where)->select();
         }
         
+        $this->assign('src_dir', $src_dir);
         $this->assign('pid', $pid);
         $this->assign('cate', $cate);
         return $this->fetch();

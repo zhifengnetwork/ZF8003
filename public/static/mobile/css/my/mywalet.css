@@ -1,0 +1,82 @@
+.yuqian{
+	
+	width: 94%;
+	height: 2rem;
+	margin: 0 auto;
+	background: #37AFE6;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: .1rem;
+	font-size:.4rem;
+	color: white;
+	margin-top: .2rem;	
+}
+.yuqian div p{
+	
+	text-align: center;
+	
+}
+.chongxian{
+	
+	
+	width: 94%;
+	display: flex;
+	margin: auto;
+	justify-content: space-between;
+	margin-top: .2rem;
+	color: white;
+	
+	
+}
+.chongxian span{
+	
+	text-align: center;
+	display: inline-block;
+	width: 3.3rem;
+	height: 1rem;
+	line-height: 1rem;
+	background: #37AFE6;
+	border-radius: .1rem;
+	font-size:.3rem;
+	
+	
+	
+}
+.qianbaolist{
+	
+	width: 94%;
+	margin: 0 auto;
+	margin-top: .2rem;
+	
+	
+}
+.qianbaolist li {
+	
+	height: .8rem;
+	border-bottom:1px solid #CCC;
+	margin-bottom: .1rem;
+	line-height: .8rem;
+	color:black;
+	font-size: .3rem;
+	position: relative;
+	
+	
+}
+.qianbaolist li span{
+	
+	padding-left: .3rem;
+	
+	
+}
+.qianbaolist img{
+	
+	
+	width: .2rem;
+	/*float: right;*/
+	position: absolute;
+	top: 50%;
+	right: .3rem;
+	transform: translate(0,-50%);
+
+}
