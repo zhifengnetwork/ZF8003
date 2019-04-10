@@ -71,7 +71,11 @@
 
 				{volist name="list" id="vo"}
 					<tr class="text-c">
+						{if condition="$vo.is_super == 1"}
+						<td></td>
+						{else/}
 						<td><input type="checkbox" value="{$vo.id}" name="admin_id"></td>
+						{/if}
 						<td>{$vo.id}</td>
 						<td>{$vo.name}</td>
 						<!-- <td>13000000000</td>

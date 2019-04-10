@@ -197,7 +197,6 @@ class Admin extends Base
     // 删除和批量删除
     public function del(){
         $data = input('post.');
-        dump($data);exit;
         if($data['act'] == 'batchdel'){
             $id = json_decode($data['id'], true);
             $where['id'] = array('in', $id);
