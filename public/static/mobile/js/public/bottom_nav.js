@@ -36,9 +36,9 @@ var buttonNavTitle = [
 var buttonNavUrl = [];
 /*未-登陆路径*/
 var loginFalse = [
-	"/index/index",
-	"/example/example",
-	"/purchase/purchase",
+	"/mobile/index/index",
+	"/mobile/example/example",
+	"/mobile/goods/goodsList",
 	"/mobile/my/my",
 ]
 /*已-登陆路径*/
