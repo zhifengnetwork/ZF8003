@@ -39,7 +39,7 @@ var loginFalse = [
 	"/mobile/index/index",
 	"/mobile/article/example",
 	"/mobile/goods/goodsList",
-	"/mobile/my/my",
+	"/mobile/User/index",
 ]
 /*已-登陆路径*/
 var loginTrue = [

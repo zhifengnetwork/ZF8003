@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+	<title>设置</title>
+	<script src="__STATIC__/js/public/rem.js"></script>
+	<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+	<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+	<link rel="stylesheet" href="__STATIC__/css/my/set_up_zp.css" />
+</head>
+
+<body>
+	<div class="wrap_frame">
+		<!-- 头部 -->
+		<div class="lb_headWrap">
+			<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+				<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+			</p>
+			<span>设置</span>
+		</div>
+		<!-- 头像 -->
+		<div class="avatar">
+			<div class="fl"><span>头像</span></div>
+			<div class="fr">
+				<img id="avatarPic" src="__STATIC__/img/my/touxiang@2x.png" />
+				<input type="file" id="selectAvatar" accept="image/*" name="avatar-pic">
+			</div>
+		</div>
+
+		<div class="set-up-list">
+			<ul>
+				<li class="item" data-index="1">
+					<a href="#">
+						<div class="fl"><span>用户名</span></div>
+						<div class="fr">
+							<span id="nameVal">小腊肉</span>
+							<img src="__STATIC__/img/my/youjian2@2x.png" />
+						</div>
+					</a>
+				</li>
+				<li class="item" data-index="2">
+					<a href="#">
+						<div class="fl"><span>性别</span></div>
+						<div class="fr">
+							<span>保密</span>
+							<img src="__STATIC__/img/my/youjian2@2x.png" />
+						</div>
+					</a>
+				</li>
+				<li class="item" data-index="3">
+					<a href="#">
+						<div class="fl"><span>手机</span></div>
+						<div class="fr">
+							<span>17875592622</span>
+							<img src="__STATIC__/img/my/youjian2@2x.png" />
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<!-- 底部弹框 -->
+		<div class="mask"></div>
+		<div class="popup-wrap">
+			<!-- 修改昵称 -->
+			<div class="reviseName">
+				<div class="popup-header">
+					<h3>修改昵称</h3>
+					<span class="closeBtn"><img src="__STATIC__/img/public/closeBtn.png"/></span>
+				</div>
+				<div class="popup-content">
+					<input type="text" placeholder="输入新昵称：" class="newUsername">
+				</div>
+				<div class="popup-btn">
+					<button class="reviseBtn">确认修改</button>
+				</div>
+			</div>
+
+			<!-- 修改性别 -->
+			<div class="reviseSex">
+				男、女
+			</div>
+
+			<!-- 修改手机号码 -->
+			<div class="revisePhone">
+				手机号码
+			</div>
+
+		</div>
+
+	</div> <a id="asubmit" style="display:none;" href="javascript:;"
+		onclick="javascript:$('#head_pic').submit();">保存头像</a>
+	<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	<script src="__STATIC__/js/public/public.js"></script>
+
+	<script>
+		/*
+		* 上传头像
+		*/
+		$("#selectAvatar").change(function (e) {
+			for (var i = 0; i < e.target.files.length; i++) {
+				var file = e.target.files.item(i);
+				//验证是否为图片，不是就跳出循环
+				if (!(/^image\/.*$/i.test(file.type))) {
+					alert("请选择图片上传！")
+					continue;
+				}
+				//实例化FileReader API  
+				var freader = new FileReader();
+				freader.readAsDataURL(file);
+				freader.onload = function (e) {
+					$("#avatarPic").attr("src", e.target.result);  //显示图片
+				}
+			}
+		});
+
+		/*
+		* 修改昵称
+		*/
+		$(".set-up-list .item[data-index='1']").click(function(){
+			$(".mask").show();
+			$(".reviseName").show();
+			$(".popup-wrap").css("bottom","0");
+		});
+
+		$(".reviseName .reviseBtn").click(function(){
+			var newVal = $(".newUsername").val();
+			$("#nameVal").html(newVal)
+		})
+
+		//修改性别
+		$(".set-up-list .item[data-index='2']").click(function(){
+			$(".mask").show();
+			$(".reviseSex").show();
+			$(".popup-wrap").css("bottom","0");
+		});
+
+		//修改手机
+		$(".set-up-list .item[data-index='3']").click(function(){
+			$(".mask").show();
+			$(".revisePhone").show();
+			$(".popup-wrap").css("bottom","0");
+		});
+	
+	
+
+		/*
+		* 关闭弹框
+		*/
+		$(".closeBtn,.reviseBtn,.mask").click(function(){
+			$(".mask").hide();
+			$(".reviseName,.reviseSex,.revisePhone").hide();
+			$(".popup-wrap").css("bottom","-100%");
+		})
+
+	</script>
+</body>
+
+</html>
