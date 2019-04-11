@@ -41,7 +41,7 @@ $(function(){
 						$('.switchBoxC').addClass('switchBoxTwoC');
 						/*开启状态*/
 						switchJudge = true;
-						console.log('开启',switchJudge);
+						// console.log('开启',switchJudge);
 						return false;
 						
 					} else {
@@ -70,6 +70,17 @@ $(function(){
 					let myAddrs=$("#myAddrs").val();
 					let myAdd=$("#myAddrs").attr('data-key');
 					let site=$("#site").val();
-					console.log("收货人----"+name+"\n电话----"+phone+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge)
+					let is_default = switchJudge ? 1 : 0;
+					let id = $("#address_id").val();
+					// console.log("收货人----"+name+"\n电话----"+phone+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge);
+					
+					$.post('/mobile/user/handle_address',{type:'edit',consignee:name,mobile:phone,myAddrs:myAddrs,site:site,is_default:is_default,address_id:id},function(res){
+						if(res.code == 1){
+							alert('添加成功！');
+							window.location.href = "/mobile/user/my_address";
+						} else {
+							alert('添加失败！');
+						}
+					});
 				})
 			})
