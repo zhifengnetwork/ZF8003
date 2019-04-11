@@ -428,9 +428,10 @@ class Goods extends Base{
 
         $freight_id = isset($_GET['freight_id']) ? intval($_GET['freight_id']) : 0;
         $is_see = isset($_GET['is_see']) ? intval($_GET['is_see']) : 0;
-
+          
         if($freight_id){
             $info = Db::name('freight_temp')->where('id', $freight_id)->find();
+            
             if($info){
                 $temp = json_decode($info['temp'],true);
                 unset($info['temp']);
@@ -460,7 +461,6 @@ class Goods extends Base{
                 $this->assign('info',$info);
             }
         }
-        
         $this->assign('is_see', $is_see);
         return $this->fetch();
     }

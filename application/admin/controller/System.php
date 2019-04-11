@@ -387,7 +387,6 @@ class System extends Base
                 $html .= '<option value="'.$v['id'].'">'.$v['name'].'</option>';
             }
         }
-
         return json($html);
         exit;
     }
