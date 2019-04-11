@@ -80,8 +80,9 @@
 					</a>
 				</div>
 
+				{if condition="isset($recom_goods) && $recom_goods"}
 				<!-- 推荐商品 -->
-				<div class="recommend-wrap">
+				<!-- <div class="recommend-wrap">
 					<div class="title">
 						<h3>推荐商品</h3>
 						<a href="#"><span class="more">更多</span></a>
@@ -116,10 +117,36 @@
 							</li>
 						</ul>
 					</div>
+				</div> -->
+				<div class="recommend-wrap">
+					<div class="title">
+						<h3>推荐商品</h3>
+						<a href="#"><span class="more">更多</span></a>
+					</div>
+					<div class="recommend-list">
+						<ul>
+							{volist name="recom_goods" id="vo"}
+							<li class="listItem">
+								<div class="img-wrap">
+									<img src="__GOODSIMG__{$vo.thumb}" />
+								</div>
+								<div class="text">
+									<h3><a href="#">{$vo.name}</a></h3>
+									<p class="dec">{$vo.desc}</p>
+									<div class="buy">
+										<span class="price">¥{$vo.price}</span>
+										<a href="#" class="butBtn">立即购买</a>
+									</div>
+								</div>
+							</li>
+							{/volist}
+						</ul>
+					</div>
 				</div>
+				{/if}
 
 				<!-- 微解读 -->
-				<div class="nscramble-wrap">
+				<!-- <div class="nscramble-wrap">
 					<div class="title">
 						<h3>微解读</h3>
 						<a href="#"><span class="more">查看全部50项</span></a>
@@ -144,10 +171,52 @@
 							</a>
 						</li>
 					</div>
-				</div>
+				</div> -->
+				{if condition="isset($article)"}
+					<div class="nscramble-wrap">
+						<div class="title">
+							<h3>微解读</h3>
+							<a href="#"><span class="more">查看全部{$article_count}项</span></a>
+						</div>
+						{if condition="isset($article.recom) && $article.recom"}
+						<div class="nscramble-list">
+						{volist name="article.recom" id="vo"}
+							<li class="nscrambleItem">
+								<a href="#">
+									<img src="__IMAGES__article/{$vo.thumb}" />
+									<span class="mask"></span>
+								</a>
+							</li>
+						{/volist}
+						</div>
+						{/if}
+					</div>
+					
+					{if condition="isset($article.list) && $article.list"}
+						{volist name="$article.list" id="vo"}
+							<div class="question-wrap">
+								<h2>{$vo.name}</h2>
+								<ul class="question-list">
+									{volist name="vo.list" id="vl"}
+										<li>
+											<div class="text">
+												<h3><a href="#">{$vl.title}</a></h3>
+												<p>{$vl.desc}</p>
+											</div>
+											<div class="img-wrap">
+												<img src="__IMAGES__article/{$vl.thumb}" />
+											</div>
+										</li>
+									{/volist}
+								</ul>
+							</div>
+						{/volist}
+					{/if}
+
+				{/if}
 
 				<!-- 问题 -->
-				<div class="question-wrap">
+				<!-- <div class="question-wrap">
 					<h2>搜索我DNA里的健康风险</h2>
 					<ul class="question-list">
 						<li>
@@ -178,7 +247,7 @@
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div> -->
 			</div>
 			<!-- 底部导航 -->
 			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
