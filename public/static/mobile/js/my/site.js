@@ -71,5 +71,12 @@ $(function(){
 					let myAdd=$("#myAddrs").attr('data-key');
 					let site=$("#site").val();
 					console.log("收货人----"+name+"\n电话----"+phone+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge)
+					//判断手机号码
+					let phonestr=$("#phone").val()
+					let reg="^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$";
+					let phonereg=new RegExp(reg)
+					if(!phonereg.test(phonestr)){
+						alert("请输入正确的手机号码")
+					}
 				})
 			})

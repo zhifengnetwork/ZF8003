@@ -1,87 +1,118 @@
-
 /* 
   商品详情
 */
+
 
 /* .lb_headWrap_back_white{
     color: #0d0d0e;
     background-color: #f8fafb;
   } */
 
-.lb_headWrap_return{
-    height: .88rem;
+.lb_headWrap_return {
+	height: .88rem;
 }
 
-.product_main{
-    background:#f5f5f5;
-    position: relative;
-    width: 100%;
-    padding-bottom: 1rem;
+.product_main {
+	background: #f5f5f5;
+	position: relative;
+	width: 100%;
+	padding-bottom: 1rem;
 }
 
 .swiper-container {
-    width: 100%;
-    height: 4rem;
-    background: transparent;
-}  
+	width: 100%;
+	height: 4rem;
+	background: transparent;
+}
 
 .banner-wrap-zp img {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
-.product_info{
-  padding: .33rem .15rem .52rem .15rem;
-  -moz-box-sizing: content-box;  
-  -webkit-box-sizing: content-box; 
-  -o-box-sizing: content-box; 
-  -ms-box-sizing: content-box; 
-  box-sizing: content-box; 
-  background: #ffffff;
+.product_info {
+	padding: .33rem .15rem .52rem .15rem;
+	-moz-box-sizing: content-box;
+	-webkit-box-sizing: content-box;
+	-o-box-sizing: content-box;
+	-ms-box-sizing: content-box;
+	box-sizing: content-box;
+	background: #ffffff;
 }
+
 
 /* 价格 */
-.product_item .price{
-    font-size: .5rem;
-    color: #37afe6;
+
+.product_item .price {
+	font-size: .5rem;
+	color: #37afe6;
 }
+
 
 /* name */
-.product_item .name{
-    font-size: .4rem;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap
+
+.product_item .name {
+	font-size: .4rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap
 }
+
 
 /* info */
-.product_item .info{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    color: #0d0d0e;
+
+.product_item .info {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+    color: #0d0d0e; */
+     height: 1.1rem;
+     line-height: .36rem;
+     position: relative;
+}
+.product_item .info_2::after {
+    content: '...';
+    text-align: right;
+    position: absolute;
+    bottom: -10px;
+    right: 0;
+    width: 100%;
+    height: 1.8em;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+ }
+    .drop-down>img{
+        width: .34rem;
+       height: .34rem;
 }
 
-.product_item *{
-    margin-bottom: .2rem
+.product_item * {
+	margin-bottom: .2rem
+}
+.drop-down{
+    text-align: center;
+    /* background-image: linear-gradient(to top, rgba(255, 255, 255, 0), rgb(245, 241, 241) 50%);
+    background-color: #fff;
+    opacity: 1; */
 }
 
-.volume{
-    display: flex;
-    display:-webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    margin: 0;
+
+.volume {
+	display: flex;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	margin: 0;
 }
 
-.volume>div{
-    padding-right: .4rem;
-    color: #808081;
-    margin: 0;
+.volume>div {
+	padding-right: .4rem;
+	color: #808081;
+	margin: 0;
 }
+
 
 /* 详情报告 */
 .particulars_box{
@@ -122,13 +153,14 @@
      z-index: 3;
  }
 
- .footer{
+ .footer,.coupon{
     display: -webkit-box;
     display: -moz-box;
     display: -webkit-flex;
     display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
+    justify-content: space-between;
  }
 
   .store  .store_item{
@@ -158,3 +190,171 @@
     color: #fff;
     line-height: 1rem;
 }
+
+
+/*  优惠券 */
+.coupon{
+    position: relative;
+    background: #ffffff;
+    margin-top: .1rem;
+    padding: .2rem .2rem;
+    -moz-box-sizing: content-box;  
+    -webkit-box-sizing: content-box; 
+    -o-box-sizing: content-box; 
+    -ms-box-sizing: content-box; 
+    box-sizing: content-box; 
+    text-align: center;
+    font-size: .3rem;
+}
+
+.receive_ll{
+    color: #808081;
+    vertical-align: middle;
+    padding-right: .2rem;
+}
+
+.coupon .coupon_site .goright>img{
+    width: .19rem;
+    height: .34rem;
+    vertical-align: middle;
+}
+
+/* receive_coupon */ 
+.receive_coupon{
+    -webkit-transition: opacity 1s;
+    background: #000;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: opacity 1s;
+    z-index: 400;
+    display: none;
+    opacity: 0.3;
+}
+.receive_box{
+    display: none;
+     height: 8.22rem;
+     position: fixed;
+     bottom: 0;
+     background: #ffffff;
+     width: 100%;
+     z-index: 500;    
+     opacity: 1;
+     border-radius: .5rem .5rem 0 0;
+ } 
+ .receive_box   .receive_tit{
+     font-size: .4rem;
+     font-weight: 600;
+     padding: .36rem 0 .36rem 0;
+     text-align: center;
+ }
+
+  .coupon_box{
+    overflow-y: scroll;
+    width: 100%;
+    height: 4.5rem;
+    margin-bottom: .2rem;
+ }
+
+ .coupon_list{
+    padding: 0 .2rem .3rem .2rem;
+    -moz-box-sizing: content-box;  
+      -webkit-box-sizing: content-box; 
+      -o-box-sizing: content-box; 
+      -ms-box-sizing: content-box; 
+      box-sizing: content-box;
+      height: 1.38rem;
+      display: flex;
+      display:-webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+  }
+
+   .coupon_msg{
+       padding: .14rem .36rem;
+       width: 100%;
+       background: #c0ebff;
+       width: 70%;
+        background:#c0ebff;
+        border-radius:  .2rem;
+   }
+  
+   .price_box{
+       color: #ff282d;
+       font-size: .3rem;
+       font-weight: 600;
+   }
+   .price_box .original,.coupon_msg .time{
+       font-size: .2rem;
+       color: #687e89;
+       font-weight: 400;
+   }
+  
+   .coupon_msg .pro_ori{
+      font-size: .3rem;
+      font-weight: 600;
+   }
+  
+   .coupon_use,.employ{
+      position: relative;
+      border-radius: .2rem ;
+      background:#c0ebff;
+      width: 30%;
+   }
+  
+    .use{
+       border-left:1px solid #50a1c7 ;
+       border-left-style:dashed;
+       line-height: 1.1rem;
+       text-align: center;
+       width: 100%;
+       margin: .14rem 0;
+       font-size: .28rem;
+       color: #000000;
+       font-weight: 600;
+   }
+
+    .popup{
+        display: none;
+        text-align: center;
+        font-size: .28rem;
+        background: #7f868a;
+        color: #ffffff;
+        border-radius: .1rem;
+        margin: 0 auto;
+        margin-bottom: .7rem;
+        letter-spacing: .1rem;
+        width: 2.43rem;
+        height: .54rem;
+        line-height: .54rem;
+    }
+    .achieve{
+     width: 3.94rem;
+     height: .66rem;
+     background: #37afe6;
+     border-radius: .2rem;
+     margin: 0 auto;
+     line-height: .66rem;
+     text-align: center;
+     color: #ffffff;
+     font-size: .4rem;
+     letter-spacing: .1rem;
+     position: fixed;
+     left: 0;
+     bottom: .2rem;
+     right: 0;
+    }
+
+    .employ .use{
+        color: #89b8ce;
+    }
+    .employ .been{
+        width: .79rem;
+        height: .79rem;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }

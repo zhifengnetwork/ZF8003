@@ -42,4 +42,20 @@ class Index extends Base
         
         return $this->fetch();
     }
+
+
+    # 研究所
+    public function research(){
+
+
+
+
+        return $this->fetch();
+    }
+
+
+
+
+
+
 }

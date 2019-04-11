@@ -1,0 +1,32 @@
+.inner .ckg {
+	width: 100%;
+	height: auto;
+}
+
+.inner .ckg img {
+	width: 100%;
+}
+
+.inner .smallicon {
+	padding: 0 0 0 .2rem;
+	margin: .64rem 0 0;
+	width: .64rem;
+	color: #151515;
+}
+
+.inner .text {
+	padding: 0 .25rem;
+}
+
+.inner .text h2 {
+	font-size: .34rem;
+	font-weight: 750;
+	line-height: .95rem;
+	letter-spacing: 1px;
+}
+
+.inner .text p {
+	margin-bottom: .28rem;
+	font-size: .24rem;
+	line-height: .4rem;
+}

@@ -75,8 +75,13 @@
 }
 
 .unscramble-list .list-item .text h3 {
-    margin-bottom: .45rem;
+    margin-bottom: .15rem;
+    min-height: .7rem;
     font-size: .28rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 .unscramble-list .list-item .text h3 a {
@@ -89,10 +94,11 @@
     background-color: #fff;
     overflow: hidden;
     border-radius: .08rem;
+    margin-left: .1rem;
 }
 
 .unscramble-list .list-item .img-wrap img {
-    width: 100%;
+    width: 1.7rem;
 }
 
 /* 皮肤管理详情页\微解读详情页 */
@@ -149,8 +155,12 @@
     background: url(../../img/public/praise@2x.png) no-repeat;
     background-size: 100%;
 }
-
-.operation-bar .commentBtn .discuss-icon {
+.operation-bar .commentBtn a{
+    display: inline-flex;
+    align-items: center;
+    color: #454545;
+}
+.operation-bar .commentBtn .discuss-icon{
     width: .26rem;
     height: .26rem;
     display: inline-block;

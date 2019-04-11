@@ -1,4 +1,4 @@
-#container .wrap .ckg {
+.container  .ckg {
 	width: 100%;
 	font-size: 0;
 }
@@ -7,27 +7,27 @@ img {
 	display: block;
 	max-width: 100%;
 }
-#container .wrap .smallicon {
+.container  .smallicon {
 	padding: 0 0 0 .2rem;
 	margin: .4rem 0 0;
 	width: .45rem;
 	color: #151515;
 	font-size: 0;
 }
-#container .wrap .text {
+.container  .text {
 	padding: 0 .25rem;
 }
-#container .wrap .text h2 {
+.container  .text h2 {
 	font-size: .34rem;
 	font-weight: 750;
 	line-height: .95rem;
 	letter-spacing: 1px;
 }
-#container .wrap .text p {
+.container  .text p {
 	margin-bottom: .6rem;
 	font-size: .24rem;
 	line-height: .4rem;
 }
-#container .wrap .text .title {
+.container  .text .title {
 	margin: .5rem 0 0;
 }

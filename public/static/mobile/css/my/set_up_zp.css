@@ -15,9 +15,33 @@
 	align-items: center;
 	justify-content: space-between;
 }
-.avatar img{
+.avatar .fr{
 	width: .9rem;
+	height: .9rem;
+	border-radius: 50%;
+	position: relative;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	align-items: center;
 }
+.avatar .fr input[type="file"]{
+	width: 100%;
+	height:100%;
+	border-radius: 50%;
+	opacity: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.avatar .fr img{
+	width: .9rem;
+	height: .9rem;
+	border-radius: 50%;
+}
+
 
 .set-up-list{
 	padding: 0 .2rem;
@@ -37,6 +61,10 @@
 .set-up-list .item a{
 	color: #000000;
 }
+.set-up-list .item .fr span{
+	padding-right: .3rem;
+	color:#4c4c4c;
+}
 .set-up-list .item img{
 	float: right;
 	width: .2rem;
@@ -44,4 +72,92 @@
 	top: 50%;
 	right: 0;
 	margin-top: -.18rem
+}
+
+/* 弹框蒙层 */
+.mask{
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.5);
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 99;
+	display: none;
+}
+/* 弹框公共样式 */
+.popup-wrap{
+	width: 100%;
+    min-height:4rem;
+    background: #fff;
+    position: absolute;
+    bottom: -100%;
+	z-index: 100;
+	padding:0 .2rem .2rem .2rem;
+	box-sizing: border-box;
+	transition: all 0.3s
+}
+
+.popup-wrap .popup-header{
+	height: 1.173333rem;
+	line-height:.88rem;
+	font-size: .3rem;
+	text-align: center;
+	position: relative;
+}
+.popup-wrap .popup-header .closeBtn{
+	width: .5rem;
+	height: .5rem;
+	display: block;
+	position: absolute;
+	right: 0;
+	top: .2rem;
+}
+.popup-wrap .popup-header .closeBtn img{
+	width: 100%;
+	display: block;
+}
+.popup-btn{
+	width: 100%;
+	position: absolute;
+	bottom: .2rem;
+	left: 0;
+}
+.popup-btn .reviseBtn{
+	width: 80%;
+	height: .7rem;
+	text-align: center;
+	line-height: .7rem;
+	color: #fff;
+	font-size: .3rem;
+	margin: 0 auto;
+	display: block;
+	background-color: #00dc05;
+	border-radius: .2rem;
+}
+
+
+/* 修改昵称 */
+.popup-wrap .reviseName{
+	display: none;
+}
+.reviseName .newUsername{
+	width: 80%;
+	height: .7rem;
+	border:.01rem solid #cccccc;
+	margin: 0 auto;
+	display: block;
+	outline: none;
+	padding:0 .15rem;
+	box-sizing: border-box;
+}
+
+/* 修改性别 */
+.popup-wrap .reviseSex{
+	display: none;
+}
+
+/* 修改手机号码 */
+.popup-wrap .revisePhone{
+	display: none;
 }
