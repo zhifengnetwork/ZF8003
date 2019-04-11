@@ -8,11 +8,11 @@ $(function(){
         // console.log(12312)
         var acc = $(this)
         if(acc.children().hasClass('active')){
-            acc.children().attr('src','../../img/purchase/Button-box@2x.png').removeClass('active')
+            acc.children().attr('src','/public/static/mobile/img/purchase/Button-box@2x.png').removeClass('active')
             acc.next().hide()
             acc.parent().next().hide()
         }else{
-            acc.children().attr('src','../../img/purchase/button@2x.png').addClass('active');
+            acc.children().attr('src','/public/static/mobile/img/purchase/button@2x.png').addClass('active');
             acc.next().show()
             acc.parent().next().show()
         }

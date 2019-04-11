@@ -10,9 +10,9 @@ $(function(){
     $('.shou').click(function(){
         var acc = $(this)
         if(acc.children().children().hasClass('active')){
-            acc.children().children().attr('src','../../img/purchase/product/collection@2x.png').removeClass('active')
+            acc.children().children().attr('src','/public/static/mobile/img/purchase/product/collection@2x.png').removeClass('active')
         }else{
-            acc.children().children().attr('src','../../img/purchase/product/collection-r@2x.png').addClass('active')
+            acc.children().children().attr('src','/public/static/mobile/img/purchase/product/collection-r@2x.png').addClass('active')
         }
     })
 })
