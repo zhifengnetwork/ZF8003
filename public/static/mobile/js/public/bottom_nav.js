@@ -37,7 +37,7 @@ var buttonNavUrl = [];
 /*未-登陆路径*/
 var loginFalse = [
 	"/mobile/index/index",
-	"/mobile/example/example",
+	"/mobile/article/example",
 	"/mobile/goods/goodsList",
 	"/mobile/my/my",
 ]
