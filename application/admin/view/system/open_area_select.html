@@ -52,12 +52,12 @@
     $('#province').on('change',function(){
         var area_id = $('#province').val();
         var area = $('#province option:selected').html();
-        if(area_id == 0){
+        // if(area_id == 0){
             re_ad_option('city');
             re_ad_option('district');            
 
-          return false
-        }
+        //   return false
+        // }
 
         se_ad_option('city',area_id);
 
@@ -70,10 +70,10 @@
     $('#city').on('change',function(){
         var area_id = $('#city').val();
         var area = $('#city option:selected').html();
-        if (area_id == 0) {
+        // if (area_id == 0) {
             re_ad_option('district');
-            return false
-        }
+            // return false
+        // }
 
         se_ad_option('district',area_id);
 

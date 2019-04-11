@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>详情</title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/purchase/product.css">
+		<link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
+		<script src="__STATIC__/js/public/rem.js"></script>
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!-- header -->
+			<div class="lb_headWrap ">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+				</p>
+				<span>详情</span>
+				<!--<p class="lb_headWrap_text">领取产品</p>-->
+			</div>
+			<!-- main -->
+			<div class="product_main">
+				<!-- swipe -->
+				<div class="swiper-container banner-wrap-zp">
+					<div class="swiper-wrapper">
+                        {volist name="images" id="v"}
+						<div class="swiper-slide">
+							<img src="__IMAGES__goods/{$info.id}/{$v.img}" />
+						</div>
+                        {/volist}
+
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<!-- product -->
+				<div class="product_info">
+					<div class="product_item">
+                        <p class="price">
+                            ￥{$info.price}
+                        </p>
+                         
+                         
+                        <P style="font-size:.4rem;">{$info.name}</P>
+						<div class="info">{$info.desc}</div>
+						<div class="volume">
+							<div class="sales">销量:<span id="salesNum">{$info.sold}</span></div>
+							
+							<div class="area">{$address}</div>
+						</div>
+					</div>
+				</div>
+				<!-- particulars -->
+				<div class="particulars_box">
+					<div class="particulars_item">
+						<p class="title">详情报告</p>
+                    </div>
+                    
+					<div class="particulars_item">
+                        <!-- <img src="__IMAGES__goods/{//$info.id}/{//$v.img}" alt="" class="item_img"> -->
+                        {$info['details']}
+					</div>
+            
+				</div>
+			</div>
+			<!-- bottom -->
+			<div class="store footer">
+				<a href="javascript:void(0);" class="store_item">
+					<p class="item_img">
+						<img src="__STATIC__/img/purchase/product/service@2x.png" alt="">
+					</p>
+					<p class="item_name">
+						客服
+					</p>
+				</a>
+				<a href="javascript:void(0);" class="store_item shou">
+					<p class="item_img">
+						<img src="__STATIC__/img/purchase/product/collection@2x.png" alt="">
+					</p>
+					<p class="item_name">
+						收藏
+					</p>
+				</a>
+				<span class="store_buy" onclick="pageJump('{:url('goods/order',array('id'=>$info.id))}')">
+                      立即购买
+                </span>
+			</div>
+		</div>
+	</body>
+	<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	<script src="__STATIC__/js/public/swiper.js"></script>
+	<script src="__STATIC__/js/public/public.js"></script>
+	<script src="__STATIC__/js/purchase/product.js"></script>
+	<script>
+		window.onload = function() {
+			// 首页轮播图
+			var swiper = new Swiper('.banner-wrap-zp', {
+				loop: true,
+				pagination: '.swiper-pagination',
+				paginationClickable: true,
+				spaceBetween: 30,
+				autoplay: 3000,
+				autoplayDisableOnInteraction: false
+			});
+		}
+	</script>
+
+</html>

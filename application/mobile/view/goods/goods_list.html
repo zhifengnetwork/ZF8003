@@ -25,103 +25,27 @@
             <!--<p class="lb_headWrap_text">领取产品</p>-->
         </div>
         <div class="purchase_box">
+
             <!-- 商品列表 -->
+             {volist name="list" id="vo"}
             <div class="purchase_list">
                 <div class="item-img">
-                    <img src="__STATIC__/img/home/tupian1@2x.png" alt="">
+                    <img src="__IMAGES__goods/{$vo.thumb}" alt="">
                 </div>
                 <div class="item-msg">
-                    <p class="item_title">我们人类的基因</p>
+                    <p class="item_title">{$vo.name}</p>
                     <div class="item_info">
-                        <span>我们的身体承载着过去。基因，那些绚丽的基因，以超乎想象的方式存储着我们人类20万年的演化史诗。在你的每一个染色体中，都记录着我们人类这个物种的完整历史：生与死、疾病与战争、饥荒与迁徙，当然还有必不可少的大量性。
+                        <span>
+                            {$vo.desc}
                         </span>
                     </div>
                     <div class="buy_box">
-                        <span class="price left">￥699</span>
-                        <span class="buy_promptly right" onclick="pageJump('./product.html')">立即购买</span>
+                        <span class="price left">￥{$vo.price}</span>
+                        <span class="buy_promptly right" onclick="pageJump('{:url('goods/goodInfo',array('id'=>$vo.id))}')">立即购买</span>
                     </div>
                 </div>
             </div>
-            <div class="purchase_list">
-                <div class="item-img">
-                    <img src="__STATIC__/img/home/tupian1@2x.png" alt="">
-                </div>
-                <div class="item-msg">
-                    <p class="item_title">我们人类的基因</p>
-                    <div class="item_info">
-                        <span>我们的身体承载着过去。基因，那些绚丽的基因，以超乎想象的方式存储着我们人类20万年的演化史诗。在你的每一个染色体中，都记录着我们人类这个物种的完整历史：生与死、疾病与战争、饥荒与迁徙，当然还有必不可少的大量性。
-                        </span>
-                    </div>
-                    <div class="buy_box">
-                        <span class="price left">￥699</span>
-                        <span class="buy_promptly right" onclick="pageJump('./product.html')">立即购买</span>
-                    </div>
-                </div>
-            </div>
-            <div class="purchase_list">
-                <div class="item-img">
-                    <img src="__STATIC__/img/home/tupian1@2x.png" alt="">
-                </div>
-                <div class="item-msg">
-                    <p class="item_title">我们人类的基因</p>
-                    <div class="item_info">
-                        <span>我们的身体承载着过去。基因，那些绚丽的基因，以超乎想象的方式存储着我们人类20万年的演化史诗。在你的每一个染色体中，都记录着我们人类这个物种的完整历史：生与死、疾病与战争、饥荒与迁徙，当然还有必不可少的大量性。
-                        </span>
-                    </div>
-                    <div class="buy_box">
-                        <span class="price left">￥699</span>
-                        <span class="buy_promptly right" onclick="pageJump('./product.html')">立即购买</span>
-                    </div>
-                </div>
-            </div>
-            <div class="purchase_list">
-                <div class="item-img">
-                    <img src="__STATIC__/img/home/tupian1@2x.png" alt="">
-                </div>
-                <div class="item-msg">
-                    <p class="item_title">我们人类的基因</p>
-                    <div class="item_info">
-                        <span>我们的身体承载着过去。基因，那些绚丽的基因，以超乎想象的方式存储着我们人类20万年的演化史诗。在你的每一个染色体中，都记录着我们人类这个物种的完整历史：生与死、疾病与战争、饥荒与迁徙，当然还有必不可少的大量性。
-                        </span>
-                    </div>
-                    <div class="buy_box">
-                        <span class="price left">￥699</span>
-                        <span class="buy_promptly right" onclick="pageJump('./product.html')">立即购买</span>
-                    </div>
-                </div>
-            </div>
-            <div class="purchase_list">
-                <div class="item-img">
-                    <img src="__STATIC__/img/home/tupian1@2x.png" alt="">
-                </div>
-                <div class="item-msg">
-                    <p class="item_title">我们人类的基因</p>
-                    <div class="item_info">
-                        <span>我们的身体承载着过去。基因，那些绚丽的基因，以超乎想象的方式存储着我们人类20万年的演化史诗。在你的每一个染色体中，都记录着我们人类这个物种的完整历史：生与死、疾病与战争、饥荒与迁徙，当然还有必不可少的大量性。
-                        </span>
-                    </div>
-                    <div class="buy_box">
-                        <span class="price left">￥699</span>
-                        <span class="buy_promptly right" onclick="pageJump('__STATIC__/product.html')">立即购买</span>
-                    </div>
-                </div>
-            </div>
-            <div class="purchase_list">
-                <div class="item-img">
-                    <img src="__STATIC__/img/home/tupian1@2x.png" alt="">
-                </div>
-                <div class="item-msg">
-                    <p class="item_title">我们人类的基因</p>
-                    <div class="item_info">
-                        <span>我们的身体承载着过去。基因，那些绚丽的基因，以超乎想象的方式存储着我们人类20万年的演化史诗。在你的每一个染色体中，都记录着我们人类这个物种的完整历史：生与死、疾病与战争、饥荒与迁徙，当然还有必不可少的大量性。
-                        </span>
-                    </div>
-                    <div class="buy_box">
-                        <span class="price left">￥699</span>
-                        <span class="buy_promptly right" onclick="pageJump('./product.html')">立即购买</span>
-                    </div>
-                </div>
-            </div>
+            {/volist}
         </div>
         <!--公共底部导航栏-->
         <div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>

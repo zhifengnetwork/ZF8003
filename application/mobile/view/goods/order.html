@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>确认订单</title>
+    <link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+    <link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+    <link rel="stylesheet" href="__STATIC__/css/purchase/order.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
+    <script src="__STATIC__/js/public/rem.js"></script>
+</head>
+
+<body>
+    <div class="wrap_frame">
+        <!-- header -->
+        <div class="lb_headWrap ">
+            <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                <img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+            </p>
+            <span>确认订单</span>
+        </div>
+        <!-- main -->
+        <div class="personal-main">
+            <!-- personal -->
+            <div class="personal-list" onclick="pageJump('../my/my_site.html')">
+                <div class="item-msg">
+                    <p class="compellation">
+                        <span class="name">闰土</span>
+                        <span class="phone">139452926926</span>
+                    </p>
+                    <p class="location">
+                        广东省广州市番禺区荷光路快递收藏路15栋28层
+                    </p>
+                </div>
+                <div class="item-img">
+                    <img src="__STATIC__/img/purchase/back-a@2x.png" alt="">
+                </div>
+            </div>
+            <!-- product  -->
+            <div class="product">
+                <div class="product-list">
+                    <div class="item-img">
+                        <img src="__STATIC__/img/purchase/jq.jpg" alt="">
+                    </div>
+                    <div class="item-name">
+                        <span class="name">唾液检测仪 标准版 2.0</span>
+                    </div>
+                    <div class="item-price">
+                        <p class="price">￥699</p>
+                        <p class="num">x1</p>
+                    </div>
+                </div>
+                <div class="product-num">
+                    <span> 购买数量</span>
+                    <div class="quantity">
+                        <a href="javascript:void(0);" class="subtract">-</a>
+                        <input type="number" class="num" value="1" max="100" min="1" disabled />
+                        <a href="javascript:void(0);" class="add">+</a>
+                    </div>
+                </div>
+            </div>
+            <!-- dispatching -->
+            <div class="dispatching">
+                <p class="d-title">配送方式</p>
+                <div class="mode">
+                    <div class="ksps">快速配送</div>
+                </div>
+                <div class="mode modq">
+                    <div class="ksps">使用余额</div>
+                    <div class="select difference">
+                        <img src="__STATIC__/img/purchase/Button-box@2x.png" alt="">
+                    </div>
+                    <div class="balance" style="display: none">
+                        <input type="hidden" value="">
+                        <input type="text" disabled value="可用余额:￥6000000" class="balance_text">
+                    </div>
+                </div>
+                <div class="mode zfmm" style="display: none">
+                    <div class=" pwd">支付密码:</div>
+                    <div class="balance">
+                        <form action="" method="post">
+                            <input type="password" value class="pwdnum" placeholder="请输入支付密码" required="required"
+                                autocomplete />
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- discount coupon -->
+            <div class="coupon">
+                <div class="mode mode-yhq">
+                    <div class=" yhq">优惠券</div>
+                    <div class="discount">
+                        <div class="yhqq">
+                            <span class="discount_num">0</span> 张可用
+                        </div>
+                    </div>
+                    <div class="select usable">
+                        <img src="__STATIC__/img/purchase/back-a@2x.png" alt="" class="goRight">
+                    </div>
+                </div>
+                <div class="mode mode-bz">
+                    <div class=" bz">备注</div>
+                    <textarea name="" id="" cols="103" rows="10" placeholder="暂无备注!" class="remark"></textarea>
+                </div>
+            </div>
+            <!-- favourable price -->
+            <div class="favourable">
+                <div class="favourable_item">
+                    <div class="item_name">邮费:</div>
+                    <div>
+                        ￥ <span class="postage">8.00</span>
+                    </div>
+                </div>
+                <div class="favourable_item">
+                    <div class="item_name">优惠券折扣:</div>
+                    <div>
+                        -￥ <span class="coupon_discount">0.00</span>
+                    </div>
+                </div>
+                <div class="favourable_item">
+                    <div class="item_name">余额抵扣:</div>
+                    <div>
+                        -￥ <span class="remaining_discount">0.00</span>
+                    </div>
+                </div>
+                <div class="favourable_item">
+                    <div class="item_name">订单总和:</div>
+                    <div>
+                        ￥ <span id="total">0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer -->
+        <div class="footer">
+            <div class="price_box">
+                应付金额: <span class="price_red">￥699</span>
+            </div>
+            <div class="sumb">
+                提交订单
+            </div>
+        </div>
+    </div>
+    <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+    <script src="__STATIC__/js/public/public.js"></script>
+    <script src="__STATIC__/js/purchase/order.js"></script>
+</body>
+
+</html>
