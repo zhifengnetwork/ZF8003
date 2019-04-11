@@ -1,0 +1,105 @@
+
+.comment-wrap{
+    padding:.2rem 0.2rem 1rem .2rem;
+    box-sizing: border-box;
+}
+.comment-list .comment-item {
+    margin-bottom: .4rem;
+}
+.comment-list .comment-item .user-info{
+    display: flex;
+    height: .7rem;
+    overflow: hidden;
+    margin-bottom: .1rem;
+}
+
+/* 用户信息 */
+.comment-item .user-info .avatar{
+    width: .7rem;
+    height: .7rem;
+    border-radius: .08rem;
+    margin-right: .1rem;
+}
+.comment-item .user-info .avatar img{
+    width:100%;
+}
+.comment-item .user-info .text{
+    flex: 1;
+}
+.comment-item .user-info .text .name{
+    font-size: .24rem;
+    color: #101010;
+    font-weight: 700;
+}
+.comment-item .user-info .text .date{
+    font-size: .18rem;
+    color: #838383;
+}
+.comment-item .user-info .text .del{
+    font-size: .18rem;
+    color:#fd3131;
+}
+
+/* 评论内容 */
+.comment-list .comment-content{
+    min-height: 1rem;
+    font-size: .18rem;
+    color: #fff;
+    background-color: #91d8f9;
+    padding: .2rem;
+    box-sizing: border-box;
+    position: relative;
+}
+
+
+.comment-list .comment-content .triangle{
+    display:block;
+    width:0;
+    height:0;
+    border-width:0 .1rem .1rem;
+    border-style:solid;
+    border-color:transparent transparent #91d8f9;/*透明 透明  天蓝*/
+    position:absolute;
+    top:-.1rem;
+    left:.25rem;
+}
+
+/* 评论输入框 */
+.writeBar{
+    width: 100%;
+    min-height: 1rem;
+    background-color: #fff; 
+    padding: .2rem;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    
+}
+.writeBar form{
+    display: flex;
+    width: 100%;
+}
+.writeBar textarea{
+    display: inline-block;
+    min-height: .56rem;
+    border-radius: .08rem;
+    flex: 1;
+    outline: none;
+    border:.01rem solid #999999;
+    padding:0 .1rem;
+    box-sizing: border-box;
+}
+.writeBar .sendBtn{
+    width: 1.3rem;
+    height: .6rem;
+    color: #fff;
+    font-size: .3rem;
+    line-height: .6rem;
+    text-align: center;
+    background-color: #00dc05;
+    display: inline-block;
+    border-radius: .08rem;
+    margin-left: .1rem;
+
+}

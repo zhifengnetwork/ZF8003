@@ -231,6 +231,7 @@
  .mode .select>img{
      width: .31rem;
      height: .31rem;
+     vertical-align: sub;
  }
  .balance{
   transition: all 2s;
@@ -279,16 +280,27 @@
 .mode-yhq .discount,.mode-bz .bz{
     width: 80%;
     padding-top: .18rem;
+    position: relative;
 }
-
+.mode-yhq .numm{
+      position: absolute;
+      left: 0;
+ }
 .mode-yhq .yhqq{
-    width: 20%;
+    display: inline-block;
+    /* width: 20%; */
     background: #f64242;
     padding: .08rem;
     height: .27rem;
     line-height: .27rem;
     text-align: center;
     color: #FFFFFF;
+   
+}
+
+.mode-yhq .man{
+    position: absolute;
+    right: 0;
 }
 
 .personal-main .mode-bz{
@@ -373,3 +385,144 @@ textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
  text-align: center;
  color: #FFFFFF;
 }
+
+
+/* receive_coupon */ 
+.receive_coupon{
+    -webkit-transition: opacity 1s;
+    background: #000;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: opacity 1s;
+    z-index: 400;
+    display: none;
+    opacity: 0.3;
+}
+.receive_box{
+    display: none;
+     height: 8.22rem;
+     position: fixed;
+     bottom: 0;
+     background: #ffffff;
+     width: 100%;
+     z-index: 500;    
+     opacity: 1;
+     border-radius: .5rem .5rem 0 0;
+ } 
+ .receive_box   .receive_tit{
+     font-size: .4rem;
+     font-weight: 600;
+     padding: .36rem 0 .36rem 0;
+     text-align: center;
+ }
+
+  .coupon_box{
+    width: 100%;
+    overflow-y: scroll;
+    height: 4.5rem;
+    margin-bottom: .2rem;
+ }
+
+ .coupon_list{
+    padding: 0 .2rem .3rem .2rem;
+    -moz-box-sizing: content-box;  
+      -webkit-box-sizing: content-box; 
+      -o-box-sizing: content-box; 
+      -ms-box-sizing: content-box; 
+      box-sizing: content-box;
+      height: 1.38rem;
+      display: flex;
+      display:-webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+  }
+
+   .coupon_msg{
+       padding: .14rem .36rem;
+       width: 100%;
+       background: #c0ebff;
+       width: 70%;
+        background:#c0ebff;
+        border-radius:  .2rem;
+   }
+  
+   .price_box{
+       color: #ff282d;
+       font-size: .3rem;
+       font-weight: 600;
+   }
+   .price_box .original,.coupon_msg .time{
+       font-size: .2rem;
+       color: #687e89;
+       font-weight: 400;
+   }
+  
+   .coupon_msg .pro_ori{
+      font-size: .3rem;
+      font-weight: 600;
+   }
+  
+   .coupon_use,.employ{
+      position: relative;
+      border-radius: .2rem ;
+      background:#c0ebff;
+      width: 30%;
+   }
+  
+    .use{
+       border-left:1px solid #50a1c7 ;
+       border-left-style:dashed;
+       line-height: 1.1rem;
+       text-align: center;
+       width: 100%;
+       margin: .14rem 0;
+       font-size: .28rem;
+       color: #000000;
+       font-weight: 600;
+   }
+
+    .popup{
+        display: none;
+        text-align: center;
+        font-size: .28rem;
+        background: #7f868a;
+        color: #ffffff;
+        border-radius: .1rem;
+        margin: 0 auto;
+        margin-bottom: .7rem;
+        letter-spacing: .1rem;
+        width: 2.43rem;
+        height: .54rem;
+        line-height: .54rem;
+    }
+    .achieve{
+     width: 3.94rem;
+     height: .66rem;
+     background: #37afe6;
+     border-radius: .2rem;
+     margin: 0 auto;
+     line-height: .66rem;
+     text-align: center;
+     color: #ffffff;
+     font-size: .4rem;
+     letter-spacing: .1rem;
+     position: fixed;
+     left: 0;
+     bottom: .2rem;
+     right: 0;
+    }
+
+    .employ .use{
+        color: #89b8ce;
+    }
+    .employ .been{
+        width: .79rem;
+        height: .79rem;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }

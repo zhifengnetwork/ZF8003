@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+		<title>遗传风险</title>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/example/example_heredity.css"/>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
+				</p>
+				<span>{$cate_info.name}</span>
+				<!--<p class="lb_headWrap_text">领取产品</p>-->
+			</div>
+			<div class="layout">
+				<!--遗传信息-->
+				<div class="heredity_info">
+					<div class="info_img">
+						<img src="__IMAGES__category/{$cate_info.thumb}"/>
+					</div>
+					<div class="info_content">
+						<h3 class="content_title">{$cate_info.name}</h3>
+						<p class="content"><span id="content_num">{$count}</span>项</p>
+					</div>
+				</div>
+				<!--信息列表-->
+				<div class="heredity_list">
+					<!--列表项-s-->
+					{volist name="lists" id="vo"}
+					<div class="list_item" onclick="window.location.href='/mobile/article/details?id={$vo.id}'">
+						<p class="list_content">{$vo.title}</p>
+						<img src="__STATIC__/img/example/youjian@2x.png"/>
+					</div>
+					{/volist}
+					<!--列表项-e-->
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script type="text/javascript">
+			
+		</script>
+	</body>
+</html>

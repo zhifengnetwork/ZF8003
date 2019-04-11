@@ -1,0 +1,80 @@
+/* 
+  优惠卷
+*/
+.coupon_box{
+    padding-top: .3rem ;
+}
+.coupon_list{
+  padding: 0 .2rem .3rem .2rem;
+  -moz-box-sizing: content-box;  
+    -webkit-box-sizing: content-box; 
+    -o-box-sizing: content-box; 
+    -ms-box-sizing: content-box; 
+    box-sizing: content-box;
+    height: 1.38rem;
+    display: flex;
+    display:-webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+}
+
+ .coupon_img{
+    display: flex;
+    display:-webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    width: 70%;
+    background:#c0ebff;
+    border-radius:  .2rem;
+    /* border-right:1px solid #000000 ; */
+    /* border-right-style:dashed; */
+ }
+ .coupon_img  .cou_img{
+     padding: .1rem .22rem;
+ }
+ .coupon_img  .cou_img>img{
+     width: 1.1rem;
+     height: 1.2rem;
+ }
+ .coupon_msg{
+     padding: .14rem 0;
+     width: 100%;
+ }
+
+ .price_box{
+     color: #ff282d;
+     font-size: .3rem;
+     font-weight: 600;
+ }
+ .price_box .original,.coupon_msg .time{
+     font-size: .2rem;
+     color: #687e89;
+     font-weight: 400;
+ }
+
+ .coupon_msg .pro_ori{
+    font-size: .3rem;
+    font-weight: 600;
+ }
+
+ .coupon_use{
+    /* border-left:1px solid #000000 ; */
+    border-radius: .2rem ;
+    /* border-left-style:dashed; */
+    background:#c0ebff;
+    width: 30%;
+ }
+
+ .coupon_use .use{
+     border-left:1px solid #50a1c7 ;
+     border-left-style:dashed;
+     line-height: 1.1rem;
+     text-align: center;
+     width: 100%;
+     margin: .14rem 0;
+     font-size: .3rem;
+     color: #000000;
+     font-weight: 600;
+ }
