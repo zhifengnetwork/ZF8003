@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>二维码</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/set_up_zp.css" />
+		<style>
+			.qr-code{
+				width: 100%;
+			}
+			.qr-code .urlText{
+				display: block;
+				margin: 0 auto;
+				visibility: hidden;
+			}
+			.qr-code-img{
+				width: 6rem;
+				height: 6rem;
+				background-color: #fff;
+				border-radius: .3rem;
+				margin: .5rem auto 0;
+				position: relative;
+			}
+			.qr-code-img img{
+				width:5.3rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				z-index: 3;
+				transform: translate(-50%,-50%);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			 <!-- 头部 -->
+			 <div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
+				</p>
+				<span>二维码</span>
+			</div>
+			<div class="qr-code">
+				<input type="text" class="urlText" id="urlText" value="http://jindo.dev.naver.com/collie" style="width:80%">
+				<div class="qr-code-img" id="qrcode">
+					<!-- <img src="__STATIC__/img/my/erweima.png" /> -->
+				</div>
+			</div>
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/public/public.js"></script>
+		<script src="__STATIC__/js/my/qrcode.js"></script>
+		
+		<script type="text/javascript">
+			var qrcode = new QRCode(document.getElementById("qrcode"),{
+				width : 100,
+				height : 100
+			});
+			
+		function makeCode () {		
+			var elText = document.getElementById("urlText");
+			
+			if (!elText.value) {
+				alert("Input a text");
+				elText.focus();
+				return;
+			}
+			
+			qrcode.makeCode(elText.value);
+		}
+		
+		makeCode();
+		
+		$("#urlText").
+			on("blur", function () {
+				makeCode();
+			}).
+			on("keydown", function (e) {
+				if (e.keyCode == 13) {
+					makeCode();
+				}
+			});
+		</script>
+	</body>
+</html>
