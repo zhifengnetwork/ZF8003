@@ -376,17 +376,17 @@ class System extends Base
         $html = '';
         if($parent_id > 0){
             $list = Db::name('area')->field('`id`,`name`')->where('parent_id',$parent_id)->select();
-            
+            if (isset($list)) {
+                foreach ($list as $v) {
+                    $html .= '<option value="' . $v['id'] . '">' . $v['name'] . '</option>';
+                }
+            }
         }else{
-            $list = Db::name('area')->field('`id`,`name`')->where('parent_id',0)->select();
-            
+            // $list = Db::name('area')->field('`id`,`name`')->where('parent_id',0)->select();
+            $html = '';
         }
         
-        if(isset($list)){
-            foreach($list as $v){
-                $html .= '<option value="'.$v['id'].'">'.$v['name'].'</option>';
-            }
-        }
+
         return json($html);
         exit;
     }
