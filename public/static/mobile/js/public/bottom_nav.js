@@ -1,18 +1,21 @@
 /**底部nav切换(未-点击)_按循序
  *  *bottomTabArrOne.length来循环
  * **/
+var host = location.href;
+var __static = host + 'public/static/mobile';
+
 var bottomTabArrOne = [
-	"../../img/public/bottom_nav/home0_1.png",
-	"../../img/public/bottom_nav/example1_1.png",
-	"../../img/public/bottom_nav/purchase2_1.png",
-	"../../img/public/bottom_nav/my3_1.png"
+	"/img/public/bottom_nav/home0_1.png",
+	"/img/public/bottom_nav/example1_1.png",
+	"/img/public/bottom_nav/purchase2_1.png",
+	"/img/public/bottom_nav/my3_1.png"
 ];
 /*底部nav切换(已-点击)_按循序*/
 var bottomTabArrTwo = [
-	"../../img/public/bottom_nav/home0_2.png",
-	"../../img/public/bottom_nav/example1_2.png",
-	"../../img/public/bottom_nav/purchase2_2.png",
-	"../../img/public/bottom_nav/my3_2.png"
+	"/img/public/bottom_nav/home0_2.png",
+	"/img/public/bottom_nav/example1_2.png",
+	"/img/public/bottom_nav/purchase2_2.png",
+	"/img/public/bottom_nav/my3_2.png"
 ];
 /*图标的大小_按循序（不设置默认）*/
 var iconWH = [
@@ -33,10 +36,10 @@ var buttonNavTitle = [
 var buttonNavUrl = [];
 /*未-登陆路径*/
 var loginFalse = [
-	"'../home/index.html'",
-	"'../example/example.html'",
-	"'../purchase/purchase.html'",
-	"'../my/my.html'",
+	"/index/index",
+	"/example/example",
+	"/purchase/purchase",
+	"/mobile/my/my",
 ]
 /*已-登陆路径*/
 var loginTrue = [
@@ -55,6 +58,7 @@ console.log($('#bottomNavWrap').attr('data-id'),111);
 if(Number($('#bottomNavWrap').attr('data-id')) == 0){
 	for(var l=0;l<bottomTabArrOne.length;l++){
 		buttonNavUrl[l] = loginFalse[l]
+
 	}
 }else {
 	for(var q=0;q<bottomTabArrOne.length;q++){
@@ -62,6 +66,7 @@ if(Number($('#bottomNavWrap').attr('data-id')) == 0){
 	}
 }
 console.log('最终路径:',buttonNavUrl);
+
 
 /*js动态创建-底部导航栏*/
 var botNavdStr = '';
@@ -71,9 +76,11 @@ for(var g = 0; g < bottomTabArrOne.length; g++) {
 		2、（未点击时）字体颜色:class="bNavNoFontColor";
 	-->*/
 	botNavdStr += '<div class="bottomNavTerm">';
-	/*<!--icon box-->*/
-	botNavdStr += '<p class="bottomNavIconBox" onclick="window.location.href=' + buttonNavUrl[g] + '">';
-		botNavdStr += '<img class="bottomNavIcon" style="'+ iconWH[g] +'" src="' + bottomTabArrOne[g] + '" />';
+	/*<!--icon box-->*/ 
+	//  /mobile/my/my
+	botNavdStr += '<p class="bottomNavIconBox" onclick="window.location.href=`' + buttonNavUrl[g] + '`">';
+	// botNavdStr += '<p class="bottomNavIconBox" onclick="javascript:window.location.href=`/mobile/my/my`">';
+		botNavdStr += '<img class="bottomNavIcon" style="'+ iconWH[g] +'" src="' + __static + bottomTabArrOne[g] + '" />';
 	botNavdStr += '</p>';
 	/*<!--title
 		1、（点击时）字体颜色:class="bNavYseFontColor";
@@ -89,7 +96,6 @@ $('#bottomNavWrap').html(botNavdStr);
 var thisInd = Number($.trim($('.pageTopTitle').attr('page-id')));
 /*当前=> 替换*/
 /*icon*/
-$('#bottomNavWrap .bottomNavTerm').eq(thisInd).find('.bottomNavIcon').attr('src', bottomTabArrTwo[thisInd]);
+$('#bottomNavWrap .bottomNavTerm').eq(thisInd).find('.bottomNavIcon').attr('src', __static +bottomTabArrTwo[thisInd]);
 /*title的color*/
 $('#bottomNavWrap .bottomNavTerm').eq(thisInd).find('.bottomNavTitle').addClass('bNavYseFontColor').removeClass('bNavNoFontColor');
-
