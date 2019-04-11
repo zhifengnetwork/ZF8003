@@ -62,7 +62,10 @@ class Goods extends Base
     }
 
     public function order(){
-        dump(input());
+        $id = input('id');
+        
+        $res = Db::name('goods')->where('id', $id)->find();
+        $this->assign('info',$res);
         return $this->fetch();
     }
 
