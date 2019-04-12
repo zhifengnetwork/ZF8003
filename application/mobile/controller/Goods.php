@@ -63,11 +63,12 @@ class Goods extends Base
         ];
         // 判断是否已经收藏
         $focus = Db::name('goods_focus')->where($where)->find();
-        if(empty($focus)){
-            $this->assign('is_focus', 0); 
-        }else{
+        if(!empty($focus)){
+            // 已收藏
             $this->assign('is_focus', 1);
         }
+
+        $this->assign('is_focus', 0);
         $this->assign('temp_price', $temp_price);
         $this->assign('address', $address);
         $this->assign('images', $images);
@@ -86,9 +87,10 @@ class Goods extends Base
     public function focus(){
         $data = input('post.');
         // $admin_id = session('admin_id');
-        $user_id = Session::set('admin_id', 1);
+        $user_id = 1;
         // 判断是否已收藏
         if($data['act']=='focus'){
+           
             $where = [
               'goods_id'=> $data['id'],  
               'user_id' => $user_id,

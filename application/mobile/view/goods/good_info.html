@@ -78,10 +78,19 @@
 						客服
 					</p>
 				</a>
-				{if condition = ''}
+				{if condition = '$is_focus eq 0'}
 				<a href="javascript:void(0);" class="store_item shou">
 					<p class="item_img">
 						<img src="__STATIC__/img/purchase/product/collection@2x.png" alt="">
+					</p>
+					<p class="item_name" id="focus">
+						收藏
+					</p>
+				</a>
+				{else/}
+				<a href="javascript:void(0);" class="store_item shou active">
+					<p class="item_img">
+						<img src="__STATIC__/img/purchase/product/collection-r@2x.png" alt="">
 					</p>
 					<p class="item_name" id="focus">
 						收藏
@@ -95,6 +104,7 @@
 		</div>
 	</body>
 	<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	<!-- <script type="text/javascript" src="__STATIC__/lib/layer/2.4/layer.js"></script> -->
 	<script src="__STATIC__/js/public/swiper.js"></script>
 	<script src="__STATIC__/js/public/public.js"></script>
 	<script src="__STATIC__/js/purchase/product.js"></script>
@@ -114,7 +124,7 @@
 		$('.shou').click(function(){
 
 			var acc = $(this)
-
+            var id  = $('#id').val()
 			if(acc.children().children().hasClass('active')){
 				$.ajax({
 					type: 'post',
@@ -123,11 +133,7 @@
 
 					success: function (data) {
 						if (data.status == 1) {
-							if (acc.children().children().hasClass('active')) {
-								acc.children().children().attr('src', '../../img/purchase/product/collection@2x.png').removeClass('active')
-							} else {
-								acc.children().children().attr('src', '../../img/purchase/product/collection-r@2x.png').addClass('active')
-							}
+								acc.children().children().attr('src', '/__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
 						} else {
 							// layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
 
@@ -142,50 +148,20 @@
 					type: 'post',
 					url: "{:url('mobile/goods/focus')}",
 					data: { 'id': id, 'act': 'focus' },
-
+                    
 					success: function (data) {
 						if (data.status == 1) {
-							alert('aaaa');
-							// if (acc.children().children().hasClass('active')) {
-							// 	acc.children().children().attr('src', '../../img/purchase/product/collection@2x.png').removeClass('active')
-							// } else {
-							// 	acc.children().children().attr('src', '../../img/purchase/product/collection-r@2x.png').addClass('active')
-							// }
+								acc.children().children().attr('src', '/__STATIC__/img/purchase/product/collection-r@2x.png').addClass('active')
+								location.reload()
+								// layer.msg(data.msg)
 						} else {
-							// layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
-
-							// })
+							// layer.msg(data.msg)
 						}
 
 					},
 
 				});					
 			}
-
-			var id  = $('#id').val()
-			console.log(id);
-			$.ajax({
-				type: 'post',
-				url: "{:url('mobile/goods/focus')}",
-				data: {'id':id},
-
-				success: function (data) {
-					if (data.status == 1) {
-						if (acc.children().children().hasClass('active')) {
-							acc.children().children().attr('src', '../../img/purchase/product/collection@2x.png').removeClass('active')
-						} else {
-							acc.children().children().attr('src', '../../img/purchase/product/collection-r@2x.png').addClass('active')
-						}
-					} else {
-						// layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
-
-						// })
-					}
-
-				},
-
-			});
-
 
 		})		
 		
