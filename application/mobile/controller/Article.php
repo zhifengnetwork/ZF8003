@@ -207,8 +207,21 @@ class Article extends Base{
     # 是否点赞
     public function is_like($id)
     {
-        $is_like = Db::name('article_star')->where('user_id',$this->user_id)->where('article_id',$id)->find();
+        $like = Db::name('article_star')->where('user_id',$this->user_id)->where('article_id',$id)->find();
+        $is_like = $like ? 1 : 0;
         return $is_like;
+    }
+
+    # 评论
+    public function comment()
+    {
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        
+        if(!$id){
+            layer_error('参数错误！');
+        }
+        return $this->fetch();
     }
 
 }

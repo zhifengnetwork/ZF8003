@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <title>评论</title>
+    <script src="__STATIC__/js/public/rem.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-text-size-adjust: none;
+        }
+
+        html {
+            font-size: 10px;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-size: 1.2em;
+        }
+
+        .outer {
+            position: absolute;
+            left: 0;
+            top: 6rem;
+            width: 100%;
+            height: 100%;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            -webkit-box-orient: vertical;
+            box-orient: vertical;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+    </style>
+    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
+    <link rel="stylesheet" href="__STATIC__/css/home/dropload.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/public_head.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/comment_zp.css">
+
+</head>
+
+<body>
+    <div class="wrap_frame">
+        <!-- 头部 -->
+        <div class="lb_headWrap">
+            <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                <img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+            </p>
+            <span>评论</span>
+        </div>
+
+        <!-- 评论内容 -->
+
+        <div class="comment-wrap">
+            <ul class="comment-list">
+                <li class="comment-item">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <img src="__STATIC__/img/public/0000avatar-img02@2x.png" />
+                        </div>
+                        <div class="text">
+                            <p class="name">张小虎</p>
+                            <p>
+                                <span class="date">一小时前</span>
+                                <span class="del">删除</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <i class="triangle"></i>
+                        <p>好东西不错 很便宜 质量不错平 快递不错 包装挺好 质量不错 印刷清晰 看起来不错 质量非常好 完全超出期望值 发货速度非常快 包装非常仔细 严实 物流公司服务态度很好 运送速度很快
+                            很满意的一次购物 。</p>
+                    </div>
+                </li>
+                <li class="comment-item">
+                    <div class="user-info">
+                        <div class="avatar">
+                            <img src="__STATIC__/img/public/0000avatar-img01@2x.png" />
+                        </div>
+                        <div class="text">
+                            <p class="name">李彬</p>
+                            <p>
+                                <span class="date">二小时前</span>
+                                <!-- <span class="del">删除</span> -->
+                            </p>
+                        </div>
+                    </div>
+                    <div class="comment-content">
+                        <i class="triangle"></i>
+                        <p>我拆开了一本，纸张有点薄，印刷体颜色有点淡，没有破的，五本书很轻，我也不懂是不是正版，也没正经看过正版书是什么样子的，习惯好评！！！</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <!-- 评论输入框 -->
+        <div class="writeBar">
+            <form action="###" method="post">
+                <!-- <input type="text" placeholder="请留下您的任务留言"> -->
+                <textarea cols="30" rows="2"></textarea>
+                <button type="button" class="sendBtn">发送</button>
+            </form>
+        </div>
+
+
+    </div>
+    <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+    <script src="__STATIC__/js/home/dropload.js"></script>
+    <script src="__STATIC__/js/public/public.js"></script>
+
+    <script>
+        $(function () {
+            var counter = 0;
+            // 每页展示4个
+            var num = 4;
+            var pageStart = 0, pageEnd = 0;
+
+            // dropload
+            $('.comment-wrap').dropload({
+                scrollArea: window,
+                domUp: {
+                    domClass: 'dropload-up',
+                    domRefresh: '<div class="dropload-refresh">↓下拉刷新</div>',
+                    domUpdate: '<div class="dropload-update">↑释放更新</div>',
+                    domLoad: '<div class="dropload-load"><span class="loading"></span>加载中...</div>'
+                },
+                domDown: {
+                    domClass: 'dropload-down',
+                    domRefresh: '<div class="dropload-refresh">↑上拉加载更多</div>',
+                    domLoad: '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
+                    domNoData: '<div class="dropload-noData">暂无数据</div>'
+                },
+                loadUpFn: function (me) {
+                    $.ajax({
+                        type: 'GET',
+                        url: './json/update.json',
+                        dataType: 'json',
+                        success: function (data) {
+                            var result = '';
+                            for (var i = 0; i < data.lists.length; i++) {
+                                result += `
+                                            <li class="comment-item">
+                                                <div class="user-info">
+                                                    <div class="avatar">
+                                                        <img src="${data.lists[i].avatar}" />
+                                                    </div>
+                                                    <div class="text">
+                                                        <p class="name">${data.lists[i].userName}</p>
+                                                        <p>
+                                                            <span class="date">${data.lists[i].date}</span>
+                                                            <span class="del">${data.lists[i].del}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="comment-content">
+                                                    <i class="triangle"></i>
+                                                    <p>${data.lists[i].content}</p>
+                                                </div>
+                                            </li>
+                                        `
+                            }
+                            // 为了测试，延迟1秒加载
+                            setTimeout(function () {
+                                $('.comment-list').html(result);
+                                // 每次数据加载完，必须重置
+                                me.resetload();
+                                // 重置索引值，重新拼接more.json数据
+                                counter = 0;
+                                // 解锁
+                                me.unlock();
+                                me.noData(false);
+                            }, 1000);
+                        },
+                        error: function (xhr, type) {
+                            alert('Ajax error!');
+                            // 即使加载出错，也得重置
+                            me.resetload();
+                        }
+                    });
+                },
+                loadDownFn: function (me) {
+                    $.ajax({
+                        type: 'GET',
+                        url: 'json/more.json',
+                        dataType: 'json',
+                        success: function (data) {
+                            var result = '';
+                            counter++;
+                            pageEnd = num * counter;
+                            pageStart = pageEnd - num;
+
+                            for (var i = pageStart; i < pageEnd; i++) {
+                                result += `
+                                            <li class="comment-item">
+                                                <div class="user-info">
+                                                    <div class="avatar">
+                                                        <img src="${data.lists[i].avatar}" />
+                                                    </div>
+                                                    <div class="text">
+                                                        <p class="name">${data.lists[i].userName}</p>
+                                                        <p>
+                                                            <span class="date">${data.lists[i].date}</span>
+                                                            <span class="del">${data.lists[i].del}</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="comment-content">
+                                                    <i class="triangle"></i>
+                                                    <p>${data.lists[i].content}</p>
+                                                </div>
+                                            </li>
+                                        `
+                                if ((i + 1) >= data.lists.length) {
+                                    // 锁定
+                                    me.lock();
+                                    // 无数据
+                                    me.noData();
+                                    break;
+                                }
+                            }
+                            // 为了测试，延迟1秒加载
+                            setTimeout(function () {
+                                $('.comment-list').append(result);
+                                // 每次数据加载完，必须重置
+                                me.resetload();
+                            }, 1000);
+                        },
+                        error: function (xhr, type) {
+                            alert('Ajax error!');
+                            // 即使加载出错，也得重置
+                            me.resetload();
+                        }
+                    });
+                },
+                threshold: 50
+            });
+        });
+    </script>
+</body>
+
+</html>
