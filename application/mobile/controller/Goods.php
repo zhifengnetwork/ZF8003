@@ -56,7 +56,8 @@ class Goods extends Base
               
         }
         // $admin_id = session('admin_id');
-        $user_id = Session::set('admin_id', 1);
+        $user_id = 1;
+        $is_focus = 0;
         $where = [
              'goods_id'=> $info['id'],
              'user_id' => $user_id
@@ -65,10 +66,9 @@ class Goods extends Base
         $focus = Db::name('goods_focus')->where($where)->find();
         if(!empty($focus)){
             // 已收藏
-            $this->assign('is_focus', 1);
+            $is_focus = 1;
         }
-
-        $this->assign('is_focus', 0);
+        $this->assign('is_focus', $is_focus);
         $this->assign('temp_price', $temp_price);
         $this->assign('address', $address);
         $this->assign('images', $images);
@@ -88,23 +88,26 @@ class Goods extends Base
         $data = input('post.');
         // $admin_id = session('admin_id');
         $user_id = 1;
+        $where = [
+            'goods_id' => $data['id'],
+            'user_id' => $user_id,
+            
+        ];
         // 判断是否已收藏
         if($data['act']=='focus'){
            
-            $where = [
-              'goods_id'=> $data['id'],  
-              'user_id' => $user_id,
-              'addtime' => time(),
-            ];
+           $where['addtime'] = time();
            $res = Db::name('goods_focus')->insert($where);
-           if($res){
-                return json(['status' => 1,'msg'=> '收藏成功']);
-           }else {
-                return json(['status' => 0,'msg' => '收藏失败']);
-           }   
         }else{
-            
+            $res = Db::name('goods_focus')->where($where)->delete();
         }
+
+        if ($res) {
+            return json(['status' => 1, 'msg' => '操作成功']);
+        } else {
+            return json(['status' => 0, 'msg' => '操作失败']);
+        } 
+
     }
 
     /**
