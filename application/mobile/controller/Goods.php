@@ -78,8 +78,20 @@ class Goods extends Base
 
     public function order(){
         $id = input('id');
-        
+        $user_id = 29;
+        // 用户信息
+        $where = [
+            'user_id' => $user_id,
+        ];
+        $user_info = Db::name('users')
+                    ->alias('u')
+                    ->join('user_address us', 'u.default_address_id = us.id')
+                    ->where('is_default',1)
+                    ->select();
+        dump($user_info);
+        // 商品信息
         $res = Db::name('goods')->where('id', $id)->find();
+        $this->assign('user_info',$user_info);
         $this->assign('info',$res);
         return $this->fetch();
     }
