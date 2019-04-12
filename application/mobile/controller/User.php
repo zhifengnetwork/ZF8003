@@ -19,10 +19,83 @@ class User extends Base
 
         $this->user_id = session('user_id');
     }
+
     /** 
      * 我的
      */
     public function index()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 我的订单
+     */
+    public function my_order()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 我的分销
+     */
+    public function distribution()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 我的团队
+     */
+    public function team_list()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 佣金记录
+     */
+    public function commission()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 业绩明细
+     */
+    public function performance()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 我的钱包
+     */
+    public function my_walet()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 账单明细
+     */
+    public function billing_detail()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 充值明细
+     */
+    public function top_up_detail()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 提现记录
+     */
+    public function withdrawal_detail()
     {
         return $this->fetch();
     }
@@ -182,9 +255,33 @@ class User extends Base
     }
 
     /**
+     * 我的收藏
+     */
+    public function collection()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 我的评价
+     */
+    public function evaluation()
+    {
+        return $this->fetch();
+    }
+
+    /**
      * 我的二维码
      */
     public function qr_code()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 我的优惠券
+     */
+    public function coupons()
     {
         return $this->fetch();
     }
@@ -194,6 +291,12 @@ class User extends Base
      */
     public function set_up()
     {
+        $user = Db::name('users')->where('id',$this->user_id)->field('mobile,email,nickname,sex,avatar')->find();
+        $path = ROOT_PATH;
+        if(!$user['avatar'] || !is_file($path.$user['avatar'])){
+            $user['avatar'] = "";
+        }
+        $this->assign('info',$user);
         return $this->fetch();
     }
 }

@@ -296,6 +296,9 @@
 .question-list li .text p{
     color: #666666;
     font-size: .2rem;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-line-clamp: 3;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;

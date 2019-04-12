@@ -23,6 +23,7 @@ h1, h2, h3, h4, h5, h6 {
 .wrap_frame {
 	width: 100%;
 	height:100%;
+	overflow: hidden;
 }
 /*去除input默认样式*/
 input[type=button], input[type=submit], input[type=file], button { 

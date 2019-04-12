@@ -150,14 +150,14 @@ $(function(){
          employ.parent().append(img)
          length--;   //优惠券长度-1
          $('.numm').find('.discount_num').html(length)
-         $('.popup').show()  //使用成功
+         $('.popup').fadeIn(500)  //使用成功
          $('.popup').animate({
              opactiy:1
          }
          ,1000,function(){
-            $('.popup').hide()
+            $('.popup').fadeOut(500)
          })
          }
     })
-
+    
 })

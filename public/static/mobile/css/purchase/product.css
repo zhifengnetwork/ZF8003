@@ -73,7 +73,7 @@
      position: relative;
 }
 .product_item .info_2::after {
-    content: '...';
+    content: '';
     text-align: right;
     position: absolute;
     bottom: -10px;

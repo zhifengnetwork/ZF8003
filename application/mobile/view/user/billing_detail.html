@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>余额明细</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/yuer_detail.css" />
+
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap  ">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
+				</p>
+				<span>余额明细</span>
+				
+			</div>
+			
+			<!--tab切换-->
+			<div id="wrap">
+		        <div id="tit">
+		            <span class="select">全部</span>
+		            <span>赚取</span>
+		            <span>消费</span>
+		        </div>
+	        <ul id="con">
+	        	<!--内容1-->
+	            <li class="show">	            	
+	            	<div>
+	            		
+	            		<div class="title">
+	            			<span>订单</span>
+	            			<span>金额</span>
+	            			<span>时间</span>
+	            		</div>
+	            		<div class="text">
+	            			<span>1854448598</span>
+	            			<span>396.00</span>
+	            			<span>2019-12-20</span>
+	            		</div>
+	            		<div class="text">
+	            			<span>1854448598</span>
+	            			<span>396.00</span>
+	            			<span>2019-12-20</span>
+	            		</div>
+	            		
+	            			            		
+	            	</div>	            	
+	            </li>
+	            
+	            <!--内容2-->
+	            <li style="display: none;">
+	            	
+	            	<div>
+	            		
+	            		<div class="title">
+	            			<span>订单</span>
+	            			<span>金额</span>
+	            			<span>时间</span>
+	            		</div>
+	            		<div class="text">
+	            			<span>185123498</span>
+	            			<span>316.99</span>
+	            			<span>2018-10-20</span>
+	            		</div>
+	            		<div class="text">
+	            			<span>185887877</span>
+	            			<span>256.00</span>
+	            			<span>2014-10-10</span>
+	            		</div>
+	            		
+	            			            		
+	            	</div>	
+	    
+	            	
+	            </li>
+	            <!--内容3-->
+	            <li style="display: none;">
+	            	
+	            	<div>
+	            		
+	            		<div class="title">
+	            			<span>订单</span>
+	            			<span>金额</span>
+	            			<span>时间</span>
+	            		</div>
+	            		<div class="text">
+	            			<span>123123498</span>
+	            			<span>119.99</span>
+	            			<span>2015-05-29</span>
+	            		</div>
+	            		<div class="text">
+	            			<span>185887877</span>
+	            			<span>699.88</span>
+	            			<span>2010-03-19</span>
+	            		</div>
+	            		
+	            			            		
+	            	</div>	
+	            	
+	            	
+	            	
+	            </li>
+	        </ul>
+    </div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+			
+
+		
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<!--公共底部导航栏-->
+		 <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+		 <script>
+		 	
+		 	$('#tit span').click(function() {
+            var i = $(this).index();//下标第一种写法
+            //var i = $('tit').index(this);//下标第二种写法
+            $(this).addClass('select').siblings().removeClass('select');
+            $('#con li').eq(i).show().siblings().hide();
+                                             });
+		 	
+		 	
+		 </script>
+		 
+		 
+
+	</body>
+
+</html>

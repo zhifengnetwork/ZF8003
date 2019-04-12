@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>我的评价</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/my_evaluate.css" />
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+				</p>
+				<span>我的评价</span>
+			</div>
+			<!--内容-->
+			<div class="contet_wrap">
+				<!--Tab切换 wrap-->
+				<div class="tab_but_box">
+					<p class="tab_but tab_but_active">全部评价</p>
+					<p class="tab_but">待评价</p>
+					<p class="tab_but">已评价</p>
+				</div>
+				<!--Tab => 内容 wrap-->
+				<div class="tab_wrap">
+					<!--全部评价-->
+					<div class="tab_show_box">
+						<!--(循环)商品-项-->
+						<div class="commodity_term">
+							<div class="commodity_term_bottom">
+								<p class="commodity_term_bottom_left">
+									<img class="commodity_term_bottom_img" src="__STATIC__/img/public/00001_orIcon.png" />
+								</p>
+								<div class="commodity_term_bottom_right">
+									<p class="commodity_term_bottom_text">全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]</p>
+									<div class="commodity_term_but_box">
+										<!--购买时间-->
+										<p class="commodity_term_time">购买时间:&nbsp;2019-04-09 20:43</p>
+										<!--按钮
+												1、class='button_red'; 红色-按钮
+											-->
+										<p class="commodity_term_but button_red">待评价</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--(循环)商品-项-->
+						<div class="commodity_term">
+							<div class="commodity_term_bottom">
+								<p class="commodity_term_bottom_left">
+									<img class="commodity_term_bottom_img" src="__STATIC__/img/public/00001_orIcon.png" />
+								</p>
+								<div class="commodity_term_bottom_right">
+									<p class="commodity_term_bottom_text">全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]</p>
+									<div class="commodity_term_but_box">
+										<!--购买时间-->
+										<p class="commodity_term_time">购买时间:&nbsp;2019-04-09 20:43</p>
+										<!--按钮
+												1、class='button_red'; 红色-按钮
+											-->
+										<p class="commodity_term_but button_red">已评价</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						
+					</div>
+					<div class="tab_show_box">
+						<!--(循环)商品-项-->
+						<div class="commodity_term">
+							<div class="commodity_term_bottom">
+								<p class="commodity_term_bottom_left">
+									<img class="commodity_term_bottom_img" src="__STATIC__/img/public/00001_orIcon.png" />
+								</p>
+								<div class="commodity_term_bottom_right">
+									<p class="commodity_term_bottom_text">全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]</p>
+									<div class="commodity_term_but_box">
+										<!--购买时间-->
+										<p class="commodity_term_time">购买时间:&nbsp;2019-04-09 20:43</p>
+										<!--按钮
+												1、class='button_red'; 红色-按钮
+											-->
+										<p class="commodity_term_but button_red">待评价</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="tab_show_box">
+						<!--(循环)商品-项-->
+						<div class="commodity_term">
+							<div class="commodity_term_bottom">
+								<p class="commodity_term_bottom_left">
+									<img class="commodity_term_bottom_img" src="__STATIC__/img/public/00001_orIcon.png" />
+								</p>
+								<div class="commodity_term_bottom_right">
+									<p class="commodity_term_bottom_text">全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]</p>
+									<div class="commodity_term_but_box">
+										<!--购买时间-->
+										<p class="commodity_term_time">购买时间:&nbsp;2019-04-09 20:43</p>
+										<!--按钮
+												1、class='button_red'; 红色-按钮
+											-->
+										<p class="commodity_term_but button_red">已评价</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						
+					</div>					
+										
+				</div>
+
+			</div>
+		</div>
+
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/public/public.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				/*Tab切换*/
+				$('.tab_but_box .tab_but').on('click', function() {
+					/*Tab的效果*/
+					$('.tab_but_box .tab_but').removeClass('tab_but_active');
+					$(this).addClass('tab_but_active');
+					/*Tab对应=>出现,隐藏 box*/
+					$('.tab_wrap .tab_show_box').hide();
+					$('.tab_wrap .tab_show_box').eq($(this).index('.tab_but')).show();
+				})
+			})
+		</script>
+	</body>
+
+</html>
