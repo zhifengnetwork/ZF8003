@@ -70,21 +70,30 @@ class User extends Base
         $address = "";
         if (is_array($info)) {
             $address = new UserAddress;
+            $province = "";
+            $city = "";
+            $district = "";
+            $twon = "";
             //判断是一位数组还是多维数组
             if (count($info) == count($info, 1)) {
-                
+                // $province = $address->where('id',$info['province'])->value('name');
+                $city = $address->where('id',$info['city'])->find();
+                // $district = $address->where('id',$info['district'])->value('name');
+                dump($city);die;
                 $address = $info['province'] ? trimg($info['province']) : '';
                 $address = $info['city'] ? $address . ' ' . trim($info['city']) : $address;
                 $address = $info['district'] ? $address . ' ' . trim($info['district']) : $address;
                 $address = $info['twon'] ? $address . ' ' . trim($info['twon']) : $address;
                 $info['area'] = $address;
             } else {
+                dump($info);
                 foreach($info as $key => $value){
-                    $address = $value['province'] ? trimg($value['province']) : '';
-                    $address = $value['city'] ? $address . ' ' . trim($value['city']) : $address;
-                    $address = $value['district'] ? $address . ' ' . trim($value['district']) : $address;
-                    $address = $value['twon'] ? $address . ' ' . trim($value['twon']) : $address;
-                    $info[$key]['area'] = $address;
+                    $city = UserAddress::where('id',$value['city'])->find();dump($city);dump($value);
+                    // $address = $value['province'] ? trimg($value['province']) : '';
+                    // $address = $value['city'] ? $address . ' ' . trim($value['city']) : $address;
+                    // $address = $value['district'] ? $address . ' ' . trim($value['district']) : $address;
+                    // $address = $value['twon'] ? $address . ' ' . trim($value['twon']) : $address;
+                    // $info[$key]['area'] = $address;
                     $address = "";
                 }
             }
@@ -113,7 +122,7 @@ class User extends Base
         //编辑
         if ($data['type'] == 'edit') {
             if (isset($data['myAddrs']) && $data['myAddrs']) {
-                $address = explode(' ',$data['myAddrs']);
+                $address = explode('-',$data['myAddrs']);
                 $area = ['province','city','district','twon'];
                 if(is_array($address)){
                     foreach($address as $key => $value){
@@ -133,21 +142,20 @@ class User extends Base
 
             if ($result['is_default'] == 1) {
                 $is_update = Db::name('user_address')->where('user_id',$user_id)->update(['is_default' => 0]);
-                if ($is_update) {
+                if ($is_update !== false) {
                     if (intval($data['address_id']) > 0) {
                         $bool = Db::name('user_address')->where('id',intval($data['address_id']))->update($result);
                     } else {
                         $bool = Db::name('user_address')->insert($result);
                     }
-                    
                 }
             }
-
+            
             if(!$bool){
+                Db::rollback();
+            } else {
                 Db::commit();
                 $return['code'] = 1;
-            } else {
-                Db::rollback();
             }
         }
         

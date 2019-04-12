@@ -143,24 +143,33 @@
 				//点击保存按钮获取页面数据
 				$(".saveBtn").click(function(){
 					let name=$("#name").val();
-					let phone=$("#phone").val();
+					// let phone=$("#phone").val();
 					let myAddrs=$("#myAddrs").val();
 					let myAdd=$("#myAddrs").attr('data-key');
 					let site=$("#site").val();
 					
-					//判断手机号码
 					let phonestr=$("#phone").val();
 					let reg="^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$";
 					let phonereg=new RegExp(reg)
-					if(!phonereg.test(phonestr)){
-						alert("请输入正确的手机号码")
+					if (!name) {
+						alert("请输入收货人姓名！");
+						return false;
 					}
-					console.log("收货人----"+name+"\n电话----"+phone+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge)
+					if (!phonestr) {
+						alert("请输入手机号！");
+						return false;
+					}
+					//判断手机号码
+					if(!phonereg.test(phonestr)){
+						alert("请输入正确的手机号码！");
+						return false;
+					}
+					console.log("收货人----"+name+"\n电话----"+phonestr+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge)
 
 					let is_default = switchJudge ? 1 : 0;
 					let id = $("#address_id").val();
 
-					$.post('/mobile/user/handle_address',{type:'edit',consignee:name,mobile:phone,myAddrs:myAdd,site:site,is_default:is_default,address_id:id},function(res){
+					$.post('/mobile/user/handle_address',{type:'edit',consignee:name,mobile:phonestr,myAddrs:myAdd,site:site,is_default:is_default,address_id:id},function(res){
 						if(res.code == 1){
 							alert('添加成功！');
 							window.location.href = "/mobile/user/my_address";
