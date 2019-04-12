@@ -50,6 +50,15 @@ class Index extends Base
 
 
 
+    # 微信登录
+    public function wx_sign(){
+
+        parent::GetOpenid();
+
+
+        dump($_SESSION);
+
+    }
 
 
 }
