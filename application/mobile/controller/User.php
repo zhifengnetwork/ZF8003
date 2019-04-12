@@ -218,19 +218,25 @@ class User extends Base
             Db::startTrans();//开启事务
             $bool = false;
             $is_update = true;
-
+            $address_id = intval($data['address_id']);
+            
             if ($result['is_default'] == 1) {
-                $is_update = Db::name('user_address')->where('user_id',$user_id)->update(['is_default' => 0]);
-            }
-
-            if ($is_update !== false) {
-                if (intval($data['address_id']) > 0) {
-                    $bool = Db::name('user_address')->where('id',intval($data['address_id']))->update($result);
-                } else {
-                    $bool = Db::name('user_address')->insert($result);
-                }
+                $is_update = Db::name('user_address')->where('user_id',$user_id)->where('is_default',1)->update(['is_default' => 0]);
             }
             
+            if ($is_update !== false) {
+                if ($address_id > 0) {
+                    $bool = Db::name('user_address')->where('id',$address_id)->update($result);
+                } else {
+                    $address_id = Db::name('user_address')->insertGetId($result);
+                    $bool = $address_id ? true : false;
+                }
+                
+                if ($bool) {
+                    $bool = Db::name('users')->where('id',$this->user_id)->update(['default_address_id'=>$address_id]);
+                }
+            }
+
             if(!$bool){
                 Db::rollback();
             } else {

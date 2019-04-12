@@ -3,6 +3,7 @@
 namespace app\mobile\controller;
 use think\Controller;
 use think\Db;
+use think\Session;
 
 class Article extends Base{
 
@@ -11,8 +12,7 @@ class Article extends Base{
     public function __construct(){
         parent::__construct();
 
-        // $this->user_id = session('user_id');
-        $this->user_id = 11;
+        $this->user_id = session('user_id');
     }
 
     public function index(){
@@ -163,7 +163,8 @@ class Article extends Base{
         if(!$info){
             layer_error('内容不存在或已禁止访问！');
         }
-
+        
+        $info['is_like'] = $this->is_like($info['id']);
         
         $this->assign('info', $info);
         return $this->fetch();
@@ -203,7 +204,11 @@ class Article extends Base{
         return $return;
     }
 
+    # 是否点赞
+    public function is_like($id)
+    {
+        $is_like = Db::name('article_star')->where('user_id',$this->user_id)->where('article_id',$id)->find();
+        return $is_like;
+    }
+
 }
-
-
-

@@ -30,13 +30,13 @@
            <!-- 底部点赞、评论 -->
            <div class="bottom-bar">
                <div class="operation-bar">
-                    <span class="praiseBtn" onclick="javaScript:like('{$info.id}')">
+                    <span class="praiseBtn {eq name='$info.is_like' value='1'} praised {/eq}" onclick="javaScript:like('{$info.id}')">
                         <i class="praise-icon"></i>
-                        <em class="num">20</em>
+                        <em class="num">{$info.star}</em>
                     </span>
                     <span class="commentBtn">
                         <i class="discuss-icon"></i>
-                        <em class="num">10</em>
+                        <em class="num">{$info.comment}</em>
                     </span>
                </div>
            </div>
