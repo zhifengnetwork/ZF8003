@@ -45,9 +45,6 @@ class Index extends Base
     # 研究所
     public function research(){
 
-
-
-
         return $this->fetch();
     }
 
