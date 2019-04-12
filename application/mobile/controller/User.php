@@ -16,8 +16,8 @@ class User extends Base
 
     public function __construct(){
         parent::__construct();
-
-        $this->user_id = session('user_id');
+         $this->user_id = 29;
+        // $this->user_id = session('user_id');
     }
 
     /** 

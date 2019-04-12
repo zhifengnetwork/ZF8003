@@ -25,12 +25,27 @@
         </div>
         <!-- main -->
         <!-- 数据提交 -->
-        <form name="cart2_form" id="cart2_form" method="post">
+        <form name="cart_form" id="cart_form" method="post">
             <!-- 用户信息 -->
-            <!-- 商品信息 -->
-            <!-- 备注 -->
+            <input type="hidden" name="user_id" value="{$user_info['id']}">
+            <input type="hidden" name="nickname" value="{$user_info['nickname']}">
+            <input type="hidden" name="province" value="">
+            <input type="hidden" name="city" value="">
+            <input type="hidden" name="district" value="">
+            <input type="hidden" name="address" value="">
+            <input type="hidden" name="pay_name" value="">
+            <input type="hidden" name="goods_price" value="">
+            <!-- 邮费 -->
+            <input type="hidden" name="shipping_price" value="">
+            <input type="hidden" name="user_money" value="">
+            <!-- 使用优惠券 -->
+            <input type="hidden" name="coupon_price" value="">
             <!-- 应付金额 -->
-           <input type="hidden" name="price" value="">
+            <input type="hidden" name="order_amount" value="">
+            <!-- 订单总价 -->
+            <input type="hidden" name="total_amount" value="">
+            <input type="hidden" name="user_note" value="">
+
         </form>
 
         <div class="personal-main">
@@ -121,7 +136,7 @@
                 <div class="favourable_item">
                     <div class="item_name">邮费:</div>
                     <div>
-                        ￥ <span class="postage">8.00</span>
+                        ￥ <span class="postage">{$price}</span>
                     </div>
                 </div>
                 <div class="favourable_item">
@@ -179,7 +194,8 @@
 
             },
 
-        });        
+        });
     })   
 </script>
+
 </html>

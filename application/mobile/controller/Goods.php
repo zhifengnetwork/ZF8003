@@ -44,11 +44,11 @@ class Goods extends Base
         // 获取地址  
         // $request = Request::instance();
         // $ip = $request->ip();
-        $ip = '119.131.60.165';
-        $ip_info = $this->getIpInfo($ip);
+        // $ip = '119.131.60.165';
+        // $ip_info = $this->getIpInfo($ip);
 
-        // 拼接地址省市
-        $address = $ip_info['region'] . $ip_info['city'];
+        // // 拼接地址省市
+        // $address = $ip_info['region'] . $ip_info['city'];
 
         if ($info) {
             $image = explode(',', $info['image']);
@@ -72,7 +72,7 @@ class Goods extends Base
         }
         $this->assign('is_focus', $is_focus);
         $this->assign('temp_price', $temp_price);
-        $this->assign('address', $address);
+        // $this->assign('address', $address);
         $this->assign('images', $images);
         $this->assign('info', $info);
         return $this->fetch();
@@ -80,24 +80,30 @@ class Goods extends Base
 
     public function order()
     {
+        // 商品id 
         $id = input('id');
         $user_id = 29;
+        $price ='';
         // 用户信息
         $where = [
-            'u.id' => $user_id,
+            'user_id'    => $user_id,
             'is_default' => 1
         ];
-        $user_info = Db::name('users')
-            ->alias('u')
-            ->join('user_address us', 'u.default_address_id = us.id')
-            ->where($where)
-            ->find();
 
+        $user_info1 = Db::name('users')->where('id',$user_id)->find();
+
+        $address1   = Db::name('user_address')->where($where)->find();
+
+        // $user_info = Db::name('users')
+        //     ->alias('u')
+        //     ->join('user_address us', 'u.default_address_id = us.id')
+        //     ->where($where)
+        //     ->find();
         // 地址  
-        $province = Db::name('area')->where('id', $user_info['province'])->find();
-        $city     = Db::name('area')->where('id', $user_info['city'])->find();
-        $district = Db::name('area')->where('id', $user_info['district'])->find();
-        $dizhi    = $province['name'] . $city['name'] . $district['name'] . $user_info['address'];
+        $province = Db::name('area')->where('id', $address1['province'])->find();
+        $city     = Db::name('area')->where('id', $address1['city'])->find();
+        $district = Db::name('area')->where('id', $address1['district'])->find();
+        $dizhi    = $province['name'] . $city['name'] . $district['name'] . $address1['address'];
         // 商品信息
         $res = Db::name('goods')->where('id', $id)->find();
         // 计算邮费
@@ -112,35 +118,35 @@ class Goods extends Base
             if($num == 1){
                 $price = $temp['freight'];  
              }else{
+                // 模板地址
                 $m=array_keys($temp);
-                // 判断用户地区id是否等于模板的id
-                // $a=[
-                //     ,
-                //     '1' => $user_info['city'],
-                //     '2' => $user_info['district'],
-                // ];
-          
-                $price = $temp['freight'];  
-                $a['0'] =  ['address' => $user_info['province']];
-                $a['1'] =  ['address' => $user_info['city']];
-                $a['2'] =  ['address' => $user_info['district']]; 
-          
+                // 判断用户地区id是否等于模板的id 
+                $price = $temp['freight']; 
+                // 用户地址 
+                $a['1'] =  ['address' => $address1['province']];
+                $a['2'] =  ['address' => $address1['city']];
+                $a['3'] =  ['address' => $address1['district']]; 
+ 
                 foreach ($a as $key => $value) {
-                    # code...
-                    
-                    if($value['address'] == $m[1]){
-                          $price = $temp[$value];
-                    }
+                    for ($i=0; $i <count($m); $i++) {
+                        if ($value['address'] == $m[$i]) {
+                            $price = $temp[$value['address']];
+                        }
+                    }  
                 }
-             
-
              } 
         }else{
              $price = $res['freight'];
         }
-        $this->assign('user_info', $user_info);
+         
+        $this->assign('user_info', $user_info1);
+        $this->assign( 'province', $province);
+        $this->assign( 'city', $city);
+        $this->assign( 'district', $district);
         $this->assign('dizhi', $dizhi);
+        $this->assign('address', $address1['address']);
         $this->assign('info', $res);
+        $this->assign('price', $price);
         return $this->fetch();
     }
 
