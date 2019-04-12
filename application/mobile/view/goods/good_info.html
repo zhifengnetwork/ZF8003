@@ -24,6 +24,7 @@
 				<!--<p class="lb_headWrap_text">领取产品</p>-->
 			</div>
 			<!-- main -->
+			<input type="hidden" name="id" id="id" value="{$info.id}">
 			<div class="product_main">
 				<!-- swipe -->
 				<div class="swiper-container banner-wrap-zp">
@@ -77,14 +78,16 @@
 						客服
 					</p>
 				</a>
+				{if condition = ''}
 				<a href="javascript:void(0);" class="store_item shou">
 					<p class="item_img">
 						<img src="__STATIC__/img/purchase/product/collection@2x.png" alt="">
 					</p>
-					<p class="item_name">
+					<p class="item_name" id="focus">
 						收藏
 					</p>
 				</a>
+				{/if}
 				<span class="store_buy" onclick="pageJump('{:url('goods/order',array('id'=>$info.id))}')">
                       立即购买
                 </span>
@@ -107,6 +110,85 @@
 				autoplayDisableOnInteraction: false
 			});
 		}
+		//点击收藏
+		$('.shou').click(function(){
+
+			var acc = $(this)
+
+			if(acc.children().children().hasClass('active')){
+				$.ajax({
+					type: 'post',
+					url: "{:url('mobile/goods/focus')}",
+					data: { 'id': id ,'act':'cancel'},
+
+					success: function (data) {
+						if (data.status == 1) {
+							if (acc.children().children().hasClass('active')) {
+								acc.children().children().attr('src', '../../img/purchase/product/collection@2x.png').removeClass('active')
+							} else {
+								acc.children().children().attr('src', '../../img/purchase/product/collection-r@2x.png').addClass('active')
+							}
+						} else {
+							// layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
+
+							// })
+						}
+
+					},
+
+				});				
+			}else{
+				$.ajax({
+					type: 'post',
+					url: "{:url('mobile/goods/focus')}",
+					data: { 'id': id, 'act': 'focus' },
+
+					success: function (data) {
+						if (data.status == 1) {
+							alert('aaaa');
+							// if (acc.children().children().hasClass('active')) {
+							// 	acc.children().children().attr('src', '../../img/purchase/product/collection@2x.png').removeClass('active')
+							// } else {
+							// 	acc.children().children().attr('src', '../../img/purchase/product/collection-r@2x.png').addClass('active')
+							// }
+						} else {
+							// layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
+
+							// })
+						}
+
+					},
+
+				});					
+			}
+
+			var id  = $('#id').val()
+			console.log(id);
+			$.ajax({
+				type: 'post',
+				url: "{:url('mobile/goods/focus')}",
+				data: {'id':id},
+
+				success: function (data) {
+					if (data.status == 1) {
+						if (acc.children().children().hasClass('active')) {
+							acc.children().children().attr('src', '../../img/purchase/product/collection@2x.png').removeClass('active')
+						} else {
+							acc.children().children().attr('src', '../../img/purchase/product/collection-r@2x.png').addClass('active')
+						}
+					} else {
+						// layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
+
+						// })
+					}
+
+				},
+
+			});
+
+
+		})		
+		
 	</script>
 
 </html>

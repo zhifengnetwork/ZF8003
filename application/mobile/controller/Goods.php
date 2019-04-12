@@ -3,6 +3,7 @@ namespace app\mobile\controller;
 use app\mobile\controller\Base;
 use think\Db;
 use think\Request;
+use think\Session;
 class Goods extends Base
 {
     public function index()
@@ -54,6 +55,19 @@ class Goods extends Base
             }
               
         }
+        // $admin_id = session('admin_id');
+        $user_id = Session::set('admin_id', 1);
+        $where = [
+             'goods_id'=> $info['id'],
+             'user_id' => $user_id
+        ];
+        // 判断是否已经收藏
+        $focus = Db::name('goods_focus')->where($where)->find();
+        if(empty($focus)){
+            $this->assign('is_focus', 0); 
+        }else{
+            $this->assign('is_focus', 1);
+        }
         $this->assign('temp_price', $temp_price);
         $this->assign('address', $address);
         $this->assign('images', $images);
@@ -69,6 +83,27 @@ class Goods extends Base
         return $this->fetch();
     }
 
+    public function focus(){
+        $data = input('post.');
+        // $admin_id = session('admin_id');
+        $user_id = Session::set('admin_id', 1);
+        // 判断是否已收藏
+        if($data['act']=='focus'){
+            $where = [
+              'goods_id'=> $data['id'],  
+              'user_id' => $user_id,
+              'addtime' => time(),
+            ];
+           $res = Db::name('goods_focus')->insert($where);
+           if($res){
+                return json(['status' => 1,'msg'=> '收藏成功']);
+           }else {
+                return json(['status' => 0,'msg' => '收藏失败']);
+           }   
+        }else{
+            
+        }
+    }
 
     /**
      * 通过IP获取对应城市信息(该功能基于淘宝第三方IP库接口)

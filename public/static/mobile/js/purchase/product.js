@@ -2,15 +2,7 @@
 
 $(function(){
 
-    //点击收藏
-    $('.shou').click(function(){
-        var acc = $(this)
-        if(acc.children().children().hasClass('active')){
-            acc.children().children().attr('src','../../img/purchase/product/collection@2x.png').removeClass('active')
-        }else{
-            acc.children().children().attr('src','../../img/purchase/product/collection-r@2x.png').addClass('active')
-        }
-    })
+
 
     //领取优惠券
     $('.coupon').click(function(){

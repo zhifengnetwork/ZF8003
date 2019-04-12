@@ -69,8 +69,10 @@ class User extends Base
     {
         $address = "";
         if (is_array($info)) {
+            $address = new UserAddress;
             //判断是一位数组还是多维数组
             if (count($info) == count($info, 1)) {
+                
                 $address = $info['province'] ? trimg($info['province']) : '';
                 $address = $info['city'] ? $address . ' ' . trim($info['city']) : $address;
                 $address = $info['district'] ? $address . ' ' . trim($info['district']) : $address;
