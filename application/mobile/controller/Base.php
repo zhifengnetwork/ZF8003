@@ -20,7 +20,7 @@ class Base extends Controller
 
         session_start();
 
-        $this->wx_config();
+        // $this->wx_config();
 
 
 

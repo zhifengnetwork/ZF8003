@@ -119,12 +119,12 @@ class Goods extends Base
                 //     '1' => $user_info['city'],
                 //     '2' => $user_info['district'],
                 // ];
-                dump($m);
+          
                 $price = $temp['freight'];  
                 $a['0'] =  ['address' => $user_info['province']];
                 $a['1'] =  ['address' => $user_info['city']];
                 $a['2'] =  ['address' => $user_info['district']]; 
-                dump($a);
+          
                 foreach ($a as $key => $value) {
                     # code...
                     
