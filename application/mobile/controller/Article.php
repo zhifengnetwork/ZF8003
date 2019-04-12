@@ -6,6 +6,15 @@ use think\Db;
 
 class Article extends Base{
 
+    private $user_id = 0;//用户id
+
+    public function __construct(){
+        parent::__construct();
+
+        // $this->user_id = session('user_id');
+        $this->user_id = 11;
+    }
+
     public function index(){
 
 
@@ -17,10 +26,10 @@ class Article extends Base{
         # 系统设置
         $conf = Db::query("select `value` from `zf_config` where `type` = 'hom_module_bind' and `name` = 'micro'");
         $lists = array();
-        if(isset($conf[0]['value'])){
+        if(!isset($conf[0]['value'])){
             layer_error('访问信息不存在或已禁止访问！');
         }
-
+        
         $cate_id = $conf[0]['value'];
         $cate_ids = Db::query("select `id` from `zf_category` where find_in_set('$cate_id', parent_ids) and `is_lock` = 0");
         $ids[] = $cate_id;
@@ -33,7 +42,21 @@ class Article extends Base{
 
         $lists = Db::query("select `id`,`title`,`thumb`,`star`,`comment` from `zf_article` where `cate_id` in ('$ids') order by `sort` desc,`utime` desc limit 15");
         
+        if($lists){
+            $lids = array_column($lists,'id');
+            $start_ids = Db::name('article_star')->where('user_id',$this->user_id)->where('article_id','in',$lids)->select();
 
+            foreach ($lists as $k1 => $v1) {
+                $lists[$k1]['is_like'] = 0;
+                foreach ($start_ids as $k2 => $v2) {
+                    if ($v2['article_id'] == $v1['id']) {
+                        $lists[$k1]['is_like'] = 1;
+                        unset($start_ids[$k2]);
+                    }
+                }
+            }
+        }
+        
         $this->assign('page', 1);
         $this->assign('lists', $lists);
         return $this->fetch();
@@ -146,9 +169,39 @@ class Article extends Base{
         return $this->fetch();
     }
 
+    # 点赞/取消点赞
+    public function give_a_like()
+    {
+        $id = input('id/d');
+        $user_id = $this->user_id;
+        $return = ['code' => 0];
+        if ($id && $user_id) {
+            $where = array('user_id'=>$user_id,'article_id'=>$id);
+            $is_like = Db::name('article_star')->where($where)->find();
+            $count = 0;
+            Db::startTrans();
+            if ($is_like) {
+                $bool = Db::name('article_star')->where($where)->delete();
+                $count = -1;
+            } else {
+                $where['addtime'] = time();
+                $bool = Db::name('article_star')->insertGetId($where);
+                $count = 1;
+            }
 
+            if ($bool) {
+                $is_update = Db::name('article')->where('id',$id)->setInc('star',$count);
+                if ($is_update) {
+                    Db::commit();
+                    $return['code'] = 1;
+                } else {
+                    Db::rollback();
+                }
+            }
+        }
 
-
+        return $return;
+    }
 
 }
 

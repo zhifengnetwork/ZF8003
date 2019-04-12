@@ -57,7 +57,7 @@
     padding: 0;
 }
 .search .search-tip{
-    background:url(../../img/home/search-icon-index@2x.png) 0 center no-repeat;
+    background:url(public/static/mobile/img/home/search-icon-index@2x.png) 0 center no-repeat;
     background-size: .22rem;
     color: #c2c2c2;
     padding-left: .3rem;
@@ -150,7 +150,7 @@
 }
 .title .more{
     font-size: .24rem;
-    background: url(../../img/home/youjian@2x.png) no-repeat right center;
+    background: url(/public/static/mobile/img/home/youjian@2x.png) no-repeat right center;
     background-size: 0.13rem; 
     padding-right: .2rem;
 }

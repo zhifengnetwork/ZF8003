@@ -44,7 +44,7 @@
 	content: ' ';
 	width: .15rem;
 	height: .25rem;
-	background: url(../../img/home/back-b@2x.png) no-repeat 0 0;
+	background: url(/public/static/mobile/img/home/back-b@2x.png) no-repeat 0 0;
 	background-size: cover;
 	-moz-background-size: cover;
 	-webkit-background-size: cover;
