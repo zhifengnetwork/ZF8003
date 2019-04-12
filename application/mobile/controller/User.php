@@ -6,19 +6,18 @@
 
 namespace app\mobile\controller;
 
-use app\mobile\model\UserAddress;
+use app\mobile\model\Area;
 use think\Session;
 use think\Db;
 
 class User extends Base
 {
-    private $user_id;//用户id
+    private $user_id = 0;//用户id
 
     public function __construct(){
         parent::__construct();
 
-        // $this->user_id = session('user_id');
-        $this->user_id = 12;
+        $this->user_id = session('user_id');
     }
     /** 
      * 我的
@@ -68,33 +67,39 @@ class User extends Base
     public function address_join($info)
     {
         $address = "";
-        if (is_array($info)) {
-            $address = new UserAddress;
+        if ($info && is_array($info)) {
+            $area = new Area;
             $province = "";
             $city = "";
             $district = "";
             $twon = "";
             //判断是一位数组还是多维数组
             if (count($info) == count($info, 1)) {
-                // $province = $address->where('id',$info['province'])->value('name');
-                $city = $address->where('id',$info['city'])->find();
-                // $district = $address->where('id',$info['district'])->value('name');
-                dump($city);die;
-                $address = $info['province'] ? trimg($info['province']) : '';
-                $address = $info['city'] ? $address . ' ' . trim($info['city']) : $address;
-                $address = $info['district'] ? $address . ' ' . trim($info['district']) : $address;
-                $address = $info['twon'] ? $address . ' ' . trim($info['twon']) : $address;
+                $province = $area->where('id',$info['province'])->value('name');
+                $city = $area->where('id',$info['city'])->value('name');
+                $district = $area->where('id',$info['district'])->value('name');
+                
+                $address = $province ? $province : '';
+                $address = $city ? $address . ' ' . $city : $address;
+                $address = $district ? $address . ' ' . $district : $address;
                 $info['area'] = $address;
+                $info['key'] = $info['province'] . "-" . $info['province'] . "-" . $info['province'];
             } else {
-                dump($info);
                 foreach($info as $key => $value){
-                    $city = UserAddress::where('id',$value['city'])->find();dump($city);dump($value);
-                    // $address = $value['province'] ? trimg($value['province']) : '';
-                    // $address = $value['city'] ? $address . ' ' . trim($value['city']) : $address;
-                    // $address = $value['district'] ? $address . ' ' . trim($value['district']) : $address;
-                    // $address = $value['twon'] ? $address . ' ' . trim($value['twon']) : $address;
-                    // $info[$key]['area'] = $address;
+                    $province = $area->where('id',$value['province'])->value('name');
+                    $city = $area->where('id',$value['city'])->value('name');
+                    $district = $area->where('id',$value['district'])->value('name');
+                    
+                    $address = $province ? $province : '';
+                    $address = $city ? $address . ' ' . $city : $address;
+                    $address = $district ? $address . ' ' . $district : $address;
+                    $info[$key]['area'] = $address;
+
                     $address = "";
+                    $province = "";
+                    $city = "";
+                    $district = "";
+                    $twon = "";
                 }
             }
         }
@@ -139,15 +144,17 @@ class User extends Base
             
             Db::startTrans();//开启事务
             $bool = false;
+            $is_update = true;
 
             if ($result['is_default'] == 1) {
                 $is_update = Db::name('user_address')->where('user_id',$user_id)->update(['is_default' => 0]);
-                if ($is_update !== false) {
-                    if (intval($data['address_id']) > 0) {
-                        $bool = Db::name('user_address')->where('id',intval($data['address_id']))->update($result);
-                    } else {
-                        $bool = Db::name('user_address')->insert($result);
-                    }
+            }
+
+            if ($is_update !== false) {
+                if (intval($data['address_id']) > 0) {
+                    $bool = Db::name('user_address')->where('id',intval($data['address_id']))->update($result);
+                } else {
+                    $bool = Db::name('user_address')->insert($result);
                 }
             }
             
