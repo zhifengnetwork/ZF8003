@@ -17,7 +17,7 @@ class Article extends Base{
         # 系统设置
         $conf = Db::query("select `value` from `zf_config` where `type` = 'hom_module_bind' and `name` = 'micro'");
         $lists = array();
-        if(!isset($conf[0]['value'])){
+        if(isset($conf[0]['value'])){
             layer_error('访问信息不存在或已禁止访问！');
         }
 
