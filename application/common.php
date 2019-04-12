@@ -13,7 +13,9 @@
 
 
 function layer_error($msg){
-    echo "<script>layer.msg('$msg',{icon:3});window.history.go(-1);</script>";
+    echo '<script type="text/javascript" src="/public/static/public/jquery.min.js"></script>';
+    echo '<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>';
+    echo "<script>layer.msg('$msg',{icon:5,time:3000});setTimeout(function(){window.history.go(-1);},3000);</script>";
     exit;
 }
 
