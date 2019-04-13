@@ -202,19 +202,40 @@ class Goods extends Base
     
     public function orderForm()
     {
-      $data = input('post.');
-      if(!$data['pay_password']){
-           return json(['status'=>0,'msg'=>'请输入支付密码']);
-      }
-    //   $pay_password = pwd_encryption($data['pay_password']);
-      $u_pwd = Db::name('users')->where('id',$data['user_id'])->value('payment_password');  
-      if($u_pwd!=$data['pay_password']){
-          return json(['status'=>0,'msg'=>'密码错误']);
-      }
+        $data = input('post.');
+        if($_POST){
+            if(!$data['pay_password']){
+                return json(['status'=>0,'msg'=>'请输入支付密码']);
+            }
+
+            // 判断支付密码
+            $u_pwd = Db::name('users')->where('id',$data['user_id'])->value('payment_password'); 
+            //   此处密码还需加密
+            if($u_pwd!=$data['pay_password']){
+                return json(['status'=>0,'msg'=>'密码错误']);
+            }
+            // 判断余额是否足够
+            if($data['remain'] < $data['order_amount']){
+            return json(['status' => 0, 'msg' => '余额不足请充值']);  
+            } 
+
+            $data1 = $this->form_data($data);
+            
+            $res = Db::name('order')->insert($data1); 
+            if($res){
+                return json(['status' => 1, 'msg' => '提交成功，正在跳转...']);
+            }else{
+                return json(['status' => 0, 'msg' => '提交失败']);
+            }
+        } 
+    } 
+
+    public function form_data($data){
         $data1 = [
             "user_id"   =>  $data['user_id'],
             "consignee" =>  $data['nickname'],
             "province"  =>  $data['province'],
+            // "user_money"=>  $data['user_money'],
             "city"      =>  $data['city'],
             "district"  =>  $data['district'],
             "address"   =>  $data['address'],
@@ -222,18 +243,11 @@ class Goods extends Base
             "shipping_price" => $data['shipping_price'],
             "order_amount"   =>  $data['order_amount'],
             "total_amount"   =>  $data['total_amount'],
-            "user_note" =>  $data['user_note'],         
+            "user_note" =>  $data['user_note'],
+            "pay_time"  =>  time()
         ];
-
-        $res = Db::name('order')->insert($data1); 
-        if($res){
-            return json(['status' => 1, 'msg' => '提交成功，正在跳转...']);
-        }else{
-            return json(['status' => 0, 'msg' => '提交失败']);
-        }
-
-    } 
-
+        return $data1;
+    }
 
     /**
      * 通过IP获取对应城市信息(该功能基于淘宝第三方IP库接口)

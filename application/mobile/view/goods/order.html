@@ -99,19 +99,20 @@
                             <input type="hidden" name="goods_price" value="{$info.price}">
                             <!-- 邮费 -->
                             <input type="hidden" name="shipping_price" value="{$s_price}">
-                            <!-- <input type="text" name="user_money" id="user_money" value=""> -->
+                            <!-- <input type="hidden" name="user_money" id="user_money" value=""> -->
                             <!-- 使用优惠券 -->
                             <!-- <input type="hidden" name="coupon_price" value=""> -->
                             <!-- 应付金额 -->
                             <input type="hidden" name="order_amount" id="order_amount" value="">
                             <!-- 订单总价 -->
                             <input type="hidden" name="total_amount" id="total_amount" value="">
-                            <input type="hidden" name="user_note" value="">
+                            <!-- <input type="text" name="user_note" class="user_note" value=""> -->
                             <!-- <input type="text" name="pay_password" id="pay_password" value=""> -->
                             <!-- 可用余额 -->
                             <input type="hidden" name="remain" value="{$user_info.money}">                           
                             <input type="password" value='' name="pay_password" class="pwdnum" id="pay_password" placeholder="请输入支付密码"
                                 autocomplete />
+
                         </form>
                     </div>
                 </div>
@@ -136,7 +137,7 @@
                 </div>
                 <div class="mode mode-bz">
                     <div class=" bz">备注</div>
-                    <textarea name="note" id="note" cols="103" rows="10" placeholder="暂无备注!" class="remark"></textarea>
+                    <textarea name="note" id="note"  cols="103" rows="10" placeholder="暂无备注!" class="remark"></textarea>
                 </div>
             </div>
                         
@@ -254,10 +255,13 @@
 </body>
 <script>
     $('.sumb').click(function () {
+        var s = $('#note').val()
+        // $('.user_note').attr('value', s)
+        // console.log($('#cart_form').serialize())
         $.ajax({
             type: 'post',
             url: "{:url('mobile/goods/orderForm')}",
-            data: $('#cart_form').serialize(),
+            data: $('#cart_form').serialize() + '&user_note=' + s,
 
             success: function (data) {
                 if (data.status == 1) {
@@ -276,14 +280,6 @@
         });
     })
     
-    function pwd(){
-        alert('aaa')
-        // $('#pay_password').val(this.val())
-    }
-    // $(".pwdnum").click(function(this) {
-    //     alert('aaa')
-    //     // $('.pay_password').val(this.val())
-    // });
 
 </script>
 

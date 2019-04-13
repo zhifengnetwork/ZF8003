@@ -55,9 +55,12 @@ $(function(){
         $(".price").each((i,elem)=>{
             total+=parseInt($(elem).html().slice(1))*parseInt($(elem).next().html().slice(1))
         })
-        $(".price_red").html(`¥${total.toFixed(2)-postage-coupon}`)  //应付金额
-        $('#total').html(`${total.toFixed(2)}`)      //订单总和
-        $('.remaining_discount').html(`${remaining.toFixed(2)}`) //余额抵扣
+        $(".price_red").html(`${(total+postage-coupon).toFixed(2)}`)  //应付金额
+        $("#order_amount").val(`${(total + postage-coupon).toFixed(2)}`);
+        $('#total').html(`${(total+postage).toFixed(2)}`)      //订单总和
+        $("#total_amount").val(`${(total+postage).toFixed(2)}`);
+        $('.remaining_discount').html(`${(total+postage-coupon).toFixed(2)}`) //余额抵扣
+        // $('.user_money').html(`${(total + postage - coupon).toFixed(2)}`) //使用金额
     }
 
     //修改地址
