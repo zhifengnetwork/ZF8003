@@ -80,6 +80,8 @@
 		<script type="text/javascript" src="__STATIC__/js/public/region/jquery.scs.min.js"></script>
 		<script type="text/javascript" src="__STATIC__/js/public/region/region.js"></script>
 		<!-- <script type="text/javascript" src="__STATIC__/js/my/site.js"></script> -->
+		<script type="text/javascript" src="__PUBLIC__/public/jquery.min.js"></script>
+    	<script type="text/javascript" src="__PUBLIC__/public/layer/layer.js"></script>
 		<script>
 			$(function(){
 				//input获取焦点
@@ -155,16 +157,16 @@
 					let reg="^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$";
 					let phonereg=new RegExp(reg)
 					if (!name) {
-						alert("请输入收货人姓名！");
+						layer.msg("请输入收货人姓名！",{icon:7,time:1000});
 						return false;
 					}
 					if (!phonestr) {
-						alert("请输入手机号！");
+						layer.msg("请输入手机号！",{icon:7,time:1000});
 						return false;
 					}
 					//判断手机号码
 					if(!phonereg.test(phonestr)){
-						alert("请输入正确的手机号码！");
+						layer.msg("请输入正确的手机号码！",{icon:7,time:1000});
 						return false;
 					}
 					console.log("收货人----"+name+"\n电话----"+phonestr+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge)
@@ -174,10 +176,11 @@
 
 					$.post('/mobile/user/handle_address',{type:'edit',consignee:name,mobile:phonestr,myAddrs:myAdd,site:site,is_default:is_default,address_id:id},function(res){
 						if(res.code == 1){
-							alert('成功修改！');
-							window.location.href = "/mobile/user/my_address";
+							layer.msg('修改成功！',{icon:1,time:1000},function(){
+								window.location.href = "/mobile/user/my_address";
+							});
 						} else {
-							alert('修改失败！');
+							layer.msg('修改失败！',{icon:2,time:1000});
 						}
 					});
 				})
