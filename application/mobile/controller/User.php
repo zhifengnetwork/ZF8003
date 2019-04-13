@@ -17,7 +17,7 @@ class User extends Base
         parent::__construct();
         
         # 验证登录
-        $this->Verification_User();
+        // $this->Verification_User();
     }
 
     /** 

@@ -267,9 +267,12 @@
                 if (data.status == 1) {
 
                     layer.msg(data.msg, { time: 1000 }, function () {
-                        acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
+                        
+                        // acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
                     })
-                } else {
+                }else if(data.status == -1){
+                    window.location.href = '/mobile/user/my_address'
+                }else {
                     layer.msg(data.msg, { time: 1000 }, function () {
 
                     })
