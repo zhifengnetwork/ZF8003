@@ -1,0 +1,251 @@
+@charset "utf-8";
+
+
+/*头像 wrap*/
+.headPortraitWrap {
+	padding-top: .29rem;
+	box-sizing: border-box;
+	width: 7.5rem;
+	height: 2.17rem;
+	font-size: .2rem;
+	background-color: #fff;
+}
+/*头像 box*/
+.headPortraitBox {
+	position: relative;
+	margin: 0 auto;
+	box-sizing: border-box;
+	width: 1.4rem;
+	height: 1.4rem;
+	border-radius: 50%;
+	border: .01rem solid #dcdcdc;
+
+}
+/*头像 icon*/
+.headPortraitIcon {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: 1.38rem;
+	height: 1.38rem;
+	border-radius: 50%;
+}
+/*内容*/
+.contentWrapU {
+	padding-left: .3rem;
+	box-sizing: border-box;
+	width: 7.5rem;
+	height: auto;
+	background-color: #fff;
+}
+/*登录public输入框=>项*/
+.loginPublicTermU {
+	position: relative;
+	padding-top: .27rem;
+	box-sizing: border-box;
+	width: 6.9rem;
+	height: 1.11rem;
+	font-size: .3rem;
+	border-bottom: .02rem solid #dcdcdc;
+}
+/*兄弟元素=>最后一个*/
+.loginPublicTermU:last-child {
+	border-bottom: none;
+}
+/*左*/
+.loginPTLeftU {
+	float: left;
+	width: 1.41rem;
+	height: .67rem;
+	color: #666;
+	font: .3rem/.67rem "微软雅黑";
+	text-indent: .03rem;
+	letter-spacing: .04rem;
+}
+/*右*/
+.loginPTRightU {
+	position: relative;
+	float: left;
+	width: 5.49rem;
+	height: .67rem;
+}
+/*input*/
+.loginPTRInput {
+	outline: none;
+	border: none;
+	width: 5.4rem;
+	height: .67rem;
+	font-size: .3rem;
+	color: #666;
+	letter-spacing: .01rem;
+	background-color: #fff; 
+}
+/*input=>提示文本*/
+.loginPTRInput::-webkit-input-placeholder { /* WebKit browsers */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.loginPTRInput:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.loginPTRInput::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.loginPTRInput:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.forgetButton {
+	width: 1.7rem;
+	height: .49rem;
+	font: .25rem/.49rem "微软雅黑";
+	text-align: center;
+	letter-spacing: .04rem;
+	color: #1e82d2;
+} 
+/*验证码 input*/
+.loginCode {
+	float: left;
+	outline: none;
+	border: none;
+	width: 3rem;
+	height: .67rem;
+	font-size: .3rem;
+	color: #666;
+	letter-spacing: .01rem;
+}
+.code_box {
+	float: right;
+	width: 2.4rem;
+	height: 100%;
+}
+/*验证码 icon*/
+.loginCodeImg {
+	/*max-width: 2.48rem;*/
+	max-width: 2.4rem;
+	max-height: 100%;
+}
+/*input=>提示文本*/
+.loginCode::-webkit-input-placeholder { /* WebKit browsers */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.loginCode:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.loginCode::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+} 
+.loginCode:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+	color: #bbb; 
+	font-size: .26rem;
+	font-family: "微软雅黑";
+}
+/*第三方登陆 box*/
+.the_third_party_wrap {
+	padding-bottom: .2rem;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.the_third_party_box {
+	padding-top: .6rem;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.the_third_party_icon {
+	display: block;
+	margin: 0 auto;
+}
+.the_third_party_text {
+	padding-top: .2rem;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	text-align: center;
+	letter-spacing: .02rem;
+	font-size: .26rem;
+}
+/*'登录'按钮 box*/
+.loginButtonBox {
+	padding-top: .8rem;
+	box-sizing: border-box;
+	width: 7.5rem;
+	height: auto;
+}
+.loginButton {
+	margin: 0 auto;
+	width: 6.9rem;
+	height: .91rem;
+	font: .3rem/.91rem "微软雅黑";
+	color: #fff;
+	text-align: center;
+	border-radius: .07rem;
+	letter-spacing: .03rem;
+	background-color: #37afe6;
+}
+
+/*用户:'注册账号、忘记密码？'=>功能 wrap*/
+.userLoginWrap {
+	position: relative;
+	padding-top: .2rem;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+	
+}
+/*用户:'注册账号、忘记密码' =>功能 box*/
+.userLoginBox {
+	position: absolute;
+	right: .3rem;
+	z-index: 1;
+	width: 3.4rem;
+	height: 100%;
+}
+/*用户:'注册账号、忘记密码'=>按钮*/
+.registerButton, .forgetButton {
+	width: 1.7rem;
+	height: .49rem;
+	font: .25rem/.49rem "微软雅黑";
+	letter-spacing: .04rem;
+	text-align: right;
+	color: #1e82d2;
+}
+.registerButton {
+	float: left;
+}
+.forgetButton {
+	float: right;
+	
+}
+/*用户:忘记密码 =>伪类:after=>'|'的样式*/
+/*.forgetButton:after {
+	content: " ";
+	display: block;
+	width: .02rem;
+	height: .28rem;
+	background-color: red;
+	position: absolute;
+	top: .1rem;
+	left: 3.74rem;
+}*/

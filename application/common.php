@@ -11,6 +11,89 @@
 
 // 应用公共文件
 
+# 唯一订单号
+function order_sn(){
+    $osn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+    $res = Db::name('order')->where('order_sn',$osn)->find();
+    if($res){
+        order_sn();
+    }else{
+        return $osn;
+    }
+}
+
+
+
+function is_weixin() {
+    if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') !== false) {
+        return true;
+    } return false;
+}
+ 
+
+function is_qq() {
+    if (strpos($_SERVER['HTTP_USER_AGENT'], 'QQ') !== false) {
+        return true;
+    } return false;
+}
+function is_alipay() {
+    if (strpos($_SERVER['HTTP_USER_AGENT'], 'AlipayClient') !== false) {
+        return true;
+    } return false;
+}
+function is_ios()
+{
+    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+    if (strpos($agent, 'iphone') || strpos($agent, 'ipad')) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 检查邮箱地址格式
+ * @param $email 邮箱地址
+ */
+function check_email($email){
+    if(filter_var($email,FILTER_VALIDATE_EMAIL))
+        return true;
+    return false;
+}
+
+/**
+ * 检查手机号码格式
+ * @param $mobile 手机号码
+ */
+function check_mobile($mobile){
+    if(preg_match('/1[34578]\d{9}$/',$mobile))
+        return true;
+    return false;
+}
+
+/**
+ * 获取随机字符串
+ * @param int $randLength  长度
+ * @param int $addtime  是否加入当前时间戳
+ * @param int $includenumber   是否包含数字
+ * @return string
+ */
+function get_rand_str($randLength=6,$addtime=1,$includenumber=0){
+    if ($includenumber){
+        $chars='abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQEST123456789';
+    }else {
+        $chars='abcdefghijklmnopqrstuvwxyz';
+    }
+    $len=strlen($chars);
+    $randStr='';
+    for ($i=0;$i<$randLength;$i++){
+        $randStr.=$chars[rand(0,$len-1)];
+    }
+    $tokenvalue=$randStr;
+    if ($addtime){
+        $tokenvalue=$randStr.time();
+    }
+    return $tokenvalue;
+}
 
 /**
  * CURL请求
@@ -77,11 +160,13 @@ function httpRequest($url, $method="GET", $postfields = null, $headers = array()
 /**
  * 调用layer弹出错误提示
  */
-function layer_error($msg){
+function layer_error($msg, $re = true){
     echo '<script type="text/javascript" src="/public/static/public/jquery.min.js"></script>';
     echo '<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>';
-    echo "<script>layer.msg('$msg',{icon:5,time:3000});setTimeout(function(){window.history.go(-1);},3000);</script>";
-    exit;
+    echo "<script>layer.msg('$msg',{icon:5,time:3000});</script>";
+    if($re){
+        echo "<script>setTimeout(function(){window.history.go(-1);},3000);</script>";
+    }
 }
 
 

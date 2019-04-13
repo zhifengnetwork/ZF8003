@@ -8,42 +8,79 @@ namespace app\mobile\controller;
 
 use think\Controller;
 use think\Db;
+use think\Session;
+use think\Request;
 
 class Base extends Controller
 {
 
     public $session_id;
     public $weixin_config;
+    public $user;
+    public $user_id;
+    public $module;
+    public $controller;
+    public $action;
+    public $ip;
+    public $client;
 
     public function _initialize()
     {
+        $this->Verification_Client();
 
-        session_start();
-
-        // $this->wx_config();
 
 
 
     }
 
+    # 请求验证
+    public function Verification_Client(){
+        $request= Request::instance();
+        $this->module = $request->module();
+        $this->controller = $request->controller();
+        $this->action = $request->action();
+        $this->ip = $request->ip();
 
+        $is_mobile = $request->isMobile();
+        if($is_mobile){
+            $this->client = 'mobile';
+        }else{
+            $this->client = 'pc';
+        }
+    }
+
+
+    # 用户验证
+    public function Verification_User(){
+        if(Session::has('user')){
+            $this->user = Sessigon::get('user');
+            $this->user_id = Sessigon::get('user.id');
+        }else{
+            layer_error('请先登录！', false);
+            $this->redirect('Index/login');
+        }
+    }
 
 
     # 微信配置
     public function wx_config(){
-
-        $config = Db::name('config')->where('type','weixin_config')->select();
-
+        $config = Session::get('wx_config');
+        if(!$config){
+            $config = Db::name('config')->where('type','weixin_config')->select();
+            foreach($config as $v){
+                $conf[$v['name']] = $v['value'];
+            }
+            Session::set('wx_config',$conf);
+        }
+        
         if(!$config){
 
             return layer_error('管理员未配置微信登录相关信息，功能未启用！');
         }
-        foreach($config as $v){
+        
 
-            $conf[$v['name']] = $v['value'];
-        }
-
-        $this->weixin_config = $conf;
+        $this->weixin_config = $config;
+        return $config;
     }
 
 
@@ -244,5 +281,5 @@ class Base extends Controller
         return $buff;
     }
 
-
+    
 }

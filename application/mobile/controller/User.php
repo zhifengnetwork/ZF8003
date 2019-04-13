@@ -12,12 +12,12 @@ use think\Db;
 
 class User extends Base
 {
-    private $user_id = 0;//用户id
-
+    
     public function __construct(){
         parent::__construct();
-         $this->user_id = 29;
-        // $this->user_id = session('user_id');
+        
+        # 验证登录
+        $this->Verification_User();
     }
 
     /** 

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>注册</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<!--账号.css-->
+		<link rel="stylesheet" href="__STATIC__/css/login/register.css" />
+	</head>
+    <style>
+    .code{
+        display:block;
+        border:1px solid #37afe6;
+        width: 100px;
+        height: 35px;
+        margin-left:15px;
+        color:#37afe6;
+    }
+    </style>
+	<body>
+		<!--最大边框-->
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
+				</p>
+				<span>注册</span>
+			</div>
+			<!--内容 wrpa O-->
+			<div class="contentWrapO">
+				<!--public 隔开上线 box-->
+				<!--<p class="publicSeptum"></p>-->
+				
+				<!--公共的class=>项Wrap，class="publicButtomLIne"=>(伪类)'底边框线'-->
+				<div class="pblicTermWrapO publicButtomLIne">
+					<!--公共的class=>项box-->
+					<div class="publicTermBoxO">
+						<!--左-->
+						<p class="publicTermLeftO">电子邮箱</p>
+						<!--右-->
+						<div class="publicTermRightO">
+							<!--input-->
+							<input type="text" class="publicTROInput" placeholder="请输入电子邮箱">
+						</div>
+					</div>
+				</div>
+				
+				<div class="pblicTermWrapO">
+					<!--公共的class=>项box-->
+					<div class="publicTermBoxO">
+						<!--左-->
+						<p class="publicTermLeftO">注册码</p>
+						<!--右-->
+						<div class="publicTermRightO">
+							<!--input-->
+							<input type="text" class="publicTROInput code_input" placeholder="请输入邮件注册码">
+							<!--验证码 box-->
+							<p class="code_box">
+								<button class="code">发送注册码</button>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="pblicTermWrapO publicButtomLIne">
+					<!--公共的class=>项box-->
+					<div class="publicTermBoxO">
+						<!--左-->
+						<p class="publicTermLeftO">登录密码</p>
+						<!--右-->
+						<div class="publicTermRightO">
+							<!--input-->
+							<input type="text" class="publicTROInput" placeholder="请输入登录密码">
+						</div>
+					</div>
+				</div>
+				<!--公共的class=>项Wrap，class="publicButtomLIne"=>(伪类)'底边框线'-->
+				<div class="pblicTermWrapO">
+					<!--公共的class=>项box-->
+					<div class="publicTermBoxO">
+						<!--左-->
+						<p class="publicTermLeftO">确认密码</p>
+						<!--右-->
+						<div class="publicTermRightO">
+							<!--input-->
+							<input type="text" class="publicTROInput" placeholder="请确认密码">
+						</div>
+					</div>
+				</div>
+				
+				<!--public 隔开上线 box-->
+				<p class="publicSeptum"></p>
+				
+				<!--验证码-->
+				<div class="pblicTermWrapO">
+					<!--公共的class=>项box-->
+					<div class="publicTermBoxO">
+						<!--左-->
+						<p class="publicTermLeftO">验证码</p>
+						<!--右-->
+						<div class="publicTermRightO">
+							<!--input-->
+							<input type="text" class="publicTROInput code_input" placeholder="请输入右图验证码">
+							<!--验证码 box-->
+							<p class="code_box">
+								<img class="loginCodeImg" src="__STATIC__/img/public/0002.png"/>
+							</p>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			<!--注册 按钮 box，样式=>public.css-->
+			<div class="registerButBox">
+				<p class="registerButton">提交</p>
+			</div>
+			
+			<!--第三方登陆-->
+				<div class="the_third_party_wrap">
+					<p class="the_third_party_box">
+						<img class="the_third_party_icon" src="__STATIC__/img/public/we_chat_icon.png"/>
+					</p>
+					<p class="the_third_party_text">第三方登录</p>
+					
+				</div>
+			
+			
+		</div>
+        <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+        <script src="__STATIC__/js/public/public.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		<script>
+            var code = 0;
+            
+            $('.code').on('click',function(){
+                if(code == 0){
+                    // 交互代码
+
+
+                    code = 1;
+                    count_down();
+                }else{
+                    layer.msg('注册码已发出，请勿重复点击！',{icon:5});
+                }
+            });
+        
+            var time = 60;
+            function count_down(){
+               
+                if(time <= 0){
+                    $('.code').css('color', '#37afe6').html('发送验证码');
+                    code = 0;
+                    time = 60;
+                    return false;
+                }else{
+                    var _ch = time+' 秒';
+                    $('.code').css('color', '#a1a6a9').html(_ch);
+                    time--;
+                    setTimeout(function(){
+                        count_down();
+                    },1000);
+                    
+                }
+            }
+        
+        
+        </script>
+		
+		
+	</body>
+
+</html>

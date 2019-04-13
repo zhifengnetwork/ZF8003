@@ -2,6 +2,7 @@
 namespace app\mobile\controller;
 
 use think\Db;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Index extends Base
 {
@@ -53,12 +54,76 @@ class Index extends Base
     # 微信登录
     public function wx_sign(){
 
-        parent::GetOpenid();
-
-
-        dump($_SESSION);
+        // parent::GetOpenid();
 
     }
 
+    # 正常登录
+    public function login(){
+
+        
+
+        return $this->fetch();
+    }
+
+    # 注册
+    public function register(){
+        $code = rand(100000,999999);
+        $param = [
+            'host'      => 'smtp.qq.com',
+            'username'  => '1142506197@qq.com',
+            'password'  => 'fbssodalnjkkibbg',
+            'secure'    => 'ssl',
+            'port'      => '456',
+            'nickname'  => 'rock',
+            'to'        => '15766485478@163.com',
+            'title'     => '注册码',
+            'body'      => '<h1>注册码：'.$code.'</h1>',
+            'altBody'   => '注册码：'.$code,
+        ];
+        
+        // $res = $this->send_mail();
+        dump($res);
+        exit;
+        return $this->fetch();
+    }
+
+
+    /**
+     * 发送邮件
+     */
+    // public function send_mail(){
+        
+    //     $code = rand(100000,999999);
+    //     $mail = new PHPMailer(true);
+        
+    //     try {
+    //         //服务器配置
+    //         $mail->CharSet ="UTF-8";                     //设定邮件编码
+    //         $mail->SMTPDebug = 0;                        // 调试模式输出
+    //         $mail->isSMTP();                             // 使用SMTP
+    //         $mail->Host = 'smtp.qq.com';                // SMTP服务器
+    //         $mail->SMTPAuth = true;                      // 允许 SMTP 认证
+    //         $mail->Username = '1142506197@qq.com';                // SMTP 用户名  即邮箱的用户名
+    //         $mail->Password = 'fbssodalnjkkibbg';             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
+    //         $mail->SMTPSecure = 'ssl';                    // 允许 TLS 或者ssl协议
+    //         $mail->Port = '456';                            // 服务器端口 25 或者465 具体要看邮箱服务器支持
+        
+    //         $mail->setFrom('1142506197@qq.com', 'rock');  //发件人
+    //         $mail->addAddress('15766485478@163.com');  // 收件人
+    //         $mail->addReplyTo('1142506197@qq.com', 'rock'); //回复的时候回复给哪个邮箱 建议和发件人
+        
+    //         //Content
+    //         $mail->isHTML(true);                                  // 是否以HTML文档格式发送  发送后客户端可直接显示对应HTML内容
+    //         $mail->Subject = '注册码';
+    //         $mail->Body    = '<h1>注册码：'.$code.'</h1>';
+    //         $mail->AltBody = '注册码：'.$code;
+            
+    //         $mail->send();
+    //         return true;
+    //     } catch (Exception $e) {
+    //         return $mail->ErrorInfo;
+    //     }
+    // }
 
 }
