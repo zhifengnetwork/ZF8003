@@ -255,7 +255,7 @@
     overflow-y: scroll;
     width: 100%;
     height: 4.5rem;
-    margin-bottom: .2rem;
+    margin-bottom: 1rem;
  }
 
  .coupon_list{
@@ -317,20 +317,23 @@
        font-weight: 600;
    }
 
-    .popup{
-        display: none;
-        text-align: center;
-        font-size: .28rem;
-        background: #7f868a;
-        color: #ffffff;
-        border-radius: .1rem;
-        margin: 0 auto;
-        margin-bottom: .7rem;
-        letter-spacing: .1rem;
-        width: 2.43rem;
-        height: .54rem;
-        line-height: .54rem;
-    }
+   .popup{
+    display: none;
+    text-align: center;
+    font-size: .28rem;
+    background: #7f868a;
+    color: #ffffff;
+    border-radius: .1rem;
+    margin: 0 auto;
+    margin-bottom: .7rem;
+    letter-spacing: .1rem;
+    width: 2.43rem;
+    height: .54rem;
+    line-height: .54rem;
+    position: absolute;
+    top: 40%;
+    left: 35%;
+}
     .achieve{
      width: 3.94rem;
      height: .66rem;
@@ -342,10 +345,6 @@
      color: #ffffff;
      font-size: .4rem;
      letter-spacing: .1rem;
-     position: fixed;
-     left: 0;
-     bottom: .2rem;
-     right: 0;
     }
 
     .employ .use{

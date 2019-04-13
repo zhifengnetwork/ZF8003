@@ -2,25 +2,26 @@
 
 $(function(){
 
-    //点击收藏
-    $('.shou').click(function(){
-        var acc = $(this)
-        if(acc.children().children().hasClass('active')){
-            acc.children().children().attr('src','../../img/purchase/product/collection@2x.png').removeClass('active')
-        }else{
-            acc.children().children().attr('src','../../img/purchase/product/collection-r@2x.png').addClass('active')
-        }
-    })
+    // //点击收藏
+    // $('.shou').click(function(){
+    //     var acc = $(this)
+    //     if(acc.children().children().hasClass('active')){
+    //         acc.children().children().attr('src','../../img/purchase/product/collection@2x.png').removeClass('active')
+    //     }else{
+    //         acc.children().children().attr('src','../../img/purchase/product/collection-r@2x.png').addClass('active')
+    //     }
+    //     console.log($(document).scrollTop())
+    // })
 
     //领取优惠券
     $('.coupon').click(function(){
         var add = $(this)
         $('.receive_coupon').show()  //遮罩层
         $('.receive_box').show()     //优惠券
-        thisScrollNum = $(document).scrollTop();
+        // thisScrollNum = $(document).scrollTop();
 				$('.wrap_frame').css({
 					'position': 'fixed',
-					'top': -thisScrollNum,
+					'top': 0,
 					'left': 0,
                     'height': '100%',
                     'width':'100%',
@@ -54,23 +55,22 @@ $(function(){
         $(document).scrollTop(thisScrollNum);
 		$("body").unbind("touchmove");
     }
+    
 
     //使用优惠券
     $('.use').click(function(){
          var employ = $(this)
-         var img = `<img src="../../img/purchase/logo@2x.png" alt="" class="been">`
+        var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
          if(employ.parent().hasClass('coupon_use')){
-            employ.parent().addClass('employ').removeClass('coupon_use')
-            employ.parent().append(img)
-            length--;   //优惠券长度-1
-            $('.numm').find('.discount_num').html(length)
-            $('.popup').fadeIn(500)  //使用成功
-            $('.popup').animate({
-                opactiy:1
-            }
-            ,1000,function(){
-               $('.popup').fadeOut(500)
-            })
+         employ.parent().addClass('employ').removeClass('coupon_use')
+         employ.parent().append(img)
+         $('.popup').fadeIn(500)
+         $('.popup').animate({
+             opactiy:1
+         }
+         ,1000,function(){
+            $('.popup').fadeOut(500)
+         }) 
          }
     })
     
