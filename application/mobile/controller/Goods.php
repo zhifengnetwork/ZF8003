@@ -84,15 +84,76 @@ class Goods extends Base
         $id = input('id');
         $user_id = 29;
         $price ='';
+        $get_address = [
+            'province' => '',
+            'city'     => '',
+            'district' => '',
+            'address'  => '',
+            'dizhi'    => ''
+        ];
+         
+        // 商品信息
+        $res = Db::name('goods')->where('id', $id)->find();
         // 用户信息
         $where = [
             'user_id'    => $user_id,
             'is_default' => 1
         ];
-
         $user_info1 = Db::name('users')->where('id',$user_id)->find();
 
-        $address1   = Db::name('user_address')->where($where)->find();
+        if($user_info1){
+            $address1   = Db::name('user_address')->where($where)->find();
+            if($address1){
+                $province = Db::name('area')->where('id', $address1['province'])->find();
+                $city     = Db::name('area')->where('id', $address1['city'])->find();
+                $district = Db::name('area')->where('id', $address1['district'])->find();
+                $dizhi    = $province['name'] . $city['name'] . $district['name'] . $address1['address'];
+
+                $get_address = [
+                    'province' => $address1['province'],
+                    'city'     => $address1['city'],
+                    'district' => $address1['district'],
+                    'address'  => $address1['address'],
+                    'dizhi'    => $dizhi
+                ];
+
+                // 计算邮费
+                $freight_temp = Db::name('freight_temp')->where('id', $res['freight_temp'])->find();
+                $temp = json_decode($freight_temp['temp'], true);
+
+                // 判断是否存在运费模板
+                if ($freight_temp) {
+                    $num = count($temp);
+                    //  判断是否设置特定地区运费
+                    if ($num == 1) {
+                        $price = $temp['freight'];
+                    } else {
+                        // 模板地址
+                        $m = array_keys($temp);
+                        // 判断用户地区id是否等于模板的id 
+                        $price = $temp['freight'];
+                        // 用户地址 
+                        $a['1'] =  ['address' => $address1['province']];
+                        $a['2'] =  ['address' => $address1['city']];
+                        $a['3'] =  ['address' => $address1['district']];
+
+                        foreach ($a as $key => $value) {
+                            for ($i = 0; $i < count($m); $i++) {
+                                if ($value['address'] == $m[$i]) {
+                                    $price = $temp[$value['address']];
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $price = $res['freight'];
+                }
+
+
+            }
+
+        }
+       
 
         // $user_info = Db::name('users')
         //     ->alias('u')
@@ -100,60 +161,11 @@ class Goods extends Base
         //     ->where($where)
         //     ->find();
         // 地址  
-        $province = Db::name('area')->where('id', $address1['province'])->find();
-        $city     = Db::name('area')->where('id', $address1['city'])->find();
-        $district = Db::name('area')->where('id', $address1['district'])->find();
-        $dizhi    = $province['name'] . $city['name'] . $district['name'] . $address1['address'];
-        
-        $get_address = [
-            'province' => $address1['province'],
-            'city'     => $address1['city'],
-            'district' => $address1['district'],
-            'address'  => $address1['address']
-        ];
-        // 商品信息
-        $res = Db::name('goods')->where('id', $id)->find();
-        // 计算邮费
-        $freight_temp = Db::name('freight_temp')->where('id',$res['freight_temp'])->find();
-        $temp = json_decode($freight_temp['temp'],true);
-
-        // 判断是否存在运费模板
-        if($freight_temp){
-             $num = count($temp); 
-            //  判断是否设置特定地区运费
-            if($num == 1){
-                $price = $temp['freight'];  
-             }else{
-                // 模板地址
-                $m=array_keys($temp);
-                // 判断用户地区id是否等于模板的id 
-                $price = $temp['freight']; 
-                // 用户地址 
-                $a['1'] =  ['address' => $address1['province']];
-                $a['2'] =  ['address' => $address1['city']];
-                $a['3'] =  ['address' => $address1['district']]; 
- 
-                foreach ($a as $key => $value) {
-                    for ($i=0; $i <count($m); $i++) {
-                        if ($value['address'] == $m[$i]) {
-                            $price = $temp[$value['address']];
-                        }
-                    }  
-                }
-             } 
-        }else{
-             $price = $res['freight'];
-        }
-         
         $this->assign('user_info', $user_info1);
         $this->assign('get_address',$get_address);
-        // $this->assign( 'province', $province['name']);
-        // $this->assign( 'city', $city['name']);
-        // $this->assign( 'district', $district['name']);
-        $this->assign('dizhi', $dizhi);
-        // $this->assign('address', $address1['address']);
+        // $this->assign('dizhi', $dizhi);
         $this->assign('info', $res);
-        $this->assign('price', $price);
+        $this->assign('s_price', $price);
         return $this->fetch();
     }
 
@@ -186,9 +198,40 @@ class Goods extends Base
     public function pay(){
         return $this->fetch();
     }
+
+    
     public function orderForm()
     {
-        return $this->fetch();
+      $data = input('post.');
+      if(!$data['pay_password']){
+           return json(['status'=>0,'msg'=>'请输入支付密码']);
+      }
+    //   $pay_password = pwd_encryption($data['pay_password']);
+      $u_pwd = Db::name('users')->where('id',$data['user_id'])->value('payment_password');  
+      if($u_pwd!=$data['pay_password']){
+          return json(['status'=>0,'msg'=>'密码错误']);
+      }
+        $data1 = [
+            "user_id"   =>  $data['user_id'],
+            "consignee" =>  $data['nickname'],
+            "province"  =>  $data['province'],
+            "city"      =>  $data['city'],
+            "district"  =>  $data['district'],
+            "address"   =>  $data['address'],
+            "goods_price"    =>  $data['goods_price'],
+            "shipping_price" => $data['shipping_price'],
+            "order_amount"   =>  $data['order_amount'],
+            "total_amount"   =>  $data['total_amount'],
+            "user_note" =>  $data['user_note'],         
+        ];
+
+        $res = Db::name('order')->insert($data1); 
+        if($res){
+            return json(['status' => 1, 'msg' => '提交成功，正在跳转...']);
+        }else{
+            return json(['status' => 0, 'msg' => '提交失败']);
+        }
+
     } 
 
 

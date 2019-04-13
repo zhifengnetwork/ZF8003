@@ -72,6 +72,7 @@ $(function() {
 				cityKey = sArr[1];
 			}
 			startCities = getAddrsArrayById(provKey);
+			
 			startDists = getAddrsArrayById(cityKey);
 			provStartIndex = getStartIndexByKeyFromStartArr(PROVINCES, provKey);
 			cityStartIndex = getStartIndexByKeyFromStartArr(startCities, cityKey);

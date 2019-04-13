@@ -402,7 +402,7 @@ textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
     opacity: 0.3;
 }
 .receive_box{
-    display: none;
+     display: none;
      height: 8.22rem;
      position: fixed;
      bottom: 0;
@@ -423,7 +423,8 @@ textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
     width: 100%;
     overflow-y: scroll;
     height: 4.5rem;
-    margin-bottom: .2rem;
+    margin-bottom: 1rem;
+    position: relative;
  }
 
  .coupon_list{
@@ -498,6 +499,9 @@ textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
         width: 2.43rem;
         height: .54rem;
         line-height: .54rem;
+        position: absolute;
+        top: 40%;
+        left: 35%;
     }
     .achieve{
      width: 3.94rem;
@@ -510,10 +514,6 @@ textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
      color: #ffffff;
      font-size: .4rem;
      letter-spacing: .1rem;
-     position: fixed;
-     left: 0;
-     bottom: .2rem;
-     right: 0;
     }
 
     .employ .use{
