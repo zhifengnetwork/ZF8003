@@ -83,7 +83,7 @@ class Index extends Base
         ];
         
         // $res = $this->send_mail();
-        dump($res);
+        dump(order_sn());
         exit;
         return $this->fetch();
     }

@@ -14,12 +14,8 @@
 # 唯一订单号
 function order_sn(){
     $osn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
-    $res = Db::name('order')->where('order_sn',$osn)->find();
-    if($res){
-        order_sn();
-    }else{
-        return $osn;
-    }
+    
+    return $osn;
 }
 
 
