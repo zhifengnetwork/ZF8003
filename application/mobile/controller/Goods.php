@@ -104,10 +104,16 @@ class Goods extends Base
         $city     = Db::name('area')->where('id', $address1['city'])->find();
         $district = Db::name('area')->where('id', $address1['district'])->find();
         $dizhi    = $province['name'] . $city['name'] . $district['name'] . $address1['address'];
+        
+        $get_address = [
+            'province' => $address1['province'],
+            'city'     => $address1['city'],
+            'district' => $address1['district'],
+            'address'  => $address1['address']
+        ];
         // 商品信息
         $res = Db::name('goods')->where('id', $id)->find();
         // 计算邮费
-
         $freight_temp = Db::name('freight_temp')->where('id',$res['freight_temp'])->find();
         $temp = json_decode($freight_temp['temp'],true);
 
@@ -140,11 +146,12 @@ class Goods extends Base
         }
          
         $this->assign('user_info', $user_info1);
-        $this->assign( 'province', $province);
-        $this->assign( 'city', $city);
-        $this->assign( 'district', $district);
+        $this->assign('get_address',$get_address);
+        // $this->assign( 'province', $province['name']);
+        // $this->assign( 'city', $city['name']);
+        // $this->assign( 'district', $district['name']);
         $this->assign('dizhi', $dizhi);
-        $this->assign('address', $address1['address']);
+        // $this->assign('address', $address1['address']);
         $this->assign('info', $res);
         $this->assign('price', $price);
         return $this->fetch();
