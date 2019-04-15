@@ -72,7 +72,7 @@
                     </td>
                     <td class="td-manage" data-id="{$vo.id}">
 
-                        {if condition="$vo.status eq 1"}
+                        {if condition="$vo.status eq 0"}
                         <a style="text-decoration:none" onClick="goods_stop(this)" href="javascript:;" title="禁用优惠券">
                             <i class="Hui-iconfont">&#xe631;</i>
                         </a>
@@ -153,8 +153,8 @@
 					// var res = JSON.parse(res);
 					if(res.status == 1){
 						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_start(this)" href="javascript:;" title="上架商品" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
-						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已下架</span>');
-						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已失效</span>');
+						// $(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
@@ -168,14 +168,14 @@
 		/*商品-启用*/
 		function goods_start(obj) {
 			var id = $(obj).parents('.td-manage').data('id');
-			layer.confirm('确认要上架商品吗？', function (index) {
+			layer.confirm('确认要启用优惠券吗？', function (index) {
 				//此处请求后台程序，下方是成功后的前台处理……
-				$.post('/admin/goods/edit_status_goods',{status:0,coupon_id:id},function(res){
+				$.post('/admin/goods/edit_status_coupon',{status:0,coupon_id:id},function(res){
 					// var res = JSON.parse(res);
 					if(res.status == 1){
 						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_stop(this)" href="javascript:;" title="下架商品" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
-						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已上架</span>');
-						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">正常</span>');
+						// $(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{

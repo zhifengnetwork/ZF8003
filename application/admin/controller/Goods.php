@@ -609,11 +609,11 @@ class Goods extends Base{
     # 修改优惠券状态
     public function edit_status_coupon()
     {
-        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0, 1, 2]) ? intval($_POST['status']) : 99;
-        $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
-        if ($goods_id && $status < 3) {
+        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0, 1]) ? intval($_POST['status']) : 99;
+        $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
+        if ($coupon_id && $status < 2) {
             $time = time();
-            $res = Db::name('goods')->where('id', $goods_id)->update(['status' => $status, 'utime' => $time]);
+            $res = Db::name('goods_coupon')->where('id', $coupon_id)->update(['status' => $status, 'updatetime' => $time]);
             if ($res) {
                 return json(['status' => 1, 'utime' => date('Y-m-d H:i:s', $time)]);
             }
