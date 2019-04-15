@@ -10,7 +10,19 @@
 		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
 		<link rel="stylesheet" href="__STATIC__/css/my/set_up_zp.css" />
 	</head>
-
+	<style>
+		.logout{
+			display:block;
+			margin: 0 auto;
+			width:60%;
+			height:35px;
+			text-align: center;
+			line-height: 35px;
+			color:#fff;
+			background: #37afe6;
+			border-radius:10px
+		}
+	</style>
 	<body>
 		<div class="wrap_frame">
 			<!-- 头部 -->
@@ -104,10 +116,29 @@
 					</div>
 			</div>
 
+			<div style="padding-top: 30px;">
+				<a class="logout" onclick="logout();">退出登录</a>
+			</div>
 		</div>
 		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
 		<script src="__STATIC__/js/public/public.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 		<script>
+
+			/* 退出登录 */
+			function logout(){
+				layer.open({
+					title:'提示！',
+					content: '<p style="text-align:center;">确定要退出登录么？</p>',
+					btn:['确定','取消'],
+					btnAlign:'c',
+					yes:function(){
+						window.location.href = '/mobile/index/logout';
+					}
+				});
+			}
+
+
 			/*点击-切换下拉框*/
 			function dropDownFun(_this){
 				/*保存当前-点击状态*/

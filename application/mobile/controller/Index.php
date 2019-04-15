@@ -65,9 +65,57 @@ class Index extends Base
 
     # 微信登录
     public function wx_sign(){
-
+        $time = time();
         $data = $this->GetOpenid();
-        dump($data);
+        
+        if(isset($data['openid'])){
+            $user = Db::name('users')->where('openid',$data['openid'])->find();
+            if($user){
+
+                # 已注册用户，直接登录
+
+                Session::set('user', $user);
+                $user_id = $user['id'];
+            }else{
+
+                # 未注册的用户，注册新账号
+
+                $inser_data = [
+                    'nickname' => $data['nickname'],
+                    'sex'   => $data['sex'],
+                    'openid'    => $data['openid'],
+                    'unionid'   => isset($data['unionid']) ? $data['unionid'] : '',
+                    'register_method'   => 'weixin',
+                    'register_time' => $time,
+                    'login_time'    => $time,
+                    'avatar'    => $data['head_pic']
+                ];
+                
+                $user_id = Db::name('users')->insertGetId($inser_data);
+                if(!$user_id){
+                    layer_error('系统错误！请重试！');
+                }
+
+            }
+
+            $log_data = [
+                'user_id'   => $user_id,
+                'type'  =>  'weixin',
+                'ip'    =>  $this->ip,
+                'client'    => $this->client,
+                'addtime'   => $time,
+            ];
+
+            Db::name('user_login_log')->insert($log_data);
+
+            $re_url = Session::has('re_url') ? Session::get('re_url') : '/mobile/user/index';
+            $this->redirect($re_url);
+
+
+        }else{
+            echo '<h1>微信登陆失败，请重试！</h1>';
+        }
+        exit;
     }
 
     # 正常登录

@@ -32,8 +32,6 @@ class Base extends Controller
         $this->Verification_Client();
 
 
-
-
     }
 
     # 请求验证
@@ -123,7 +121,7 @@ class Base extends Controller
     public function GetOpenid()
     {
         $this->wx_config();
-
+        
         if(Session::has('openid'))
             return Session::get('wx_user_data');
         //通过code获得openid
