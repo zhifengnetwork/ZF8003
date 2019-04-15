@@ -22,10 +22,10 @@
 </style>
 <div class="page-container">
     <form action="" method="post" class="form form-horizontal" target="ajaxR-from">
-        <!-- <input type="hidden" id="goods_id" name="goods_id"
+        <input type="hidden" id="coupon_id" name="coupon_id"
             value='{if condition="isset($info)"}{$info.id}{else /}0{/if}'>
-        <input type="hidden" id="category_id" name="category_id"
-            value='{if condition="isset($info)"}{$info.cate_id}{else /}0{/if}'> -->
+        <input type="hidden" id="goods_id" name="goods_id"
+            value='{if condition="isset($info)"}{$info.goods_id}{else /}{/if}'>
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券名称：</label>
@@ -40,9 +40,13 @@
 
             <div class="formControls col-xs-8 col-sm-9">
             <span class="">
+                {if condition="isset($goods)" }
+                <a style="color:blue;" id="select_coupon_goods" onclick="select_coupon_goods();" data-id="">{$goods.name}</a>
+                {else/}
                 <a style="color:blue;" id="select_coupon_goods" onclick="select_coupon_goods();" data-id="">选择商品</a>
+                {/if}
                 <!-- <input type="hidden" name="goods_name" id="goods_name" value=""> -->
-                <input type="hidden" name="goods_id" id="goods_id" value="">
+                <!-- <input type="hidden" name="goods_id" id="goods_id" value=""> -->
             </span>
             </div>
 
@@ -53,7 +57,7 @@
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>使用期限：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" name="term" id="" placeholder="使用期限" {if condition="isset($info)" }
-                    value="{$info.price}" {/if} class="input-text" style="width:90%">
+                    value="{$info.term}" {/if} class="input-text" style="width:90%">
                 天</div>
         </div>
   
@@ -61,27 +65,23 @@
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>使用额度：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" name="quota" id="" placeholder="使用额度" {if condition="isset($info)" }
-                    value="{$info.price}" {/if} class="input-text" style="width:90%">
+                    value="{$info.quota}" {/if} class="input-text" style="width:90%">
                 元</div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>券额：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" name="money" id="" placeholder="商品原价" {if condition="isset($info)" }
-                    value="{$info.self_price}" {/if} class="input-text" style="width:90%">
+                    value="{$info.money}" {/if} class="input-text" style="width:90%">
                 元</div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">领取限制：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
                 <input type="text" name="limit" id="limit" placeholder="领取限制" {if condition="isset($info)" }
-                    value="{$info.stock}" {else /}value="1" {/if} class="input-text" style="width:150px;">
+                    value="{$info.limit}" {else /}value="1" {/if} class="input-text" style="width:150px;">
                 <p style="font-size:12px;color:#b1b1b1;">0或者留空为不限制</p>
-                <!-- <div class="radio-box">
-                    <input type="checkbox" id="is_limit" value="0" name="is_limit" {if
-                        condition="isset($info) && $info.is_stock eq 0" }checked{/if}> <label
-                        for="is_stock">无限制</label>
-                </div> -->
+
             </div>
         </div>
         <div class="row cl">
@@ -105,8 +105,7 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" {literal}
                     onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"
-                    {/literal} {if condition="isset($info) && $info.limit_stime gt 0" }
-                    value="{$info.limit_stime|date='Y-m-d H:i:s',###}" {/if} id="datemin" name=""
+                    {/literal}  id="datemin" name=""
                     class="input-text Wdate" style="width:180px;">
                 <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 或 “限时” 时必填，其余类型无效。</p>
             </div>
@@ -117,10 +116,10 @@
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" {literal}
                     onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
-                    {/literal} {if condition="isset($info) && $info.limit_etime gt 0" }
-                    value="{$info.limit_etime|date='Y-m-d H:i:s',###}" {/if} id="datemax" name="deadline"
+                    {/literal} {if condition="isset($info) && $info.deadline gt 0" }
+                    value="{$info.deadline|date='Y-m-d H:i:s',###}" {/if} id="datemax" name="deadline"
                     class="input-text Wdate" style="width:180px;">
-                <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 或 “限时” 时必填，其余类型无效。</p>
+                <!-- <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 或 “限时” 时必填，其余类型无效。</p> -->
             </div>
         </div>
 
@@ -147,12 +146,16 @@
     }
     function ajax_from_callback(status, msg) {
         if (status == 1) {
-            layer.msg(msg, { icon: 6 });
-            setTimeout(function () {
-                parent.open_closeAll();
-            }, 1000);
+            layer.msg(msg, { icon: 1},function(){
+                parent.location.reload()
+            });
+            // setTimeout(function () {
+            //     parent.open_closeAll();
+            // }, 1000);
         } else {
-            error(msg);
+            layer.msg(msg, { icon: 2},function(){
+                parent.location.reload()
+            });
         }
     }
 
