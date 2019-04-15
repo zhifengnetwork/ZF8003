@@ -75,9 +75,9 @@
                         type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
                 </div>
             </div>
-        <div class="pages">{//$list->render()}</div>
+        <div class="pages">{$list->render()}</div>
         {if condition="!isset($list) or !$list"}
-        <!-- <p class="no-data">暂无数据</p> -->
+        <p class="no-data">暂无数据</p>
         {/if}
     </div>
     <!--_footer 作为公共模版分离出去-->

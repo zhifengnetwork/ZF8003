@@ -3,7 +3,7 @@
 namespace app\admin\Controller;
 
 use think\Db;
-
+use think\Loader;
 class Goods extends Base{
 
     # 商品列表
@@ -493,7 +493,21 @@ class Goods extends Base{
 
         $list = Db::name('goods_coupon')->where($where)->paginate(15);
         $count = Db::name('goods_coupon')->where($where)->count();
-
+        $cname[0] = '';
+        if ($list) {
+            foreach ($list as $v) {
+                $cids[] = $v['goods_id'];
+            }
+            // dump($cids);
+            if (isset($cids)) {
+                $cids = implode("','", $cids);
+                $cids = Db::query("select `id`,`name` from `zf_goods` where `id` in ('$cids')");
+                foreach ($cids as $c) {
+                    $cname[$c['id']] = $c['name'];
+                }
+            }
+        }
+        $this->assign('cname', $cname);
         $this->assign('keywords', $keywords);
         $this->assign('list', $list);
         $this->assign('count', $count);
@@ -503,7 +517,16 @@ class Goods extends Base{
      * 添加优惠券
      */
     public function add_coupon(){
+        $data1 = input('post.');
+       
         if ($_POST) {
+            // 数据验证
+            $goodsValidate = Loader::Validate('Goods');
+            if (!$goodsValidate->check($data1)) {
+                $baocuo = $goodsValidate->getError();
+                echo "<script>parent.error('".$baocuo."')</script>";
+                exit;
+            }
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
             $term = isset($_POST['term']) ? intval($_POST['term']) : 0;
@@ -512,8 +535,6 @@ class Goods extends Base{
             $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 0;
             $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
             $deadline = isset($_POST['deadline']) ? strtotime($_POST['deadline']) : 0;
-            // 验证  
-            $this->check_data($name,$goods_id,$term,$quota,$money,$deadline);
             // 插入数据
             $data = [
                'name' => $name,
@@ -526,62 +547,70 @@ class Goods extends Base{
                'deadline'=>$deadline,
                'addtime' =>time()      
             ];
+            // 编辑跟新数据
+            if($_POST['coupon_id']){
+                unset($data['addtime']);
+                $data['id']=$_POST['coupon_id'];
+                $data['updatetime'] =time();
+                $res = Db::name('goods_coupon')->update($data);
+            }else{
+                $res = Db::name('goods_coupon')->insert($data);
+            }
             
-            $res = Db::name('goods_coupon')->insert($data);
             if($res){
                 echo "<script>parent.ajax_from_callback(1,'操作成功，正在跳转...')</script>";
             }else{
                 echo "<script>parent.ajax_from_callback(0,'操作失败，正在跳转...')</script>"; 
             }
         }
+        $coupon_id = isset($_GET['coupon_id']) ? intval($_GET['coupon_id']) : 0;
         // 编辑
-        $goods_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        if($goods_id){
-            $info = Db::name('goods')->where('id',$goods_id)->find();
+        if($coupon_id){
+            $info = Db::name('goods_coupon')->where('id', $coupon_id)->find();
             if($info){
-                $cate = Db::name('category')->where('id',$info['cate_id'])->field('name')->find();
-                $info['catename'] = $cate['name'];
-                $info['image'] = explode(',',$info['image']);
-                $image_path = $src_dir.$goods_id.'/';
-                
-                $this->assign('image_path', $image_path);
-                $this->assign('info', $info);
-            } 
+                $where = [
+                    'id' => $info['goods_id'],
+                    'is_del' => 0,
+                ];
+                // 查找未删除的商品信息
+                $goods = Db::name('goods')->where($where)->find();  
+                $this->assign('goods',$goods);
+                $this->assign('info',$info);
+            }
         }         
-
 
         return $this->fetch();
     }
     /**
      * 检验数据
      */
-    public function check_data($name,$goods_id,$term,$quota,$money,$deadline){
-        if (!$name) {
-            echo "<script>parent.error('请填写优惠券名称')</script>";
-            exit;
-        }
-        if (!$goods_id) {
-            echo "<script>parent.error('请选择商品')</script>";
-            exit;
-        }
-        if (!$term) {
-            echo "<script>parent.error('请填写使用期限')</script>";
-            exit;
-        }
-        if (!$quota) {
-            echo "<script>parent.error('请填写使用额度')</script>";
-            exit;
-        }
-        if (!$money) {
-            echo "<script>parent.error('请填写券额')</script>";
-            exit;
-        }
+    // public function check_data($name,$goods_id,$term,$quota,$money,$deadline){
+    //     // if (!$name) {
+    //     //     echo "<script>parent.error('请填写优惠券名称')</script>";
+    //     //     exit;
+    //     // }
+    //     // if (!$goods_id) {
+    //     //     echo "<script>parent.error('请选择商品')</script>";
+    //     //     exit;
+    //     // }
+    //     // if (!$term) {
+    //     //     echo "<script>parent.error('请填写使用期限')</script>";
+    //     //     exit;
+    //     // }
+    //     // if (!$quota) {
+    //     //     echo "<script>parent.error('请填写使用额度')</script>";
+    //     //     exit;
+    //     // }
+    //     // if (!$money) {
+    //     //     echo "<script>parent.error('请填写券额')</script>";
+    //     //     exit;
+    //     // }
 
-        if (!$deadline) {
-            echo "<script>parent.error('请填写截止日期')</script>";
-            exit;
-        }     
-    }
+    //     // if (!$deadline) {
+    //     //     echo "<script>parent.error('请填写截止日期')</script>";
+    //     //     exit;
+    //     // }     
+    // }
 
     /**
      * 添加商品（优惠券添加页面）
@@ -600,13 +629,10 @@ class Goods extends Base{
         $this->assign('keywords', $keywords);
         $this->assign('list', $list);
         $this->assign('count', $count);
-
-        // $list = Db::name('goods')->select();
-        // $this->assign('list',$list); 
         return $this->fetch();
     }
 
-    # 修改优惠券状态
+    // 修改优惠券状态
     public function edit_status_coupon()
     {
         $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0, 1]) ? intval($_POST['status']) : 99;
@@ -616,6 +642,22 @@ class Goods extends Base{
             $res = Db::name('goods_coupon')->where('id', $coupon_id)->update(['status' => $status, 'updatetime' => $time]);
             if ($res) {
                 return json(['status' => 1, 'utime' => date('Y-m-d H:i:s', $time)]);
+            }
+        }
+        return json(['status' => 0]);
+    }
+
+    /**
+     * 删除和批量删除优惠券
+     */
+    function del_coupon(){
+        if($_POST){
+            $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
+            if($coupon_id){
+                $res = Db::table('zf_goods_coupon')->delete($coupon_id);
+                if($res){
+                    return json(['status' => 1]);
+                }
             }
         }
         return json(['status' => 0]);
