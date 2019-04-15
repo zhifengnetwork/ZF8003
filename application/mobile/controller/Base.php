@@ -122,8 +122,10 @@ class Base extends Controller
     // 网页授权登录获取 OpendId
     public function GetOpenid()
     {
-        if(isset($_SESSION['openid']) && !empty($_SESSION['openid']))
-            return $_SESSION['data'];
+        $this->wx_config();
+
+        if(Session::has('openid'))
+            return Session::get('wx_user_data');
         //通过code获得openid
         if (!isset($_GET['code'])){
             //触发微信返回code码
@@ -141,12 +143,12 @@ class Base extends Controller
             $data['sex'] = $data2['sex'];
             $data['head_pic'] = $data2['headimgurl'];   
             $data['oauth_child'] = 'mp';
-            $_SESSION['openid'] = $data['openid'];
+            Session::set('openid', $data['openid']);
             $data['oauth'] = 'weixin';
             if(isset($data2['unionid'])){
             	$data['unionid'] = $data2['unionid'];
             }
-            $_SESSION['data'] =$data;
+            Session::set('wx_user_data', $data);
             return $data;
         }
     }
