@@ -482,13 +482,143 @@ class Goods extends Base{
     }
 
     /**
-     * 优惠券
+     * 优惠券列表
      */
     public function goods_coupon(){
+        $where['id'] = ['>', 0];
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+        if ($keywords) {
+            $where['name'] = ['like', "%$keywords%"];
+        }
+
+        $list = Db::name('goods_coupon')->where($where)->paginate(15);
+        $count = Db::name('goods_coupon')->where($where)->count();
+
+        $this->assign('keywords', $keywords);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
         return $this->fetch();
     }
+    /**
+     * 添加优惠券
+     */
     public function add_coupon(){
+        if ($_POST) {
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+            $term = isset($_POST['term']) ? intval($_POST['term']) : 0;
+            $quota = isset($_POST['quota']) && Digital_Verification($_POST['quota']) ? Digital_Verification($_POST['quota']) : 0.00;
+            $money = isset($_POST['money']) && Digital_Verification($_POST['money']) ? Digital_Verification($_POST['money']) : 0.00;
+            $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 0;
+            $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
+            $deadline = isset($_POST['deadline']) ? strtotime($_POST['deadline']) : 0;
+            // 验证  
+            $this->check_data($name,$goods_id,$term,$quota,$money,$deadline);
+            // 插入数据
+            $data = [
+               'name' => $name,
+               'goods_id' => $goods_id,
+               'term' =>$term,
+               'quota'=>$quota,
+               'money'=>$money,
+               'limit'=>$limit,
+               'status'=>$status,
+               'deadline'=>$deadline,
+               'addtime' =>time()      
+            ];
+            
+            $res = Db::name('goods_coupon')->insert($data);
+            if($res){
+                echo "<script>parent.ajax_from_callback(1,'操作成功，正在跳转...')</script>";
+            }else{
+                echo "<script>parent.ajax_from_callback(0,'操作失败，正在跳转...')</script>"; 
+            }
+        }
+        // 编辑
+        $goods_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        if($goods_id){
+            $info = Db::name('goods')->where('id',$goods_id)->find();
+            if($info){
+                $cate = Db::name('category')->where('id',$info['cate_id'])->field('name')->find();
+                $info['catename'] = $cate['name'];
+                $info['image'] = explode(',',$info['image']);
+                $image_path = $src_dir.$goods_id.'/';
+                
+                $this->assign('image_path', $image_path);
+                $this->assign('info', $info);
+            } 
+        }         
+
+
         return $this->fetch();
+    }
+    /**
+     * 检验数据
+     */
+    public function check_data($name,$goods_id,$term,$quota,$money,$deadline){
+        if (!$name) {
+            echo "<script>parent.error('请填写优惠券名称')</script>";
+            exit;
+        }
+        if (!$goods_id) {
+            echo "<script>parent.error('请选择商品')</script>";
+            exit;
+        }
+        if (!$term) {
+            echo "<script>parent.error('请填写使用期限')</script>";
+            exit;
+        }
+        if (!$quota) {
+            echo "<script>parent.error('请填写使用额度')</script>";
+            exit;
+        }
+        if (!$money) {
+            echo "<script>parent.error('请填写券额')</script>";
+            exit;
+        }
+
+        if (!$deadline) {
+            echo "<script>parent.error('请填写截止日期')</script>";
+            exit;
+        }     
+    }
+
+    /**
+     * 添加商品（优惠券添加页面）
+     */
+    public function select_coupon_goods(){
+        
+        $where['id'] = ['>', 0];
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+        if ($keywords) {
+            $where['name'] = ['like', "%$keywords%"];
+        }
+
+        $list = Db::name('goods')->where($where)->paginate(15);
+        $count = Db::name('goods')->where($where)->count();
+
+        $this->assign('keywords', $keywords);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
+
+        // $list = Db::name('goods')->select();
+        // $this->assign('list',$list); 
+        return $this->fetch();
+    }
+
+    # 修改优惠券状态
+    public function edit_status_coupon()
+    {
+        $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0, 1, 2]) ? intval($_POST['status']) : 99;
+        $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+        if ($goods_id && $status < 3) {
+            $time = time();
+            $res = Db::name('goods')->where('id', $goods_id)->update(['status' => $status, 'utime' => $time]);
+            if ($res) {
+                return json(['status' => 1, 'utime' => date('Y-m-d H:i:s', $time)]);
+            }
+        }
+        return json(['status' => 0]);
     }
 
 }

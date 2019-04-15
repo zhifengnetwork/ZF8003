@@ -20,24 +20,28 @@
         </form>
         <div class="cl pd-5 bg-1 bk-gray mt-20">
             <span class="l">
-                <a href="javascript:;" onclick="category_add('添加商品分类','{:url('admin/goods/add_coupon')}','1360','800')"
+                <a href="javascript:;" onclick="category_add('添加优惠券','{:url('admin/goods/add_coupon')}','1360','800')"
                     class="btn btn-primary radius">
                     <i class="Hui-iconfont">&#xe600;</i>
-                    添加商品分类
+                    添加优惠券
                 </a>
             </span>
-            <span class="r">共有数据：<strong>{$//count}</strong> 条</span> </div>
+            <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
         <table class="table table-border table-bordered table-bg">
             <thead>
                 <tr>
-                    <th scope="col" colspan="9">商品分类列表</th>
+                    <th scope="col" colspan="12">商品分类列表</th>
                 </tr>
                 <tr class="text-c">
                     <th width="40">ID</th>
-                    <th width="150">分类名称</th>
-                    <th width="150">上级分类</th>
+                    <th width="150">优惠券名称</th>
+                    <!-- <th width="150">商品名称</th> -->
+                    <th width="150">使用期限(天)</th>
+                    <th width="150">额度</th>
+                    <th width="130">添加时间</th>
+                    <th width="150">过期时间</th>
+                    <th width="150">领取限制（张）</th>
                     <th width="150">状态</th>
-                    <th width="130">更新时间</th>
                     <th width="100">操作</th>
                 </tr>
             </thead>
@@ -47,19 +51,40 @@
                 <tr class="text-c">
                     <td>{$vo.id}</td>
                     <td>{$vo.name}</td>
-                    <td>{if condition="isset($pname[$vo.parent_id])"}{$pname[$vo.parent_id]}{else}{$vo.parent_id}{/if}
+                    <!-- <td>商品名称</td> -->
+                    <td>10</td>
+                    <td>满{$vo.quota}减{$vo.money}</td>
+                    <td>{:date('Y-m-d,H:i:s',$vo.addtime)}</td>
+                    <td>
+                        {:date('Y-m-d,H:i:s',$vo.deadline)}
                     </td>
+                    {if condition='$vo.limit eq 0'}
+                    <td>无限制</td>
+                    {else/}
+                    <td>{$vo.limit}</td>
+                    {/if}
                     <td class="td-status">
-                        {if condition="$vo.is_lock eq 0"}
+                        {if condition='$vo.status eq 0'}
                         <span class="label label-success radius">正常</span>
-                        {else /}
-                        <span class="label label-default radius">锁定</span>
+                        {else/}
+                        <span class="label label-default radius">已失效</span>
                         {/if}
                     </td>
-                    <td>{$vo.time|date="Y-m-d H:i:s",###}</td>
                     <td class="td-manage" data-id="{$vo.id}">
+
+                        {if condition="$vo.status eq 1"}
+                        <a style="text-decoration:none" onClick="goods_stop(this)" href="javascript:;" title="禁用优惠券">
+                            <i class="Hui-iconfont">&#xe631;</i>
+                        </a>
+                        
+                        {else /}
+                        <a style="text-decoration:none" onClick="goods_start(this)" href="javascript:;" title="启用优惠券">
+                            <i class="Hui-iconfont">&#xe615;</i>
+                        </a>
+                        {/if}
+
                         <a title="编辑" href="javascript:;"
-                            onclick="category_edit('商品分类编辑','/admin/goods/add_category?category_id={$vo.id}','','800','500')"
+                            onclick="category_edit('商品分类编辑','/admin/goods/add_coupon?id={$vo.id}','','800','500')"
                             class="ml-5" style="text-decoration:none">
                             <i class="Hui-iconfont">&#xe6df;</i>
                         </a>
@@ -116,6 +141,50 @@
         function category_edit(title, url, id, w, h) {
             layer_show(title, url, w, h, 1);
         }
+
+
+
+		/*商品-停用*/
+		function goods_stop(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要禁用优惠券吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/goods/edit_status_coupon',{status:1,coupon_id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_start(this)" href="javascript:;" title="上架商品" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已下架</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+				
+			});
+		}
+
+		/*商品-启用*/
+		function goods_start(obj) {
+			var id = $(obj).parents('.td-manage').data('id');
+			layer.confirm('确认要上架商品吗？', function (index) {
+				//此处请求后台程序，下方是成功后的前台处理……
+				$.post('/admin/goods/edit_status_goods',{status:0,coupon_id:id},function(res){
+					// var res = JSON.parse(res);
+					if(res.status == 1){
+						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="goods_stop(this)" href="javascript:;" title="下架商品" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已上架</span>');
+						$(obj).parents("tr").find(".td-date").find('.utime').html(res.utime);
+						$(obj).remove();
+						layer.msg('操作成功!', { icon: 6, time: 1000 });
+					}else{
+						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+					}
+				});
+			});
+		}
+
     </script>
 </body>
 
