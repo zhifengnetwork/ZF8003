@@ -481,4 +481,14 @@ class Goods extends Base{
         return json(['status' => 0]);
     }
 
+    /**
+     * 优惠券
+     */
+    public function goods_coupon(){
+        return $this->fetch();
+    }
+    public function add_coupon(){
+        return $this->fetch();
+    }
+
 }

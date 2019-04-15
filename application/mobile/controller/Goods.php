@@ -82,7 +82,7 @@ class Goods extends Base
     {
         // 商品id 
         $id = input('id');
-        $user_id = 28;
+        $user_id = 29;
         $price = 0;
         $get_address = [
             'province' => '',

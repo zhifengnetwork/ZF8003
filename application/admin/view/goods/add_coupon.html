@@ -1,0 +1,235 @@
+{include file="layout/head"}
+<style>
+    #goods-image a {
+        display: block;
+        width: 150px;
+        height: 150px;
+        float: left;
+        margin-right: 5px;
+    }
+
+    #goods-image a img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .del-up-image {
+        position: relative;
+        left: 90%;
+        top: -100%;
+    }
+</style>
+<div class="page-container">
+    <form action="" method="post" class="form form-horizontal" target="ajaxR-from">
+
+        <input type="hidden" id="goods_id" name="goods_id"
+            value='{if condition="isset($info)"}{$info.id}{else /}0{/if}'>
+        <input type="hidden" id="category_id" name="category_id"
+            value='{if condition="isset($info)"}{$info.cate_id}{else /}0{/if}'>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" {if condition="isset($info)" }value="{$info.name}" {/if}
+                    placeholder="优惠券名称" id="" name="name">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>优惠券名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+            <span class="">
+                <a href="javascript:;" onclick="goods_add('添加商品分类','{:url('admin/goods/add_coupon')}','1360','800')"
+                    class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe600;</i>
+                    添加商品分类
+                </a>
+            </span>
+            </div>
+
+        </div>
+
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">使用期限：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="price" id="" placeholder="使用额度" {if condition="isset($info)" }
+                    value="{$info.price}" {/if} class="input-text" style="width:90%">
+                天</div>
+        </div>
+  
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">使用额度：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="price" id="" placeholder="使用额度" {if condition="isset($info)" }
+                    value="{$info.price}" {/if} class="input-text" style="width:90%">
+                元</div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">券额：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="self_price" id="" placeholder="商品原价" {if condition="isset($info)" }
+                    value="{$info.self_price}" {/if} class="input-text" style="width:90%">
+                元</div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>领取限制：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <input type="text" name="stock" id="stock" placeholder="领取限制" {if condition="isset($info)" }
+                    value="{$info.stock}" {else /}value="0" {/if} class="input-text" style="width:150px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="radio-box">
+                    <input type="checkbox" id="is_stock" value="0" name="is_stock" {if
+                        condition="isset($info) && $info.is_stock eq 0" }checked{/if}> <label
+                        for="is_stock">无限制</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">有效截止时间：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" {literal}
+                    onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
+                    {/literal} {if condition="isset($info) && $info.limit_etime gt 0" }
+                    value="{$info.limit_etime|date='Y-m-d H:i:s',###}" {/if} id="datemax" name="limit_etime"
+                    class="input-text Wdate" style="width:180px;">
+                <p style="font-size:12px;color:#b1b1b1;">商品类型为 “促销” 或 “限时” 时必填，其余类型无效。</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input type="radio" id="status-1" value="0" name="status" {if
+                        condition="(isset($info) && $info.status eq 0) or !isset($info)" }checked{/if}>
+                    <label for="status-1">正常</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="status-2" value="1" name="status" {if condition="isset($info) && $info.status eq 1"
+                        }checked{/if}> <label for="status-2">已失效</label>
+                </div>
+
+            </div>
+        </div>
+
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                    <button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i>
+                        提交</button>
+                    <button onClick="layer_close();" class="btn btn-default radius"
+                        type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+                </div>
+            </div>
+    </form>
+</div>
+
+{include file="layout/footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<!-- <script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script> -->
+<script type="text/javascript">
+    function error(msg) {
+        layer.msg(msg, { icon: 5 });
+    }
+    function ajax_from_callback(status, msg) {
+        if (status == 1) {
+            layer.msg(msg, { icon: 6 });
+            setTimeout(function () {
+                parent.open_closeAll();
+            }, 1000);
+        } else {
+            error(msg);
+        }
+    }
+		/*商品-增加*/
+		function goods_add(title, url, w, h) {
+			layer_show(title, url, w, h,true);
+		}
+    function del_up_image(obj) {
+        layer.confirm('确认要删除图片么？', { icon: 3, title: '提示' }, function (index) {
+            $(obj).parent('a').remove();
+            var size = $('#goods-image > a').size();
+            if (size < 5) {
+                if ($("#goods-image #add-goods-image").length == 0) {
+                    //元素不存在时执行的代码
+                    var _html = '' +
+                        '<a onclick="upload_image();" id="add-goods-image">' +
+                        '<img src="/public/default_upload_images_add.jpg" alt="上传图片" />' +
+                        '</a>';
+                    $('#goods-image').append(_html);
+                }
+
+            }
+            layer.close(index);
+        });
+    }
+
+    function upload_image() {
+        var size = $('#goods-image > a').size();
+        if (size > 5) {
+            layer.msg('最多只能有五张商品图片');
+            return false;
+        }
+        $('#hide-form-file').click();
+    }
+
+    function iframe_images_callback(status, src = '', image = '') {
+        if (status == 1) {
+            var _html = '' +
+                '<a>' +
+                '<img class="ex-image" src="' + src + '" />' +
+                '<input type="hidden" name="images[]" value="' + image + '">' +
+                '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>' +
+                '</a>';
+            $('#add-goods-image').before(_html);
+
+            var size = $('#goods-image > a').size();
+            if (size > 5) {
+                $('#add-goods-image').remove();
+            }
+        } else {
+            layer.msg('图片上传失败！');
+        }
+    }
+
+    function show_msg(msg) {
+        layer.msg(msg);
+    }
+
+    function select_goods_category() {
+        layer.open({
+            title: '选择商品分类',
+            type: 2,
+            content: '/admin/system/open_category_select?type=goods',
+            area: ['600', '200'],
+        });
+    }
+
+    function open_callback(name, id) {
+        $('#goods_category').html(name);
+        $('#category_id').val(id);
+    }
+
+    // $(function () {
+    //     $('.skin-minimal input').iCheck({
+    //         checkboxClass: 'icheckbox-blue',
+    //         radioClass: 'iradio-blue',
+    //         increaseArea: '20%'
+    //     });
+
+    //     // 商品详情
+    //     var ue = UE.getEditor('editor');
+
+
+    //     $('#hide-form-file').change(function () {
+    //         $('#hide-form').submit();
+    //     });
+    // });
+</script>
+</body>
+
+</html>

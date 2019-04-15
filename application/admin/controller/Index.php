@@ -11,10 +11,8 @@ class Index extends Base
     {
 
         parent::_initialize();
-        // Session::clear();
         $admin_name = session('admin_name');
         if (empty($admin_name)) {
-            layer_error('请先登录！', false);
             $this->redirect('Login/index');
             // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
             // header("refresh:1;url=$url");
