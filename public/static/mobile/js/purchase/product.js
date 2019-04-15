@@ -57,22 +57,23 @@ $(function(){
     }
     
 
-    //使用优惠券
-    $('.use').click(function(){
-         var employ = $(this)
-        var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
-         if(employ.parent().hasClass('coupon_use')){
-         employ.parent().addClass('employ').removeClass('coupon_use')
-         employ.parent().append(img)
-         $('.popup').fadeIn(500)
-         $('.popup').animate({
-             opactiy:1
-         }
-         ,1000,function(){
-            $('.popup').fadeOut(500)
-         }) 
-         }
-    })
+    // //使用优惠券
+    // $('.use').click(function(){
+
+    //      var employ = $(this)
+    //     var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
+    //      if(employ.parent().hasClass('coupon_use')){
+    //      employ.parent().addClass('employ').removeClass('coupon_use')
+    //      employ.parent().append(img)
+    //      $('.popup').fadeIn(500)
+    //      $('.popup').animate({
+    //          opactiy:1
+    //      }
+    //      ,1000,function(){
+    //         $('.popup').fadeOut(500)
+    //      }) 
+    //      }
+    // })
     
     //info
     $('.drop').click(function(){

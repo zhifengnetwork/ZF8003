@@ -8,7 +8,7 @@ class Goods extends validate
 {
 
     protected $rule = [
-        'name'          => 'require|alphaDash|length:4,16',
+        'name'          => 'require|chsAlphaNum|length:4,16',
         'goods_id'       => 'require',
         'term'          => 'require|number',
         'quota'         => 'require|number',
@@ -21,7 +21,7 @@ class Goods extends validate
         'goods_id'              => '请选择商品',
         'term.require'          => '请填写使用期限',
         'term.number'           => '请填写数字',
-        'name.alphaDash'        => '用户名只能英文和数字',
+        'name.alphaDash'        => '用户名只能汉字英文和数字',
         'quota.require'         => '请输入额度',
         'quota.number'          => '请输入数字',
         'quota.require'         => '请输入额度',

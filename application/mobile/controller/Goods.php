@@ -39,7 +39,7 @@ class Goods extends Base
     {
         $id = input('id');
         $images = '';
-        $temp_price = 0;
+        //  商品信息
         $info = Db::name('goods')->where('id', $id)->find();
         // 获取地址  
         // $request = Request::instance();
@@ -51,31 +51,66 @@ class Goods extends Base
         // $address = $ip_info['region'] . $ip_info['city'];
 
         if ($info) {
-            $image = explode(',', $info['image']);
-            foreach ($image as $key => $value) {
-                # code...
-                $images[$key]['img'] = $value;
+                $image = explode(',', $info['image']);
+                foreach ($image as $key => $value) {
+                    # code...
+                    $images[$key]['img'] = $value;
+                }
+
+            // $admin_id = session('admin_id');
+            $user_id = 1;
+            // 默认为未收藏
+            $is_focus = 0;
+            $where = [
+                'goods_id' => $id,
+                'user_id' => $user_id
+            ];
+            // 判断是否已经收藏
+            $focus = Db::name('goods_focus')->where($where)->find();
+            if (!empty($focus)) {
+                // 已收藏
+                $is_focus = 1;
             }
+            $where1 = [
+                'goods_id' =>$id,
+                'status' => 0    
+            ];
+            $coupon = Db::name('goods_coupon')->where($where1)->select();
+            $this->assign('coupon', $coupon);
+            $this->assign('is_focus', $is_focus);
+            // $this->assign('temp_price', $temp_price);
+            // $this->assign('address', $address);
+            $this->assign('images', $images);
+            $this->assign('info', $info);
+            return $this->fetch();
+        }        
+
+    }
+    /**
+     * 领券
+     */
+    public function get_coupon(){
+        $data = input('post.');
+        $user_id  = 29;
+        // 优惠券信息
+        $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
+        $d = $coupon_info['addtime'];
+        $etime = strtotime(date('Y-m-d H:i:s', $d+$coupon_info['term']*24*60*60));
+        if($coupon_info){
+            $data1 = [
+                 'user_id'   => $user_id,
+                 'coupon_id' => $coupon_info['id'],
+                 'goods_id'  => $data['goods_id'],
+                 'quota'     =>$data['quota'],
+                 'money'     =>$data['money'],  
+                 'addtime'   =>time(),
+                 'stime'     =>$data['addtime'],
+                 'etime'     =>$etime
+
+            ];
+             Db::name('user_coupon')->insert(); 
         }
-        // $admin_id = session('admin_id');
-        $user_id = 1;
-        $is_focus = 0;
-        $where = [
-            'goods_id' => $info['id'],
-            'user_id' => $user_id
-        ];
-        // 判断是否已经收藏
-        $focus = Db::name('goods_focus')->where($where)->find();
-        if (!empty($focus)) {
-            // 已收藏
-            $is_focus = 1;
-        }
-        $this->assign('is_focus', $is_focus);
-        $this->assign('temp_price', $temp_price);
-        // $this->assign('address', $address);
-        $this->assign('images', $images);
-        $this->assign('info', $info);
-        return $this->fetch();
+
     }
 
     public function order()

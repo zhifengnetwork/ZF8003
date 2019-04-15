@@ -535,6 +535,20 @@ class Goods extends Base{
             $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 0;
             $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
             $deadline = isset($_POST['deadline']) ? strtotime($_POST['deadline']) : 0;
+
+            if (!$term) {
+                echo "<script>parent.error('请正确填写使用期限')</script>";
+                exit;
+            }
+            if (!$quota) {
+                echo "<script>parent.error('请正确填写使用额度')</script>";
+                exit;
+            }
+            if ($deadline<time()) {
+                echo "<script>parent.error('日期填写不正确')</script>";
+                exit;
+            }               
+            
             // 插入数据
             $data = [
                'name' => $name,
@@ -581,36 +595,7 @@ class Goods extends Base{
 
         return $this->fetch();
     }
-    /**
-     * 检验数据
-     */
-    // public function check_data($name,$goods_id,$term,$quota,$money,$deadline){
-    //     // if (!$name) {
-    //     //     echo "<script>parent.error('请填写优惠券名称')</script>";
-    //     //     exit;
-    //     // }
-    //     // if (!$goods_id) {
-    //     //     echo "<script>parent.error('请选择商品')</script>";
-    //     //     exit;
-    //     // }
-    //     // if (!$term) {
-    //     //     echo "<script>parent.error('请填写使用期限')</script>";
-    //     //     exit;
-    //     // }
-    //     // if (!$quota) {
-    //     //     echo "<script>parent.error('请填写使用额度')</script>";
-    //     //     exit;
-    //     // }
-    //     // if (!$money) {
-    //     //     echo "<script>parent.error('请填写券额')</script>";
-    //     //     exit;
-    //     // }
 
-    //     // if (!$deadline) {
-    //     //     echo "<script>parent.error('请填写截止日期')</script>";
-    //     //     exit;
-    //     // }     
-    // }
 
     /**
      * 添加商品（优惠券添加页面）
@@ -651,13 +636,22 @@ class Goods extends Base{
      * 删除和批量删除优惠券
      */
     function del_coupon(){
+        $data = input('post.');
         if($_POST){
-            $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
-            if($coupon_id){
-                $res = Db::table('zf_goods_coupon')->delete($coupon_id);
-                if($res){
-                    return json(['status' => 1]);
+            if($data['act'] == 'del'){
+                $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
+                if ($coupon_id) {
+                    $res = Db::name('goods_coupon')->where('id',$coupon_id)->delete();
                 }
+            }else{
+                $id = json_decode($data['id'], true);
+                $where['id'] = array('in', $id);
+                $res = Db::name('goods_coupon')->where($where)->delete();                 
+            }
+            if ($res) {
+                return json(['status' => 1,'msg'=>'删除成功']);
+            }else{
+                return json(['status' => 0,'msg'=>'删除失败']);
             }
         }
         return json(['status' => 0]);

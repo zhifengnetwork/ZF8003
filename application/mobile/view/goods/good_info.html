@@ -117,63 +117,25 @@
 			<div class="receive_box">
 				<p class="receive_tit">领取优惠券</p>
 				<div class="coupon_box">
+					{volist name="coupon" id="vo"}
 					<div class="coupon_list">
+
 						<div class="coupon_msg">
 							<div class="price_box">
 								￥
-								<span class="price">100</span>
-								<span class="original">满599减100</span>
+								<span class="price">{$vo.money}</span>
+								<span class="original">满{$vo.quota}减{$vo.money}</span>
 							</div>
-							<p class="pro_ori">商品优惠卷</p>
-							<p class="time publicEllipsis">2019.20.20-2019.20.20</p>
+							<p class="pro_ori">{$vo.name}</p>
+							<p class="time publicEllipsis">{:date('Y-m-d',$vo.addtime)}-{:date('Y-m-d',$vo.deadline)}</p>
 						</div>
-						<div class="coupon_use ">
+						<div class="coupon_use" data-id="{$vo.id}">
 							<p class="use">立即领取</p>
 							<!-- <img src="../../img/purchase/logo@2x.png" alt="" class="been"> -->
 						</div>
 					</div>
-					<div class="coupon_list">
-						<div class="coupon_msg">
-							<div class="price_box">
-								￥
-								<span class="price">100</span>
-								<span class="original">满599减100</span>
-							</div>
-							<p class="pro_ori">商品优惠卷</p>
-							<p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-						</div>
-						<div class="coupon_use">
-							<p class="use">立即领取</p>
-						</div>
-					</div>
-					<div class="coupon_list">
-						<div class="coupon_msg">
-							<div class="price_box">
-								￥
-								<span class="price">100</span>
-								<span class="original">满599减100</span>
-							</div>
-							<p class="pro_ori">商品优惠卷</p>
-							<p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-						</div>
-						<div class="coupon_use">
-							<p class="use">立即领取</p>
-						</div>
-					</div>
-					<div class="coupon_list">
-						<div class="coupon_msg">
-							<div class="price_box">
-								￥
-								<span class="price">100</span>
-								<span class="original">满599减100</span>
-							</div>
-							<p class="pro_ori">商品优惠卷</p>
-							<p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-						</div>
-						<div class="coupon_use">
-							<p class="use">立即领取</p>
-						</div>
-					</div>
+                   {/volist}
+
 				</div>
 				<div class="popup">
 					领取成功
@@ -253,6 +215,48 @@
 
 		})		
 
+    //使用优惠券
+    $('.use').click(function(){
+
+		var goods_id = $('#id').val()
+		var coupon = $('.coupon_use').data('id')
+
+		$.ajax({
+			type: 'post',
+			url: "{:url('mobile/goods/get_coupon')}",
+			data: { 'id': goods_id,'coupon_id':coupon},
+
+			success: function (data) {
+				if (data.status == 1) {
+					layer.msg(data.msg, { time: 1000 }, function () {
+						var employ = $(this)
+						var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`						
+						if (employ.parent().hasClass('coupon_use')) {
+							employ.parent().addClass('employ').removeClass('coupon_use')
+							employ.parent().append(img)
+							$('.popup').fadeIn(500)
+							$('.popup').animate({
+								opactiy: 1
+							}
+								, 1000, function () {
+									$('.popup').fadeOut(500)
+								})
+						}						
+					})
+					// layer.msg(data.msg)
+				} else {
+					// layer.msg(data.msg)
+					layer.msg(data.msg, function () {
+
+					})
+				}
+
+			},
+
+		});
+
+
+    })		
 	// $('#buy').click(function () {
 	// 	var id = {$info.id}
 	// 	console.log(id)
