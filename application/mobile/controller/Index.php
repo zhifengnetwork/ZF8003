@@ -2,12 +2,22 @@
 namespace app\mobile\controller;
 
 use think\Db;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-require 'vendor/autoload.php';
+use think\Session;
 
 class Index extends Base
 {
+
+    public function _initialize()
+    {
+        parent::_initialize();
+
+        # 删除过时的邮件记录
+        Db::name('mail_code')->where(['addtime'=>['<', time() - 1800]])->delete();
+
+
+    }
+
+
     public function index()
     {
         
@@ -62,99 +72,191 @@ class Index extends Base
 
     # 正常登录
     public function login(){
+        if($_POST){
+            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+            $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+            $captcha = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
 
+            if(!check_email($email)){
+                return json(['status'=>0,'msg'=>'邮箱格式错误！']);
+            }
+            if(!$password){
+                return json(['status'=>0,'msg'=>'请填写登录密码！']);
+            }
+            if(!captcha_check($captcha)){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            };
+            $user = Db::name('users')->where('email',$email)->find();
+            if(!$user){
+                return json(['status'=>0,'msg'=>'账户不存在！']);
+            }
+            if(pwd_encryption($password) != $user['password']){
+                return json(['status'=>0,'msg'=>'登录密码错误！']);
+            }
+
+            Session::set('user',$user);
+            $time = time();
+            $log_data = [
+                'user_id'   => $user['id'],
+                'type'  =>  'email',
+                'ip'    =>  $this->ip,
+                'client'    => $this->client,
+                'addtime'   => $time,
+            ];
+            Db::name('user_login_log')->insert($log_data);
+            Db::name('users')->where('id',$user['id'])->update(['login_time'=>$time]);
+
+            $re_url = Session::has('re_url') ? Session::get('re_url') : '/mobile/user/index';
+           
+            return json(['status'=>1,'msg'=>'登录成功，正在跳转...','url'=>$re_url]);
+
+            exit;
+        }
         
-
+        captcha_src();
         return $this->fetch();
     }
 
     # 注册
     public function register(){
+        if($_POST){
+            $register_id = isset($_POST['register_id']) ? trim($_POST['register_id']) : '';
+            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+            $code = isset($_POST['code']) ? trim($_POST['code']) : '';
+            $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+            $re_password = isset($_POST['re_password']) ? trim($_POST['re_password']) : '';
+            $captcha = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
+           
+            if(!$register_id){
+                return json(['status'=>0,'msg'=>'系统错误，请刷新页面后重试！']);
+            }
+            
+            if(!check_email($email)){
+                return json(['status'=>0,'msg'=>'邮箱格式错误！']);
+            }
 
-        $code = rand(100000,999999);
-        $param = [
-            'host'      => 'smtp.qq.com',
-            'username'  => '1142506197@qq.com',
-            'password'  => 'fbssodalnjkkibbg',
-            'secure'    => 'ssl',
-            'port'      => '465',
-            'nickname'  => 'rock',
-            'to'        => '15766485478@163.com',
-            'title'     => '注册码',
-            'body'      => '<h1>注册码：'.$code.'</h1>',
-            'altbody'   => '注册码：'.$code,
-        ];
-        
-        $res = $this->send_mail($param);
-        dump($res);
-        exit;
+            $code_info = Db::name('mail_code')->where(['type'=>'register', 'sn'=>$register_id, 'code'=>$code])->find();
+            if(!$code_info){
+                return json(['status'=>0,'msg'=>'注册码错误！']);
+            }
+            if(!$password){
+                return json(['status'=>0,'msg'=>'请填写登录密码！']);
+            }
+
+            if(!captcha_check($captcha)){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            };
+               
+
+            $user = Db::name('users')->where('email',$email)->find();
+            if($user){
+                return json(['status'=>0,'msg'=>'该账号已被注册！']);
+            }
+            
+            $time = time();
+            $ip = $this->ip;
+            $client = $this->client;
+
+            $inser_date = [
+                'email'     => $email,
+                'email_verification'    => 1,
+                'nickname'  => $email,
+                'password'  => pwd_encryption($password),
+                'register_method'   => 'email',
+                'register_time' => $time,
+                'login_time'    => $time,
+            ];
+            
+            $user_id = Db::name('users')->insertGetId($inser_date);
+
+            if($user_id){
+                Db::name('mail_code')->where(['type'=>'register', 'sn'=>$register_id, 'code'=>$code])->delete();
+
+                $user = Db::name('users')->find($user_id);
+                Session::set('user', $user);
+
+                $log_data = [
+                    'user_id'   => $user_id,
+                    'type'  =>  'email',
+                    'ip'    =>  $ip,
+                    'client'    => $client,
+                    'addtime'   => $time,
+                ];
+
+                Db::name('user_login_log')->insert($log_data);
+
+                $re_url = Session::has('re_url') ? Session::get('re_url') : '/mobile/user/index';
+
+                return json(['status'=>1,'msg'=>'注册成功，正在跳转...','url'=>$re_url]);
+            }
+
+            return json(['status'=>0,'msg'=>'注册失败，请重试！']);
+            exit;
+        }
+
+        $this->assign('register_id', md5(time().rand(1000,9999).rand(1000,9999)));
         return $this->fetch();
     }
 
 
-    /**
-     * 发送邮件
-     */
-    public function send_mail($param){
-        // $code = rand(100000,999999);
-        // $mail = new PHPMailer(true);
-        // try {
-        //     //服务器配置
-        //     $mail->CharSet ="UTF-8";                     //设定邮件编码
-        //     $mail->SMTPDebug = 0;                        // 调试模式输出
-        //     $mail->isSMTP();                             // 使用SMTP
-        //     $mail->Host = 'smtp.qq.com';                // SMTP服务器
-        //     $mail->SMTPAuth = true;                      // 允许 SMTP 认证
-        //     $mail->Username = '1142506197@qq.com';                // SMTP 用户名  即邮箱的用户名
-        //     $mail->Password = 'fbssodalnjkkibbg';             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
-        //     $mail->SMTPSecure = 'ssl';                    // 允许 TLS 或者ssl协议
-        //     $mail->Port = '465';                            // 服务器端口 25 或者465 具体要看邮箱服务器支持
-        
-        //     $mail->setFrom('1142506197@qq.com', 'rock');  //发件人
-        //     $mail->addAddress('15766485478@163.com');  // 收件人
-        //     $mail->addReplyTo('1142506197@qq.com', 'rock'); //回复的时候回复给哪个邮箱 建议和发件人
-        
-        //     //Content
-        //     $mail->isHTML(true);                                  // 是否以HTML文档格式发送  发送后客户端可直接显示对应HTML内容
-        //     $mail->Subject = '注册码';
-        //     $mail->Body    = '<h1>注册码：'.$code.'</h1>';
-        //     $mail->AltBody = '注册码：'.$code;
-            
-        //     $mail->send();
-        //     echo '发送成功';
-        // } catch (Exception $e) {
-        //     echo $mail->ErrorInfo;
-        // }
+    # 退出登录
+    public function logout(){
 
-        $mail = new PHPMailer(true);
-        try {
-            //服务器配置
-            $mail->CharSet ="UTF-8";                     //设定邮件编码
-            $mail->SMTPDebug = 0;                        // 调试模式输出
-            $mail->isSMTP();                             // 使用SMTP
-            $mail->Host = $param['host'];                // SMTP服务器
-            $mail->SMTPAuth = true;                      // 允许 SMTP 认证
-            $mail->Username = $param['username'];                // SMTP 用户名  即邮箱的用户名
-            $mail->Password = $param['password'];             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
-            $mail->SMTPSecure = $param['secure'];                    // 允许 TLS 或者ssl协议
-            $mail->Port = $param['port'];                            // 服务器端口 25 或者465 具体要看邮箱服务器支持
+        Session::delete('user');
+
+        return $this->redirect('Index/login');
+
+    }
+
+
+
+
+    # 发送注册码邮件
+    public function send_mail(){
+
+        $register_id = isset($_POST['register_id']) ? trim($_POST['register_id']) : '';
+        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+
+        if($register_id && $email){
             
-            $mail->setFrom($param['username'], $param['nickname']);  //发件人
-            $mail->addAddress($param['to']);  // 收件人
-            $mail->addReplyTo($param['username'], $param['nickname']); //回复的时候回复给哪个邮箱 建议和发件人
-        
-            //Content
-            $mail->isHTML(true);                                  // 是否以HTML文档格式发送  发送后客户端可直接显示对应HTML内容
-            $mail->Subject = $param['title'];
-            $mail->Body    = $param['body'];
-            $mail->AltBody = $param['altbody'];
-            
-            $mail->send();
-            echo '发送成功';
-        } catch (Exception $e) {
-            echo $mail->ErrorInfo;
+            $user = Db::name('users')->where('email',$email)->find();
+            if($user){
+                return json(['status'=>0,'msg'=>'该账号已被注册！']);
+            }
+
+            $code = rand(100000,999999);
+
+            $config = Db::query("select `name`,`value` from `zf_config` where `type` = 'email_setting'");
+            if(empty($config)){
+                return json(['status'=>0,'msg'=>'系统未设置相关参数，请联系管理员']);
+            }
+            foreach($config as $v){
+                $conf[$v['name']] = $v['value'];
+            }
+
+            $param = [
+                'host'      => $conf['host'],
+                'username'  => $conf['username'],
+                'password'  => $conf['password'],
+                'secure'    => $conf['secure'],
+                'port'      => $conf['port'],
+                'nickname'  => $conf['nickname'],
+                'to'        => $email,
+                'title'     => $conf['register_title'],
+                'body'      => str_replace('{{$code}}', $code, $conf['register_body']),
+                'altbody'   => str_replace('{{$code}}', $code, $conf['register_altbody']),
+            ];
+           
+            if($this->base_send_mail($param)){
+                $time = time();
+                Db::execute("delete from `zf_mail_code` where `type` = 'register' and `sn` = '$register_id'");
+                Db::execute("insert into `zf_mail_code` (`sn`,`code`,`addtime`,`type`) values ('$register_id', '$code', '$time', 'register')");
+                return json(['status'=>1]);
+            }else{
+                return json(['status'=>0,'msg'=>'注册码发送失败！']);
+            }
         }
-
+        exit('null');
     }
 
 }

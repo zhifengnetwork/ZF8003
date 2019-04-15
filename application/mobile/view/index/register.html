@@ -47,7 +47,7 @@
 						<!--右-->
 						<div class="publicTermRightO">
 							<!--input-->
-							<input type="text" class="publicTROInput" placeholder="请输入电子邮箱">
+							<input type="text" class="publicTROInput" id="email" placeholder="请输入电子邮箱">
 						</div>
 					</div>
 				</div>
@@ -60,7 +60,7 @@
 						<!--右-->
 						<div class="publicTermRightO">
 							<!--input-->
-							<input type="text" class="publicTROInput code_input" placeholder="请输入邮件注册码">
+							<input type="text" class="publicTROInput code_input" id="code" placeholder="请输入邮件注册码">
 							<!--验证码 box-->
 							<p class="code_box">
 								<button class="code">发送注册码</button>
@@ -76,7 +76,7 @@
 						<!--右-->
 						<div class="publicTermRightO">
 							<!--input-->
-							<input type="text" class="publicTROInput" placeholder="请输入登录密码">
+							<input type="password" class="publicTROInput" id="password" placeholder="请输入登录密码">
 						</div>
 					</div>
 				</div>
@@ -89,7 +89,7 @@
 						<!--右-->
 						<div class="publicTermRightO">
 							<!--input-->
-							<input type="text" class="publicTROInput" placeholder="请确认密码">
+							<input type="password" class="publicTROInput" id="repassword" placeholder="请确认密码">
 						</div>
 					</div>
 				</div>
@@ -106,10 +106,10 @@
 						<!--右-->
 						<div class="publicTermRightO">
 							<!--input-->
-							<input type="text" class="publicTROInput code_input" placeholder="请输入右图验证码">
+							<input type="text" class="publicTROInput code_input" id="captcha" placeholder="请输入右图验证码">
 							<!--验证码 box-->
 							<p class="code_box">
-								<img class="loginCodeImg" src="__STATIC__/img/public/0002.png"/>
+								<img class="loginCodeImg" onclick="Refresh_Captcha();" id="img-captcha" src="{:captcha_src()}" alt="captcha"/>
 							</p>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 			
 			<!--注册 按钮 box，样式=>public.css-->
 			<div class="registerButBox">
-				<p class="registerButton">提交</p>
+				<p class="registerButton" onclick="submit();">提交</p>
 			</div>
 			
 			<!--第三方登陆-->
@@ -138,14 +138,27 @@
         <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 		<script>
             var code = 0;
-            
+            var register_id = '{$register_id}';
+			var re_email = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+			var re_pass = /^([A-Za-z\d.]){6,20}$/;
+
+
             $('.code').on('click',function(){
                 if(code == 0){
                     // 交互代码
-
-
-                    code = 1;
-                    count_down();
+					var email = $('#email').val();
+					if(!re_email.test(email)){
+						layer.msg('邮箱格式错误！',{icon:5});
+						return false;
+					}
+					$.post('/mobile/index/send_mail',{register_id:register_id,email:email},function(res){
+						if(res.status == 1){
+							code = 1;
+                    		count_down();
+						}else{
+							layer.msg('注册码发送失败，请重试！',{icon:5});
+						}
+					});
                 }else{
                     layer.msg('注册码已发出，请勿重复点击！',{icon:5});
                 }
@@ -160,7 +173,7 @@
                     time = 60;
                     return false;
                 }else{
-                    var _ch = time+' 秒';
+                    var _ch = '已发送 '+time+' 秒';
                     $('.code').css('color', '#a1a6a9').html(_ch);
                     time--;
                     setTimeout(function(){
@@ -169,11 +182,53 @@
                     
                 }
             }
-        
-        
+
+			function Refresh_Captcha(){
+				var timestamp = (new Date()).getTime();
+				var url = '/captcha.html?t='+timestamp;
+				$('#img-captcha').attr('src',url);
+			}
+
+			function submit(){
+				var email = $('#email').val();
+				var code = $('#code').val();
+				var password = $('#password').val();
+				var re_password = $('#repassword').val();
+				var captcha = $('#captcha').val();
+
+				if(!re_email.test(email)){
+					layer.msg('邮箱格式错误！',{icon:5});
+					return false;
+				}
+				if(!code){
+					layer.msg('注册码不能为空',{icon:5});
+					return false;
+				}
+				if(!re_pass.test(password)){
+					layer.msg('密码格式：6 ~ 20位字母、数字、小数点',{icon:5});
+					return false;
+				}
+				if(password != re_password){
+					layer.msg('两次密码不一致！',{icon:5});
+					return false;
+				}
+				if(!captcha){
+					layer.msg('验证码不能为空',{icon:5});
+					return false;
+				}
+				$.post('/mobile/index/register',{register_id:register_id,email:email,code:code,password:password,re_password:re_password,captcha:captcha},function(res){
+					if(res.status == 1){
+						layer.msg(res.msg,{icon:6});
+						setTimeout(function(){
+							window.location.href = res.url;
+						},1500);
+					}else{
+						layer.msg(res.msg,{icon:5});
+						Refresh_Captcha();
+					}
+				});
+			}
         </script>
-		
-		
 	</body>
 
 </html>
