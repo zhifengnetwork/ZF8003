@@ -297,12 +297,11 @@ class User extends Base
      */
     public function set_up()
     {
-        $user = Db::name('users')->where('id',$this->user_id)->field('mobile,email,nickname,sex,avatar')->find();
-        $path = ROOT_PATH;
-        if(!$user['avatar'] || !is_file($path.$user['avatar'])){
-            $user['avatar'] = "";
-        }
-        $this->assign('info',$user);
+        $user = $this->user;
+        $user['avatar'] = $user['avatar'] ? '/public/images/users/avatar/'.$user['avatar'] : '';
+        $user['sex_name'] = [0=>'保密',1=>'男',2=>'女'][$user['sex']]; 
+
+        $this->assign('user',$user);
         return $this->fetch();
     }
 }

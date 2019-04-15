@@ -155,20 +155,6 @@
     background: url(../../img/public/praise@2x.png) no-repeat;
     background-size: 100%;
 }
-
-/* 已赞状态 */
-.operation-bar .praiseBtn.praised i{
-    width: .26rem;
-    height: .26rem;
-    display: inline-block;
-    background: url(../../img/public/praise-r@2x.png) no-repeat;
-    background-size: 100%;
-}
-
-.operation-bar .praised .num{
-    color: rgb(246, 66, 66);
-}
-
 .operation-bar .commentBtn a{
     display: inline-flex;
     align-items: center;

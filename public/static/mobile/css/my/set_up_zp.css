@@ -5,7 +5,8 @@
 	padding: 0 .2rem;
 	box-sizing: border-box;
 	background-color: #fff;
-	font-size: .3rem;
+	font-size: .28rem;
+	letter-spacing: .02rem;
 	margin-bottom: .2rem;
 	display: -webkit-box;
 	display: -moz-box;
@@ -42,235 +43,214 @@
 	border-radius: 50%;
 }
 
-
-.set-up-list{
+.set-up-list {
 	padding: 0 .2rem;
 	box-sizing: border-box;
 	background-color: #fff;
 }
-.set-up-list .item{
-	height: .76rem;
-	line-height: .76rem;
-	font-size: .3rem;
-	border-bottom:.01rem solid #cccccc; 
+.set-up-list .item {
 	position: relative;
+	/*height: .76rem;*/
+	min-height: .76rem;
+	border-bottom:.01rem solid #ccc; 
+	letter-spacing: .02rem;
+	
 }
 .set-up-list .item:last-child{
 	border-bottom: none;
 }
-.set-up-list .item a{
-	color: #000000;
+.item .item_top {
+	position: relative;
+	width: 100%;
+	height: .76rem;
+	line-height: .76rem;
+	font-size: .28rem;
 }
-.set-up-list .item .fr span{
+.item_top .fr span{
 	padding-right: .3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	color:#ccc;
 }
-.set-up-list .item img{
-	float: right;
-	width: .2rem;
+.item_top img {
+	display: block;
 	position: absolute;
-	top: 50%;
-	right: 0;
-	margin-top: -.18rem
-}
-
-/* 弹框蒙层 */
-.mask{
-	width: 100%;
-	height: 100%;
-	background: rgba(0,0,0,.5);
-	position: fixed;
-	left: 0;
 	top: 0;
-	z-index: 99;
-	display: none;
-}
-/* 弹框公共样式 */
-.popup-wrap{
-	width: 100%;
-    min-height:4rem;
-    background: #fff;
-    position: fixed;
-	bottom: -100%;
-	z-index: 100;
-	padding:0 .2rem .2rem .2rem;
-	box-sizing: border-box;
-	transition: all 0.3s
-}
-
-.popup-wrap .popup-header{
-	height: 1.173333rem;
-	line-height:.88rem;
-	font-size: .3rem;
-	text-align: center;
-	position: relative;
-}
-.popup-wrap .popup-header .closeBtn{
-	width: .5rem;
-	height: .5rem;
-	display: block;
-	position: absolute;
+	bottom: 0;
 	right: 0;
-	top: .2rem;
+	margin: auto 0;
+	width: .18rem;
+	height: .34rem;
+	/*动画*/
+	transition: All 0.4s linear;
+    -webkit-transition: All 0.4s linear;
+    -moz-transition: All 0.4s linear;
+    -o-transition: All 0.4s linear;
 }
-.popup-wrap .popup-header .closeBtn img{
+/*icon 图标 '>' 旋转(顺时针)90度*/
+.icon_rotate_false {
+	transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+}
+/*icon 图标 '>' 旋转(逆时针)90度*/
+.icon_rotate_true {
+	transform: rotate(-0deg);
+    -webkit-transform: rotate(-0deg);
+    -moz-transform: rotate(-0deg);
+    -o-transform: rotate(-0deg);
+    -ms-transform: rotate(-0deg);
+}
+
+/*public*/
+/*下拉框*/ 
+.drop_down_box {
+	display: none;
+	padding-bottom: .2rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	width: 100%;
+	height: auto;
+	border-top: .02rem solid #ccc;
+}
+/*iunput box（修改昵称）*/
+.drop_down_inp_box {
+	padding-top: .3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.drop_down_inp {
 	display: block;
+	margin: 0 auto;
+	outline: none;
+	border: none;
+	border: .02rem solid #ccc;
+	width: 60%;
+	height: .46rem;
+	font-size: .26rem;
+	text-indent: .08rem;
 }
-.popup-btn{
+/*按钮*/
+.drop_down_btn_box {
+	padding-top: .3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	width: 100%;
-	position: absolute;
-	bottom: .2rem;
-	left: 0;
+	height: auto;
 }
-.popup-btn .reviseBtn,.nextBtn{
-	width: 70%;
-	height: .7rem;
+.drop_down_btn {
+	margin: 0 auto;
+	width: 40%;
+	height: .5rem;
 	text-align: center;
-	line-height: .7rem;
+	font-size: .28rem;
+	line-height: .5rem;
+	border-radius: .06rem;
 	color: #fff;
-	font-size: .28rem;
-	margin: 0 auto;
-	display: block;
 	background-color: #37afe6;
-	border-radius: .2rem;
 }
-
-
-/* 修改昵称 */
-.popup-wrap .reviseName{
-	display: none;
-}
-.reviseName .newUsername{
-	width: 80%;
-	height: .7rem;
-	border:.01rem solid #cccccc;
+/*男女*/
+.drop_down_gender_box {
+	display: table;
 	margin: 0 auto;
-	display: block;
-	outline: none;
-	padding:0 .15rem;
+	padding-top: .2rem;
 	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: auto;
+	height: auto;
 }
-
-/* 修改性别 */
-.popup-wrap .reviseSex{
-	display: none;
-}
-.reviseSex .sex {
-	width: 70%;
-	margin: 0 auto;
-}
-.reviseSex .sex label{
-	display: block;
-	height: .8rem;
-	line-height: .8rem;
-	font-size: .28rem;
-	border-bottom: .01rem solid #d9d9d9;
-	padding: 0 .1rem;
-	box-sizing: border-box;
-}
-
-.reviseSex .sex label:last-child{
-	border-bottom:none;
-}
-.reviseSex .sex input[type="radio"]{
-	width: .26rem;
-    height: .26rem;
-	background: url(../../img/my/weixuanzhong@2x.png) no-repeat;
-	background-size: 100%;
-    appearance: none;
-    -webkit-appearance: none;
-	outline: none;
-	border:none;
-    margin-right: .1rem;
-	display:block;
-	margin: .27rem auto;
-}
-
-.reviseSex .sex input.checked{
-	width: .26rem;
-    height: .26rem;
-    content: '';
-    background: url(../../img/my/xuanzhong@2x@2x.png) no-repeat;
-    background-size: 100%;
-    display: block;
-}
-
-/* 修改手机号码 */
-.popup-wrap .revisePhone{
-	display: none;
-}
-.popup-wrap .revisePhone .popup-content{
-	width: 75%;
-	margin: 0 auto;
-}
-.revisePhone .telephone{
-	display: flex;
-	align-items: center;
-	padding:0 .2rem .2rem .2rem;
-	box-sizing: border-box;
-	margin-bottom: .3rem;
-	border-bottom: .01rem solid #cccccc;
-}
-.revisePhone .telephone-icon{
-	width: .26rem;
-	height: .4rem;
-	display: inline-block;
-	margin-right: .4rem;
-	background: url(../../img/my/telephone-icon.png) no-repeat;
-	background-size: 100%;
-}
-.revisePhone .telephone-icon img{
-	width:100%;
-}
-.revisePhone .telephone .phoneNum{
-	width: 100%;
-	height: .4rem;
-	line-height: .4rem;
-	font-size: .28rem;
-	border: none;
-	outline: none;
-	background: none;
-}
-.revisePhone .telephone .newphoneNum{
-	border: none;
-	outline: none;
-	display: none;
-}
-.revisePhone .verification{
-	height: .6rem;
-	display: flex;
-}
-.revisePhone .verification .v-til{
+.drop_down_gende_left, .drop_down_gende_right {
 	float: left;
-	display: block;
-	line-height: .6rem;
-}
-.revisePhone .verification .cont-wrap{
-	width: 4.1rem;
-	height: .6rem;
-	border:.01rem solid #cccccc;
-	padding:0 .1rem;
 	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 1.44rem;
+	height: .5rem;
+	text-align: center;
+	line-height: .5rem;
+	color: #333;
+	border: .02rem solid #ccc;
 }
-.revisePhone .verification .cont-wrap .codeNum{
-	width: 2rem;
-	line-height: .58rem;
-	font-size: .24rem;
-	display: inline-block;
+.drop_down_gende_right {
+ 	margin-left: .2rem;
+}
+/*(性别)点击时=>style*/
+.drop_down_gende_active {
+	color: #37afe6;
+	border-color: #37afe6;
+}
+/*绑定手机*/
+.drop_down_bind_wrap {
+	padding-top: .3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+.drop_down_bind_box {
+	display: table;
+	margin: 0 auto;
+	width: auto;
+	height: .46rem;
+    font-size: .26rem;
+	line-height: .46rem;
+}
+.drop_down_bind_box_titile {
+	float: left;
+	width: 1.6rem;
+	height: 100%;
+}
+.drop_down_bind_box_inp {
+	float: left;
+	width: 3rem;
+	height: .46rem;
+	outline: none;
+    border: none;
+    border: .02rem solid #ccc;
+    text-indent: .08rem;
+}
+/*去除input默认样式*/
+input {
+	/*IOS*/
+	-webkit-appearance:none; 
+	background: none;
 	border: none;
 	outline: none;
-	background:none;
 }
-.revisePhone .verification .cont-wrap .codeBtn{
-	text-align: center;
-    height: .42rem;
-    line-height: .42rem;
-    font-size: .2rem;
-    padding: 0 .15rem;
-	background-color: #cccccc;
-	color: #0e0e0e;
-	display: inline-block;
-	margin: .08rem auto;
+/*inout的提示文字 样式修改*/
+input::-webkit-input-placeholder { /* WebKit browsers */ 
+	font-size: .26rem;
+	letter-spacing: .02rem;
+	text-indent: .08rem;
+	line-height: .32rem;
+} 
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+	font-size: .26rem;
+	letter-spacing: .02rem;
+	text-indent: .08rem;
+	/*line-height: .46rem;*/
+} 
+input::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+	font-size: .26rem;
+	letter-spacing: .02rem;
+	text-indent: .08rem;
+	/*line-height: .46rem;*/
+} 
+input:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+	font-size: .26rem;
+	letter-spacing: .02rem;
+	text-indent: .08rem;
+	/*line-height: .46rem;*/
 }
+
 

@@ -151,12 +151,12 @@
 						layer.msg('邮箱格式错误！',{icon:5});
 						return false;
 					}
-					$.post('/mobile/index/send_mail',{register_id:register_id,email:email},function(res){
+					$.post('/mobile/index/send_register_mail',{register_id:register_id,email:email},function(res){
 						if(res.status == 1){
 							code = 1;
                     		count_down();
 						}else{
-							layer.msg('注册码发送失败，请重试！',{icon:5});
+							layer.msg(res.msg,{icon:5});
 						}
 					});
                 }else{

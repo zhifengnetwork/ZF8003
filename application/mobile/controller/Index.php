@@ -208,11 +208,105 @@ class Index extends Base
 
     }
 
+    # 忘记 | 重置 | 修改密码
+    public function edit_password(){
+        if($_POST){
+            $pass_id = isset($_POST['pass_id']) ? trim($_POST['pass_id']) : '';
+            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+            $code = isset($_POST['code']) ? trim($_POST['code']) : '';
+            $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+            $re_password = isset($_POST['re_password']) ? trim($_POST['re_password']) : '';
+
+            if(!$pass_id){
+                return json(['status'=>0,'msg'=>'系统错误，请刷新页面后重试！']);
+            }
+            
+            if(!check_email($email)){
+                return json(['status'=>0,'msg'=>'邮箱格式错误！']);
+            }
+
+            $code_info = Db::name('mail_code')->where(['type'=>'edit_pass', 'sn'=>$pass_id, 'code'=>$code])->find();
+            if(!$code_info){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            }
+            if(!$password){
+                return json(['status'=>0,'msg'=>'请填写登录密码！']);
+            }
+
+            $user = Db::name('users')->where('email',$email)->find();
+            if(!$user){
+                return json(['status'=>0,'msg'=>'邮箱错误或未注册！']);
+            }
+
+            $password = pwd_encryption($password);
+            $sql = "update `zf_users` set `password` = '$password' where `id` = '$user[id]'";
+            $res = Db::execute($sql);
+
+            if($res){
+                Session::delete('user');
+                $re_url = Session::has('re_url') ? Session::get('re_url') : '/mobile/user/index';
+                return json(['status'=>1,'msg'=>'密码重置成功，请重新登录', 'url'=> $re_url]);
+            }
+
+            return json(['status'=>0,'msg'=>'密码重置失败，请重试！']);
+            exit;
+        }
 
 
+
+        $this->assign('pass_id', md5(time().rand(1000,9999).rand(1000,9999)));
+        return $this->fetch();
+    }
+
+    # 发送重置密码邮件
+    public function send_editpass_mail(){
+        $pass_id = isset($_POST['pass_id']) ? trim($_POST['pass_id']) : '';
+        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+
+        if($pass_id && $email){
+            
+            $user = Db::name('users')->where('email',$email)->find();
+            if(!$user){
+                return json(['status'=>0,'msg'=>'邮箱错误或未注册！']);
+            }
+
+            $code = rand(100000,999999);
+
+            $config = Db::query("select `name`,`value` from `zf_config` where `type` = 'email_setting'");
+            if(empty($config)){
+                return json(['status'=>0,'msg'=>'系统未设置相关参数，请联系管理员']);
+            }
+            foreach($config as $v){
+                $conf[$v['name']] = $v['value'];
+            }
+
+            $param = [
+                'host'      => $conf['host'],
+                'username'  => $conf['username'],
+                'password'  => $conf['password'],
+                'secure'    => $conf['secure'],
+                'port'      => $conf['port'],
+                'nickname'  => $conf['nickname'],
+                'to'        => $email,
+                'title'     => $conf['edit_title'],
+                'body'      => $conf['edit_body'] ? str_replace('{{$code}}', $code, $conf['edit_body']) : "<h1>您正在修改登录密码，验证码：$code</h1>",
+                'altbody'   => $conf['edit_altbody'] ? str_replace('{{$code}}', $code, $conf['edit_altbody']) : "您正在修改登录密码，验证码：$code",
+            ];
+            
+            if($this->base_send_mail($param)){
+                $time = time();
+                Db::execute("delete from `zf_mail_code` where `type` = 'edit_pass' and `sn` = '$pass_id'");
+                Db::execute("insert into `zf_mail_code` (`sn`,`email`,`code`,`addtime`,`type`) values ('$pass_id', '$email', '$code', '$time', 'edit_pass')");
+                return json(['status'=>1]);
+            }else{
+                return json(['status'=>0,'msg'=>'发送失败！']);
+            }
+        }
+        exit('null');
+    }
 
     # 发送注册码邮件
-    public function send_mail(){
+    public function send_register_mail(){
 
         $register_id = isset($_POST['register_id']) ? trim($_POST['register_id']) : '';
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -243,14 +337,14 @@ class Index extends Base
                 'nickname'  => $conf['nickname'],
                 'to'        => $email,
                 'title'     => $conf['register_title'],
-                'body'      => str_replace('{{$code}}', $code, $conf['register_body']),
-                'altbody'   => str_replace('{{$code}}', $code, $conf['register_altbody']),
+                'body'      => $conf['register_body'] ? str_replace('{{$code}}', $code, $conf['register_body']) : "<h1>注册码：$code</h1>",
+                'altbody'   => $conf['register_altbody'] ? str_replace('{{$code}}', $code, $conf['register_altbody']) : "注册码：$code",
             ];
            
             if($this->base_send_mail($param)){
                 $time = time();
                 Db::execute("delete from `zf_mail_code` where `type` = 'register' and `sn` = '$register_id'");
-                Db::execute("insert into `zf_mail_code` (`sn`,`code`,`addtime`,`type`) values ('$register_id', '$code', '$time', 'register')");
+                Db::execute("insert into `zf_mail_code` (`sn`,`email`,`code`,`addtime`,`type`) values ('$register_id', '$email', '$code', '$time', 'register')");
                 return json(['status'=>1]);
             }else{
                 return json(['status'=>0,'msg'=>'注册码发送失败！']);

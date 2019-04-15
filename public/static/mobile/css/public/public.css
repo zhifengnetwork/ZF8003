@@ -1,5 +1,5 @@
 @charset "utf-8";
-body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,input,form,a,p,textarea{
+body,div,dl,dt,dd,ul,li,h1,h2,h3,h4,h5,h6,input,form,a,p,textarea,img{
     margin:0;
     padding:0;
 }
@@ -33,6 +33,7 @@ input[type=button], input[type=submit], input[type=file], button {
 	border: none;
 	outline: none;
 }
+
 /*清除浮动代码 '父元素'*/
 .clearfloat:after{
 	display: block;
