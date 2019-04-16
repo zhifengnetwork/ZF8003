@@ -62,15 +62,15 @@
 			       <ul id="con">
 			            <li class="show">
 			            	
-			            	<input placeholder="邮箱" class="login_username"/>
+			            	<input placeholder="邮箱" id="email" class="login_username"/>
 			            	<br />
-			            	<input placeholder="密码" type="password" class="login_passworld"/>
+			            	<input placeholder="密码" type="password" id="password"  class="login_passworld"/>
 			            	<br />
 			            	<div class="login_remember">
 			            		<input type="checkbox" class="login_checkbox"/><span class="remenber_me" >记住我</span>
 			            		<a class="login_findpassworld" style="color: rgb(55,175,230);"  href="/index/login/register">注册新用户</a><span class="login-resign" style="color: rgb(55,175,230);">找回密码</span>
 			            	</div>
-			            	<div class="login_denglu">登录</div>
+			            	<div class="login_denglu" onclick="submit();">登录</div>
 			            	<!--<div class="login_qita">
 			            
 			            		<span>其他账号登陆</span>
@@ -111,6 +111,7 @@
 		
 	</div>
 	<script src="__STATIC__/js/public/footer.js"></script>
+	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 </div>
 
 	 <script>
@@ -121,30 +122,69 @@
             $('#con li').eq(i).show().siblings().hide();
         });
         
-        $(".login_denglu").click(function(){
+        // $(".login_denglu").click(function(){
         	
         	
         	
-        	if($(".login_username").val()=="" && $(".login_passworld").val()=="")
-        	{
+        // 	if($(".login_username").val()=="" && $(".login_passworld").val()=="")
+        // 	{
         		
-        		alert("账号,密码不能为空！")
+        // 		alert("账号,密码不能为空！")
         		
-        	}else if($(".login_username").val()==""){
+        // 	}else if($(".login_username").val()==""){
         		
-        		alert("账号不能为空！")
+        // 		alert("账号不能为空！")
         		
-        	}else if($(".login_passworld").val()==""){
+        // 	}else if($(".login_passworld").val()==""){
         		
-        		alert("密码不能为空！")
+        // 		alert("密码不能为空！")
         		
-        	}
+        // 	}
         	
         	
         	
-        })
+        // })
         
-        
+ 			var re_email = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+			var re_pass = /^([A-Za-z\d.]){6,20}$/;
+
+			function submit(){
+				var email = $('#email').val();
+				var password = $('#password').val();
+				// var captcha = $('#captcha').val();
+
+				if(!re_email.test(email)){
+					layer.msg('邮箱错误！',{icon:5});
+					return false;
+				}
+				if(!re_pass.test(password)){
+					layer.msg('密码错误！',{icon:5});
+					return false;
+				}
+				// if(!captcha){
+				// 	layer.msg('验证码不能为空！',{icon:5});
+				// 	return false;
+				// }
+
+				$.post('/index/login/login',{email:email,password:password},function(res){
+
+					if(res.status == 1){
+						layer.msg(res.msg,{icon:6});
+						setTimeout(function(){
+							window.location.href = res.url;
+						},1500);
+					}else{
+						layer.msg(res.msg,{icon:5});
+						Refresh_Captcha();
+					}
+				});
+			}
+
+			function Refresh_Captcha(){
+				var timestamp = (new Date()).getTime();
+				var url = '/captcha.html?t='+timestamp;
+				$('#img-captcha').attr('src',url);
+			}       
         
     </script>	
 		
