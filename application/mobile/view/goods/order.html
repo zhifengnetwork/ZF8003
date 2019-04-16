@@ -32,7 +32,9 @@
             <div class="personal-list" onclick="pageJump('../my/my_site.html')">
                 <div class="item-msg">
                     <p class="compellation">
+                      
                         <span class="name">{$user_info['nickname']}</span>
+                        
                         <span class="phone">{$user_info['mobile']}</span>
                     </p>
                     <p class="location">
@@ -78,7 +80,8 @@
                         <img src="__STATIC__/img/purchase/Button-box@2x.png" alt="">
                     </div>
                     <div class="balance" style="display: none">
-                        <input type="hidden" value="">
+                        <!-- 商品id -->
+                        <input type="hidden" name="goods_id" id="goods_id" value="{$info.id}">
                         <input type="text" disabled value="可用余额:￥{$user_info.money}" class="balance_text">
                     </div>
                 </div>
@@ -89,7 +92,8 @@
                             <!-- 数据提交 -->
                             <!-- 用户信息 -->
                             <input type="hidden" name="user_id" value="{$user_info['id']}">
-                            <input type="hidden" name="nickname" value="{$user_info['nickname']}">
+                            <input type="hidden" name="nickname" value="{$get_address['consignee']}">
+                            <input type="hidden" name="mobile" value="{$get_address['mobile']}">
                             <input type="hidden" name="province" value="{$get_address['province']}">
                             <input type="hidden" name="city" value="{$get_address['city']}">
                             <input type="hidden" name="district" value="{$get_address['district']}">
@@ -101,7 +105,7 @@
                             <input type="hidden" name="shipping_price" value="{$s_price}">
                             <!-- <input type="hidden" name="user_money" id="user_money" value=""> -->
                             <!-- 使用优惠券 -->
-                            <!-- <input type="hidden" name="coupon_price" value=""> -->
+                            <input type="hidden" name="coupon_price" id="coupon_price" value="">
                             <!-- 应付金额 -->
                             <input type="hidden" name="order_amount" id="order_amount" value="">
                             <!-- 订单总价 -->
@@ -173,63 +177,26 @@
             <div class="receive_box">
                 <p class="receive_tit">领取优惠券</p>
                 <div class="coupon_box">
+                    {volist name="coupon_list" id="v"}  
                     <div class="coupon_list">
+                    
                         <div class="coupon_msg">
                             <div class="price_box">
                                 ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
+                                <input type="hidden" name="quota" id="quota" value="{$v.quota}">
+                                <span class="price">{$v.money}</span>
+                                <span class="original">满{$v.quota}减{$v.money}</span>
                             </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
+                            <p class="pro_ori">{if condition="isset($cname[$v.coupon_id])"}{$cname[$v.coupon_id]}{else /}-{/if}</p>
+                            <p class="time publicEllipsis">{:date('Y-m-d',$v.stime)}-{:date('Y-m-d',$v.etime)}</p>
                         </div>
-                        <div class="coupon_use ">
+                        <div class="coupon_use " data-id="{$v.coupon_id}">
                             <p class="use">立即使用</p>
                             <!-- <img src="../../img/purchase/logo@2x.png" alt="" class="been"> -->
                         </div>
-                    </div>
-                    <div class="coupon_list">
-                        <div class="coupon_msg">
-                            <div class="price_box">
-                                ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
-                            </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-                        </div>
-                        <div class="coupon_use">
-                            <p class="use">立即使用</p>
-                        </div>
-                    </div>
-                    <div class="coupon_list">
-                        <div class="coupon_msg">
-                            <div class="price_box">
-                                ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
-                            </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-                        </div>
-                        <div class="coupon_use">
-                            <p class="use">立即使用</p>
-                        </div>
-                    </div>
-                    <div class="coupon_list">
-                        <div class="coupon_msg">
-                            <div class="price_box">
-                                ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
-                            </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-                        </div>
-                        <div class="coupon_use">
-                            <p class="use">立即使用</p>
-                        </div>
-                    </div>
+                       
+                    </div> 
+                    {/volist}
                 </div>
                 <div class="popup">
                     使用成功
@@ -283,8 +250,15 @@
 
         });
     })
-    
+    // $(document).ready(function () {
+    //     check_cou()
+    // });          
+    // function check_cou(){
+    //       var quota = $('#quota').val()
+    //       var total_amount = $('#total_amount').val()
 
+    //      console.log(total_amount+"aaaa")
+    // } 
 </script>
 
 </html>

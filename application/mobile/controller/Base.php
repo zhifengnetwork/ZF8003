@@ -31,7 +31,6 @@ class Base extends Controller
     {
         $this->Verification_Client();
 
-
     }
 
     # 请求验证
@@ -47,6 +46,10 @@ class Base extends Controller
             $this->client = 'mobile';
         }else{
             $this->client = 'pc';
+        }
+        if(Session::has('user')){
+            $this->user = Session::get('user');
+            $this->user_id = Session::get('user.id');
         }
     }
 
@@ -88,17 +91,21 @@ class Base extends Controller
     # 获取微信Token
     public function get_weixin_global_token(){
 
+        $this->wx_config();
         $weixin_config = $this->weixin_config;
         
-        if(!array_key_check($weixin_config['weixin_appid']) || !array_key_check($weixin_config['weixin_appsecret'])){
+        if(!array_key_check($weixin_config,'weixin_appid') || !array_key_check($weixin_config,'weixin_appsecret')){
             
             return layer_error('管理员未配置微信登录相关信息，功能未启用！');
         }
         
-        if( array_key_check($weixin_config['weixin_access_token']) && $weixin_config['weixin_expires_in_time'] > time() ){
+        if( array_key_check($weixin_config,'weixin_access_token') && $weixin_config['weixin_expires_in_time'] > time() ){
 
             return $weixin_config;
         }
+
+        $appid = $weixin_config['weixin_appid'];
+        $appsecret = $weixin_config['weixin_appsecret'];
 
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
         $res = httpRequest($url,'GET');
@@ -107,8 +114,21 @@ class Base extends Controller
             $access_token = $res['access_token'];
             $expires_in = time() + ($res['expires_in'] - 200);
 
-            Db::execute("update `zf_config` set `value` = '$access_token' where `name` = 'weixin_access_token' and `type` = 'weixin_config'");
-            Db::execute("update `zf_config` set `value` = '$expires_in' where `name` = 'weixin_expires_in_time' and `type` = 'weixin_config'");
+            $is_access_token = Db::name('config')->where(['name'=>'weixin_access_token','type'=>'weixin_config'])->column('name,type');
+
+            if (isset($is_access_token['weixin_access_token'])) {
+                Db::execute("update `zf_config` set `value` = '$access_token' where `name` = 'weixin_access_token' and `type` = 'weixin_config'");
+            } else {
+                Db::name('config')->insert(['name'=>'weixin_access_token','type'=>'weixin_config','value'=>$access_token]);
+            }
+
+            $is_expires = Db::name('config')->where(['name'=>'weixin_expires_in_time','type'=>'weixin_config'])->column('name,type');
+            if (isset($is_expires['weixin_expires_in_time'])) {
+                Db::execute("update `zf_config` set `value` = '$expires_in' where `name` = 'weixin_expires_in_time' and `type` = 'weixin_config'");
+            } else {
+                Db::name('config')->insert(['name'=>'weixin_expires_in_time','type'=>'weixin_config','value'=>$expires_in]);
+            }
+            
             $this->get_weixin_global_token();
 
         }else{
@@ -116,6 +136,18 @@ class Base extends Controller
             return layer_error('获取微信TOKEN失败：'.$res['errmsg']);
         }
     }
+
+    # 用户openid补全
+    public function user_wxinfo_completion(){
+        $this->Verification_User();
+        $data = $this->GetOpenid();
+        Db::name('users')->where('id', $this->user_id)->update(['openid'=>$data['openid']]);
+        $user = $this->user;
+        $user['openid'] = $data['openid'];
+        Session::set('user',$user);
+        $this->user = Session::get('user');
+    }
+
 
     // 网页授权登录获取 OpendId
     public function GetOpenid()

@@ -24,7 +24,6 @@
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
 				</p>
 				<span>账户充值</span>
-				<!--<p class="lb_headWrap_text">领取产品</p>-->
 			</div>
 
 			<div class="yuqian">
@@ -38,7 +37,7 @@
 			<div class="chongzhi">
 
 				<span>充值金额：￥</span>
-				<input placeholder="请输入充值金额" id="input" />
+				<input placeholder="请输入充值金额" value="0" name="money" id="input" />
 
 			</div>
 
@@ -50,7 +49,7 @@
 
 			</div>
 
-			<p class="next">下一步</p>
+			<p class="next" onclick="gotopay()">下一步</p>
 
 		</div>
 		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
@@ -64,6 +63,17 @@
 					$(this).addClass('select').siblings().removeClass('select');
 				})
 			})
+
+			function gotopay(){
+
+				var money = $('#input').val();
+				if(!money){
+					layer.msg('请输入充值金额');
+					return false;
+				}
+				var url = '/mobile/weixin/pay?t=recharge&money='+money;
+				window.location.href = url;
+			}
 		</script>
 
 	</body>

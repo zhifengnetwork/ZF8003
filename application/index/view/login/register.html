@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>注册</title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/register/register.css" />
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+
+	</head>
+
+	<body>
+		<div class="register_bigger">
+			<!--头部-->
+			<div class="header">
+				<div class="inner-wrap">
+					<div class="logo">
+						<a href="index.html"></a>
+					</div>
+					<div class="nav">
+						<ul>
+							<li class="active">
+								<a href="#">首页</a>
+							</li>
+							<li>
+								<a href="../my _genes/my_genes.html">我的基因</a>
+							</li>
+							<li>
+								<a href="#">购买</a>
+							</li>
+							<li>
+								<a href="#">基因介绍</a>
+							</li>
+							<li>
+								<a href="#">我的订单</a>
+							</li>
+							<li>
+								<a href="#">关于我们</a>
+							</li>
+						</ul>
+					</div>
+					<div class="login">
+						<!-- 未登录状态 -->
+						<div class="login-out">
+							<a href="#">登录</a>
+							<a href="#">注册</a>
+						</div>
+						<!-- 登录状态 -->
+						<div class="login-in">
+							<span class="fl"><img src="__STATIC__/images/public/user-avatar.png"></span>
+							<a class="fl" href="#">退出</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="resigter_ear inner-wrap">
+
+				<div class="resigter_center">
+
+					<p class="zuce">注册</p>
+
+					<div class="form1">
+						<div class="divdiv">
+							<span class="resigter_email">电子邮箱</span>
+							<input type="text" placeholder="请输入电子邮箱" />
+						</div>
+						<div class="divdiv divdiv22">
+							<span class="resigter_zucema">注册码</span>
+							<input type="text" placeholder="请输入注册码" style="width:101px;" />
+							<span class="fasong">发送注册码</span>
+						</div>
+						<div class="divdiv">
+							<span class="resigter_email">登录密码</span>
+							<input type="text" placeholder="请输入登录密码" type="password" />
+						</div>
+						<div class="divdiv">
+							<span class="resigter_email">确认密码</span>
+							<input type="text" placeholder="请输入确认密码" type="password" />
+						</div>
+						<div class="divdiv divdiv11">
+							<span class="resigter_email">验证码</span>
+							<input type="text" placeholder="请输入右图验证码" type="password" style="width:160px;" />
+
+							<img src="__STATIC__/images/resigter/tuceng.png" class="yanzhengma" />
+
+				
+						</div>
+					</div>
+
+					<div class="resigter_submit">提交</div>
+					<!--<div class="weixin_ear">
+
+						<p><img src="__STATIC__/images/resigter/we_chat_icon.png" /></p>
+						<p>第三方登录</p>
+
+					</div>-->
+
+				</div>
+
+			</div>
+<script src="__STATIC__/js/public/footer.js"></script>
+		</div>
+		
+		</div>
+		<script type="text/javascript" src="__STATIC__/js/resigter/addres.js"></script>
+		<script>
+			//倒计时效果
+			/*定时器Id*/
+			var timer = null;
+			/*倒计时的'时间'*/
+			var timerNum = 60;
+			/*'获取验证码的状态'点击，默认:true*/
+			var clickState = true;
+			/*获取验证码期间60S=>执行的函数*/
+			function countDown() {
+				timerNum--;
+				$('.fasong').html('再次获取' + timerNum + 's');
+				if(timerNum == 0) {
+					/*清除定时器*/
+					clearInterval(timer);
+					/*可以=>再次获取验证码*/
+					clickState = true;
+					/*改变'获取验证码'按钮color颜色*/
+					$('.fasong').css({
+						'color': '#1e82d2'
+					});
+					$('.fasong').html('获取验证码');
+					/*初始化，倒计时'时间'*/
+					timerNum = 60;
+					return false;
+				}
+			}
+			$(document).ready(function() {
+				/*获取验证码=>按钮*/
+				$('.fasong').on('click', function() {
+					/*改变'获取验证码'按钮color颜色*/
+					$('.fasong').css({
+						'color': '#bbb',
+						'border': '1px solid #bbb'
+					});
+					$('.fasong').html('再次获取' + timerNum + 's');
+					if(clickState) {
+						timer = setInterval(countDown, 1000);
+						/*不能=>获取验证码*/
+						clickState = false;
+						console.log('获取验证码');
+						return false;
+					} else {
+						return false;
+					}
+				})
+
+				$('#tit span').click(function() {
+					var i = $(this).index(); //下标第一种写法
+					//var i = $('tit').index(this);//下标第二种写法
+					$(this).addClass('select').siblings().removeClass('select');
+					$('#con li').eq(i).show().siblings().hide();
+				});
+
+			})
+		</script>
+
+	</body>
+
+</html>

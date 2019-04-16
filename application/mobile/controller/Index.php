@@ -69,7 +69,7 @@ class Index extends Base
         $data = $this->GetOpenid();
         
         if(isset($data['openid'])){
-            $user = Db::name('users')->where('openid',$data['openid'])->field('password,payment_password',true)->find();
+            $user = Db::name('users')->where('openid',$data['openid'])->find();
             if($user){
 
                 # 已注册用户，直接登录
@@ -134,7 +134,7 @@ class Index extends Base
             if(!captcha_check($captcha)){
                 return json(['status'=>0,'msg'=>'验证码错误！']);
             };
-            $user = Db::name('users')->where('email',$email)->field('password,payment_password',true)->find();
+            $user = Db::name('users')->where('email',$email)->find();
             if(!$user){
                 return json(['status'=>0,'msg'=>'账户不存在！']);
             }
@@ -220,7 +220,7 @@ class Index extends Base
             if($user_id){
                 Db::name('mail_code')->where(['type'=>'register', 'sn'=>$register_id, 'code'=>$code])->delete();
 
-                $user = Db::name('users')->field('password,payment_password',true)->find($user_id);
+                $user = Db::name('users')->find($user_id);
                 Session::set('user', $user);
 
                 $log_data = [

@@ -1,0 +1,263 @@
+.login_bigger{
+	
+	width: 100%;
+	/*background: red;*/
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: rgb(245,245,245);
+
+}
+.inner-wrap22{
+	
+	margin: auto;
+	background: white;
+	margin-top: 70px;
+	border-radius: 10px;
+	margin-bottom: 70px;
+	
+}
+.login_ear{
+	
+	width: 400px;
+	height: 480px;
+	margin: auto;
+	/*border: 1px solid green;*/
+	padding-top: 100px;
+    padding-bottom: 100px;
+}
+.login_title{
+	
+	width: 400px ;
+	margin: auto;
+	/*border: 1px solid green;*/
+	box-sizing: border-box;
+
+}
+
+.login_title span{
+	
+	display: inline-block;
+	width: 50%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: rgb(55,175,230);
+	font-weight: bolder;
+	font-size: 30px;
+	box-sizing: border-box;
+	
+	
+}
+.login_title span:nth-child(1){
+	
+	border-right: 2px solid rgb(55,175,230);
+	
+}
+#tit{
+	
+	margin-top: 25px;
+	height: 60px;
+	line-height: 60px;
+	
+	
+	
+}
+#tit span{
+	
+	
+	width: 50%;
+	display: inline-block;
+	cursor: pointer;
+	text-align: center;
+	font-size: 18px;
+	color: rgb(55,175,230);
+	
+}
+.select{
+	
+	border-bottom: 3px solid rgb(55,175,230);
+	font-weight: bolder;
+}
+#con li{
+	
+	margin-top: 30px;
+
+}
+.login_username,.login_passworld{
+	
+	border: none;
+	border: 1px solid #CCCCCC;
+	height: 40px;
+	width: 400px;
+	margin-top: 20px;
+	font-size: 16px;
+	text-indent: 10px;	
+}
+.login_remember{
+	
+	
+	margin-top:30px;
+	/*border: 1px solid green;*/
+	height: 25px;
+	line-height: 25px;
+	position: relative;
+	
+
+}
+.login_checkbox{
+	
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	top: 52%;
+	transform: translate(0%,-50%);
+
+}
+.remenber_me{
+		
+	position: absolute;
+	left: 5%;
+	top: 52%;
+	color: gray;
+	font-size: 14px;
+	transform: translate(0,-50%);
+}
+.login-resign{
+	
+	float: right;
+	padding: 0 5px;
+	border-right:1px solid rgb(55,175,230);
+	font-size: 13px;
+	color: red;
+	cursor: pointer;
+}
+.login_findpassworld{
+	
+	float: right;
+	color: gray;
+	padding: 0 5px;
+	font-size: 13px;
+	cursor: pointer;
+	
+}
+.login_denglu{
+	
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	margin: auto;
+	background: rgb(55,175,230);
+	text-align: center;
+	color: white;
+	margin-top: 40px;
+	border-radius: 10px;
+	cursor: pointer;
+	
+}
+.login_qita{
+	
+	font-size: 14px;
+	margin-top: 20px;
+	position:relative;
+	/*border: 1px solid red;*/
+	height: 40px;
+	line-height: 40px;
+	
+}
+.login_qita span{
+	
+	/*border: 1px solid green;*/
+	
+}
+.login_qita span img{
+	
+	position: absolute;
+	top: 50%;
+	transform: translate(0,-50%);
+	
+	
+}
+.login_img1{
+	
+	position: absolute;
+	right: 155px;
+	
+}
+
+.qq{
+	
+	position: absolute;
+	right: 95px;
+	top: -2%;
+	
+	
+}
+.login_img2{
+	
+	position: absolute;
+	right: 60px;
+	
+	
+	
+}
+.weibo{
+	
+	position: absolute;
+	right: 0px;
+	top: -2%;
+	
+	
+}
+
+.erweima_ear div{
+	
+	width: 200px;
+	height: 200px;
+	margin: auto;
+	background: black;
+	margin-top: 80px;
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,6 +13,7 @@
 
 # 判断数组元素
 function array_key_check($data,$key=''){
+    if(!$data) return false;
     if(!$key){
         foreach($data as $k => $v){
             if(!$v){
@@ -22,7 +23,7 @@ function array_key_check($data,$key=''){
         return true;
     }else{
         if(array_key_exists($key, $data)){
-            if($data[$k]){
+            if($data[$key]){
                 return true;
             }
         }
@@ -176,6 +177,7 @@ function httpRequest($url, $method="GET", $postfields = null, $headers = array()
  * 调用layer弹出错误提示
  */
 function layer_error($msg, $re = true){
+    header("Content-type: text/html; charset=utf-8"); 
     echo '<script type="text/javascript" src="/public/static/public/jquery.min.js"></script>';
     echo '<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>';
     echo "<script>layer.msg('$msg',{icon:5,time:3000});</script>";

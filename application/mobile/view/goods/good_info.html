@@ -229,7 +229,12 @@
 								acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection-r@2x.png').addClass('active')
 							})	
 								// layer.msg(data.msg)
-						} else {
+						}else if(data.status == -1){
+							layer.msg(data.msg, { time: 1000 }, function () {
+								window.location.href="{:url('index/login')}";
+							
+							})	
+						}else {
 							// layer.msg(data.msg)
 							layer.msg(data.msg,function () {
 
@@ -275,7 +280,12 @@
 						}					
 					})
 					// layer.msg(data.msg)
-				} else {
+				}else if(data.status == -1){
+					layer.msg(data.msg, { time: 1000 }, function () {
+                        window.location.href="{:url('index/login')}";
+					
+					})	
+				}else {
 					// layer.msg(data.msg)
 					layer.msg(data.msg, function () {
 

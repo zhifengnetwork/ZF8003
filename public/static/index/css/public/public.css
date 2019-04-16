@@ -1,0 +1,257 @@
+
+*{
+	margin: 0;
+	padding: 0;
+}
+
+ h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+em{
+	font-style: normal;
+}
+a{
+	text-decoration: none;
+}
+
+i{font-style: inherit;}
+
+input,textarea,button{
+	outline: none;
+}
+
+li{
+	list-style-type: none;
+}
+
+/* 按钮呈手指状态 */
+input[type=button], input[type=submit], input[type=file], button { 
+	cursor: pointer; 
+	-webkit-appearance: none; 
+}
+
+body{
+	background-color: #f5f5f5;
+}
+.inner-wrap{
+	width: 1200px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+/* 公共头部 */
+.header{
+	width: 100%;
+	height: 90px;
+	font-size: 20px;
+	background:rgba(0,0,0,.3);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);/*兼容IE8的rgba透明度*/
+}
+.header .inner-wrap .logo{
+	width: 190px;
+	height: 90px;
+	float: left;
+	background-color:#37afe6;
+	margin-right: 65px;
+}
+
+/* 导航 */
+.header .inner-wrap .nav{
+	float: left;
+}
+.header .inner-wrap .nav li{
+	float: left;
+	line-height: 90px;
+	margin-right: 75px;
+}
+.header .inner-wrap .nav li:last-child{
+	margin-right: 0;
+}
+.header .inner-wrap .nav li a{
+	color: #ffffff;
+}
+.header .inner-wrap .nav li a:hover{
+	color: #37afe6;
+}
+.header .inner-wrap .nav li.active a{
+	color: #37afe6;
+}
+
+/* 登录状态 */
+.header .inner-wrap .login{
+	float: right;
+	margin: 20px 0;
+}
+
+/* 未登录状态 */
+.header .inner-wrap .login-out{
+	display: none;
+}
+.header .inner-wrap .login a{
+	margin-left: 15px;
+	color: #fff;
+	line-height: 50px;
+}
+.header .inner-wrap .login a:hover{
+	color: #37afe6;
+}
+
+/* 登录状态 */
+.header .inner-wrap .login-in{
+	display: block;
+}
+.header .inner-wrap .login-in span{
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	border-radius: 50%;
+}
+.header .inner-wrap .login-in span img{
+	width: 100%;
+}
+.header .inner-wrap .login-in a{
+	display: inline-block;
+	line-height: 50px;
+}
+
+/* 公共底部 */
+.footer{
+	width: 100%;
+	height: 210px;
+	color: #fff;
+	background-color: #002449;
+}
+.footer .left{
+	height: 210px;
+}
+.footer .bottomNav{
+	width: 940px;
+	border-bottom: 1px solid #56c8fa;
+}
+.footer .bottomNav ul{
+	height: 104px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.footer .bottomNav ul li a{
+	color: #fff;
+	font-size: 20px;
+}
+.footer .copyright{
+	height: 105px;
+	line-height: 105px;
+	text-align: center;
+	font-size: 16px;
+}
+.footer .copyright span{
+	margin-left: 40px;
+}
+.footer .code {
+	float: right;
+	margin-top: 20px;
+}
+.footer .code img{
+	display: block;
+}
+.footer .code p{
+	text-align: center;
+	line-height: 40px;
+}
+
+/*清除浮动*/	
+.clearfix:before{
+	display:block;
+	clear:both;
+	content:"";
+	visibility:hidden;
+	height:0;
+}
+.clearfix:after{
+	display:block;
+	clear:both;
+	content:"";
+	visibility:hidden;
+	height:0;
+} 
+.clearfix{zoom:1}  /*是在处理兼容性问题*/
+
+.fl{
+	float: left;
+}
+.fr{
+	float: right;
+}
+
+
+/*public 省略号*/
+.publicEllipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/*透明度*/
+.publicOpacity {
+	filter:alpha(opacity=0);          
+	-moz-opacity:0;          
+	-khtml-opacity: 0;          
+	opacity: 0; 
+}
+/*垂直居中*/
+.publicDrooping {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	margin: auto;
+}
+
+/* 不定宽高垂直居中 */
+.publicVetically{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 1;
+	transform: translate(-50%,-50%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

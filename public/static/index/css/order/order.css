@@ -1,0 +1,77 @@
+img {
+	display: block;
+	margin: 0 auto;
+	width: 100%;
+}
+.content .order-wrap {
+	margin: 25px 0 55px;
+	padding: 20px 25px 25px 35px;
+	background: #fff;
+}
+.content .order-wrap .order .odd {
+	margin-bottom: 15px;
+	font-size: 24px;
+	color: #333;
+}
+.x_tu {
+	display: inline-block;
+	vertical-align: top;
+}
+.content .order-wrap .order {
+	position: relative;
+	padding: 20px 0 25px;
+	border-bottom: 1px solid #ccc;
+}
+.content .order-wrap .order .box_tu .img {
+	width: 200px;
+}
+.content .order-wrap .order .box_tu .time {
+	font-size: 16px;
+	line-height: 35px;
+	color: #333;
+}
+.content .order-wrap .order .box_tu .num .dot {
+	font-size: 16px;
+	line-height: 25px;
+	color: #333;
+}
+.content .order-wrap .order .box_tu .num .val {
+	margin-left: 35px;
+	font-size: 20px;
+	letter-spacing: 1px;
+	color: #ff0000;
+}
+
+.content .order-wrap .order .right_u p {
+	padding-left: 20px;
+	width: 500px;
+	font-size: 16px;
+	color: #666;
+}
+
+.content .order-wrap .order .right_u .fade {
+	position: absolute;
+	bottom: 35px;
+	right: 195px;
+}
+.content .order-wrap .order .right_u .fade a {
+	display: inline-block;
+	width: 125px;
+	height: 35px;
+	background: #37afe6;
+	border-radius: 25px;
+	color: #fff;
+	text-align: center;
+	line-height: 35px;
+	cursor: pointer;
+}
+.content .order-wrap .order .right_u .fade .btn_1 {
+	margin-right: 15px;
+}
+
+.content .order-wrap .order .sta {
+	margin-left: 95px;
+	font-size: 30px;
+	letter-spacing: 2px;
+	color: #ff0000;
+}

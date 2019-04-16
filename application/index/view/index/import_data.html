@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title class="pageTopTitle" page-id="0">导入数据</title>
+    <link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
+    <link rel="stylesheet" href="__STATIC__/css/home/import_data.css">
+    
+</head>
+<body>
+    <div class="wrapper">
+        <!-- 头部 -->
+        <div class="header"></div>
+         
+        <!-- 内容 -->
+        <div class="content inner-wrap">
+            <div class="gene-data">
+                <h2>导入基因数据</h2>
+                <form action="###">
+                    <div class="form-group">
+                        <div class="groupl">
+                            姓名：
+                        </div>
+                        <div class="groupr">
+                            <input type="text" class="fullName">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="groupl">
+                            性别：
+                        </div>
+                        <div class="groupr">
+                            <div class="sexItem">
+                                <input type="radio" name="sex" id="man">
+                                <label for="man">男</label>
+                            </div>
+                            <div class="sexItem">
+                                <input type="radio" name="sex" id="woman" >
+                                <label for="woman">女</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="groupl">
+                            生日：
+                        </div>
+                        <div class="groupr">
+                            <div id="date">
+                                <select name="year" id="year">
+                                    <option value="">选择年份</option>
+                                </select>
+                                <select name="month" id="month">
+                                    <option value="">选择月份</option>
+                                </select>
+                                <select id="days" class="day" style="margin-right:0;">
+                                    <option value="">选择日期</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="groupl">
+                            文件：
+                        </div>
+                        <div class="groupr upload">
+                            <a href="javascript:void(0)">点击选择压缩文件</a>
+                            <input type="file" class="selectFile">
+                            <p class="tips">请直接上传您从测序厂商获取的原始.Zip文件</p>
+                        </div>
+                    </div>
+                    <div class="btn">
+                        <button type="button">确认</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 底部 -->
+        <div class="footer"></div>
+        
+    </div>  
+
+    <script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script> 
+    <script src="__STATIC__/js/public/header.js"></script>  
+    <script src="__STATIC__/js/public/footer.js"></script>
+    <script src="__STATIC__/js/public/selectDate.js"></script>
+    <script>
+    	$(function(){
+			$("#date").selectDate()
+			
+			$("#days").focusout(function(){
+				var year = $("#year option:selected").html()
+				var month = $("#month option:selected").html()
+				var day = $("#days option:selected").html()
+				console.log(year+month+day)
+			})
+			
+        })
+        </script>
+</body>
+</html>
