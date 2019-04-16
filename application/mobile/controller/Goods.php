@@ -8,6 +8,14 @@ use think\Session;
 
 class Goods extends Base
 {
+    public $user_id = 0;
+    public function _initialize()
+    {
+
+        parent::_initialize();
+        // $this->Verification_User();
+        $this->user_id = Session::get('user.id');
+    }
     public function index()
     {
         return $this->fetch();
@@ -97,9 +105,18 @@ class Goods extends Base
      * 领券
      */
     public function get_coupon(){
-        $data = input('post.');
+        // $this->Verification_User();
+        if(Session::has('user')){
+            // $this->user = Session::get('user');
+            $user_id = Session::get('user.id');
+        }else{
+            return json(['status'=>-1,'msg'=>'请登录']); 
+        }        
+        
 
-        $user_id = $this->user_id;
+        $data = input('post.');
+        // $user_id = $this->user_id;
+
         // 优惠券信息
         $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
 
@@ -235,6 +252,13 @@ class Goods extends Base
 
     public function focus()
     {
+        if(Session::has('user')){
+            // $this->user = Session::get('user');
+            $user_id = Session::get('user.id');
+        }else{
+            return json(['status'=>-1,'msg'=>'请登录']); 
+        }    
+
         $data = input('post.');
         // $admin_id = session('admin_id');
         $user_id = $this->user_id;
