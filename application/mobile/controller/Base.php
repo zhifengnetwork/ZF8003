@@ -88,17 +88,21 @@ class Base extends Controller
     # 获取微信Token
     public function get_weixin_global_token(){
 
+        $this->wx_config();
         $weixin_config = $this->weixin_config;
         
-        if(!array_key_check($weixin_config['weixin_appid']) || !array_key_check($weixin_config['weixin_appsecret'])){
+        if(!array_key_check($weixin_config,'weixin_appid') || !array_key_check($weixin_config,'weixin_appsecret')){
             
             return layer_error('管理员未配置微信登录相关信息，功能未启用！');
         }
         
-        if( array_key_check($weixin_config['weixin_access_token']) && $weixin_config['weixin_expires_in_time'] > time() ){
+        if( array_key_check($weixin_config,'weixin_access_token') && $weixin_config['weixin_expires_in_time'] > time() ){
 
             return $weixin_config;
         }
+
+        $appid = $weixin_config['weixin_appid'];
+        $appsecret = $weixin_config['weixin_appsecret'];
 
         $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appid&secret=$appsecret";
         $res = httpRequest($url,'GET');
