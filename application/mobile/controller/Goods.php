@@ -58,7 +58,8 @@ class Goods extends Base
                 }
 
             // $admin_id = session('admin_id');
-            $user_id = 29;
+            // $user_id = $this->user_id;
+            $user_id = $this->user_id;
             // 默认为未收藏
             $is_focus = 0;
             $where = [
@@ -76,21 +77,16 @@ class Goods extends Base
                 'goods_id' =>$id,
                 'status' => 0    
             ];
-            $coupon = Db::name('goods_coupon')->where($where1)->select();
-
+            $coupon = Db::name('goods_coupon')->where($where1)->where('deadline', '>= time', time())->select();
+            
+            $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
             // 用来判断用户是否已经领取优惠券
-            // $where['coupon_id'] = ;
-            // $is_get = Db::name('user_coupon')->where($where)->select();
-            // $get_coupon = 0;
-            // if(!empty($is_get)){
-            //     $get_coupon = 1; 
-            // }
-            // 无限领取
-            // $this->assign('get_coupon', $get_coupon); 
+            $cp_ids = array_column($in_coupon, 'coupon_id');
+
+
+            $this->assign('cp_ids', $cp_ids);
             $this->assign('coupon', $coupon);
             $this->assign('is_focus', $is_focus);
-            // $this->assign('temp_price', $temp_price);
-            // $this->assign('address', $address);
             $this->assign('images', $images);
             $this->assign('info', $info);
             return $this->fetch();
@@ -103,11 +99,22 @@ class Goods extends Base
     public function get_coupon(){
         $data = input('post.');
 
-        $user_id  = 29;
+        $user_id = $this->user_id;
         // 优惠券信息
         $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
 
         if($coupon_info){
+            // 判断是否已经领取
+            $where=[
+              'user_id'  => $user_id,
+              'goods_id' => $data['goods_id'],
+              'coupon_id'=> $data['coupon_id']
+            ];            
+            $result = Db::name('user_coupon')->where($where)->find();
+            if($result){
+               return json(['status'=>0,'msg'=>'您已领取此券']); 
+            }
+
             // 添加券时间
             $addtime = $coupon_info['addtime'];
             // 券过期时间
@@ -127,7 +134,7 @@ class Goods extends Base
                  'stime'     => time(),
                  'etime'     => $etime
             ];
-            
+
             $res = Db::name('user_coupon')->insert($data1); 
             if($res){
                 return json(['status'=>1,'msg'=>'领取成功']);    
@@ -142,9 +149,10 @@ class Goods extends Base
 
     public function order()
     {
+        $this->Verification_User();
         // 商品id 
         $id = input('id');
-        $user_id = 29;
+        $user_id = $this->user_id;
         $price = 0;
         $get_address = [
             'province' => '',
@@ -229,7 +237,7 @@ class Goods extends Base
     {
         $data = input('post.');
         // $admin_id = session('admin_id');
-        $user_id = 1;
+        $user_id = $this->user_id;
         $where = [
             'goods_id' => $data['id'],
             'user_id' => $user_id,
