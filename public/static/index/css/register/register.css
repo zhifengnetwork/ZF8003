@@ -1,0 +1,224 @@
+.register_bigger{
+	
+	width: 100%;
+	/*background: red;*/
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: rgb(245,245,245);
+
+}
+.resigter_ear{
+	
+	
+	height: 500px;
+	margin-top: 100px;
+	margin-bottom: 100px;
+	
+
+}
+.resigter_center{
+	
+	background: white;
+	box-sizing: border-box;
+	width: 700px;
+	height: 100%;
+	margin: auto;
+	border-radius: 20px;
+	/*border: 1px solid green;*/
+	
+	
+	
+	
+}
+.form1{
+	
+	width: 340px;
+	/*border: 1px solid green;*/
+	margin: auto;
+	
+	
+}
+
+.zuce{
+     width: 100%;
+     text-align: center;
+     color:rgb(55,175,230);
+     font-size: 20px;
+     font-weight: bolder;
+     padding-bottom: 10px;
+     padding-top: 37px;
+     
+     
+}
+.divdiv input{
+	
+	width: 230px;
+	height: 30px;
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+	margin-top: 20px;
+	text-indent: 7px;
+	
+	
+}
+.resigter_email{
+	
+	display: inline-block;
+	width: 80px;
+	padding-left: 10px;
+
+}
+.resigter_zucema{
+	
+	display: inline-block;
+	width: 80px;
+	padding-left: 10px;
+	
+}
+.fasong{
+	
+	width: 110px;
+	color: rgb(55,175,230);
+	display: inline-block;
+	border-radius: 5px;
+	padding: 0px 3px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	cursor: pointer;
+	position: absolute;
+	bottom: 0px;
+	margin-left: 10px;
+	border: 1px solid rgb(55,175,230);
+   
+	
+}
+
+
+.divdiv11{
+	
+	
+	position: relative;
+
+}
+.divdiv22{
+	
+	position: relative;
+	
+	
+}
+.divdiv11 img{
+
+	
+	width: 60px;
+	height: 50px;
+	position: absolute;
+	bottom: -14px;
+	right: 15px;
+	margin-left: 10px;
+	/*border:1px solid green;*/
+
+
+}
+
+	
+
+
+.resigter_submit{
+	
+	width: 45%;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 6px;
+	color: white;
+	text-align: center;
+	background: rgb(55,175,230);
+	margin: 0 auto;
+	margin-top: 50px;
+	cursor: pointer;
+
+}
+.weixin_ear{
+	
+	text-align: center;
+	margin-top: 60px;
+
+}
+.weixin_ear img{
+	
+	width: 30px;
+	height: 40px;
+
+	
+}
+.weixin_ear p{
+	
+	font-size: 15px;
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
