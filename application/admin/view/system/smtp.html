@@ -1,7 +1,7 @@
 ﻿{include file="layout/setting_head"}
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
-		<input type="hidden" name="type" value="{$url}">
+	<form class="form form-horizontal" id="form-article-add" method="POST" target="ajaxR">
+		<input type="hidden" name="type" value="{$type}">
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
 				{foreach name="list" item="vo"}
@@ -10,39 +10,98 @@
 			</div>
 			<div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">邮件发送模式：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  class="input-text" value="" id="" name="">
+					<label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
+					<div class="formControls col-xs-8 col-sm-9"> 
+						<span class="select-box" style="width:150px;">
+							<select class="select" id="host" name="host" size="1">
+								<option value="smtp.qq.com" {if condition="isset($info.host) && $info.host eq 'smtp.qq.com'"}selected{/if}>QQ邮箱</option>
+								<option value="smtp.163.com" {if condition="isset($info.host) && $info.host eq 'smtp.163.com'"}selected{/if} >网易邮箱</option>
+							</select>
+						</span> 
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="" value="" class="input-text">
+					<label class="form-label col-xs-4 col-sm-2">SMTP协议：</label>
+					<div class="formControls col-xs-8 col-sm-9"> 
+						<span class="select-box" style="width:150px;">
+							<select class="select" id="secure" name="secure" size="1">
+								<option value="ssl" {if condition="isset($info.secure) && $info.secure eq 'ssl'"}selected{/if} >SSL</option>
+								<option value="tls" {if condition="isset($info.secure) && $info.secure eq 'tls'"}selected{/if} >TLS</option>
+							</select>
+						</span> 
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="25" id="" name="" >
+						<input type="text" class="input-text" value="{if condition="isset($info.port)"}{$info.port}{/if}" id="" name="port" placeholder="常用端口号：ssl：25、465；tls: 587">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">邮箱帐号：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="5" id="emailName" name="emailName" >
+						<input type="text" class="input-text" value="{if condition="isset($info.username)"}{$info.username}{/if}" id="username" name="username" >
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">邮箱密码：</label>
+					<label class="form-label col-xs-4 col-sm-2">邮箱密码或授权码：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="password" id="email-password" value="" class="input-text">
+						<input type="text" id="password" name="password" value="{if condition="isset($info.password)"}{$info.password}{/if}" class="input-text" placeholder="部分邮箱服务器需要使用授权码">
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">收件邮箱地址：</label>
+					<label class="form-label col-xs-4 col-sm-2">发送人昵称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" id="email-address" value="" class="input-text">
+						<input type="text" id="nickname" name="nickname" value="{if condition="isset($info.nickname)"}{$info.nickname}{/if}" class="input-text" placeholder="">
+					</div>
+				</div>
+
+				<div class="row cl" style="padding-top:20px;">
+					<label class="form-label col-xs-4 col-sm-2"></label>
+					<div class="formControls col-xs-8 col-sm-9">
+						{literal}
+						<p style="color:red;">注意：下面邮件模板使用 {{$code}} 代替验证码，必须填写，否则无效！</p>
+						{/literal}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">注册邮件标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.register_title)"}{$info.register_title}{/if}" id="register_title" name="register_title" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">注册邮件模板 HTML：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="register_body" id="register_body" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.register_body)"}{$info.register_body}{/if}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">注册邮件模板 文本：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="register_altbody" id="register_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.register_altbody)"}{$info.register_altbody}{/if}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">重置密码邮件标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.edit_title)"}{$info.edit_title}{/if}" id="edit_title" name="edit_title" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">重置密码邮件模板 HTML：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="edit_body" id="edit_body" cols="" rows="" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.edit_body)"}{$info.edit_body}{/if}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">重置密码邮件模板 文本：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="edit_altbody" id="edit_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.edit_altbody)"}{$info.edit_altbody}{/if}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 					</div>
 				</div>
 			</div>
@@ -54,5 +113,6 @@
 			</div>
 		</div>
 	</form>
+	<iframe name="ajaxR" style="display:none;"></iframe>
 </div>
 {include file="layout/setting_footer"/}

@@ -17,8 +17,20 @@ $(function(){
 });
 
     function article_save_submit(){
-        console.log(111);
+        
     }
+
+	function success(msg){
+		layer.msg(msg,{icon:6});
+		setTimeout(function(){
+			window.location.replace(location.href);
+		},2000);
+		
+	}
+	function error(msg){
+		layer.msg(msg,{icon:5});
+		return false;
+	}
 </script>
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

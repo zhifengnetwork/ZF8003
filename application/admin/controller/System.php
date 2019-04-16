@@ -226,9 +226,34 @@ class System extends Base
     # 邮箱配置
     public function smtp()
     {
-        $data = input('get.');
-        $this->assign('type', 'smtp_setting');
-        $this->assign('url','smtp');
+        if($_POST){
+            
+            $data = $_POST;
+            $type = $data['type'];
+            unset($data['type']);
+            foreach($data as $k=>$v){
+                if(Db::name('config')->field('id')->where(['type'=>$type,'name'=>$k])->find()){
+
+                    Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
+                }else{
+                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
+                }
+            }
+            echo "<script>parent.success('操作成功！');</script>";
+
+            exit;
+        }
+
+
+        $info = Db::name('config')->where('type','email_setting')->select();
+        if($info){
+            foreach($info as $v){
+                $data[$v['name']] = $v['value']; 
+            }
+            $info = $data;
+        }
+        $this->assign('info', $info);
+        $this->assign('type', 'email_setting');
         $this->assign('index',2);
         return $this->fetch();
     }
