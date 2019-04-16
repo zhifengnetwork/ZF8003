@@ -32,7 +32,9 @@
             <div class="personal-list" onclick="pageJump('../my/my_site.html')">
                 <div class="item-msg">
                     <p class="compellation">
+                      
                         <span class="name">{$user_info['nickname']}</span>
+                        
                         <span class="phone">{$user_info['mobile']}</span>
                     </p>
                     <p class="location">
@@ -90,7 +92,8 @@
                             <!-- 数据提交 -->
                             <!-- 用户信息 -->
                             <input type="hidden" name="user_id" value="{$user_info['id']}">
-                            <input type="hidden" name="nickname" value="{$user_info['nickname']}">
+                            <input type="hidden" name="nickname" value="{$get_address['consignee']}">
+                            <input type="hidden" name="mobile" value="{$get_address['mobile']}">
                             <input type="hidden" name="province" value="{$get_address['province']}">
                             <input type="hidden" name="city" value="{$get_address['city']}">
                             <input type="hidden" name="district" value="{$get_address['district']}">
@@ -176,6 +179,7 @@
                 <div class="coupon_box">
                     {volist name="coupon_list" id="v"}  
                     <div class="coupon_list">
+                    
                         <div class="coupon_msg">
                             <div class="price_box">
                                 ￥
@@ -190,6 +194,7 @@
                             <p class="use">立即使用</p>
                             <!-- <img src="../../img/purchase/logo@2x.png" alt="" class="been"> -->
                         </div>
+                       
                     </div> 
                     {/volist}
                 </div>

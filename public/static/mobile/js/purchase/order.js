@@ -144,12 +144,14 @@ $(function(){
          var lengthh = $('.coupon_list').children('.employ').length  //使用优惠券的长度
          var html = employ.parent().prev().find('.original').html()  
          var pri = employ.parent().prev().find('.price').html()
+
          $('.man').show().find('.discount_num').html(html)
          $('.coupon_discount').html(pri)
         var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
          if(employ.parent().hasClass('coupon_use')){
          employ.parent().addClass('employ').addClass('add').removeClass('coupon_use').parent().siblings().find('.employ').removeClass('employ').addClass('coupon_use').find('.been').remove()
          employ.parent().append(img)
+        //  employ.addClass('use1').removeClass('use')
          length--;   //优惠券长度-1
 
          $('.numm').find('.discount_num').html(length)

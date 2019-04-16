@@ -162,13 +162,6 @@ class Goods extends Base
 
     }
 
-    /**
-     * 使用优惠券
-     */
-    public function use_coupon(){
-           $data = input('post.');
-           dump($data);
-    }
 
 
     public function order()
@@ -183,7 +176,9 @@ class Goods extends Base
             'city'     => '',
             'district' => '',
             'address'  => '',
-            'dizhi'    => ''
+            'dizhi'    => '',
+            'consignee'=> '',
+            'mobile'   => ''
         ];
         // 商品信息
         $res = Db::name('goods')->where('id', $id)->find();
@@ -197,7 +192,6 @@ class Goods extends Base
                     'is_default' => 1
                 ];                
                 $address1   = Db::name('user_address')->where($where)->find();
-                
                 if($address1){
                     $province = Db::name('area')->where('id', $address1['province'])->find();
                     $city     = Db::name('area')->where('id', $address1['city'])->find();
@@ -209,7 +203,9 @@ class Goods extends Base
                         'city'     => $address1['city'],
                         'district' => $address1['district'],
                         'address'  => $address1['address'],
-                        'dizhi'    => $dizhi
+                        'dizhi'    => $dizhi,
+                        'consignee'=> $address1['consignee'],
+                        'mobile'   => $address1['mobile']
                     ];
 
                     // 计算邮费
@@ -251,6 +247,11 @@ class Goods extends Base
                          'user_id'  => $user_id,
                          'status'   => 0 ,
                     ];
+                    // $where2 = [
+                    //     'goods_id' => $id,
+                    //     'status'   => 0,
+                    // ];
+
                     $coupon_list = Db::name('user_coupon')->where($where1)->where('etime', '>= time', time())->select();
                     $cname[0] = '';
                     
@@ -266,6 +267,13 @@ class Goods extends Base
                             }
                         }
                     }
+
+                    // $avs = Db::name('goods_coupon')->where($where2)->where('deadline', '>= time', time())->select();
+                    // // dump($a);
+                    // $cp_ids = array_column($avs, 'id');
+                  
+                    // $this->assign('cp_ids', $cp_ids); 
+                    // dump($coupon_list);
                     $this->assign('cname', $cname);       
                     $this->assign('coupon_list', $coupon_list);   
                 }
@@ -342,10 +350,17 @@ class Goods extends Base
             if($data['remain'] < $data['order_amount']){
             return json(['status' => 0, 'msg' => '余额不足请充值']);  
             } 
-
+            // 验证优惠券额度
+               
             $data1 = $this->form_data($data);
-            
-            $res = Db::name('order')->insert($data1); 
+            // 扣款  
+            $cut =Db::name('users')->where('id',$data['user_id'])->setDec('money', $data['order_amount']); 
+            if($cut){
+                $res = Db::name('order')->insert($data1); 
+            }else{
+               return json(['status' => 0, 'msg' => '提交失败']); 
+            }
+           
             if($res){
                 return json(['status' => 1, 'msg' => '提交成功，正在跳转...']);
             }else{
@@ -370,8 +385,11 @@ class Goods extends Base
             "shipping_price" => $data['shipping_price'],
             "order_amount"   =>  $data['order_amount'],
             "total_amount"   =>  $data['total_amount'],
-            "user_note" =>  $data['user_note'],
-            "pay_time"  =>  time()
+            "user_note"    =>  $data['user_note'],
+            "pay_time"     =>  time(),
+            // 已付款
+            "order_status" => 1,
+            'mobile'       => $data['mobile'] 
         ];
         return $data1;
     }
