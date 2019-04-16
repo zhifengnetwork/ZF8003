@@ -15,7 +15,7 @@
 	</head>
 
 	<body>
-		<div class="wrap_frame">
+		<div class="wrap_frame" style="padding-top: 0">
 			<!--包裹index的div-->
 			<div class="wrap_index">
 
@@ -181,9 +181,9 @@
 						{if condition="isset($article.recom) && $article.recom"}
 						<div class="nscramble-list">
 						{volist name="article.recom" id="vo"}
-							<li class="nscrambleItem">
+							<li class="nscrambleItem" style="overflow: hidden; width:2.2rem;height:1.6rem;">
 								<a href="#">
-									<img src="__IMAGES__article/{$vo.thumb}" />
+									<img style="width:2.2rem;height: 1.6rem;" src="__IMAGES__article/{$vo.thumb}" />
 									<span class="mask"></span>
 								</a>
 							</li>
