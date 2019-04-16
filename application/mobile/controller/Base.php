@@ -107,8 +107,21 @@ class Base extends Controller
             $access_token = $res['access_token'];
             $expires_in = time() + ($res['expires_in'] - 200);
 
-            Db::execute("update `zf_config` set `value` = '$access_token' where `name` = 'weixin_access_token' and `type` = 'weixin_config'");
-            Db::execute("update `zf_config` set `value` = '$expires_in' where `name` = 'weixin_expires_in_time' and `type` = 'weixin_config'");
+            $is_access_token = Db::name('config')->where(['name'=>'weixin_access_token','type'=>'weixin_config'])->column('name,type');
+
+            if (isset($is_access_token['weixin_access_token'])) {
+                Db::execute("update `zf_config` set `value` = '$access_token' where `name` = 'weixin_access_token' and `type` = 'weixin_config'");
+            } else {
+                Db::name('config')->insert(['name'=>'weixin_access_token','type'=>'weixin_config','value'=>$access_token]);
+            }
+
+            $is_expires = Db::name('config')->where(['name'=>'weixin_expires_in_time','type'=>'weixin_config'])->column('name,type');
+            if (isset($is_expires['weixin_expires_in_time'])) {
+                Db::execute("update `zf_config` set `value` = '$expires_in' where `name` = 'weixin_expires_in_time' and `type` = 'weixin_config'");
+            } else {
+                Db::name('config')->insert(['name'=>'weixin_expires_in_time','type'=>'weixin_config','value'=>$expires_in]);
+            }
+            
             $this->get_weixin_global_token();
 
         }else{
