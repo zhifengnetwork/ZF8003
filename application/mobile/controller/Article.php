@@ -7,12 +7,12 @@ use think\Session;
 
 class Article extends Base{
 
-    private $user_id = 0;//用户id
+    public $user_id = 0;//用户id
 
     public function __construct(){
         parent::__construct();
 
-        $this->user_id = session('user_id');
+        $this->user_id = session('user_id.id');
     }
 
     public function index(){

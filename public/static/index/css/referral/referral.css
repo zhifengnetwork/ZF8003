@@ -1,0 +1,94 @@
+img {
+	display: block;
+	margin: 0 auto;
+	width: 100%;
+}
+.wrapper .content .ewm-wrap {
+	margin: 25px 0 35px;
+	height: 600px;
+	background: url(../../images/referral/bj.png) no-repeat;
+	background-size: 100% 100%;
+}
+.wrapper .content .ewm-wrap .ewm {
+	margin: 130px 130px 0 0;
+	float: right;
+}
+.wrapper .content .ewm-wrap .ewm .ewm-top .logo_tu {
+	width: 100px;
+	height: 50px;
+	background: #37afe6;
+}
+.logo_tu_right h2 {
+	font-size: 20px;
+	color: #333;
+}
+.logo_tu_right p {
+	width: 240px;
+	font-size: 16px;
+	line-height: 22px;
+	color: #666;
+}
+.wrapper .content .ewm-wrap .ewm .ewm-top div {
+	display: inline-block;
+	vertical-align: top;
+}
+.wrapper .content .ewm-wrap .ewm .code {
+	margin: 25px auto;
+	width: 160px;
+	height: 160px;
+}
+.yards {
+	text-align: center;
+	font-size: 20px;
+	line-height: 32px;
+	letter-spacing: 2px;
+	color: #333;
+}
+
+
+.slide h2 {
+	font-size: 34px;
+	letter-spacing: 1px;
+	color: #333;
+	line-height: 55px;
+}
+.slide .table-wrap {
+	margin-bottom: 45px;
+	padding: 50px 150px 20px;
+	background-color: #bceaff;
+	border-radius: 10px;
+}
+.slide .table-wrap .table {
+	margin: 0 0 35px 0;
+	background: #fff;
+}
+.slide .table-wrap .table .dna {
+	padding: 20px 25px 0;
+	font-size: 28px;
+	text-align: center;
+	color: #333;
+}
+.slide .table-wrap .table .img {
+	margin-top: 55px;
+}
+
+
+.explain-wrap {
+	background-color: #bceaff;
+	border-radius: 10px;
+}
+.explain-wrap .explain {
+	margin-bottom: 65px;
+	padding: 50px 150px;
+}
+.explain-wrap .explain h2 {
+	margin: 0 0 15px;
+	text-align: center;
+	font-size: 34px;
+	color: #333;
+}
+.explain-wrap .explain p {
+	margin: 0 0 20px;
+	font-size: 20px;
+	color: #666;
+}

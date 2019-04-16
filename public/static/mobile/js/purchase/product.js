@@ -52,7 +52,7 @@ $(function(){
             'height': ''
         });
         /*恢复当前用户滚动的位置！*/
-        $(document).scrollTop(thisScrollNum);
+        // $(document).scrollTop(thisScrollNum);
 		$("body").unbind("touchmove");
     }
     

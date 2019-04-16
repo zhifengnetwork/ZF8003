@@ -1,0 +1,107 @@
+img {
+	display: block;
+	margin: 0 auto;
+	width: 100%;
+}
+.wrapper .content .item{
+	margin: 20px 0 65px;
+}
+.wrapper .content .item div {
+	display: inline-block;
+	vertical-align: top;
+}
+.wrapper .content .map {
+	padding: 3px;
+	width: 450px;
+	height: 450px;
+}
+
+
+.wrapper .content .right_content {
+	margin-left: 20px;
+	width: 700px;
+}
+.wrapper .content .right_content h2 {
+	margin-bottom: 10px;
+	font-size: 18px;
+	color: #333;
+	line-height: 25px;
+}
+.wrapper .content .right_content .marks {
+	font-size: 16px;
+	color: #999;
+}
+.wrapper .content .right_content .report {
+	margin: 55px 0 35px;
+	padding: 8px 0;
+	width: 700px;
+	border-bottom: 1px solid #ccc;
+}
+.wrapper .content .right_content .report .test {
+	width: 90px;
+}
+.wrapper .content .right_content .report .der {
+	border-right: 1px solid #ccc;
+}
+.wrapper .content .right_content .report .test .option {
+	margin-bottom: 10px;
+	font-size: 18px;
+	color: #37afe6;
+	
+}
+.wrapper .content .right_content .report .test .state {
+	font-size: 14px;
+	color: #666;
+	
+}
+.wrapper .content .right_content .report .test p {
+	text-align: center;
+	line-height: 20px;
+}
+
+
+.wrapper .content .right_content .price {
+	font-size: 30px;
+	letter-spacing: 1px;
+	color: #37afe6;
+}
+
+.wrapper .content .right_content .buy_btn {
+	margin: 40px 0 0 10px;
+	display: block;
+	width: 168px;
+	height: 55px;
+	background-color: #37afe6;
+	border-radius: 10px;
+	font-size: 18px;
+	text-align: center;
+	line-height: 55px;
+	letter-spacing: 1px;
+	color: #fff;
+	cursor: pointer;
+}
+
+.wrapper .content .deta {
+	margin-bottom: 25px;
+}
+.wrapper .content .deta div {
+	display: inline-block;
+	vertical-align: top;
+}
+.wrapper .content .deta .line {
+	margin: 22px 0 0;
+	width: 505px;
+	height: 1px;
+	background: #ccc;
+}
+.wrapper .content .deta .ntext {
+	width: 160px;
+	font-size: 30px;
+	color: #000;
+	letter-spacing: 1px;
+	text-align: center;
+}
+
+.wrapper .content .tu_zone {
+	margin-bottom: 100px;
+}

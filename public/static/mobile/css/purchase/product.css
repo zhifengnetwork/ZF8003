@@ -216,7 +216,7 @@
 .coupon .coupon_site .goright>img{
     width: .19rem;
     height: .34rem;
-    vertical-align: middle;
+    vertical-align: bottom;
 }
 
 /* receive_coupon */ 
