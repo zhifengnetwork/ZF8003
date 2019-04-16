@@ -215,13 +215,50 @@ class Article extends Base{
     # 评论
     public function comment()
     {
-        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
+        $id = input('id/d');
         
         if(!$id){
             layer_error('参数错误！');
         }
+        
+        $this->assign('id',$id);
         return $this->fetch();
     }
 
+    # 获取评论
+    public function get_comment()
+    {
+        $data = input('get.');
+
+        $result['lists'] = Db::name('comment')->where(['to'=>$data['id'],'type'=>$data['type'],'status'=>1])->page($data['page'],$data['count'])->select();
+        
+        if ($result['lists']) {
+            $id = array_column($result['lists'],'user_id');
+            $user = Db::name('users')->field('id,avatar,nickname')->select($id);
+            
+            foreach ($result['lists'] as $k1 => $v1) {
+                $result['lists'][$k1]['avatar'] = '';
+                $result['lists'][$k1]['nickname'] = '';
+                $result['lists'][$k1]['del'] = '';
+                foreach ($user as $k2 => $v2) {
+                    if ($v1['user_id'] == $v2['id']) {
+                        $result['lists'][$k1]['avatar'] = $v2['avatar'];
+                        $result['lists'][$k1]['nickname'] = $v2['nickname'];
+                    }
+                }
+            }
+        }
+        
+        return json($result);
+    }
+
+    # 处理评论
+    public function handle_comment()
+    {
+        $comment = input('post.');
+        if ($comment) {
+            $comment = trim($comment);
+        }
+        return ['code'=>1];
+    }
 }
