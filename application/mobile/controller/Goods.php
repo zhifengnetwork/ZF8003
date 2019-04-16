@@ -181,15 +181,16 @@ class Goods extends Base
         // 商品信息
         $res = Db::name('goods')->where('id', $id)->find();
         if($res){
-            // 用户信息
-            $where = [
-                'user_id'    => $user_id,
-                'is_default' => 1
-            ];
             $user_info1 = Db::name('users')->where('id',$user_id)->find();
             if($user_info1){
+                // 用户信息
+                $where = [
+                    'user_id'    => $user_id,
+                    // 默认收货地址
+                    'is_default' => 1
+                ];                
                 $address1   = Db::name('user_address')->where($where)->find();
-               
+                
                 if($address1){
                     $province = Db::name('area')->where('id', $address1['province'])->find();
                     $city     = Db::name('area')->where('id', $address1['city'])->find();
@@ -235,15 +236,40 @@ class Goods extends Base
                     } else {
                         $price = $res['freight'];
                     }
+                    
+                    //显示未过期优惠券
+
+                    $where1 = [
+                         'goods_id' => $id,
+                         'user_id'  => $user_id,
+                         'status'   => 0 ,
+                    ];
+                    $coupon_list = Db::name('user_coupon')->where($where1)->where('etime', '>= time', time())->select();
+                    $cname[0] = '';
+
+                    if ($coupon_list) {
+                        foreach ($coupon_list as $v) {
+                            $cids[] = $v['coupon_id'];
+                        }
+                        if (isset($cids)) {
+                            $cids = implode("','", $cids);
+                            $cids = Db::query("select `id`,`name` from `zf_goods_coupon` where `id` in ('$cids')");
+                            foreach ($cids as $c) {
+                                $cname[$c['id']] = $c['name'];
+                            }
+                        }
+                    }                    
+                    dump($cname);
+                    $this->assign('coupon_list', $coupon_list);   
                 }
             }
         
         // 地址  
-        $this->assign('user_info', $user_info1);
-        $this->assign('get_address',$get_address);
-        // $this->assign('dizhi', $dizhi);
         $this->assign('info', $res);
         $this->assign('s_price', $price);
+        $this->assign('user_info', $user_info1);
+        $this->assign('get_address',$get_address);
+
         return $this->fetch();
         }else{
            return $this->fetch('index/login'); 

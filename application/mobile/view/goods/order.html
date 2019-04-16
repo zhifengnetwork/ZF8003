@@ -173,63 +173,23 @@
             <div class="receive_box">
                 <p class="receive_tit">领取优惠券</p>
                 <div class="coupon_box">
+                    {volist name="coupon_list" id="v"}
                     <div class="coupon_list">
                         <div class="coupon_msg">
                             <div class="price_box">
                                 ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
+                                <span class="price">{$v.money}</span>
+                                <span class="original">满{$v.quota}减{$v.money}</span>
                             </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
+                            <p class="pro_ori">{if condition="isset($cname[$vo.coupon_id])"}{$cname[$vo.coupon_id]}{else /}-{/if}</p>
+                            <p class="time publicEllipsis">{:date('Y-m-d',$v.stime)}-{:date('Y-m-d',$v.etime)}</p>
                         </div>
                         <div class="coupon_use ">
                             <p class="use">立即使用</p>
                             <!-- <img src="../../img/purchase/logo@2x.png" alt="" class="been"> -->
                         </div>
                     </div>
-                    <div class="coupon_list">
-                        <div class="coupon_msg">
-                            <div class="price_box">
-                                ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
-                            </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-                        </div>
-                        <div class="coupon_use">
-                            <p class="use">立即使用</p>
-                        </div>
-                    </div>
-                    <div class="coupon_list">
-                        <div class="coupon_msg">
-                            <div class="price_box">
-                                ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
-                            </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-                        </div>
-                        <div class="coupon_use">
-                            <p class="use">立即使用</p>
-                        </div>
-                    </div>
-                    <div class="coupon_list">
-                        <div class="coupon_msg">
-                            <div class="price_box">
-                                ￥
-                                <span class="price">100</span>
-                                <span class="original">满599减100</span>
-                            </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis">2019.20.20-2019.20.20</p>
-                        </div>
-                        <div class="coupon_use">
-                            <p class="use">立即使用</p>
-                        </div>
-                    </div>
+                    {/volist}
                 </div>
                 <div class="popup">
                     使用成功
