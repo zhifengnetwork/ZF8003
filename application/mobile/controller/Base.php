@@ -31,7 +31,6 @@ class Base extends Controller
     {
         $this->Verification_Client();
 
-
     }
 
     # 请求验证
@@ -47,6 +46,10 @@ class Base extends Controller
             $this->client = 'mobile';
         }else{
             $this->client = 'pc';
+        }
+        if(Session::has('user')){
+            $this->user = Session::get('user');
+            $this->user_id = Session::get('user.id');
         }
     }
 
@@ -133,6 +136,18 @@ class Base extends Controller
             return layer_error('获取微信TOKEN失败：'.$res['errmsg']);
         }
     }
+
+    # 用户openid补全
+    public function user_wxinfo_completion(){
+        $this->Verification_User();
+        $data = $this->GetOpenid();
+        Db::name('users')->where('id', $this->user_id)->update(['openid'=>$data['openid']]);
+        $user = $this->user;
+        $user['openid'] = $data['openid'];
+        Session::set('user',$user);
+        $this->user = Session::get('user');
+    }
+
 
     // 网页授权登录获取 OpendId
     public function GetOpenid()
