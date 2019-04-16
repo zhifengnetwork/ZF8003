@@ -12,12 +12,14 @@ use think\Db;
 
 class User extends Base
 {
-    
+    public $user_id = 0;
+
     public function __construct(){
         parent::__construct();
         
         # 验证登录
         $this->Verification_User();
+        $this->user_id = session('user.id');
     }
 
     /** 
@@ -76,6 +78,25 @@ class User extends Base
      * 我的钱包
      */
     public function my_walet()
+    {
+        $user_id = $this->user_id;
+        $user = Db::name('users')->where('id',$user_id)->field('money')->find();
+        $this->assign('info',$user);
+        return $this->fetch();
+    }
+
+    /**
+     * 账户充值
+     */
+    public function top_up()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 申请提现
+     */
+    public function withdrawal()
     {
         return $this->fetch();
     }

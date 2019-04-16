@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>账户充值</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/zhanghu_zhongzhi.css" />
+
+	</head>
+
+	<body>
+
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap lb_headWrap_bacColor topBox_backgroundColor ">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+				</p>
+				<span>账户充值</span>
+				<!--<p class="lb_headWrap_text">领取产品</p>-->
+			</div>
+
+			<div class="yuqian">
+				<div>
+					<p>余额</p>
+					<p>100000.00</p>
+				</div>
+			</div>
+
+			<!--充值区块-->
+			<div class="chongzhi">
+
+				<span>充值金额：￥</span>
+				<input placeholder="请输入充值金额" id="input" />
+
+			</div>
+
+			<div class="jinger">
+
+				<span class="jinger_span">￥50</span>
+				<span class="jinger_span">￥100</span>
+				<span class="jinger_span">￥500</span>
+
+			</div>
+
+			<p class="next">下一步</p>
+
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script>
+			$(document).ready(function() {
+
+				//点击下面的span标签，获取里面的值,并且赋值到input中
+				$('.jinger .jinger_span').on('click', function() {
+					$("#input").val($(this).html().substring(1));
+					$(this).addClass('select').siblings().removeClass('select');
+				})
+			})
+		</script>
+
+	</body>
+
+</html>
