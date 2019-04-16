@@ -58,7 +58,7 @@ class Goods extends Base
                 }
 
             // $admin_id = session('admin_id');
-            $user_id = 1;
+            $user_id = 29;
             // 默认为未收藏
             $is_focus = 0;
             $where = [
@@ -71,11 +71,22 @@ class Goods extends Base
                 // 已收藏
                 $is_focus = 1;
             }
+            // 显示该商品未失效的优惠券
             $where1 = [
                 'goods_id' =>$id,
                 'status' => 0    
             ];
             $coupon = Db::name('goods_coupon')->where($where1)->select();
+
+            // 用来判断用户是否已经领取优惠券
+            // $where['coupon_id'] = ;
+            // $is_get = Db::name('user_coupon')->where($where)->select();
+            // $get_coupon = 0;
+            // if(!empty($is_get)){
+            //     $get_coupon = 1; 
+            // }
+            // 无限领取
+            // $this->assign('get_coupon', $get_coupon); 
             $this->assign('coupon', $coupon);
             $this->assign('is_focus', $is_focus);
             // $this->assign('temp_price', $temp_price);
@@ -91,24 +102,40 @@ class Goods extends Base
      */
     public function get_coupon(){
         $data = input('post.');
+
         $user_id  = 29;
         // 优惠券信息
         $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
-        $d = $coupon_info['addtime'];
-        $etime = strtotime(date('Y-m-d H:i:s', $d+$coupon_info['term']*24*60*60));
+
         if($coupon_info){
+            // 添加券时间
+            $addtime = $coupon_info['addtime'];
+            // 券过期时间
+            $etime = strtotime(date('Y-m-d H:i:s', $addtime + $coupon_info['term'] * 24 * 60 * 60));
+            // 判断商品优惠券过期时间是否大于优惠券截止时间
+            if ($etime > $coupon_info['deadline']) {
+                $etime = $coupon_info['deadline'];
+            }
             $data1 = [
                  'user_id'   => $user_id,
                  'coupon_id' => $coupon_info['id'],
                  'goods_id'  => $data['goods_id'],
-                 'quota'     =>$data['quota'],
-                 'money'     =>$data['money'],  
-                 'addtime'   =>time(),
-                 'stime'     =>$data['addtime'],
-                 'etime'     =>$etime
-
+                 'quota'     => $coupon_info['quota'],
+                 'money'     => $coupon_info['money'], 
+                 //优惠券加入时间   
+                 'addtime'   => $addtime,
+                 'stime'     => time(),
+                 'etime'     => $etime
             ];
-             Db::name('user_coupon')->insert(); 
+            
+            $res = Db::name('user_coupon')->insert($data1); 
+            if($res){
+                return json(['status'=>1,'msg'=>'领取成功']);    
+            }else{
+                return json(['status'=>0,'msg'=>'领取失败']);   
+            }
+        }else{
+            return json(['status'=>0,'msg'=>'没有此优惠券信息']);    
         }
 
     }

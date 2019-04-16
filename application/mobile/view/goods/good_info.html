@@ -129,10 +129,17 @@
 							<p class="pro_ori">{$vo.name}</p>
 							<p class="time publicEllipsis">{:date('Y-m-d',$vo.addtime)}-{:date('Y-m-d',$vo.deadline)}</p>
 						</div>
+			
 						<div class="coupon_use" data-id="{$vo.id}">
 							<p class="use">立即领取</p>
-							<!-- <img src="../../img/purchase/logo@2x.png" alt="" class="been"> -->
+							<!-- <img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been"> -->
 						</div>
+			
+						<!-- <div class="employ" data-id="{$vo.id}">
+							<p class="use">立即领取</p>
+							<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">
+						</div> -->
+                     
 					</div>
                    {/volist}
 
@@ -217,31 +224,31 @@
 
     //使用优惠券
     $('.use').click(function(){
-
+		var employ = $(this)
+		var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
+	
 		var goods_id = $('#id').val()
 		var coupon = $('.coupon_use').data('id')
 
 		$.ajax({
 			type: 'post',
 			url: "{:url('mobile/goods/get_coupon')}",
-			data: { 'id': goods_id,'coupon_id':coupon},
-
+			data: { 'goods_id': goods_id,'coupon_id':coupon},
+             
 			success: function (data) {
 				if (data.status == 1) {
 					layer.msg(data.msg, { time: 1000 }, function () {
-						var employ = $(this)
-						var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`						
 						if (employ.parent().hasClass('coupon_use')) {
 							employ.parent().addClass('employ').removeClass('coupon_use')
 							employ.parent().append(img)
-							$('.popup').fadeIn(500)
-							$('.popup').animate({
-								opactiy: 1
-							}
-								, 1000, function () {
-									$('.popup').fadeOut(500)
-								})
-						}						
+							// $('.popup').fadeIn(500)
+							// $('.popup').animate({
+							// 	opactiy: 1
+							// }
+							// 	, 1000, function () {
+							// 		$('.popup').fadeOut(500)
+							// 	})
+						}					
 					})
 					// layer.msg(data.msg)
 				} else {
