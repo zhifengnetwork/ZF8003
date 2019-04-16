@@ -51,16 +51,16 @@ $(function(){
         //邮费 优惠 余额
         var postage = parseInt($('.postage').html())
         var coupon = parseInt($('.coupon_discount').html())
-        var remaining = parseInt($('.balance_text').val().slice(6))    
-        $(".price").each((i,elem)=>{
+        var remaining = parseInt($('.balance_text').val().slice(6))   
+        $(".item-price .price").each((i,elem)=>{
             total+=parseInt($(elem).html().slice(1))*parseInt($(elem).next().html().slice(1))
         })
         $(".price_red").html(`${(total+postage-coupon).toFixed(2)}`)  //应付金额
         $("#order_amount").val(`${(total + postage-coupon).toFixed(2)}`);
-        $('#total').html(`${(total+postage).toFixed(2)}`)      //订单总和
+        $('#total').html(`${(total + postage).toFixed(2)}`)      //订单总和
         $("#total_amount").val(`${(total+postage).toFixed(2)}`);
         $('.remaining_discount').html(`${(total+postage-coupon).toFixed(2)}`) //余额抵扣
-        // $('.user_money').html(`${(total + postage - coupon).toFixed(2)}`) //使用金额
+        $("#coupon_price").val(`${(coupon).toFixed(2)}`);
     }
 
     //修改地址
@@ -136,6 +136,9 @@ $(function(){
 
     //使用优惠券
     $('.use').click(function(){
+        var goods_id = $('#goods_id').val()
+        var coupon = $('.coupon_use').data('id')
+
          var employ = $(this)
          var length = $('.coupon_list').length  //优惠券长度
          var lengthh = $('.coupon_list').children('.employ').length  //使用优惠券的长度
@@ -148,7 +151,7 @@ $(function(){
          employ.parent().addClass('employ').addClass('add').removeClass('coupon_use').parent().siblings().find('.employ').removeClass('employ').addClass('coupon_use').find('.been').remove()
          employ.parent().append(img)
          length--;   //优惠券长度-1
-             console.log(length)
+
          $('.numm').find('.discount_num').html(length)
          $('.popup').fadeIn(500)  //使用成功
          $('.popup').animate({

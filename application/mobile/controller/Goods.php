@@ -112,8 +112,6 @@ class Goods extends Base
         }else{
             return json(['status'=>-1,'msg'=>'请登录']); 
         }        
-        
-
         $data = input('post.');
         // $user_id = $this->user_id;
 
@@ -163,6 +161,15 @@ class Goods extends Base
         }
 
     }
+
+    /**
+     * 使用优惠券
+     */
+    public function use_coupon(){
+           $data = input('post.');
+           dump($data);
+    }
+
 
     public function order()
     {
@@ -246,7 +253,7 @@ class Goods extends Base
                     ];
                     $coupon_list = Db::name('user_coupon')->where($where1)->where('etime', '>= time', time())->select();
                     $cname[0] = '';
-
+                    
                     if ($coupon_list) {
                         foreach ($coupon_list as $v) {
                             $cids[] = $v['coupon_id'];
@@ -258,8 +265,8 @@ class Goods extends Base
                                 $cname[$c['id']] = $c['name'];
                             }
                         }
-                    }                    
-                    dump($cname);
+                    }
+                    $this->assign('cname', $cname);       
                     $this->assign('coupon_list', $coupon_list);   
                 }
             }
@@ -355,7 +362,7 @@ class Goods extends Base
             "user_id"   =>  $data['user_id'],
             "consignee" =>  $data['nickname'],
             "province"  =>  $data['province'],
-            // "user_money"=>  $data['user_money'],
+            "coupon_price"=>  $data['coupon_price'],
             "city"      =>  $data['city'],
             "district"  =>  $data['district'],
             "address"   =>  $data['address'],
