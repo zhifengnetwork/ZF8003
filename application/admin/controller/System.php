@@ -17,8 +17,8 @@ class System extends Base
 
         $this->list = array(
             'shop_info' => ['order'=>0,'url'=>'setting','name'=>"商店信息"],
-            'basic'     => ['order'=>1,'url'=>'basic','name'=>"基本设置"],
-            'smtp'      => ['order'=>2,'url'=>'smtp','name'=>"邮箱设置"]
+            'smtp'      => ['order'=>1,'url'=>'smtp','name'=>"邮箱设置"],
+            'weixin'      => ['order'=>2,'url'=>'weixin','name'=>"微信设置"]
         );
 
         $this->assign('list',$this->list);
@@ -213,16 +213,6 @@ class System extends Base
         return json($code);
     }
 
-    #基本设置
-    public function basic()
-    {
-        $data = input('get.');
-        $this->assign('type', 'basic_setting');
-        $this->assign('index',1);
-        $this->assign('url','basic');
-        return $this->fetch();
-    }
-
     # 邮箱配置
     public function smtp()
     {
@@ -254,9 +244,45 @@ class System extends Base
         }
         $this->assign('info', $info);
         $this->assign('type', 'email_setting');
+        $this->assign('index',1);
+        return $this->fetch();
+    }
+
+    # 微信设置
+    public function weixin(){
+
+        if($_POST){
+            
+            $data = $_POST;
+            $type = $data['type'];
+            unset($data['type']);
+            foreach($data as $k=>$v){
+                if(Db::name('config')->field('id')->where(['type'=>$type,'name'=>$k])->find()){
+
+                    Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
+                }else{
+                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
+                }
+            }
+            echo "<script>parent.success('操作成功！');</script>";
+
+            exit;
+        }
+        $info = Db::name('config')->where('type','weixin_config')->select();
+        if($info){
+            foreach($info as $v){
+                $data[$v['name']] = $v['value']; 
+            }
+            $info = $data;
+        }
+        $this->assign('info', $info);
+        $this->assign('type', 'weixin_config');
         $this->assign('index',2);
         return $this->fetch();
     }
+
+
+
 
     # 菜单管理
     public function menu(){

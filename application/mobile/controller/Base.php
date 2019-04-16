@@ -90,12 +90,12 @@ class Base extends Controller
 
         $weixin_config = $this->weixin_config;
         
-        if(empty($weixin_config['weixin_appid']) || empty($weixin_config['weixin_appsecret'])){
+        if(!array_key_check($weixin_config['weixin_appid']) || !array_key_check($weixin_config['weixin_appsecret'])){
             
             return layer_error('管理员未配置微信登录相关信息，功能未启用！');
         }
         
-        if(!empty($weixin_config['weixin_access_token']) && (!empty($weixin_config['weixin_expires_in_time']) || $weixin_config['weixin_expires_in_time'] > time())){
+        if( array_key_check($weixin_config['weixin_access_token']) && $weixin_config['weixin_expires_in_time'] > time() ){
 
             return $weixin_config;
         }

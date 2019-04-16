@@ -11,6 +11,25 @@
 
 // 应用公共文件
 
+# 判断数组元素
+function array_key_check($data,$key=''){
+    if(!$key){
+        foreach($data as $k => $v){
+            if(!$v){
+                return false;
+            }
+        }
+        return true;
+    }else{
+        if(array_key_exists($key, $data)){
+            if($data[$k]){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 # 唯一订单号
 function order_sn(){
     $osn = date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
