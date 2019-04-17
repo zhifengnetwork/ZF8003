@@ -14,7 +14,7 @@ class Buy extends Base
             'is_del' => 0,
             'status' => 1
         ];
-        $list = Db::name('goods')->where($where)->order('addtime desc')->paginate(16);
+        $list = Db::name('goods')->where($where)->order('addtime desc')->paginate(4);
         $this->assign('list',$list);
         return $this->fetch();
     }
@@ -35,6 +35,19 @@ class Buy extends Base
         }
         $info['attr'] = json_decode($info['second_title'], true);
         $this->assign('list', $info);
+        return $this->fetch();
+    }
+    public function submit_order()
+    {
+        $id = input('get.id');
+        $info = Db::name('goods')->where('id', $id)->find();
+        if(!$info){
+            layer_error('商品信息不存在或已下架');
+            exit;
+        }
+        $province = Db::name('area')->field('`id`,`name`')->where('parent_id', 0)->select();
+        $this->assign('province', $province);
+        $this->assign('info',$info); 
         return $this->fetch();
     }
 }
