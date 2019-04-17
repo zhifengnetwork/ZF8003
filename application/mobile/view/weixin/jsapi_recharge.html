@@ -2,8 +2,11 @@
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/> 
-    <title>账户充值</title>
-    <script type="text/javascript">
+	<title>账户充值</title>
+	<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+	<script type="text/javascript">
+	var sn = "{$sn}";
 	//调用微信JS api 支付
 	function jsApiCall()
 	{
@@ -12,7 +15,41 @@
 			{$jsApiParameters},
 			function(res){
 				WeixinJSBridge.log(res.err_msg);
-				alert(res.err_code+res.err_desc+res.err_msg);
+				if(res.err_msg == 'get_brand_wcpay_request:ok'){
+					// 支付成功
+					layer.open({
+						title:'提示信息',
+						content:'<p style="text-align:center;">充值成功</p><p style="text-align:center;">请留意您的余额变动</p>',
+						btn:['确定'],
+						btnAlign:'c',
+						end:function(){
+							window.location.href="/mobile/user/top_up?sn="+sn;
+						}
+					});
+
+				}else if(res.err_msg == 'get_brand_wcpay_request:cancel'){
+					// 取消支付
+					layer.open({
+						title:'提示信息',
+						content:'<p style="text-align:center;">你已取消了支付！</p>',
+						btn:['返回'],
+						btnAlign:'c',
+						end:function(){
+							window.history.go(-1);
+						}
+					});
+				}else{
+					// 支付失败
+					layer.open({
+						title:'提示信息',
+						content:'<p style="text-align:center;">充值失败！</p>',
+						btn:['返回上一步'],
+						btnAlign:'c',
+						end:function(){
+							window.history.go(-1);
+						}
+					});
+				}
 			}
 		);
 	}

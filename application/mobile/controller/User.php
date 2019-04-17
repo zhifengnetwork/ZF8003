@@ -90,6 +90,51 @@ class User extends Base
      */
     public function top_up()
     {
+        $sn = isset($_GET['sn']) ? trim($_GET['sn']) : '';
+        if($sn){
+
+            $t_log = Db::name('transaction_log')->field('id')->where('sn', $sn)->find();
+            if($t_log){
+                goto SUBJECT;
+            }
+            require_once ROOT_PATH."plugins/pay/weixinpay/lib/WxPay.Api.php";
+            require_once ROOT_PATH."plugins/pay/weixinpay/WxPay.Config.php";
+            $input = new \WxPayOrderQuery();
+            $input->SetOut_trade_no($sn);
+            $config = new \WxPayConfig();
+            $res = \WxPayApi::orderQuery($config, $input);
+            if($res && $res['return_code'] == 'SUCCESS' && $res['result_code'] == 'SUCCESS' && $res['trade_state'] == 'SUCCESS'){
+                $info = Db::name('wxpay_cache')->where(['sn' => $sn, 'type' => 'recharge'])->find();
+                if($info){
+                    $usql = "update `zf_users` set `money` = money + '$info[money]' where `id` = '$info[user_id]'";
+                    Db::execute($usql);
+                    $transaction = [
+                        'user_id' => $info['user_id'],
+                        'type' => 'recharge',
+                        'sn' => $sn,
+                        'transaction_id' => isset($res['transaction_id']) ? $res['transaction_id'] : '',
+                        'platform' => 'weixin',
+                        'trade_type' => isset($res['trade_type']) ? $res['trade_type'] : '',
+                        'money' => $info['money'],
+                        'addtime' => time(),
+                        'desc' => $info['attach'],
+                        'init_time' => $info['addtime'],
+                    ];
+                    Db::name('transaction_log')->insert($transaction);
+                    Db::name('wxpay_cache')->where('sn', $sn)->delete();
+                    if($info['user_id'] == $this->user_id){
+                        $user = Db::name('users')->find($info['user_id']);
+                        Session::set('user', $user);
+                        $this->user =  $user;
+                    }
+                }
+            }
+            
+        }
+
+        SUBJECT:
+
+        $this->assign('info', $this->user);
         return $this->fetch();
     }
 

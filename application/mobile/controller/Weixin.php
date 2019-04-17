@@ -46,6 +46,7 @@ class Weixin extends Base{
                 if($res){
                     if(is_weixin()){
                         $view = 'jsapi_recharge';
+                        $this->assign('sn',$sn);
                         $this->jsapi_recharge($data);
                     }else{
                         $view = 'web_recharge';
@@ -100,10 +101,10 @@ class Weixin extends Base{
 
     public function jsapi_notify_url(){
 
-        $data = input('get.');
+        $data = $_REQUEST;
 
 
-
+        Db::name('wx_temp')->insert(['content'=>json_encode($data)]);
 
     }
 

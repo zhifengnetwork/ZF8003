@@ -75,6 +75,7 @@ class Base extends Controller
                 $conf[$v['name']] = $v['value'];
             }
             Session::set('wx_config',$conf);
+            $config = $conf;
         }
         
         if(!$config){
