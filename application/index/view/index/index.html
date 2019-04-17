@@ -16,7 +16,11 @@
        <div class="swiper-container banner-wrap">
             <!-- 头部 -->
             <div class="header"></div>
-            
+            {if condition="$is_login eq 1"}
+            <input type="hidden" name="head_check" id="head_check" value="1">
+            {else/}
+            <input type="hidden" name="head_check" id="head_check" value="0">
+            {/if}
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <img src="__STATIC__/images/home/banner-img01.png">
@@ -30,7 +34,6 @@
             </div>
             <div class="swiper-pagination"></div>
         </div>  
-        
         <!-- 解答问题 -->
         <div class="answer-questions">
             <div class="inner-wrap">
@@ -166,6 +169,7 @@
     <script src="__STATIC__/js/public/swiper.js"></script>
     <script src="__STATIC__/js/public/header.js"></script>  
     <script src="__STATIC__/js/public/footer.js"></script>
+    <script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
     <script>
         /*
         * 轮播图
@@ -179,10 +183,41 @@
         });
 
         // 退出登录
-        $(".outBtn").click(function(){
-            $(".login-in").hide();
-            $(".login-out").show();
-        })
+        // $(".outBtn").click(function(){
+        //     $(".login-in").hide();
+        //     $(".login-out").show();
+        // })
+        function logout(){
+			$.ajax({
+				type: 'post',
+				url: "{:url('index/index/logout')}",
+				data: {'is_logout':1},
+			
+				success: function(data){
+				
+					if (data.status == 1) {
+						layer.msg(data.msg,{time: 1000},function () {
+							parent.location.reload()
+							// var index = parent.layer.getFrameIndex(window.name);
+							// parent.$('.btn-refresh').click();
+							// parent.layer.close(index);
+							// parent.location.reload()
+						})
+					}else{
+						    layer.msg(data.msg,{time: 1000},function () {
+					
+							// var index = parent.layer.getFrameIndex(window.name);
+							// parent.$('.btn-refresh').click();
+							// parent.layer.close(index);
+							// parent.location.reload
+						})
+					}
+
+				},			
+
+			});            
+        }
+
 
     </script>
 </body>

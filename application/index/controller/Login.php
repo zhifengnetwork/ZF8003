@@ -6,9 +6,17 @@ use think\Db;
 use think\Session;
 class Login extends Base
 {
+
+    public function _initialize(){
+        parent::_initialize();
+        if(Session::has('user')){
+         return $this->redirect('index/index/index');   
+        }
+    }
+
     public function index()
     {
-        return $this->redirect('index/login/login');
+        // return $this->redirect('index/login/login');
     }
 
     /**
