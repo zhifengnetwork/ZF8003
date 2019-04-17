@@ -61,7 +61,11 @@ class Index extends Base
         return $this->fetch();
     }
 
+    public function relation(){
 
+
+        return $this->fetch();
+    }
 
     # 微信登录
     public function wx_sign(){
