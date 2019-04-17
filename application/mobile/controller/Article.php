@@ -229,7 +229,6 @@ class Article extends Base{
     public function get_comment()
     {
         $data = input('get.');
-
         $result['lists'] = Db::name('comment')->where(['to'=>$data['id'],'type'=>$data['type'],'status'=>1])->page($data['page'],$data['count'])->select();
         
         if ($result['lists']) {
@@ -255,10 +254,17 @@ class Article extends Base{
     # 处理评论
     public function handle_comment()
     {
-        $comment = input('post.');
-        if ($comment) {
-            $comment = trim($comment);
+        $id = input('id/d');
+        $comment = input('comment/s');
+        $type = input('type/d');
+        $comment = trim($comment);
+        $user_id = $this->user_id;
+        
+        $result['code'] = 0;
+        if (($id > 0) && ($user_id > 0) && $comment) {
+            $bool = Db::name('comment')->insert(['user_id'=>$user_id,'to'=>$id,'content'=>$comment,'status'=>0,'type'=>$type,'addtime'=>time()]);
+            $result['code'] = $bool ? 1 : 0;
         }
-        return ['code'=>1];
+        return json($result);
     }
 }

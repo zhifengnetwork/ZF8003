@@ -1,6 +1,6 @@
 <?php
 namespace app\index\controller;
-
+use think\Db;
 class Buy extends Base
 {
     public function index()
@@ -10,11 +10,44 @@ class Buy extends Base
 
     public function buy()
     {
+        $where = [
+            'is_del' => 0,
+            'status' => 1
+        ];
+        $list = Db::name('goods')->where($where)->order('addtime desc')->paginate(4);
+        $this->assign('list',$list);
         return $this->fetch();
     }
 
     public function details()
+    { 
+        // return json(['检验报告'=> '约200项', '基因位点'=> '2000万', '生成报告'=> '约2周']);exit;
+        $id = input('get.id');
+        $info = Db::name('goods')->where('id', $id)->find();
+        if(!$info){
+            layer_error('商品信息不存在或已下架');
+            exit;
+        }
+        
+        if($info['status'] == 2){
+            layer_error('商品信息不存在或已下架');
+            exit;
+        }
+        $info['attr'] = json_decode($info['second_title'], true);
+        $this->assign('list', $info);
+        return $this->fetch();
+    }
+    public function submit_order()
     {
+        $id = input('get.id');
+        $info = Db::name('goods')->where('id', $id)->find();
+        if(!$info){
+            layer_error('商品信息不存在或已下架');
+            exit;
+        }
+        $province = Db::name('area')->field('`id`,`name`')->where('parent_id', 0)->select();
+        $this->assign('province', $province);
+        $this->assign('info',$info); 
         return $this->fetch();
     }
 }

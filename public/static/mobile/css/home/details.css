@@ -152,7 +152,7 @@
     width: .26rem;
     height: .26rem;
     display: inline-block;
-    background: url(../../img/public/praise@2x.png) no-repeat;
+    background: url(/public/static/mobile/img/public/praise@2x.png) no-repeat;
     background-size: 100%;
 }
 .operation-bar .commentBtn a{
@@ -164,7 +164,7 @@
     width: .26rem;
     height: .26rem;
     display: inline-block;
-    background: url(../../img/public/comments@2x.png) no-repeat;
+    background: url(/public/static/mobile/img/public/comments@2x.png) no-repeat;
     background-size: 100%;
 }
 
@@ -176,6 +176,18 @@
     align-items: center;
     min-width: .9rem;
 }
+/* 已赞状态 */
+.operation-bar .praiseBtn.praised i{
+    width: .26rem;
+    height: .26rem;
+    display: inline-block;
+    background: url(/public/static/mobile/img/public/praise-r@2x.png) no-repeat;
+    background-size: 100%;
+}
+.operation-bar .praised .num{
+    color: rgb(246, 66, 66);
+}
+
 
 .operation-bar span .num {
     font-style: normal;

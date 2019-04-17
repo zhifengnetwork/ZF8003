@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title class="pageTopTitle" page-id="2">购买</title>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css"/>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/buy/submit_order.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部-->
+			<div class="header"></div>
+			<!--内容-->
+			<div class="content inner-wrap">
+				<!--图片，增加数量区-->
+				<div class="print-wrap">
+					<!--左边-->
+					<div class="left_tu">
+						<div class="img">
+							<img src="/public/images/goods/{$info.thumb}"/>
+						</div>
+						
+						<h2>{$info.name}</h2>
+						<div class="color-blue">￥{$info.price}</div>
+						
+						<div class="and">
+							<span class="minus us" id="jian">-</span>
+							<input class="inp" id="ku" type="number" value="1"/>
+							<span class="plus us" id="jia">+</span>
+						</div>
+					</div>
+					<!--右边-->
+					<div class="right_zi">
+						<!--地址-->
+						<div class="shipping">
+                            <input type="hidden" id="se-hid-area" value="" />
+                            <input type="hidden" id="se-hid-area-id" value="" />
+							<ul>
+								<li>
+									<div class="form">收货人：</div>
+									<div>
+										<input class="form-control" type="text" />
+									</div>
+								</li>
+								<li>
+									<div class="form">邮箱：</div>
+									<div>
+										<input class="form-control" type="text" />
+									</div>
+								</li>
+								<li>
+									<div class="form">手机号码：</div>
+									<div>
+										<input class="form-control" type="text" />
+									</div>
+								</li>
+								<li>
+									<div class="form">所在地区：</div>
+									<div>
+										<select class="v-item" id="province" >
+                                        <option value="0">请选择</option>
+                                        {volist name="province" id="vo"}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                        {/volist}
+										</select>
+										 
+										<select class="v-item" id="city" >
+                                            <option value="0">请选择</option>
+										</select>
+										 
+										<select class="v-item" id="district">
+                                            <option value="0">请选择</option>
+										</select>
+									</div>
+								</li>
+								<li>
+									<div class="form">详细地址：</div>
+									<div>
+										<input class="form-control" type="text" />
+									</div>
+								</li>
+							</ul>
+						</div>
+						<!--支付方式-->
+						<div class="payment">
+							<div class="mode">支付方式：</div>
+							<!--微信支付-->
+							<div class="pay">
+								<img src="__STATIC__/images/buy/pay-wechat.png" />
+							</div>
+						</div>
+						<!--总计，运费-->
+						<div class="total-wrap">
+							<div class="clearfix">
+								<div class="pull-left">总计：￥499.00</div>
+								<div class="pull-right">应付: <b>￥499.00</b><a class="btn-submit" href="__STATIC__/html/order/order.html">提交订单</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--底部-->
+			<div class="footer"></div>
+		</div>
+		
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="__STATIC__/js/public/header.js" ></script>
+		<script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script>
+		<script>
+    $('#province').on('change',function(){
+        var area_id = $('#province').val();
+        var area = $('#province option:selected').html();
+
+        re_ad_option('city');
+        re_ad_option('district');            
+
+        se_ad_option('city',area_id);
+
+        if(area_id > 0){
+            hidden_input_area(area,area_id);
+        }else{
+            hidden_input_area('',area_id);
+        }
+    });
+    $('#city').on('change',function(){
+        var area_id = $('#city').val();
+        var area = $('#city option:selected').html();
+        re_ad_option('district');
+
+        se_ad_option('district',area_id);
+
+        if(area_id > 0){
+            hidden_input_area(area,area_id);
+        }else{
+            var p_area_id = $('#province').val();
+            var p_area = $('#province option:selected').html();
+            hidden_input_area(p_area,p_area_id);
+        }
+    });
+
+    $('#district').on('change',function(){
+        var area_id = $('#district').val();
+        var area = $('#district option:selected').html();
+
+        if(area_id > 0){
+            hidden_input_area(area,area_id);
+        }else{
+            var p_area_id = $('#city').val();
+            var p_area = $('#city option:selected').html();
+            hidden_input_area(p_area,p_area_id);
+        }
+    });
+
+    function hidden_input_area(area,areaid){
+        $('#se-hid-area').val(area);
+        $('#se-hid-area-id').val(areaid);
+    }
+
+    function re_ad_option(area){
+        $('#'+area+' option').remove();
+        var _html = '<option value="0">请选择</option>';
+        $('#'+area).append(_html);
+    }
+
+    function se_ad_option(area,id){
+        $.post('/admin/system/ajax_area',{parent_id:id},function(res){
+            $('#'+area).append(res);
+        });
+    }
+
+			//数量增加减少
+			var Jian = document.getElementById('jian');
+		    var Ku = document.getElementById('ku');
+		    var Jia = document.getElementById('jia');
+			       
+		    Jia.onclick = function () {
+		    	if (Ku.value >= 100) {
+		    		return;
+		    	} else {
+		    	Ku.value = parseInt(Ku.value)+1;
+		    	}
+		    }
+		    
+		   	Jian.onclick = function () {
+		   	   if (Ku.value <= 0) {
+		   	   	return;
+		    	} else {
+		   	   Ku.value = parseInt(Ku.value)-1;
+		   	  }
+		    }
+		</script>
+
+	</body>
+</html>

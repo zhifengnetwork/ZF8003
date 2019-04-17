@@ -15,34 +15,44 @@
 				<div class="item">
 					<!--左边大图-->
 					<div class="map">
-						<img src="__STATIC__/images/buy/chanping9.png" />
+						<img src="/public/images/goods/{$list.thumb}" />
 					</div>
 					<!--右边内容-->
 					<div class="right_content">
-						<h2>水母基因检测 标准版 祖源分析美肤基因运动健身营养需求用药安全</h2>
-						<p class="marks">WeGene 基于已有的数据库深度定制 illumi na Beadchip 基因芯片（与其相同检测技术的芯片已被FDA 批准用于非处方基因检测），不仅为中国群体特别优化，可用于探索族群起源，研究遗传相关的性状于疾病，还兼顾全球其他族群，快速且精准跟进最新研究成果。配合经FDA认证的DNA Genotek 进口唾液采集管，严格把控每一个细节的质量，确保您的数据可靠和安全。</p>
+						<h2>{$list['name']}</h2>
+						<p class="marks">{$list['desc']}</p>
 						<!--报告-->
+						{if condition="$list['attr']"}
 						<div class="report">
-							<!--检验报告-->
+						{foreach name="$list['attr']" item="vo" key="key"}
 							<div class="test der">
+								<p class="option">{$vo}</p>
+								<p class="state">{$key}</p>
+							</div>
+						{/foreach}
+						</div>
+						{/if}
+						<!-- <div class="report"> -->
+							<!--检验报告-->
+							<!-- <div class="test der">
 								<p class="option">约200项</p>
 								<p class="state">检验报告</p>
-							</div>
+							</div> -->
 							<!--基因位点-->
-							<div class="test der">
+							<!-- <div class="test der">
 								<p class="option">2000万</p>
 								<p class="state">基因位点</p>
-							</div>
+							</div> -->
 							<!--生成报告-->
-							<div class="test">
+							<!-- <div class="test">
 								<p class="option">约2周</p>
 								<p class="state">生成报告</p>
-							</div>
-						</div>
+							</div> -->
+						<!-- </div> -->
 						<!--价格-->
-						<div class="price">￥499.00</div>
+						<div class="price">￥{$list['price']}</div>
 						<!--购买按钮-->
-						<div class="buy_btn">立即购买</div>
+						<a class="buy_btn" href="/index/buy/submit_order?id={$list.id}">立即购买</a>
 					</div>
 				</div>
 				
@@ -54,12 +64,7 @@
 				</div>
 				<!--图片区-->
 				<div class="tu_zone">
-					<img src="__STATIC__/images/buy/xiangqing1.png" />
-					<img src="__STATIC__/images/buy/xiangqing2.png" />
-					<img src="__STATIC__/images/buy/xiangqing3.png" />
-					<img src="__STATIC__/images/buy/xiangqing4.png" />
-					<img src="__STATIC__/images/buy/xiangqing5.png" />
-					<img src="__STATIC__/images/buy/xiangqing6.png" />
+                      {$list['details']}
 				</div>
 				
 			</div>

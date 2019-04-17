@@ -14,11 +14,14 @@ class Index extends Base
     public function index()
     {
         if(Session::has('user')){
+            // $user_id = $this->user_id;
+            // $img = Db::name('users')->where('id',$user_id)->value();
             $this->assign('is_login',1);
         }else{
             // 未登录
             $this->assign('is_login',0);
-        }       
+        }
+
         return $this->fetch();
     }
 
