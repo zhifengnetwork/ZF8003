@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\Controller;
+namespace app\admin\controller;
 use think\Db;
 
 class Article extends Base{
