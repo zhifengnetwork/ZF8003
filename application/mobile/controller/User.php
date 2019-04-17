@@ -515,6 +515,16 @@ class User extends Base
      */
     public function coupons()
     {
+        $user_id = $this->user_id;
+
+        $list = Db::name('user_coupon')
+                ->alias('u')
+                ->join('goods_coupon g', 'u.coupon_id = g.id')
+                ->where('user_id', $user_id)
+                ->where('etime', '>= time', time())
+                ->field('u.*,g.name')                
+                ->select();
+        $this->assign('list',$list);
         return $this->fetch();
     }
 
