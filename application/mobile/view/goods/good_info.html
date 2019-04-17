@@ -124,9 +124,10 @@
 					</p>
 				</a>
 				{/if}
-				<span class="store_buy" onclick="pageJump('{:url('goods/order',array('id'=>$info.id))}')">
+				<a class="store_buy" onclick="pageJump('{:url('goods/order',array('id'=>$info.id))}')">
                       立即购买
-                </span>
+				</a>
+
 			</div>
 			<div class="receive_coupon" style="display: none;"></div>
 			<div class="receive_box">
