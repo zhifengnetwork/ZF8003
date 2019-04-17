@@ -45,6 +45,7 @@ class Goods extends Base
      */
     public function goodInfo()
     {
+        
         $id = input('id');
         $images = '';
         //  商品信息
@@ -80,6 +81,7 @@ class Goods extends Base
                 // 已收藏
                 $is_focus = 1;
             }
+            
             // 显示该商品未失效的优惠券
             $where1 = [
                 'goods_id' =>$id,
@@ -106,13 +108,15 @@ class Goods extends Base
      */
     public function get_coupon(){
         // $this->Verification_User();
+        $data = input('post.');
         if(Session::has('user')){
             // $this->user = Session::get('user');
             $user_id = Session::get('user.id');
         }else{
+            Session::set('re_url', '/mobile/goods/goodinfo/id/'.$data['goods_id']);
             return json(['status'=>-1,'msg'=>'请登录']); 
         }        
-        $data = input('post.');
+        
         // $user_id = $this->user_id;
 
         // 优惠券信息
@@ -166,10 +170,16 @@ class Goods extends Base
 
     public function order()
     {
-        $this->Verification_User();
         // 商品id 
         $id = input('id');
-        $user_id = $this->user_id;
+        // $data = input('post.');
+        if(Session::has('user')){
+            // $this->user = Session::get('user');
+            $user_id = Session::get('user.id');
+        }else{
+            Session::set('re_url', '/mobile/goods/goodinfo/id/'.$id);
+            return json(['status'=>-1,'msg'=>'请登录']); 
+        }  
         $price = 0;
         $get_address = [
             'province' => '',
@@ -293,14 +303,16 @@ class Goods extends Base
 
     public function focus()
     {
+        $data = input('post.');
         if(Session::has('user')){
             // $this->user = Session::get('user');
             $user_id = Session::get('user.id');
         }else{
+            Session::set('re_url', '/mobile/goods/goodinfo/id/'.$data['id']);
             return json(['status'=>-1,'msg'=>'请登录']); 
         }    
 
-        $data = input('post.');
+
         // $admin_id = session('admin_id');
         $user_id = $this->user_id;
         $where = [

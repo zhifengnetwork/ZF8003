@@ -177,6 +177,7 @@
             <div class="receive_box">
                 <p class="receive_tit">领取优惠券</p>
                 <div class="coupon_box">
+                    {if condition="isset($coupon_list)"}
                     {volist name="coupon_list" id="v"}  
                     <div class="coupon_list">
                     
@@ -196,6 +197,7 @@
                         </div>
                        
                     </div> 
+                    {/volist}
                     {/volist}
                 </div>
                 <div class="popup">
