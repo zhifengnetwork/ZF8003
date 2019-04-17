@@ -13,8 +13,15 @@ use PHPMailer\PHPMailer\Exception;
 require 'vendor/autoload.php';
 class Base extends Controller
 {
+    public $session_id;
+    public $weixin_config;
+    public $user;
+    public $user_id;
+    public $module;
+    public $controller;
+    public $action;
     public $ip;
-    public $client;   
+    public $client;  
     public function _initialize()
     {
         $this->Verification_Client();
@@ -34,6 +41,11 @@ class Base extends Controller
         }else{
             $this->client = 'pc';
         }
+        if(Session::has('user')){
+            $this->user = Session::get('user');
+            $this->user_id = Session::get('user.id');
+        }
+
     }
 
     /**

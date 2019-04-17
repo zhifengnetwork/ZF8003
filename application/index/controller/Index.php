@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\Db;
+use think\Session;
 class Index extends Base
 {
     // public function index()
@@ -12,6 +13,12 @@ class Index extends Base
 
     public function index()
     {
+        if(Session::has('user')){
+            $this->assign('is_login',1);
+        }else{
+            // 未登录
+            $this->assign('is_login',0);
+        }       
         return $this->fetch();
     }
 
@@ -72,4 +79,14 @@ class Index extends Base
         exit('null');
     }
 
+
+    public function logout(){
+        $is_logout = input('post.is_logout');
+        if($is_logout == 1){
+            Session::clear();
+            return json(['status'=>1,'msg'=>'退出成功！']);      
+        }else{
+            return json(['status'=>1,'msg'=>'退出失败！']); 
+        }
+    }
 }
