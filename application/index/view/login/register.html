@@ -14,46 +14,7 @@
 		<div class="register_bigger">
 			<!--头部-->
 			<div class="header">
-				<div class="inner-wrap">
-					<div class="logo">
-						<a href="index.html"></a>
-					</div>
-					<div class="nav">
-						<ul>
-							<li class="active">
-								<a href="#">首页</a>
-							</li>
-							<li>
-								<a href="../my _genes/my_genes.html">我的基因</a>
-							</li>
-							<li>
-								<a href="#">购买</a>
-							</li>
-							<li>
-								<a href="#">基因介绍</a>
-							</li>
-							<li>
-								<a href="#">我的订单</a>
-							</li>
-							<li>
-								<a href="#">关于我们</a>
-							</li>
-						</ul>
-					</div>
-					<div class="login">
-						<!-- 未登录状态 -->
-						<div class="login-out">
-							<a href="#">登录</a>
-							<a href="#">注册</a>
-						</div>
-						<!-- 登录状态 -->
-						<div class="login-in">
-							<span class="fl"><img src="__STATIC__/images/public/user-avatar.png"></span>
-							<a class="fl" href="#">退出</a>
-						</div>
 
-					</div>
-				</div>
 			</div>
 
 			<div class="resigter_ear inner-wrap">
@@ -84,10 +45,10 @@
 
 						<div class="divdiv divdiv11">
 							<span class="resigter_email">验证码</span>
-							<input type="text" placeholder="请输入右图验证码" id="captcha" type="password" style="width:160px;" />
+							<input type="text" placeholder="请输入右图验证码" id="captcha" type="password" style="width:130px;" />
 
 							<!-- <img src="__STATIC__/images/resigter/tuceng.png" class="yanzhengma" /> -->
-							<img class="yanzhengma" onclick="Refresh_Captcha();" id="img-captcha" src="{:captcha_src()}" alt="captcha" />
+							<img class="" style="width:90px; height: 35px;bottom: 0;"  onclick="Refresh_Captcha();" id="img-captcha" src="{:captcha_src()}" alt="captcha" />
 				
 						</div>
 					</div>
@@ -109,6 +70,7 @@
 		</div>
 		<script type="text/javascript" src="__STATIC__/js/resigter/addres.js"></script>
 		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+		<script src="__STATIC__/js/public/header.js"></script>
 		<script>
             var code = 0;
             var register_id = '{$register_id}';

@@ -123,6 +123,9 @@
 			</tbody>
 		</table>
 		<div class="pages">{$list->render()}</div>
+		{if condition="!isset($list) or !$list"}
+		<p class="no-data">暂无数据</p>
+		{/if}
 	</div>
 	<!--_footer 作为公共模版分离出去-->
 	{include file='layout/footer' /}

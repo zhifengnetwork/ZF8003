@@ -1,198 +1,104 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title class="pageTopTitle" page-id="2">购买</title>
-		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css"/>
-		<link rel="stylesheet" type="text/css" href="__STATIC__/css/buy/buy.css"/>
-	</head>
-	<body>
-		<div class="wrapper">
-			
-			<!-- 头部 -->
-            <div class="header"></div>
-	            
-			<div class="inner-wrap">
-	            
-				<!--内容-->
-				<div class="content">
-					<!--循环项-->
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a href="details.html">
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin8.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥70</span>
-								<span class="status">200人购买</span>
+
+<head>
+	<meta charset="UTF-8">
+	<title class="pageTopTitle" page-id="2">购买</title>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
+	<link rel="stylesheet" type="text/css" href="__STATIC__/css/buy/buy.css" />
+</head>
+<STyle>
+	.dzcpage li {
+		padding: 10px 0;
+		text-align: center;
+		display: inline;
+	}
+
+	.dzcpage span,
+	.dzcpage a {
+		border-radius: 3px;
+		border: 1px solid #dfdfdf;
+		display: inline-block;
+		padding: 5px 12px;
+	}
+
+	.dzcpage a {
+		margin: 0 3px;
+	}
+
+	.dzcpage .active span {
+		background: #09F;
+		color: #FFF;
+		border-color: #09F;
+		margin: 0 2px;
+	}
+
+	.dzcpage a:hover {
+		background: #09F;
+		color: #FFF;
+		border-color: #09F;
+	}
+
+	.dzcpage label {
+		padding-left: 15px;
+		color: #999;
+	}
+
+	.dzcpage label b {
+		color: red;
+		font-weight: normal;
+		margin: 0 3px;
+	}
+</STyle>
+
+<body>
+	<div class="wrapper">
+
+		<!-- 头部 -->
+		<div class="header"></div>
+
+		<div class="inner-wrap">
+
+			<!--内容-->
+			<div class="content">
+				<!--循环项-->
+				{volist name="list" id="vo"}
+				<div class="item">
+					<div class="list">
+						<!--图片-->
+						<input type="hidden" name="id" id="id" value="{$vo.id}">
+						<a href="/index/buy/details?id={$vo.id}">
+							<div class="goods_img">
+								<img src="/public/images/goods/{$vo.thumb}" />
 							</div>
-							<!--文字-->
-							<a href="/index/buy/details">
-								<p class="goods_tit">方便家用瓶化工药品分装瓶便携实验室护肤密封调料罐试用水剂塑料</p>
-							</a>
-							
+						</a>
+						<!--价格-->
+						<div class="goods_info">
+							<span class="sells">￥{$vo.price}</span>
+							<span class="status">{$vo.sold}人购买</span>
 						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin5.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥7.88</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">喷壶家用清洁实验室喷瓶宾馆酒店多用途500ml有刻度半透明</p>
-							</a>
-							
-						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin6.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥70-100</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">金鱼牌 实验室玻璃附温比重瓶 密度瓶25 50ml带温度计</p>
-							</a>
-							
-						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin7.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥1.00-5.00</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">油品取样瓶250ML 留样瓶 实验室取样瓶 耐腐蚀塑料瓶 化工包装瓶</p>
-							</a>
-							
-						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin4.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥7.84-8.34</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">包邮500m l250ml实验室用塑料洗瓶 清洗瓶 冲洗瓶 洗涤瓶 吹气瓶</p>
-							</a>
-							
-						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin2.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥7.70-10.50</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">玻璃滴瓶30ml化学实验室指示剂瓶棕滴瓶牙科口腔诊所胶头滴管吸管 </p>
-							</a>
-							
-						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin3.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥14.80</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">量瓶 1000ml带刻度白色透明玻璃量瓶 容量瓶 实验室定容定量瓶</p>
-							</a>
-							
-						</div>
-					</div>
-					
-					<div class="item">
-						<div class="list">
-							<!--图片-->
-							<a>
-								<div class="goods_img">
-									<img src="__STATIC__/images/buy/chanpin7.png" />
-								</div>
-							</a>	
-							<!--价格-->
-							<div class="goods_info">
-								<span class="sells">￥10-240</span>
-								<span class="status">200人购买</span>
-							</div>
-							<!--文字-->
-							<a>
-								<p class="goods_tit">耐酸碱塑料盘试剂瓶托盘试剂瓶盘实验室实验用防渗漏塑料托盘开票</p>
-							</a>
-							
-						</div>
+						<!--文字-->
+						<a href="/index/buy/details?id={$vo.id}">
+							<p class="goods_tit">{$vo.desc}</p>
+						</a>
+
 					</div>
 				</div>
-				
+				{/volist}
 			</div>
-			<!-- 底部 -->
-		    <div class="footer"></div>
-			
+			<div class="dzcpage">{$list->render()}</div>
+			{if condition="!isset($list) or !$list"}
+			<p class="no-data">暂无数据</p>
+			{/if}
 		</div>
-		<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript" src="__STATIC__/js/public/header.js" ></script>
-		<script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script>
-	</body>
+		<!-- 底部 -->
+		<div class="footer"></div>
+
+	</div>
+	<script src="__STATIC__/js/public/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="__STATIC__/js/public/header.js"></script>
+	<script type="text/javascript" src="__STATIC__/js/public/footer.js"></script>
+	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+</body>
+
 </html>
