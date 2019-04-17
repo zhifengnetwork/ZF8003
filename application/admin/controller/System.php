@@ -18,7 +18,8 @@ class System extends Base
         $this->list = array(
             'shop_info' => ['order'=>0,'url'=>'setting','name'=>"商店信息"],
             'smtp'      => ['order'=>1,'url'=>'smtp','name'=>"邮箱设置"],
-            'weixin'      => ['order'=>2,'url'=>'weixin','name'=>"微信设置"]
+            'weixin'      => ['order'=>2,'url'=>'weixin','name'=>"微信设置"],
+            'cash'      => ['order'=>3,'url'=>'cash','name'=>"资金设置"],
         );
 
         $this->assign('list',$this->list);
@@ -281,7 +282,42 @@ class System extends Base
         return $this->fetch();
     }
 
+    # 资金设置
+    public function cash(){
 
+        if($_POST){
+            
+            $data = $_POST;
+            $type = $data['type'];
+            unset($data['type']);
+            foreach($data as $k=>$v){
+                $v = Digital_Verification($v) ? Digital_Verification($v) : 0;
+                if(Db::name('config')->field('id')->where(['type'=>$type,'name'=>$k])->find()){
+
+                    Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
+                }else{
+                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
+                }
+            }
+            echo "<script>parent.success('操作成功！');</script>";
+
+            exit;
+        }
+
+        $info = Db::name('config')->where('type','cash_setting')->select();
+        if($info){
+            foreach($info as $v){
+                $data[$v['name']] = $v['value']; 
+            }
+            $info = $data;
+        }
+
+
+        $this->assign('info', $info);
+        $this->assign('type', 'cash_setting');
+        $this->assign('index',3);
+        return $this->fetch();
+    }
 
 
     # 菜单管理

@@ -39,29 +39,14 @@
 					<span style="color: black;">状态</span>
 					
 				</li>
-				<li>
-					<span>支付宝支付</span>
-					<span>2018-01-02</span>
-					<span>396.00</span>
-				    <span>支付成功</span>
-				</li>
-				
-				<li>
-					<span>微信支付</span>
-					<span>2018-01-02</span>
-					<span>396.00</span>
-				    <span>支付成功</span>
-				</li>
-				<li>
-					<span>支付宝支付</span>
-					<span>2018-01-02</span>
-					<span>396.00</span>
-				    <span>支付成功</span>
-				</li>
-				
-				
-				
-				
+				{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+					<li>
+						<span>{$pname[$vo.platform]}</span>
+						<span>{$vo.addtime|date="Y-m-d",###}</span>
+						<span>{$vo.money}</span>
+						<span>{$sname[$vo.status]}</span>
+					</li>
+				{/volist}
 			</ul>
 			
 			

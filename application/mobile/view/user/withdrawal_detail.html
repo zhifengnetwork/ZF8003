@@ -39,29 +39,14 @@
 					<span style="color: black;">状态</span>
 					
 				</li>
-				<li>
-					<span>2018-01-02</span>
-					<span>396.00</span>
-					<span>1.90</span>
-				    <span>提现成功</span>
-				</li>
-				
-				<li>
-					<span>2018-01-02</span>
-					<span>396.00</span>
-					<span>1.90</span>
-				    <span>提现成功</span>
-				</li>
-				<li>
-					<span>2018-01-02</span>
-					<span>396.00</span>
-					<span>1.90</span>
-				    <span>提现成功</span>
-				</li>
-				
-				
-				
-				
+				{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+					<li>
+						<span>{$vo.addtime|date="Y-m-d",###}</span>
+						<span>{$vo.money}</span>
+						<span>{$vo.fee}</span>
+						<span>{$sname[$vo.status]}</span>
+					</li>
+				{/volist}
 			</ul>
 			
 			

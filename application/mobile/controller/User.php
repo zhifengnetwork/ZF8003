@@ -143,14 +143,152 @@ class User extends Base
      */
     public function withdrawal()
     {
+        $config = Db::name('config')->where('type', 'cash_setting')->select();
+        if($config){
+            foreach($config as $v){
+                $conf[$v['name']] = $v['value'];
+            }
+            $config = $conf;
+        }
+
+        if($_POST){
+            $type = isset($_POST['type']) && in_array($_POST['type'],['alipay','weixin']) ? trim($_POST['type']) : 'alipay';
+            $money = isset($_POST['money']) ? trim($_POST['money']) : 0;
+            
+            if(!$money){
+                return json(['status'=>0,'msg'=>'请输入提现金额！']);
+            }
+            if($config['withdrawal_cash_max'] && $money > $config['withdrawal_cash_max']){
+                return json(['status'=>0,'msg'=>'单笔提现最高：'.$config['withdrawal_cash_max'].' 元']);
+            }
+            if($config['withdrawal_cash_min'] && $money < $config['withdrawal_cash_min']){
+                return json(['status'=>0,'msg'=>'单笔提现最低：'.$config['withdrawal_cash_min'].' 元']);
+            }
+            $fee = 0;
+            if($config['withdrawal_fee']){
+                $fee = $money * ($config['withdrawal_fee'] * 0.01);
+                
+                if($config['withdrawal_fee_max'] && $fee > $config['withdrawal_fee_max']){
+                    $fee = $config['withdrawal_fee_max'];
+                }
+                if($config['withdrawal_fee_min'] && $fee < $config['withdrawal_fee_min']){
+                    $fee = $config['withdrawal_fee_min'];
+                }
+                
+                if(($money + $fee) > $this->user['money']){
+                    return json(['status'=>0,'msg'=>'账户余额不足，请调整提现金额！']);
+                }
+            }
+            
+            if($type == 'weixin'){
+                $account = $this->user['re_wx_account'];
+                $name = $this->user['re_wx_name'];
+            }else{
+                $account = $this->user['re_alipay_account'];
+                $name = $this->user['re_alipay_name'];
+            }
+            if(!$account || !$name){
+                return json(['status'=>0, 'msg'=>'请先设置提现账号！']);
+            }
+
+            
+            $inser_data = [
+                'user_id' => $this->user_id,
+                'money' => $money,
+                'fee' => $fee,
+                'type' => $type,
+                'account' => $account,
+                'name' => $name,
+                'addtime' => time(),
+                'utime' => time(),
+            ];
+            $res = Db::name('withdrawal')->insert($inser_data);
+            if($res){
+                return json(['status'=>1]);
+            }
+
+            exit;
+        }
+
+
+
+        if(!array_key_check($config,'withdrawal', true)){
+            layer_error('管理员未开启提现功能！');
+            exit;
+        }
+
+        $user = Db::name('users')->find($this->user_id);
+        Session::set('user',$user);
+        $this->user = $user;
+
+
+        $this->assign('money_max', $config['withdrawal_cash_max']);
+        $this->assign('money_min', $config['withdrawal_cash_min']);
+        $this->assign('fee', $config['withdrawal_fee']);
+        $this->assign('fee_max', $config['withdrawal_fee_max']);
+        $this->assign('fee_min', $config['withdrawal_fee_min']);
+        $this->assign('info', $user);
         return $this->fetch();
     }
+
+    /**
+     * 设置提现账号
+     */
+    public function set_withdrawal_account(){
+
+        if($_POST){
+            $type = isset($_POST['type']) && in_array($_POST['type'],['alipay','weixin']) ? trim($_POST['type']) : 'alipay';
+            $account = isset($_POST['account']) ? trim($_POST['account']) : '';
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+
+            $user_id = $this->user_id;
+            if(!$user_id){
+                return json(['status'=>0,'msg'=>'请先登录']);
+            }
+            if($type == 'alipay'){
+                $sql = "update `zf_users` set `re_alipay_account` = '$account', `re_alipay_name` = '$name' where `id` = '$user_id'";
+            }else{
+                $sql = "update `zf_users` set `re_wx_account` = '$account', `re_wx_name` = '$name' where `id` = '$user_id'";
+            }
+            Db::execute($sql);
+            return json(['status' => 1]);
+            exit;
+        }
+
+        $type = isset($_GET['type']) && in_array($_GET['type'],['alipay','weixin']) ? trim($_GET['type']) : 'alipay';
+
+        if($type == 'alipay'){
+            $account = $this->user['re_alipay_account'];
+            $name = $this->user['re_alipay_name'];
+        }else{
+            $account = $this->user['re_wx_account'];
+            $name = $this->user['re_wx_name'];
+        }
+
+        $this->assign('type', $type);
+        $this->assign('account', $account);
+        $this->assign('name', $name);
+        return $this->fetch();
+    }
+
 
     /**
      * 账单明细
      */
     public function billing_detail()
     {
+        $t = isset($_GET['t']) ? intval($_GET['t']) : 0;
+        $where = ' where `user_id` = '.$this->user_id;
+        if($t == 1){
+            $where .= " and `type` = 'recharge'";
+        }else{
+            $where .= " and `type` in ('recharge','order')";
+        }
+        $sql = "select `sn`,`money`,`addtime` from `zf_transaction_log` $where order by `id` desc";
+        $lists = Db::execute($sql);
+
+        $this->assign('lists', $lists);
+        $this->assign('t', $t);
         return $this->fetch();
     }
 
@@ -159,6 +297,15 @@ class User extends Base
      */
     public function top_up_detail()
     {
+        $user_id = $this->user_id;
+        $sql ="select `platform`,`addtime`,`money`,`status` from `zf_recharge` where `user_id` = '$user_id' order by init_time desc";
+        $lists = Db::query($sql);
+        $panme = ['weixin'=>'微信','alipay'=>'支付宝'];
+        $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
+
+        $this->assign('panme', $panme);
+        $this->assign('sname', $sname);
+        $this->assign('lists', $lists);
         return $this->fetch();
     }
 
@@ -167,6 +314,15 @@ class User extends Base
      */
     public function withdrawal_detail()
     {
+
+
+        $user_id = $this->user_id;
+        $sql ="select `type`,`addtime`,`money`,`fee`,`status` from `zf_withdrawal` where `user_id` = '$user_id' order by addtime desc";
+        $lists = Db::query($sql);
+        $sname = [0=>'待审核', 1=>'成功', 2=>'失败'];
+
+        $this->assign('sname', $sname);
+        $this->assign('lists', $lists);
         return $this->fetch();
     }
 

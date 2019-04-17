@@ -19,7 +19,7 @@
 		<div class="wrap_frame">
 			<!--public head-->
 			<div class="lb_headWrap  ">
-				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/my_walet'">
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
 				</p>
 				<span>余额明细</span>
@@ -29,12 +29,11 @@
 			<!--tab切换-->
 			<div id="wrap">
 		        <div id="tit">
-		            <span class="select">全部</span>
-		            <span>赚取</span>
-		            <span>消费</span>
+		            <span {if condition="$t eq 0"}class="select"{/if} onclick="javascript:location.href='/mobile/user/billing_detail'">全部</span>
+		            <span {if condition="$t eq 1"}class="select"{/if} onclick="javascript:location.href='/mobile/user/billing_detail?t=1'">赚取</span>
+		            <span {if condition="$t eq 2"}class="select"{/if} onclick="javascript:location.href='/mobile/user/billing_detail?t=2'">消费</span>
 		        </div>
 	        <ul id="con">
-	        	<!--内容1-->
 	            <li class="show">	            	
 	            	<div>
 	            		
@@ -42,105 +41,25 @@
 	            			<span>订单</span>
 	            			<span>金额</span>
 	            			<span>时间</span>
-	            		</div>
+						</div>
+						{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
 	            		<div class="text">
-	            			<span>1854448598</span>
-	            			<span>396.00</span>
-	            			<span>2019-12-20</span>
+	            			<span>{$vo.sn}</span>
+	            			<span>{$vo.money}</span>
+	            			<span>{$vo.addtime|date="Y-m-d",###}</span>
 	            		</div>
-	            		<div class="text">
-	            			<span>1854448598</span>
-	            			<span>396.00</span>
-	            			<span>2019-12-20</span>
-	            		</div>
-	            		
-	            			            		
+	            		{/volist}           		
 	            	</div>	            	
-	            </li>
-	            
-	            <!--内容2-->
-	            <li style="display: none;">
-	            	
-	            	<div>
-	            		
-	            		<div class="title">
-	            			<span>订单</span>
-	            			<span>金额</span>
-	            			<span>时间</span>
-	            		</div>
-	            		<div class="text">
-	            			<span>185123498</span>
-	            			<span>316.99</span>
-	            			<span>2018-10-20</span>
-	            		</div>
-	            		<div class="text">
-	            			<span>185887877</span>
-	            			<span>256.00</span>
-	            			<span>2014-10-10</span>
-	            		</div>
-	            		
-	            			            		
-	            	</div>	
-	    
-	            	
-	            </li>
-	            <!--内容3-->
-	            <li style="display: none;">
-	            	
-	            	<div>
-	            		
-	            		<div class="title">
-	            			<span>订单</span>
-	            			<span>金额</span>
-	            			<span>时间</span>
-	            		</div>
-	            		<div class="text">
-	            			<span>123123498</span>
-	            			<span>119.99</span>
-	            			<span>2015-05-29</span>
-	            		</div>
-	            		<div class="text">
-	            			<span>185887877</span>
-	            			<span>699.88</span>
-	            			<span>2010-03-19</span>
-	            		</div>
-	            		
-	            			            		
-	            	</div>	
-	            	
-	            	
-	            	
 	            </li>
 	        </ul>
     </div>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-			
-
-		
 		</div>
 
 		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
 		<!--公共底部导航栏-->
 		 <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+		 <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 		 <script>
-		 	
-		 	$('#tit span').click(function() {
-            var i = $(this).index();//下标第一种写法
-            //var i = $('tit').index(this);//下标第二种写法
-            $(this).addClass('select').siblings().removeClass('select');
-            $('#con li').eq(i).show().siblings().hide();
-                                             });
-		 	
 		 	
 		 </script>
 		 

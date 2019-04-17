@@ -12,7 +12,7 @@
 // 应用公共文件
 
 # 判断数组元素
-function array_key_check($data,$key=''){
+function array_key_check($data, $key='', $re=false){
     if(!$data) return false;
     if(!$key){
         foreach($data as $k => $v){
@@ -24,7 +24,8 @@ function array_key_check($data,$key=''){
     }else{
         if(array_key_exists($key, $data)){
             if($data[$key]){
-                return true;
+                
+                return $re ? $data[$key] : true;
             }
         }
     }
