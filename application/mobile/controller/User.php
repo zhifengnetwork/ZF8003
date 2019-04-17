@@ -491,7 +491,16 @@ class User extends Base
      */
     public function collection()
     {
-        return $this->fetch();
+        $user_id = $this->user_id;
+
+        $info = Db::name('goods_focus')
+            ->alias('g')
+            ->join('goods go', 'g.goods_id = go.id')
+            ->where('user_id', $user_id)
+            // ->field('u.*,g.name')
+            ->select();
+        $this->assign('list', $info);
+        return $this->fetch();        
     }
 
     /**
