@@ -332,14 +332,37 @@ class Article extends Base{
         exit;
     }
 
-
-
+    # 评论审核
+    public function audit()
+    {
+        $list = Db::name('comment')->where(['type'=>1])->paginate(3,false)->each(function($item, $key){
+            $id = $item['user_id'];
+            $result = Db::name('users')->where(['id'=>$id])->field('nickname,mobile')->find();
+            $item['nickname'] = $result['nickname'] ? $result['nickname'] : $result['mobile'];
+            $article = Db::name('article')->where(['id'=>$item['to']])->field('title')->find();
+            $item['title'] = $article['title'];
+            return $item;
+        });
         
+        $this->assign('list',$list);
+        
+        return $this->fetch();
+    }
     
+    # 评论结果
+    public function audit_result()
+    {
+        $id = input('id/d');
+        $status = input('status/d');
+        $user_id = session('admin_id');
+        $result['code'] = 0;
+        if ($id && $user_id) {
+            $bool = Db::name('comment')->where('id',$id)->update(['status'=>$status,'utime'=>time(),'admin'=>$user_id]);
+            $result['code'] = $bool ? 1 : 0;
+        }
 
-
-
-
+        return json($result);
+    }
 
 
 }

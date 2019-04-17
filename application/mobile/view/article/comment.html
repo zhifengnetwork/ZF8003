@@ -102,37 +102,65 @@
             </ul>
         </div>
 
+        <div class="none" style="display:none;text-align:center;font-size:20px;">
+             <p>暂无评论</p>
+        </div>
+
 
 
         <!-- 评论输入框 -->
         <div class="writeBar">
-            <form action="###" method="post">
+            <form action="" method="post">
                 <!-- <input type="text" placeholder="请留下您的任务留言"> -->
                 <textarea cols="30" rows="2"></textarea>
-                <button type="button" class="sendBtn">发送</button>
+                <button type="button" class="sendBtn" onclick="aa()">发送</button>
             </form>
         </div>
 
 
     </div>
     <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
-    <script src="__STATIC__/js/home/dropload.js"></script>
     <script src="__STATIC__/js/public/public.js"></script>
-
+    <script type="text/javascript" src="__PUBLIC__/public/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/public/layer/layer.js"></script>
+    <script src="__STATIC__/js/home/dropload.js"></script>
     <script>
-        $(function () {
-            $('sendBtn').click(function(){
-                console.log('123');
+        var id = '{$id}';
+
+        function aa(){
+            var textVal = $('textarea').val();
+            if (!textVal) {
+                return false;   
+            }
+            console.log(textVal)
+            $.ajax({
+                type: "POST",
+                url: '/mobile/article/handle_comment',
+                data: {'id':id,'comment':textVal,'type':1},
+                success: function(data){
+                    if (data.code == 1) {
+                        $('textarea').val('');
+                        layer.msg('发送成功！待审核！',{'icon': 1,'time': 1500});
+                    } else {
+                        layer.msg('发送失败！',{'icon': 2,'time': 1000});
+                    }
+                },
+                error: function(){
+                    layer.alert('服务器繁忙！请稍后再试！');
+                }
             });
+        }
+
+        $(function () {
+
             var counter = 0;
             // 每页展示4个
             var num = 3;
             var pageStart = 0, pageEnd = 0;
             
             var type = 1;
-            var page = 1; //页数
+            var page = 0; //页数
             var count = 2;//返回记录数量
-            var id = '{$id}';
 
             $('.comment-wrap').dropload({
                 
@@ -211,12 +239,22 @@
                         dataType: 'json',
                         data: {'id':id,'type':type,'page':page,'count':count},
                         success: function (data) {
-                            // console.log(data)
+                            console.log(data)
                             var result = '';
                             counter++;
                             pageEnd = num * counter;
                             // pageStart = pageEnd - num;
+                            
+                            if(data.lists.length == 0){
+                                setInterval(function(){
+                                    $(".dropload-down").css("display","none");
+                                    $(".none").css("display","block");
+                                },400)
+                                return false
+                            } ;
+                            
                             for (var i = pageStart; i < pageEnd; i++) {
+                                console.log(111)
                                 result += `
                                             <li class="comment-item">
                                                 <div class="user-info">
@@ -242,10 +280,12 @@
                                     me.lock();
                                     // 无数据
                                     me.noData();
+                                   
                                     break;
                                 }
                                 page += 1;
                             }
+                            $(".dropload-down").css("display","none");
                             // 为了测试，延迟1秒加载
                             setTimeout(function () {
                                 $('.comment-list').append(result);
