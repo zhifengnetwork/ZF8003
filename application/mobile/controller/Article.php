@@ -251,20 +251,20 @@ class Article extends Base{
         return json($result);
     }
 
-    # 处理评论
-    public function handle_comment()
-    {
-        $id = input('id/d');
-        $comment = input('comment/s');
-        $type = input('type/d');
-        $comment = trim($comment);
-        $user_id = $this->user_id;
+    // # 处理评论
+    // public function handle_comment()
+    // {
+    //     $id = input('id/d');
+    //     $comment = input('comment/s');
+    //     $type = input('type/d');
+    //     $comment = trim($comment);
+    //     $user_id = $this->user_id;
         
-        $result['code'] = 0;
-        if (($id > 0) && ($user_id > 0) && $comment) {
-            $bool = Db::name('comment')->insert(['user_id'=>$user_id,'to'=>$id,'content'=>$comment,'status'=>0,'type'=>$type,'addtime'=>time()]);
-            $result['code'] = $bool ? 1 : 0;
-        }
-        return json($result);
-    }
+    //     $result['code'] = 0;
+    //     if (($id > 0) && ($user_id > 0) && $comment) {
+    //         $bool = Db::name('comment')->insert(['user_id'=>$user_id,'to'=>$id,'content'=>$comment,'status'=>0,'type'=>$type,'addtime'=>time()]);
+    //         $result['code'] = $bool ? 1 : 0;
+    //     }
+    //     return json($result);
+    // }
 }
