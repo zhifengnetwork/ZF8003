@@ -567,6 +567,7 @@ class Goods extends Base{
                 $data['id']=$_POST['coupon_id'];
                 $data['updatetime'] =time();
                 $res = Db::name('goods_coupon')->update($data);
+                // 还需更新users_coupon表的数据
             }else{
                 $res = Db::name('goods_coupon')->insert($data);
             }

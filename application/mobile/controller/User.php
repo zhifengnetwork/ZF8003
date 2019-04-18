@@ -506,14 +506,28 @@ class User extends Base
     public function collection()
     {
         $user_id = $this->user_id;
+        // 删除收藏
+        if($_POST){
+            $goods_id = input('post.goods_id');
+            $where = [
+                'goods_id' => $goods_id,
+                'user_id'  => $user_id
+            ];
+            $del_foc = Db::name('goods_focus')->where($where)->delete();
+            if($del_foc){
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else{
+                return json(['status'=>0,'msg'=>'删除失败']);
+            }
+        }
 
-        $info = Db::name('goods_focus')
+        $list = Db::name('goods_focus')
             ->alias('g')
             ->join('goods go', 'g.goods_id = go.id')
             ->where('user_id', $user_id)
             // ->field('u.*,g.name')
-            ->select();
-        $this->assign('list', $info);
+            ->select();   
+        $this->assign('list', $list);
         return $this->fetch();        
     }
 
