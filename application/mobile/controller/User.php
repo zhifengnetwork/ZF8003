@@ -314,7 +314,7 @@ class User extends Base
         $user_id = $this->user_id;
         $sql ="select `platform`,`addtime`,`money`,`status` from `zf_recharge` where `user_id` = '$user_id' order by init_time desc";
         $lists = Db::query($sql);
-        $panme = ['weixin'=>'微信','alipay'=>'支付宝'];
+        $pname = ['weixin'=>'微信','alipay'=>'支付宝'];
         $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
 
         $this->assign('pname', $pname);
