@@ -51,8 +51,6 @@ class Base extends Controller
             $this->user = Session::get('user');
             $this->user_id = Session::get('user.id');
         }
-
-        Session::set('_url',"/$this->module/$this->controller/$this->action");
     }
 
 
@@ -70,7 +68,7 @@ class Base extends Controller
 
     # 微信配置
     public function wx_config(){
-        $config = Session::get('wx_config');
+        $config = Session::has('wx_config') ? Session::get('wx_config') : '';
         if(!$config){
             $config = Db::name('config')->where('type','weixin_config')->select();
             foreach($config as $v){
@@ -92,8 +90,11 @@ class Base extends Controller
 
 
     # 获取微信Token
-    public function get_weixin_global_token(){
-
+    public function get_weixin_global_token($refresh = false){
+        if($refresh){
+            $this->weixin_config = '';
+            Session::pull('wx_config');
+        }
         $this->wx_config();
         $weixin_config = $this->weixin_config;
         
