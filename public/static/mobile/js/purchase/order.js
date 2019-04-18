@@ -9,10 +9,12 @@ $(function(){
         // console.log(12312)
         var acc = $(this)
         if(acc.children().hasClass('active')){
+            $('#balance').val(0);
             acc.children().attr('src','/public/static/mobile/img/purchase/Button-box@2x.png').removeClass('active')
             acc.next().hide()
             acc.parent().next().hide()
         }else{
+            $('#balance').val(1);
             acc.children().attr('src','/public/static/mobile/img/purchase/button@2x.png').addClass('active');
             acc.next().show()
             acc.parent().next().show()

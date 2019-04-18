@@ -24,9 +24,6 @@
             <span>确认订单</span>
         </div>
         <!-- main -->
-
-
-
         <div class="personal-main">
             <!-- personal -->
             <div class="personal-list" onclick="pageJump('../my/my_site.html')">
@@ -76,6 +73,7 @@
                 </div>
                 <div class="mode modq">
                     <div class="ksps">使用余额</div>
+                    <input type="hidden" id="balance" value="0"/>
                     <div class="select difference">
                         <img src="__STATIC__/img/purchase/Button-box@2x.png" alt="">
                     </div>
@@ -193,7 +191,6 @@
                         </div>
                         <div class="coupon_use " data-id="{$v.coupon_id}">
                             <p class="use">立即使用</p>
-                            <!-- <img src="../../img/purchase/logo@2x.png" alt="" class="been"> -->
                         </div>
                        
                     </div> 
@@ -210,9 +207,9 @@
         <!-- footer -->
         <div class="footer">
             <div class="price_box">
-                应付金额: <span class="price_red">￥699</span>
+                应付金额: <span class="price_red">￥0</span>
             </div>
-            <div class="sumb">
+            <div class="sumb" onclick="submit();">
                 提交订单
             </div>
         </div>
@@ -223,49 +220,14 @@
     <script src="__STATIC__/js/purchase/order.js"></script>
 </body>
 <script>
-    $('.sumb').click(function () {
-        var s = $('#note').val()
-        // $('.user_note').attr('value', s)
-        // console.log($('#cart_form').serialize())
-        $.ajax({
-            type: 'post',
-            url: "{:url('mobile/goods/orderForm')}",
-            data: $('#cart_form').serialize() + '&user_note=' + s,
+    function submit(){
+        var balance = $('#balance').val();
+        alert(balance);
 
-            success: function (data) {
-                if (data.status == 1) {
-                    layer.msg(data.msg, { time: 1000 }, function () {    
-                        // acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
-                    })
-                }else if(data.status == -1){
-                    layer.msg(data.msg, { time: 1000 }, function () {
-                        window.location.href = '/mobile/user/my_address'
-                        // acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
-                    })                    
-                }else {
-                    layer.msg(data.msg, { time: 1000 }, function () {
 
-                    })
-                }
 
-            },
-            error: function (data) {
-                layer.msg('服务器繁忙，请稍后再试', function () {
+    }
 
-                })
-            }            
-
-        });
-    })
-    // $(document).ready(function () {
-    //     check_cou()
-    // });          
-    // function check_cou(){
-    //       var quota = $('#quota').val()
-    //       var total_amount = $('#total_amount').val()
-
-    //      console.log(total_amount+"aaaa")
-    // } 
 </script>
 
 </html>
