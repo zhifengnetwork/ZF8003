@@ -56,7 +56,7 @@ class System extends Base
                     }
                 }
                 if (isset($data['weixin_qrcode'])) {
-                    if (isset($config['title_logo']) && ($data['weixin_qrcode'] == $config['weixin_qrcode'])) {
+                    if (isset($config['weixin_qrcode']) && ($data['weixin_qrcode'] == $config['weixin_qrcode'])) {
                         $num = 1;
                     } else {
                         $weixin_qrcode = $this->move_img($data['weixin_qrcode'],'weixin_qrcode');

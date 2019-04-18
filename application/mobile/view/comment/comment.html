@@ -113,7 +113,7 @@
             <form action="" method="post">
                 <!-- <input type="text" placeholder="请留下您的任务留言"> -->
                 <textarea cols="30" rows="2"></textarea>
-                <button type="button" class="sendBtn" onclick="aa()">发送</button>
+                <button type="button" class="sendBtn" onclick="send_comment()">发送</button>
             </form>
         </div>
 
@@ -127,7 +127,7 @@
     <script>
         var id = '{$id}';
 
-        function aa(){
+        function send_comment(){
             var textVal = $('textarea').val();
             if (!textVal) {
                 return false;   
@@ -155,12 +155,12 @@
 
             var counter = 0;
             // 每页展示4个
-            var num = 3;
+            var num = 5;
             var pageStart = 0, pageEnd = 0;
             
             var type = 1;
             var page = 0; //页数
-            var count = 2;//返回记录数量
+            var count = 0;//返回评论条数
 
             $('.comment-wrap').dropload({
                 
@@ -186,6 +186,10 @@
                         data: {'id':id,'type':type,'page':page,'count':count},
                         success: function (data) {
                             // console.log(data)
+                            
+                            page = data.page;
+                            count = data.count;
+                            
                             var result = '';
                             for (var i = 0; i < data.lists.length; i++) {
                                 result += `
@@ -220,8 +224,6 @@
                                     me.unlock();
                                     me.noData(false);
                                 }, 1000);
-
-                                page -= 1;
                         },
                         error: function (xhr, type) {
                             // alert('Ajax error!');
@@ -252,6 +254,9 @@
                                 },400)
                                 return false
                             } ;
+
+                            page = data.page;
+                            count = data.count;
                             
                             for (var i = pageStart; i < pageEnd; i++) {
                                 console.log(111)
@@ -283,7 +288,6 @@
                                    
                                     break;
                                 }
-                                page += 1;
                             }
                             $(".dropload-down").css("display","none");
                             // 为了测试，延迟1秒加载

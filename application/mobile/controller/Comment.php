@@ -34,26 +34,45 @@ class Comment extends Base
     public function get_comment()
     {
         $data = input('get.');
-        $result['lists'] = Db::name('comment')->where(['to'=>$data['id'],'type'=>$data['type'],'status'=>1])->page($data['page'],$data['count'])->select();
+        $page = intval($data['page']);
+        $count = intval($data['count']);
+        $add_count = 5;
+        $list = Db::name('comment')->where(['to'=>$data['id'],'type'=>$data['type'],'status'=>1])->order('id','desc')->page($page,($count + $add_count))->select();
         
-        if ($result['lists']) {
-            $id = array_column($result['lists'],'user_id');
+        if ($list) {
+            $result['lists'] = $this->comment_list($list);
+            $result['page'] = $page + 1;
+            $result['count'] = $count + $add_count;
+        } else {
+            $result['page'] = 1;
+            $result['count'] = $count;
+            $list = Db::name('comment')->where(['to'=>$data['id'],'type'=>$data['type'],'status'=>1])->order('id','desc')->select();
+            $result['lists'] = $this->comment_list($list);
+        }
+        
+        return json($result);
+    }
+
+    public function comment_list($data)
+    {
+        if ($data) {
+            sort($data);
+            $id = array_column($data,'user_id');
             $user = Db::name('users')->field('id,avatar,nickname')->select($id);
             
-            foreach ($result['lists'] as $k1 => $v1) {
-                $result['lists'][$k1]['avatar'] = '';
-                $result['lists'][$k1]['nickname'] = '';
-                $result['lists'][$k1]['del'] = '';
+            foreach ($data as $k1 => $v1) {
+                $data[$k1]['avatar'] = '';
+                $data[$k1]['nickname'] = '';
+                $data[$k1]['del'] = '';
                 foreach ($user as $k2 => $v2) {
                     if ($v1['user_id'] == $v2['id']) {
-                        $result['lists'][$k1]['avatar'] = $v2['avatar'];
-                        $result['lists'][$k1]['nickname'] = $v2['nickname'];
+                        $data[$k1]['avatar'] = $v2['avatar'];
+                        $data[$k1]['nickname'] = $v2['nickname'];
                     }
                 }
             }
         }
-        
-        return json($result);
+        return $data;
     }
 
     # 处理评论
@@ -67,7 +86,7 @@ class Comment extends Base
         
         $result['code'] = 0;
         if (($id > 0) && ($user_id > 0) && $comment) {
-            $bool = Db::name('comment')->insert(['user_id'=>$user_id,'to'=>$id,'content'=>$comment,'status'=>0,'type'=>$type,'addtime'=>time()]);
+            $bool = Db::name('comment')->insert(['user_id'=>$user_id,'to'=>$id,'content'=>$comment,'status'=>0,'type'=>$type,'addtime'=>time(),'utime'=>time()]);
             $result['code'] = $bool ? 1 : 0;
         }
         return json($result);

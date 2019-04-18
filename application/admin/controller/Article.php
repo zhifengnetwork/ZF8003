@@ -349,7 +349,7 @@ class Article extends Base{
         return $this->fetch();
     }
     
-    # 评论结果
+    # 评论审核结果
     public function audit_result()
     {
         $id = input('id/d');
