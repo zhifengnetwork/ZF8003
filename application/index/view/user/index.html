@@ -1,184 +1,230 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>个人中心</title>
-		<title class="pageTopTitle" >个人中心{$web_setting.web_name}{$web_setting.web_title}</title>
-    <meta name="keywords" content="{$web_setting.key_words}" />
-    <meta name="description" content="{$web_setting.copyright}" />
-    <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
-		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
-		<link rel="stylesheet" href="__STATIC__/css/personal/personal.css" />
-		
-		
-	</head>
-	<body>
-<div class="login_bigger">
-	<!--头部-->
-	<div class="header">
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<title class="pageTopTitle">个人中心{$web_setting.web_name}{$web_setting.web_title}</title>
+	<meta name="keywords" content="{$web_setting.key_words}" />
+	<meta name="description" content="{$web_setting.copyright}" />
+	<link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
+	<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+	<link rel="stylesheet" href="__STATIC__/css/personal/personal.css" />
+
+
+</head>
+
+<body>
+	<div class="login_bigger">
+		<!--头部-->
+		<div class="header">
 			{include file="header"}
-	</div>
-	
-    <div class="inner-wrap inner-wrap22" >	
-    	
-		<div class="login_ear">
-			
-			
-			<p style="text-align: center;font-size: 20px;padding-top: 10px;padding-bottom: 10px;">个人中心</p>
-			<!--更换头像-->
-			<div class="lj_wrap">
-		<!--渲染wrpa-->
-		<div class="renderingRrpa">
-			<!-- '创建一个image对象'，给canvas绘制使用 -->
-			<canvas id="canvas" style="display: none;"></canvas>
-			
-			<!--上传图片wrap-->
-			<div class="uploadWrap">
-				<!--每个 上传图片box---->
-				<!--<p>身份证正面</p>-->
-				<div class="imageEchoBox">
-					<!--回显的图片-->
-					<img class="preViewImg" src="__STATIC__/images/personal/ren.png" style="width: 80px;height: 80;border-radius: 50%;"/>
-					<!--上传图片 tyle='file'-->
-					<a class="uploadFile2" href="#">修改头像</a>
-					<input class="uploadFile" type="file" onchange="UpLoad(this)" name="file" id="" value="0" accept="image/*" />
-				</div>
-			</div>
-		
 		</div>
-		<!--input区域-->
-			<div class="personal_center">
-				
-				
-				<div class="personal_div">
-					
-					<label style="padding-left: 10px;" class="label1">账号</label>
-					<laebl style="color: gray;">zhifeng_ui@163.com</laebl>	
-					<label style="float: right;padding-right: 10px;">
+
+		<div class="inner-wrap inner-wrap22">
+
+			<div class="login_ear">
+
+
+				<p style="text-align: center;font-size: 20px;padding-top: 10px;padding-bottom: 10px;">个人中心</p>
+				<!--更换头像-->
+				<div class="lj_wrap">
+					<!--渲染wrpa-->
+					<div class="renderingRrpa">
+						<!-- '创建一个image对象'，给canvas绘制使用 -->
+						<canvas id="canvas" style="display: none;"></canvas>
+
+						<!--上传图片wrap-->
+						<div class="uploadWrap">
+							<!--每个 上传图片box---->
+							<!--<p>身份证正面</p>-->
+							<div class="imageEchoBox">
+								<!--回显的图片-->
+								<img class="preViewImg" src="__STATIC__/images/personal/ren.png"
+									style="width: 80px;height: 80;border-radius: 50%;" />
+								<!--上传图片 tyle='file'-->
+								<a class="uploadFile2" href="#">修改头像</a>
+								<input class="uploadFile" type="file" onchange="UpLoad(this)" name="file" id="" value="0"
+									accept="image/*" />
+							</div>
+						</div>
+
+					</div>
+					<!--input区域-->
+					<div class="personal_center">
+
+
+						<div class="personal_div">
+
+							<label style="padding-left: 10px;" class="label1">账号</label>
+							<laebl style="color: gray;">{$info['email']}</laebl>
+							<input type="hidden" name="email" id="email" value="{$info['email']}">
+							<!-- <label style="float: right;padding-right: 10px;">
 						<span class="change_email">更换邮箱</span>
 						<span class="fasong_yanzheng">从发验证邮箱</span>
-					</label>
-					
-					
-				</div>
-				<div class="personal_div">
-					
-					<label style="padding-left: 10px;" class="label1">密码</label>
-					<input type="password" value="123123" style="color:gray;border: none;background-color:white;"  disabled="disabled" class="yiqian_mima"/>
-					<span style="color: rgb(55,175,230); cursor: pointer;float: right;padding-right: 10px;" class="xiugai_mima">修改密码</span>
-					<span style="display: none;" class="queren_xiugai" >
-					<input type="text" style="width: 150px;" class="xinmima"/>
-					<span style="cursor: pointer;background: #CCCCCC;padding: 0px 10px;margin-right:10px;" class="queren1">确认</span><span style="cursor: pointer;background: #CCCCCC;padding: 0px 10px;margin-right:10px;" class="quxiao1">取消</span>	
-					</span>
-									
-				</div>
-				
-				<div style="text-align: center;background:#BCEAFF;height: 160px;border-radius: 10px; position: relative;margin-top: 30px;">
-					
-					<div style="position: absolute;top: 50%;left:50%;transform: translate(-50%,-50%);">
-					<p style="font-size: 25px;">账户余额</p>
-					<p style="color: red;font-size: 30px;">￥999.9</p>
-					<p style="font-size: 20px;">优惠券10张</p>
+					</label> -->
+
+
+						</div>
+						<div class="personal_div">
+
+							<label style="padding-left: 10px;" class="label1">密码</label>
+							<input type="password" value="123456789" style="color:gray;border: none;background-color:white;"
+								disabled="disabled" class="yiqian_mima" />
+							<span style="color: rgb(55,175,230); cursor: pointer;float: right;padding-right: 10px;"
+								class="xiugai_mima">修改密码</span>
+							<span style="display: none;" class="queren_xiugai">
+								<input type="password" id="repassword" style="width: 150px;" class="xinmima" />
+								<span style="cursor: pointer;background: #CCCCCC;padding: 0px 10px;margin-right:10px;"
+									class="queren1" onclick="repwd()">确认</span><span
+									style="cursor: pointer;background: #CCCCCC;padding: 0px 10px;margin-right:10px;"
+									class="quxiao1">取消</span>
+							</span>
+
+						</div>
+
+						<div
+							style="text-align: center;background:#BCEAFF;height: 160px;border-radius: 10px; position: relative;margin-top: 30px;">
+
+							<div style="position: absolute;top: 50%;left:50%;transform: translate(-50%,-50%);">
+								<p style="font-size: 25px;">账户余额</p>
+								<p style="color: red;font-size: 30px;">￥{$info.money}</p>
+								<p style="font-size: 20px;">优惠券{$coupon}张</p>
+							</div>
+
+						</div>
+
+
+
+
+
+
 					</div>
-					
 				</div>
-				
-				
-				
-				
-				
-				
+
+
 			</div>
+
+
+
 		</div>
-	
-	
-		</div>
-		
-		
-		
+		<div class="footer"></div>
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<!-- <script src="__STATIC__/js/public/header.js"></script> -->
+		<script src="__STATIC__/js/public/footer.js"></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 	</div>
-	<div class="footer" ></div>
-	<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
-	<script src="__STATIC__/js/public/header.js"></script>
-	<script src="__STATIC__/js/public/footer.js"></script>
-</div>
 
-	 <script>
-	 	var ind = null;
-        /*上传图片*/
-			function UpLoad(e) {
-				var that = $(e);
-				if(e.files[0]) {
-					var f = e.files[0];
-					fileType = f.type;
-					if(/image\/\w+/.test(fileType)) {
-						var fileReader = new FileReader();
-						fileReader.readAsDataURL(f);
-						fileReader.onload = function(event) {
-							var result = event.target.result; //返回的dataURL   
-							var image = new Image();
-							image.src = result;
-							//若图片大小大于1M，压缩后再上传，否则直接上传  
-							if(f.size > 1024 * 1024) {
-								image.onload = function() {
-									//创建一个image对象，给canvas绘制使用
-									var canvas = document.getElementById("canvas");
-									canvas.width = image.width;
-									canvas.height = image.height; //计算等比缩小后图片宽高   
-									var ctx = canvas.getContext('2d');
-									ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-									var newImageData = canvas.toDataURL(fileType, 0.8); //重新生成图片
-									/* 图片 回显*/
-									that.siblings(".preViewImg").attr("src", newImageData);
-									console.log(newImageData);
+	<script>
+		var ind = null;
+		/*上传图片*/
+		function UpLoad(e) {
+			var that = $(e);
+			if (e.files[0]) {
+				var f = e.files[0];
+				fileType = f.type;
+				if (/image\/\w+/.test(fileType)) {
+					var fileReader = new FileReader();
+					fileReader.readAsDataURL(f);
+					fileReader.onload = function (event) {
+						var result = event.target.result; //返回的dataURL   
+						var image = new Image();
+						image.src = result;
+						//若图片大小大于1M，压缩后再上传，否则直接上传  
+						if (f.size > 1024 * 1024) {
+							image.onload = function () {
+								//创建一个image对象，给canvas绘制使用
+								var canvas = document.getElementById("canvas");
+								canvas.width = image.width;
+								canvas.height = image.height; //计算等比缩小后图片宽高   
+								var ctx = canvas.getContext('2d');
+								ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+								var newImageData = canvas.toDataURL(fileType, 0.8); //重新生成图片
+								/* 图片 回显*/
+								that.siblings(".preViewImg").attr("src", newImageData);
+								console.log(newImageData);
+                  
+								$("#canvas").hide();
+								/*根据点击的下标 =>显示 '回显图片'*/
+								//									$(".echoImages").eq(ind).show();
 
-									$("#canvas").hide();
-									/*根据点击的下标 =>显示 '回显图片'*/
-//									$(".echoImages").eq(ind).show();
-								}
-							} else {
-								//创建一个image对象，给canvas绘制使用 
-								image.onload = function() {
-									/*图片 回显 */
-									that.siblings(".preViewImg").eq(ind).attr("src", result);
-									console.log(result);
-								}
+							}
+						} else {
+							//创建一个image对象，给canvas绘制使用 
+							image.onload = function () {
+								/*图片 回显 */
+								that.siblings(".preViewImg").eq(ind).attr("src", result);
+								console.log(result);
 							}
 						}
-					} else {
-						alert("请选择图片");
 					}
-
 				} else {
-					console.log('取消选择图片！')
+					alert("请选择图片");
 				}
+
+			} else {
+				console.log('取消选择图片！')
 			}
-//修改密码
-       $('.xiugai_mima').click(function(){
-       	  
-       	      $(this).hide();
-       	      $('.yiqian_mima').hide()
-       	      $(".queren_xiugai").show()
-   
-       })
-       $(".queren1").click(function(){
-       	
-       	      $('.xiugai_mima').show();
-       	      $(".queren_xiugai").hide();
-       	      $('.yiqian_mima').show();
-       	      var xinmima=$('.xinmima').val()
-       	      $('.yiqian_mima').val(xinmima)
-       	      
-       	      
-       	
-       	
-       })
-       $(".quxiao1").click(function(){
-       	      $('.xiugai_mima').show()
-       	      $(".queren_xiugai").hide()
-       	      $('.yiqian_mima').show();   	
-       })
-    </script>	
-		
-	</body>
+		}
+		//修改密码
+		$('.xiugai_mima').click(function () {
+
+			$(this).hide();
+			$('.yiqian_mima').hide()
+			$(".queren_xiugai").show()
+
+		})
+		// $(".queren1").click(function () {
+
+		// 	$('.xiugai_mima').show();
+		// 	$(".queren_xiugai").hide();
+		// 	$('.yiqian_mima').show();
+		// 	var xinmima = $('.xinmima').val()
+		// 	$('.yiqian_mima').val(xinmima)
+
+		// })
+			function repwd() {
+				// var email = $('#email').val()
+				var repassword = $('#repassword').val()
+				
+				$.ajax({
+					type: 'post',
+					url: "{:url('index/user/repwd')}",
+					data: { 'password': repassword },
+
+					success: function (data) {
+
+						if (data.status == 1) {
+							layer.msg(data.msg, { time: 1000 }, function () {
+								parent.location.reload()
+								// var index = parent.layer.getFrameIndex(window.name);
+								// parent.$('.btn-refresh').click();
+								// parent.layer.close(index);
+								// parent.location.reload()
+							})
+						} else {
+							layer.msg(data.msg, { time: 1000 }, function () {
+
+								// var index = parent.layer.getFrameIndex(window.name);
+								// parent.$('.btn-refresh').click();
+								// parent.layer.close(index);
+								// parent.location.reload
+							})
+						}
+
+					},
+
+				}); 				
+			} 
+
+
+		$(".quxiao1").click(function () {
+			$('.xiugai_mima').show()
+			$(".queren_xiugai").hide()
+			$('.yiqian_mima').show();
+		})
+	</script>
+
+</body>
+
 </html>
