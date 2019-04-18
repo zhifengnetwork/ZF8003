@@ -82,15 +82,13 @@ class Goods extends Base
             $where = [
                 'goods_id' => $id,
                 'status' => 0,
-                
             ];
-
-            $coupon = Db::name('goods_coupon')->where($where)->where('deadline', '>= time', time())->select();  
-
+            // 判断能否重复领取券在订单提交时判断，删除该数据就可以
+            
+            $coupon    = Db::name('goods_coupon')->where($where)->where('deadline', '>= time', time())->select();  
             $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
             // 用来判断用户是否已经领取优惠券
             $cp_ids = array_column($in_coupon, 'coupon_id');
-
 
             $this->assign('cp_ids', $cp_ids);
             $this->assign('coupon', $coupon);
@@ -105,17 +103,13 @@ class Goods extends Base
      * 领券
      */
     public function get_coupon(){
-        // $this->Verification_User();
         $data = input('post.');
         if(Session::has('user')){
-            // $this->user = Session::get('user');
             $user_id = Session::get('user.id');
         }else{
             Session::set('re_url', '/mobile/goods/goodinfo/id/'.$data['goods_id']);
             return json(['status'=>-1,'msg'=>'请登录']); 
         }        
-        
-        // $user_id = $this->user_id;
 
         // 优惠券信息
         $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
@@ -170,9 +164,7 @@ class Goods extends Base
     {
         // 商品id 
         $id = input('id');
-        // $data = input('post.');
         if(Session::has('user')){
-            // $this->user = Session::get('user');
             $user_id = Session::get('user.id');
         }else{
             Session::set('re_url', '/mobile/goods/goodinfo/id/'.$id);
