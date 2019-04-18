@@ -66,8 +66,6 @@ class Goods extends Base
                     $images[$key]['img'] = $value;
                 }
 
-            // $admin_id = session('admin_id');
-            // $user_id = $this->user_id;
             $user_id = $this->user_id;
             // 默认为未收藏
             $is_focus = 0;
@@ -88,7 +86,6 @@ class Goods extends Base
                 'status' => 0    
             ];
             $coupon = Db::name('goods_coupon')->where($where1)->where('deadline', '>= time', time())->select();
-            
             $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
             // 用来判断用户是否已经领取优惠券
             $cp_ids = array_column($in_coupon, 'coupon_id');

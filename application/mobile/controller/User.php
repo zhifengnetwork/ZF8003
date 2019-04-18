@@ -553,14 +553,18 @@ class User extends Base
     public function coupons()
     {
         $user_id = $this->user_id;
-
+        $where = [
+           'user_id' => $user_id,
+           'u.status'  => 0
+        ];
+        // 未使用未过期的优惠券
         $list = Db::name('user_coupon')
                 ->alias('u')
                 ->join('goods_coupon g', 'u.coupon_id = g.id')
-                ->where('user_id', $user_id)
+                ->where($where)
                 ->where('etime', '>= time', time())
-                ->field('u.*,g.name')                
-                ->select();
+                ->field('u.*,g.name,g.quota quota1,g.money money1')                
+                ->select(); 
         $this->assign('list',$list);
         return $this->fetch();
     }
