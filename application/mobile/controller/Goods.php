@@ -81,42 +81,62 @@ class Goods extends Base
             
             // 显示该商品未失效的优惠券
             $where1 = [
-                'goods_id' =>$id,
-                'status' => 0    
+                'g.goods_id' =>$id,
+                'g.status' => 0,
+                'u.status' => 0   
             ];
-              
-            //判断后台设置了重复领取的数量 
-            // $is_repetition = Db::name('goods_coupon')->where('goods_id',$id)->select();
-            // // dump($is_repetition);
-            // foreach ($is_repetition as $key => $value) {
-            //     # code...
-            //     // dump($value['limit']);
-            //     if ($value['limit'] == 0) {
-            //         // 使用完还可以使用
 
-            //     } else {
-            //         // 使用指定张数不可以再领取，使用之后商品不显示该用户使用的这张优惠券session?
 
+            //判断用户是否已经使用该卷,用户在该商品使用过的券  
+            // $is_use = Db::name('user_coupon')->where(['goods_id'=>$id,'status'=>1])->select(); 
+            // 可以获得券id
+            // if($is_use){
+            //     foreach ($is_use as $k => $v) {
+            //         # code...
+            //         $ids[] = $v['coupon_id'];
             //     }
             // }
 
-            //判断用户是否已经使用该卷,用户在该商品使用过的券  
-            $is_use = Db::name('user_coupon')->where(['goods_id'=>$id,'status'=>1])->select(); 
-            // 可以获得券id
-            if($is_use){
-                foreach ($is_use as $k => $v) {
-                    # code...
-                    $ids[] = $v['coupon_id'];
-                }
-            }
- 
-            
-            //查询券id对应的券
-            $coupon = Db::name('goods_coupon')->whereIn('id',$ids)->select();
-            dump($coupon);
-            
 
-            $coupon = Db::name('goods_coupon')->where($where1)->where('deadline', '>= time', time())->select();
+            //查询券id对应的券
+            // $coupon = Db::name('goods_coupon')->whereIn('id',$ids)->select();
+
+            // 可以知道限制次数
+
+
+            // 判断该券的使用次数
+            // foreach ($ids as $k1 => $v1) {
+            //     # code...
+            //     // dump($v1);
+            //     $use_num = Db::name('user_coupon')->where(['coupon_id'=>$v1,'status'=>1])->count();
+            //     // $num = count($use_num);
+            //     $t[$v1] = $use_num;
+
+            // }
+            // $this->assign('num',$t);      
+            // $use_num = Db::name('user_coupon')->whereIn('coupon_id',$ids)->select(); 
+            // dump($use_num);
+
+            // 判断卷是否可以重复次数
+
+            // 最终效果：如果该券超过限制领取次数，则不显示该券
+            // 显示该商品所有券
+            $coupon1 = Db::name('goods_coupon')->where($where1)->where('deadline', '>= time', time())->select();  
+            $coupon = Db::name('goods_coupon')
+                    ->alias('g')
+                    ->join('user_coupon u', 'g.id = u.coupon_id')
+                    ->where($where1)
+                    ->where('deadline', '>= time', time())
+                    ->field('g.*')
+                    ->select();  
+                    dump($coupon1);     
+            // $where2 = [
+            //     'goods_id' => $id,
+            //     'status'   => 0
+            // ];
+
+
+
             $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
             // 用来判断用户是否已经领取优惠券
             $cp_ids = array_column($in_coupon, 'coupon_id');
@@ -353,15 +373,21 @@ class Goods extends Base
 
             $where['addtime'] = time();
             $res = Db::name('goods_focus')->insert($where);
+            if ($res) {
+                return json(['status' => 1, 'msg' => '收藏成功']);
+            } else {
+                return json(['status' => 0, 'msg' => '收藏失败']);
+            }            
         } else {
             $res = Db::name('goods_focus')->where($where)->delete();
+            if ($res) {
+                return json(['status' => 1, 'msg' => '取消成功']);
+            } else {
+                return json(['status' => 0, 'msg' => '取消失败']);
+            }              
         }
 
-        if ($res) {
-            return json(['status' => 1, 'msg' => '操作成功']);
-        } else {
-            return json(['status' => 0, 'msg' => '操作失败']);
-        }
+
     }
 
     public function pay(){
