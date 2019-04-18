@@ -335,7 +335,7 @@ class Article extends Base{
     # 评论审核
     public function audit()
     {
-        $list = Db::name('comment')->where(['type'=>1])->paginate(3,false)->each(function($item, $key){
+        $list = Db::name('comment')->where(['type'=>1])->order('status','asc')->paginate(3,false)->each(function($item, $key){
             $id = $item['user_id'];
             $result = Db::name('users')->where(['id'=>$id])->field('nickname,mobile')->find();
             $item['nickname'] = $result['nickname'] ? $result['nickname'] : $result['mobile'];
@@ -357,8 +357,17 @@ class Article extends Base{
         $user_id = session('admin_id');
         $result['code'] = 0;
         if ($id && $user_id) {
+            Db::startTrans();
             $bool = Db::name('comment')->where('id',$id)->update(['status'=>$status,'utime'=>time(),'admin'=>$user_id]);
-            $result['code'] = $bool ? 1 : 0;
+            if ($bool) {
+                $is_update = Db::name('article')->where(['id'=>$id])->setInc('comment');
+                if ($is_update) {
+                    $result['code'] = 1;
+                    Db::commit();
+                } else {
+                    Db::rollback();
+                }
+            }
         }
 
         return json($result);
