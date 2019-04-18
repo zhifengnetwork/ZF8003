@@ -21,3 +21,8 @@ var footer = (`
 `);
 
 $(".footer").html(footer);
+
+
+// 更换当前状态
+var thisInd = Number($.trim($('.pageTopTitle').attr('page-id')));
+$(".nav li").eq(thisInd).addClass('active').siblings().removeClass('active')

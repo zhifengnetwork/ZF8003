@@ -33,21 +33,37 @@ class Base extends Controller
         
     }
 
+    # 用户验证
+    public function Verification_User(){
+        if(Session::has('user')){
+            $this->user = Session::get('user');
+            $this->user_id = Session::get('user.id');
+        }else{
+            layer_error('请先登录！', false);
+            $this->redirect('Login/login');
+        }
+    }
+
     # 网站基本信息设置
     public function base_web_config(){
 
-        if(!Session::has('web_setting','global')){
+        if(!Session::has('web_setting')){
             $config = Db::name('config')->where('type','web_setting')->select();
             if($config){
                 foreach($config as $v){
                     $conf[$v['name']] = $v['value'];
                 }
                 $config = $conf;
-                Session::set('web_setting',$config,'global');
+                Session::set('web_setting',$config);
             }
         }
+
+        $user = Session::has('user') ? Session::get('user') : '';
         
-        $this->assign('web_setting',Session::get('web_setting','global'));
+        $this->assign('web_setting',Session::get('web_setting'));
+        
+        $this->assign('user',$user);
+        
     }
 
 
