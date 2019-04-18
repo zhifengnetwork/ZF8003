@@ -1,0 +1,26 @@
+<div class="inner-wrap">
+    <div class="logo">
+        <a href="/index/index/index"><img src="{$web_setting.web_logo}"></a>
+    </div>
+    <div class="nav">
+        <ul>
+                <li><a href="/index/index/index">首页</a></li>
+                <li><a href="/index/gene/index">我的基因</a></li>
+                <li><a href="/index/buy/buy">购买</a></li>
+                <li><a href="/index/referral/referral">基因介绍</a></li>
+                <li><a href="/index/order/index">我的订单</a></li>
+                <li><a href="/index/about/index">关于我们</a></li>
+        </ul>
+    </div>
+    <div class="login">
+        <div class="login-in">
+            {if condition="$user"}
+                <span class="fl"><img src="{$user.avatar}" onerror="this.src='/public/mobile-default-user-icon'"></span>
+                <a class="outBtn fl" href="javascript:void(0)" onclick="logout()">退出</a>
+            {else /}
+                <a href="/index/login/login">登录</a>
+                <a href="/index/login/register">注册</a>
+            {/if}
+        </div>
+    </div>
+</div>

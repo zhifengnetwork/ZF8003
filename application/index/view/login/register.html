@@ -3,7 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>注册</title>
+		<title class="pageTopTitle">注册{$web_setting.web_name}{$web_setting.web_title}</title>
+		<meta name="keywords" content="{$web_setting.key_words}" />
+		<meta name="description" content="{$web_setting.copyright}" />
+		<link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
 		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
 		<link rel="stylesheet" href="__STATIC__/css/register/register.css" />
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
@@ -14,7 +17,7 @@
 		<div class="register_bigger">
 			<!--头部-->
 			<div class="header">
-
+				{include file="header"}
 			</div>
 
 			<div class="resigter_ear inner-wrap">
@@ -70,7 +73,6 @@
 		</div>
 		<script type="text/javascript" src="__STATIC__/js/resigter/addres.js"></script>
 		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
-		<script src="__STATIC__/js/public/header.js"></script>
 		<script>
             var code = 0;
             var register_id = '{$register_id}';

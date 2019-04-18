@@ -120,7 +120,21 @@ class User extends Base
                         'desc' => $info['attach'],
                         'init_time' => $info['addtime'],
                     ];
+
+
+                    $recharge_log = [
+                        'user_id' => $info['user_id'],
+                        'money' => $info['money'],
+                        'body' => $info['body'],
+                        'attach' => $info['attach'],
+                        'addtime' => time(),
+                        'init_time' => $info['addtime'],
+                        'platform' => 'weixin',
+                        'status' => 1,
+                    ];
+
                     Db::name('transaction_log')->insert($transaction);
+                    Db::name('recharge')->insert($recharge_log);
                     Db::name('wxpay_cache')->where('sn', $sn)->delete();
                     if($info['user_id'] == $this->user_id){
                         $user = Db::name('users')->find($info['user_id']);
@@ -300,10 +314,10 @@ class User extends Base
         $user_id = $this->user_id;
         $sql ="select `platform`,`addtime`,`money`,`status` from `zf_recharge` where `user_id` = '$user_id' order by init_time desc";
         $lists = Db::query($sql);
-        $panme = ['weixin'=>'微信','alipay'=>'支付宝'];
+        $pname = ['weixin'=>'微信','alipay'=>'支付宝'];
         $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
 
-        $this->assign('panme', $panme);
+        $this->assign('pname', $pname);
         $this->assign('sname', $sname);
         $this->assign('lists', $lists);
         return $this->fetch();
@@ -491,7 +505,28 @@ class User extends Base
      */
     public function collection()
     {
-        return $this->fetch();
+        $user_id = $this->user_id;
+        if($_POST){
+            $goods_id = input('post.goods_id');
+            $where = [
+              'user_id' => $this->user_id,
+              'goods_id'=> $goods_id
+            ];
+            $res = Db::name('goods_focus')->where($where)->delete();
+            if($res){
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else{
+                return json(['status' => 1,'msg'=>'删除失败']);
+            }
+        }
+        $info = Db::name('goods_focus')
+            ->alias('g')
+            ->join('goods go', 'g.goods_id = go.id')
+            ->where('user_id', $user_id)
+            // ->field('u.*,g.name')
+            ->select();
+        $this->assign('list', $info);
+        return $this->fetch();        
     }
 
     /**
@@ -507,6 +542,56 @@ class User extends Base
      */
     public function qr_code()
     {
+        
+        $user = $this->user;
+        if(!$user['ticket'] || $user['ticket_expire_seconds'] < time()){
+            $openid = $user['openid'];
+            if(!$openid){
+                if(!is_weixin()){
+                    layer_error('您还没有绑定微信账号！请在微信浏览器上进行操作！');
+                    exit;
+                }
+                $this->user_wxinfo_completion();
+                $user = $this->user;
+                $openid = $user['openid'];
+            }
+            $this->get_weixin_global_token();
+            $token = $this->weixin_config['weixin_access_token'];
+            $param = [
+				'expire_seconds' => 2592000,
+				'action_name' => 'QR_STR_SCENE',
+				'action_info' => [
+						'scene' => [
+                            'scene_str' => 'openid:'.$user['openid'],
+						],
+				],
+            ];
+			$url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=$token";
+			$res = httpRequest($url,'POST',json_encode($param));
+            $res = json_decode($res,true);
+            
+            if(isset($res['ticket'])){
+                $ticket_data = [
+                    'ticket' => $res['ticket'],
+                    'ticket_expire_seconds' => time() + $res['expire_seconds'] - 200,
+                    'ticket_url' => $res['url'],
+                ];
+                Db::name('users')->where('id', $user['id'])->update($ticket_data);
+                $user['ticket'] = $ticket_data['ticket'];
+                $user['ticket_expire_seconds'] = $ticket_data['ticket_expire_seconds'];
+                $user['ticket_url'] = $ticket_data['ticket_url'];
+                $this->user = $user;
+                Session::set('user', $user);
+                $this->redirect('qr_code');
+            }
+            layer_error('出错了！！！');
+            exit;
+        }
+        
+
+
+        $src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".UrlEncode($user['ticket']);
+        $this->assign('src',$src);
         return $this->fetch();
     }
 
@@ -515,6 +600,16 @@ class User extends Base
      */
     public function coupons()
     {
+        $user_id = $this->user_id;
+
+        $list = Db::name('user_coupon')
+                ->alias('u')
+                ->join('goods_coupon g', 'u.coupon_id = g.id')
+                ->where('user_id', $user_id)
+                ->where('etime', '>= time', time())
+                ->field('u.*,g.name,g.quota quota1,g.money money1')                
+                ->select();       
+        $this->assign('list',$list);
         return $this->fetch();
     }
 

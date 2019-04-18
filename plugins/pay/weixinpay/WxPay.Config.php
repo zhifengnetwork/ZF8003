@@ -32,7 +32,7 @@ class WxPayConfig extends WxPayConfigInterface
 
 	public function __construct()
     {
-		$conf = Db::name('config')->field('name,value')->where('type','wx_mch_config')->select();
+		$conf = Db::name('config')->field('name,value')->where('type','weixin_config')->select();
 		if($conf){
 			foreach($conf as $v){
 				$this->wx_config[$v['name']] = $v['value'];
@@ -45,11 +45,11 @@ class WxPayConfig extends WxPayConfigInterface
 
 	public function GetAppId()
 	{
-		return $this->wx_config['appid'];
+		return $this->wx_config['mch_appid'];
 	}
 	public function GetMerchantId()
 	{
-		return $this->wx_config['merchantid'];
+		return $this->wx_config['mch_id'];
 	}
 	
 	//=======【支付相关配置：支付成功回调地址/签名方式】===================================
@@ -105,11 +105,11 @@ class WxPayConfig extends WxPayConfigInterface
 	 */
 	public function GetKey()
 	{
-		return $this->wx_config['key'];
+		return $this->wx_config['mch_key'];
 	}
 	public function GetAppSecret()
 	{
-		return $this->wx_config['appsecret'];
+		return $this->wx_config['mch_appsecret'];
 	}
 
 

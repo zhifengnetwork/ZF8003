@@ -133,6 +133,8 @@
 			<div class="receive_box">
 				<p class="receive_tit">领取优惠券</p>
 				<div class="coupon_box">
+					<!-- 如果限制次数<使用次数，则不显示该券 -->
+					
 					{if condition = "!empty($coupon)"}
 					{volist name="coupon" id="vo"}
 					<div class="coupon_list">
@@ -159,6 +161,7 @@
 						{/if}
 						
 					</div>
+
                    {/volist}
 				   {else/}
 						<div class="coupon_list">
@@ -204,18 +207,22 @@
 					data: { 'id': id ,'act':'cancel'},
 
 					success: function (data) {
-						if (data.status == 1) {
-								
-							layer.msg(data.msg, { time: 1000 },function () {
+						if (data.status == 1) {		
+							layer.msg(data.msg, { icon: 1, time: 1000 },function () {
                                      acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
 							})								
 						} else {
-							layer.msg(data.msg,function () {
+							layer.msg(data.msg, { icon: 2, time: 1000 },function () {
 
 							})
 						}
-
 					},
+					error: function (data) {
+						layer.msg('服务器繁忙，请稍后再试', function () {
+
+						})
+					}
+
 
 				});				
 			}else{
@@ -226,12 +233,12 @@
                     
 					success: function (data) {
 						if (data.status == 1) {
-							layer.msg(data.msg, { time: 1000 },function () {
+							layer.msg(data.msg, { icon: 1, time: 1000 },function () {
 								acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection-r@2x.png').addClass('active')
 							})	
 								// layer.msg(data.msg)
 						}else if(data.status == -1){
-							layer.msg(data.msg, { time: 1000 }, function () {
+							layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
 								window.location.href="{:url('index/login')}";
 							
 							})	
@@ -243,6 +250,11 @@
 						}
 
 					},
+					error: function (data) {
+						layer.msg('服务器繁忙，请稍后再试', function () {
+
+						})
+					}					
 
 				});					
 			}

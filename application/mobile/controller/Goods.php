@@ -60,14 +60,11 @@ class Goods extends Base
         // $address = $ip_info['region'] . $ip_info['city'];
 
         if ($info) {
-                $image = explode(',', $info['image']);
-                foreach ($image as $key => $value) {
-                    # code...
-                    $images[$key]['img'] = $value;
-                }
-
-            // $admin_id = session('admin_id');
-            // $user_id = $this->user_id;
+            $image = explode(',', $info['image']);
+            foreach ($image as $key => $value) {
+                # code...
+                $images[$key]['img'] = $value;
+            }
             $user_id = $this->user_id;
             // 默认为未收藏
             $is_focus = 0;
@@ -82,17 +79,16 @@ class Goods extends Base
                 $is_focus = 1;
             }
             
-            // 显示该商品未失效的优惠券
-            $where1 = [
-                'goods_id' =>$id,
-                'status' => 0    
+            $where = [
+                'goods_id' => $id,
+                'status' => 0,
             ];
-            $coupon = Db::name('goods_coupon')->where($where1)->where('deadline', '>= time', time())->select();
+            // 判断能否重复领取券在订单提交时判断，删除该数据就可以
             
+            $coupon    = Db::name('goods_coupon')->where($where)->where('deadline', '>= time', time())->select();  
             $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
             // 用来判断用户是否已经领取优惠券
             $cp_ids = array_column($in_coupon, 'coupon_id');
-
 
             $this->assign('cp_ids', $cp_ids);
             $this->assign('coupon', $coupon);
@@ -107,17 +103,13 @@ class Goods extends Base
      * 领券
      */
     public function get_coupon(){
-        // $this->Verification_User();
         $data = input('post.');
         if(Session::has('user')){
-            // $this->user = Session::get('user');
             $user_id = Session::get('user.id');
         }else{
             Session::set('re_url', '/mobile/goods/goodinfo/id/'.$data['goods_id']);
             return json(['status'=>-1,'msg'=>'请登录']); 
         }        
-        
-        // $user_id = $this->user_id;
 
         // 优惠券信息
         $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
@@ -172,9 +164,7 @@ class Goods extends Base
     {
         // 商品id 
         $id = input('id');
-        // $data = input('post.');
         if(Session::has('user')){
-            // $this->user = Session::get('user');
             $user_id = Session::get('user.id');
         }else{
             Session::set('re_url', '/mobile/goods/goodinfo/id/'.$id);
@@ -325,15 +315,21 @@ class Goods extends Base
 
             $where['addtime'] = time();
             $res = Db::name('goods_focus')->insert($where);
+            if ($res) {
+                return json(['status' => 1, 'msg' => '收藏成功']);
+            } else {
+                return json(['status' => 0, 'msg' => '收藏失败']);
+            }            
         } else {
             $res = Db::name('goods_focus')->where($where)->delete();
+            if ($res) {
+                return json(['status' => 1, 'msg' => '取消成功']);
+            } else {
+                return json(['status' => 0, 'msg' => '取消失败']);
+            }              
         }
 
-        if ($res) {
-            return json(['status' => 1, 'msg' => '操作成功']);
-        } else {
-            return json(['status' => 0, 'msg' => '操作失败']);
-        }
+
     }
 
     public function pay(){

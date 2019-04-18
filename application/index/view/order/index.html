@@ -2,14 +2,19 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title class="pageTopTitle" page-id="4">我的订单</title>
+		<title class="pageTopTitle" page-id="4">我的订单{$web_setting.web_name}{$web_setting.web_title}</title>
+		<meta name="keywords" content="{$web_setting.key_words}" />
+		<meta name="description" content="{$web_setting.copyright}" />
+		<link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
 		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css"/>
 		<link rel="stylesheet" type="text/css" href="__STATIC__/css/order/order.css"/>
 	</head>
 	<body>
 		<div class="wrapper">
 			<!-- 头部 -->
-			<div class="header"></div>
+			<div class="header">
+				{include file="header"}
+			</div>
             <!--内容区-->
             <div class="content inner-wrap">
             	

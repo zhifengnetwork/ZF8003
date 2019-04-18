@@ -24,8 +24,49 @@ class Base extends Controller
     public $client;  
     public function _initialize()
     {
+        $this->base_web_config();
         $this->Verification_Client();
+
+        if($this->client == 'mobile'){
+            $this->redirect('/mobile/index/index');
+        }
+        
     }
+
+    # 用户验证
+    public function Verification_User(){
+        if(Session::has('user')){
+            $this->user = Session::get('user');
+            $this->user_id = Session::get('user.id');
+        }else{
+            layer_error('请先登录！', false);
+            $this->redirect('Login/login');
+        }
+    }
+
+    # 网站基本信息设置
+    public function base_web_config(){
+
+        if(!Session::has('web_setting')){
+            $config = Db::name('config')->where('type','web_setting')->select();
+            if($config){
+                foreach($config as $v){
+                    $conf[$v['name']] = $v['value'];
+                }
+                $config = $conf;
+                Session::set('web_setting',$config);
+            }
+        }
+
+        $user = Session::has('user') ? Session::get('user') : '';
+        
+        $this->assign('web_setting',Session::get('web_setting'));
+        
+        $this->assign('user',$user);
+        
+    }
+
+
 
     # 请求验证
     public function Verification_Client(){
@@ -48,40 +89,13 @@ class Base extends Controller
 
     }
 
+
     /**
      * 发送邮件 基础方法
      * 可在模块下其他控制器调用
      */
     public function base_send_mail($param){
-        // $code = rand(100000,999999);
-        // $mail = new PHPMailer(true);
-        // try {
-        //     //服务器配置
-        //     $mail->CharSet ="UTF-8";                     //设定邮件编码
-        //     $mail->SMTPDebug = 0;                        // 调试模式输出
-        //     $mail->isSMTP();                             // 使用SMTP
-        //     $mail->Host = 'smtp.qq.com';                // SMTP服务器
-        //     $mail->SMTPAuth = true;                      // 允许 SMTP 认证
-        //     $mail->Username = '1142506197@qq.com';                // SMTP 用户名  即邮箱的用户名
-        //     $mail->Password = 'fbssodalnjkkibbg';             // SMTP 密码  部分邮箱是授权码(例如163邮箱)
-        //     $mail->SMTPSecure = 'ssl';                    // 允许 TLS 或者ssl协议
-        //     $mail->Port = '465';                            // 服务器端口 25 或者465 具体要看邮箱服务器支持
         
-        //     $mail->setFrom('1142506197@qq.com', 'rock');  //发件人
-        //     $mail->addAddress('15766485478@163.com');  // 收件人
-        //     $mail->addReplyTo('1142506197@qq.com', 'rock'); //回复的时候回复给哪个邮箱 建议和发件人
-        
-        //     //Content
-        //     $mail->isHTML(true);                                  // 是否以HTML文档格式发送  发送后客户端可直接显示对应HTML内容
-        //     $mail->Subject = '注册码';
-        //     $mail->Body    = '<h1>注册码：'.$code.'</h1>';
-        //     $mail->AltBody = '注册码：'.$code;
-            
-        //     $mail->send();
-        //     echo '发送成功';
-        // } catch (Exception $e) {
-        //     echo $mail->ErrorInfo;
-        // }
 
         $mail = new PHPMailer(true);
         try {

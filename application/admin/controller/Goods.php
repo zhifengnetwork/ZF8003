@@ -566,7 +566,28 @@ class Goods extends Base{
                 unset($data['addtime']);
                 $data['id']=$_POST['coupon_id'];
                 $data['updatetime'] =time();
-                $res = Db::name('goods_coupon')->update($data);
+                
+                // 启动事务
+                Db::startTrans();
+                try {
+                    $res = Db::name('goods_coupon')->update($data);
+                    // 更新user_coupon表
+                    $where = [
+                        'goods_id' => $goods_id,
+                        'coupon_id' => $_POST['coupon_id']
+                    ];
+                    $where1 = [
+                        'quota' => $quota,
+                        'money' => $money
+                    ];
+                    $u_cou = Db::name('user_coupon')->where($where)->update($where1);
+                    // 提交事务
+                    Db::commit();
+                } catch (\Exception $e) {
+                    // 回滚事务
+                    Db::rollback();
+                    echo "<script>parent.ajax_from_callback(0,'操作失败，正在跳转...')</script>"; 
+                }                
             }else{
                 $res = Db::name('goods_coupon')->insert($data);
             }
@@ -638,23 +659,44 @@ class Goods extends Base{
     function del_coupon(){
         $data = input('post.');
         if($_POST){
+            Db::startTrans();
             if($data['act'] == 'del'){
                 $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
                 if ($coupon_id) {
-                    $res = Db::name('goods_coupon')->where('id',$coupon_id)->delete();
+                    // 删除users_coupon表的相应优惠券数据
+                    // 启动事务
+                    try {
+                        $res   = Db::name('goods_coupon')->where('id', $coupon_id)->delete();
+                        $u_res = Db::name('user_coupon')->where('coupon_id', $coupon_id)->delete();
+                        // 提交事务
+                        Db::commit();
+                        return json(['status' => 1,'msg'=>'删除成功']);
+                    } catch (\Exception $e) {
+                        // 回滚事务
+                        Db::rollback();
+                        return json(['status' => 0,'msg'=>'删除失败']);
+                    }
                 }
             }else{
                 $id = json_decode($data['id'], true);
                 $where['id'] = array('in', $id);
-                $res = Db::name('goods_coupon')->where($where)->delete();                 
-            }
-            if ($res) {
-                return json(['status' => 1,'msg'=>'删除成功']);
-            }else{
-                return json(['status' => 0,'msg'=>'删除失败']);
+                $where1['coupon_id'] = array('in', $id);
+                // 启动事务
+                try {
+                    $res   =  Db::name('goods_coupon')->where($where)->delete();
+                    // 删除users_coupon表的相应优惠券数据
+                    $u_res =  Db::name('user_coupon')->where($where1)->delete();      
+                    // 提交事务
+                    Db::commit();
+                    return json(['status' => 1,'msg'=>'删除成功']);
+                } catch (\Exception $e) {
+                    // 回滚事务
+                    Db::rollback();
+                    return json(['status' => 0,'msg'=>'删除失败']);
+                }
             }
         }
-        return json(['status' => 0]);
+        return json(['status' => 0,'msg'=>'操作失败']);
     }
 
 }

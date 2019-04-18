@@ -84,10 +84,11 @@
 {include file="layout/footer"}
 <script>
     function layermsg(msg,close){
-        layer.msg(msg)
+        layer.msg(msg);
         if(close > 0){
             setTimeout(function(){
-                parent.layer.closeAll();
+                // parent.layer.closeAll();
+                parent.open_closeAll();
             },2000);
         }
     }

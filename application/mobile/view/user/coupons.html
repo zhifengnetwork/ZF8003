@@ -22,25 +22,40 @@
             </div>
             <!-- body -->
             <div class="coupon_box">
+                {if condition = "isset($list) AND !empty($list)"}
+                {volist name="list" id="vo"}
                  <div class="coupon_list">
+                   
                      <div class="coupon_img">
+                        
                         <div class="cou_img">
                            <img src="__STATIC__/img/purchase/youhui@2x.png" alt="">
                         </div>
+                        
                         <div class="coupon_msg">
                             <div class="price_box">
                                 ￥
-                                <span class="price">699</span>
-                                <span class="original">满599减100</span>
+                                <span class="price">{$vo.money1}</span>
+                                <span class="original">满{$vo.quota1}减{$vo.money1}</span>
                             </div>
-                            <p class="pro_ori">商品优惠卷</p>
-                            <p class="time publicEllipsis" >2019.20.20-2019.20.20</p>
+                            <p class="pro_ori">{$vo.name}</p>
+                            <p class="time publicEllipsis" >{:date('Y-m-d',$vo.addtime)}-{:date('Y-m-d',$vo.etime)}</p>
                         </div>
                      </div>
+                     
                      <div class="coupon_use">
-                         <p class="use">去使用</p>
+                         <!-- <a class="use" >去使用</a> -->
+                        <a class="use" href="/mobile/goods/goodInfo?id={$vo.goods_id}">去使用</a>
                      </div>
+                    
                  </div>
+                {/volist}
+                {else/}
+                <div>
+                    暂无数据
+                </div>
+                
+                {/if}
             </div>
         </div>
 </body>

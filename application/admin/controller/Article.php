@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\Controller;
+namespace app\admin\controller;
 use think\Db;
 
 class Article extends Base{
@@ -12,7 +12,7 @@ class Article extends Base{
         if($keywords){
             $where['title'] = ['like', "%$keywords%"];
         }
-
+          
         $list = Db::name('article')->where($where)->order('utime desc')->paginate(15);
         $count = Db::name('article')->where($where)->count();
         if($list){

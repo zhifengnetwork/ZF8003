@@ -29,6 +29,7 @@ class Article extends Base{
         $lists = array();
         if(!isset($conf[0]['value'])){
             layer_error('访问信息不存在或已禁止访问！');
+            exit;
         }
         
         $cate_id = $conf[0]['value'];
@@ -71,6 +72,7 @@ class Article extends Base{
         $lists = array();
         if (!isset($conf[0]['value'])) {
             layer_error('访问信息不存在或已禁止访问！');
+            exit;
         }
 
         $cate_id = $conf[0]['value'];
@@ -110,6 +112,8 @@ class Article extends Base{
         
         if(!$cate_info){
             layer_error('访问信息不存在或已禁止访问！');
+            exit;
+
         }
         $this->assign('cate_info', $cate_info);
 
@@ -129,6 +133,8 @@ class Article extends Base{
         $conf = Db::query("select `value` from `zf_config` where `type` = 'hom_module_bind' and `name` = 'skin'");
         if (!$conf) {
             layer_error('访问信息不存在或已禁止访问！');
+            exit;
+
         }
 
         $cate_id = $conf[0]['value'];
@@ -163,6 +169,8 @@ class Article extends Base{
         $info = Db::name('article')->field('id,title,details,star,comment')->where(['id'=>$id,'is_lock'=>0])->find();
         if(!$info){
             layer_error('内容不存在或已禁止访问！');
+            exit;
+
         }
         $info['is_like'] = 0;
         if ($this->user_id > 0) {

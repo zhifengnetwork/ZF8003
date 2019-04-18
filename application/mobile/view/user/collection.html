@@ -13,43 +13,62 @@
 		<div id="container">
 			<div class="wrap">
 				<!--public head-->
-				<div class="lb_headWrap">
+				<div class="lb_headWrap" style="position: relative; ">
 					<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
 						<img class="lb_headWrap_return_img" src="__STATIC__/img/public/bottom_nav/back@2x.png"/>
 					</p>
 					<span>我的收藏</span>
 				</div>
+				{if condition = "isset($list) AND !empty($list)"}
+				{volist name="list" id="vo"}
 				<!--列表01-->
 				<div class="item">
 					<!--图片-->
 					<div class="imges">
-						<img src="__STATIC__/img/home/tupian1@2x.png" />
+						<img src="__IMAGES__goods/{$vo.thumb}" />
 					</div>
 					<!--右边-->
 					<div class="right">
-						<p>9787030584304 供中药学植物学 中药资源学 中药鉴定学等使用 普通高等教育</p>
+						<a class="buy_btn" href="/mobile/goods/goodInfo?id={$vo.goods_id}"><p>{$vo.name}</p></a>
+					
 						<!--删除-->
-						<div class="remove">删除</div>
+						<div class="remove" onclick="del({$vo.goods_id})">删除</div>
 					</div>
 				</div>
-				<!--列表02-->
-				<div class="item">
-					<!--图片-->
-					<div class="imges">
-						<img src="__STATIC__/img/home/tupian2@2x.png" />
-					</div>
-					<!--右边-->
-					<div class="right">
-						<p>9787030584304 供中药学植物学 中药资源学 中药鉴定学等使用 普通高等教育</p>
-						<!--删除-->
-						<div class="remove">删除</div>
-					</div>
-				</div>
+				{/volist}
+				{else/}
+				    <div>
+						暂无数据
+					</div> 
+					
+				{/if}
 				
 			</div>
 		</div>
 		
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js" ></script>
 		<script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+		<script>
+            function del(goods_id){
+							layer.confirm('您确定删除吗？', {
+								btn: ['是', '否'] //按钮
+							},  function () {
+									$.post("/mobile/user/collection", {'goods_id':goods_id }, function (data) {
+											if(data.status == 1){
+												layer.msg(data.msg, { time: 1000 },function () {
+																location.reload()    	
+												})                                             
+											}else{
+												layer.msg(data.msg, { time: 1000 },function () {
+															location.reload()
+												})  
+											}
+									}); 
+							});					   
+
+				  }
+
+		</script>
 	</body>
 </html>

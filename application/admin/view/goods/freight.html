@@ -82,7 +82,7 @@
 		*/
 		/*运费模板-增加*/
 		function freight_add(title, url, w, h) {
-			layer_show(title, url, w, h);
+			layer_show(title, url, w, h,true);
 		}
 		/*运费模板-删除*/
 		function freight_del(obj, id) {
@@ -96,6 +96,12 @@
 					}
 				});
 			});
+		}
+
+		
+		function open_closeAll(){
+			layer.closeAll();
+			window.location.replace(location.href);
 		}
 
 		/*运费模板-编辑*/
