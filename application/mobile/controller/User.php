@@ -556,11 +556,61 @@ class User extends Base
      */
     public function set_up()
     {
-        $user = $this->user;
-        $user['avatar'] = $user['avatar'] ? '/public/images/users/avatar/'.$user['avatar'] : '';
+        $user = Db::name('users')->field('sex,mobile,nickname,avatar')->find($this->user_id);
         $user['sex_name'] = [0=>'保密',1=>'男',2=>'女'][$user['sex']]; 
 
         $this->assign('user',$user);
         return $this->fetch();
+    }
+
+    /**
+     * 修改个人信息
+     */
+    public function edit_userInfo(){
+        $t = isset($_POST['t']) && in_array($_POST['t'],['nickname','sex','mobile']) ? trim($_POST['t']) : '';
+        $value = isset($_POST['value']) ? trim($_POST['value']) : '';
+        $user_id = $this->user_id;
+        if(!$user_id){
+            return json(['status'=>0,'msg'=>'用户未登陆']);
+        }
+        if(!$t || $value == ''){
+            return json(['status'=>0,'msg'=>'请求参数错误']);
+        }
+        $res = Db::name('users')->where('id', $user_id)->update([$t => $value]);
+        if($res){
+            $user = Db::name('users')->find($user_id);
+            Session::set('user',$user);
+            $this->user = $user;
+            return json(['status'=>1,'msg'=>'操作成功！']);
+        }else{
+            return json(['status'=>0,'msg'=>'操作失败！']);
+        }
+        exit;
+    }
+
+    /**
+     * 修改用户头像
+     */
+    public function set_icon(){
+
+        if(isset($_FILES['icon'])){
+            $user_id = $this->user_id;
+            if(!$user_id){
+                return json(['status'=>0,'msg'=>'用户未登录！']);
+            }
+            $file = request()->file('icon');
+            $files_dir = ROOT_PATH . 'public/images/user/icon/';
+            
+            $info = $file->move($files_dir, $this->user_id.'-icon.png');
+            if($info){
+                $src_dir = '/public/images/user/icon/';
+                $savename = str_replace('\\','/',$info->getSaveName());
+                $src_dir .= $savename.'?t='.time();
+                Db::name('users')->where('id',$user_id)->update(['avatar'=>$src_dir]);
+                $this->user['avatar'] =  $src_dir;
+                echo "<script>parent.$('#avatarPic').attr('src','$src_dir');</script>";
+            }
+        }
+        exit;
     }
 }
