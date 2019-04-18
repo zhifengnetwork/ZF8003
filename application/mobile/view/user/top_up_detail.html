@@ -41,10 +41,10 @@
 				</li>
 				{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
 					<li>
-						<span>{$pname[$vo.platform]}</span>
-						<span>{$vo.addtime|date="Y-m-d",###}</span>
-						<span>{$vo.money}</span>
-						<span>{$sname[$vo.status]}</span>
+						<span>{$pname[$vo['platform']]}</span>
+						<span>{$vo['addtime']|date="Y-m-d",###}</span>
+						<span>{$vo['money']}</span>
+						<span>{$sname[$vo['status']]}</span>
 					</li>
 				{/volist}
 			</ul>
