@@ -595,8 +595,8 @@ class User extends Base
                 ->join('goods_coupon g', 'u.coupon_id = g.id')
                 ->where('user_id', $user_id)
                 ->where('etime', '>= time', time())
-                ->field('u.*,g.name')                
-                ->select();
+                ->field('u.*,g.name,g.quota quota1,g.money money1')                
+                ->select();       
         $this->assign('list',$list);
         return $this->fetch();
     }

@@ -566,7 +566,28 @@ class Goods extends Base{
                 unset($data['addtime']);
                 $data['id']=$_POST['coupon_id'];
                 $data['updatetime'] =time();
-                $res = Db::name('goods_coupon')->update($data);
+                
+                // 启动事务
+                Db::startTrans();
+                try {
+                    $res = Db::name('goods_coupon')->update($data);
+                    // 更新user_coupon表
+                    $where = [
+                        'goods_id' => $goods_id,
+                        'coupon_id' => $_POST['coupon_id']
+                    ];
+                    $where1 = [
+                        'quota' => $quota,
+                        'money' => $money
+                    ];
+                    $u_cou = Db::name('user_coupon')->where($where)->update($where1);
+                    // 提交事务
+                    Db::commit();
+                } catch (\Exception $e) {
+                    // 回滚事务
+                    Db::rollback();
+                    echo "<script>parent.ajax_from_callback(0,'操作失败，正在跳转...')</script>"; 
+                }                
             }else{
                 $res = Db::name('goods_coupon')->insert($data);
             }
