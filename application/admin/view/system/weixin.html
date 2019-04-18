@@ -9,7 +9,6 @@
 				{/foreach}
 			</div>
 			<div>
-                
 				<div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">公众号名称：</label>
                     <div class="formControls col-xs-8 col-sm-9">
@@ -26,6 +25,30 @@
 					<label class="form-label col-xs-4 col-sm-2">APPSECRET：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" class="input-text" value="{if condition="isset($info.weixin_appsecret)"}{$info.weixin_appsecret}{/if}" id="weixin_appsecret" name="weixin_appsecret" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">商户号ID：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.mch_id)"}{$info.mch_id}{/if}" id="mch_id" name="mch_id" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">商户号APPID：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.mch_appid)"}{$info.mch_appid}{/if}" id="mch_appid" name="mch_appid" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">商户号APPSECRET：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.mch_appsecret)"}{$info.mch_appsecret}{/if}" id="mch_appsecret" name="mch_appsecret" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">商户号KEY：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.mch_key)"}{$info.mch_key}{/if}" id="mch_key" name="mch_key" >
 					</div>
 				</div>
 				

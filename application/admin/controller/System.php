@@ -270,6 +270,7 @@ class System extends Base
             exit;
         }
         $info = Db::name('config')->where('type','weixin_config')->select();
+        
         if($info){
             foreach($info as $v){
                 $data[$v['name']] = $v['value']; 
