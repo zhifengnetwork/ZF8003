@@ -9,7 +9,6 @@ namespace app\mobile\controller;
 use app\mobile\model\Area;
 use think\Session;
 use think\Db;
-use think\Loader;
 
 class User extends Base
 {
@@ -533,7 +532,6 @@ class User extends Base
     {
         
         $user = $this->user;
-        // dump($user);exit;
         if(!$user['ticket'] || $user['ticket_expire_seconds'] < time()){
             $openid = $user['openid'];
             if(!$openid){
