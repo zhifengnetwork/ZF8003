@@ -24,6 +24,7 @@ class Base extends Controller
     public $client;  
     public function _initialize()
     {
+        $this->base_web_config();
         $this->Verification_Client();
 
         if($this->client == 'mobile'){
@@ -31,6 +32,25 @@ class Base extends Controller
         }
         
     }
+
+    # 网站基本信息设置
+    public function base_web_config(){
+
+        if(!Session::has('web_setting','global')){
+            $config = Db::name('config')->where('type','web_setting')->select();
+            if($config){
+                foreach($config as $v){
+                    $conf[$v['name']] = $v['value'];
+                }
+                $config = $conf;
+                Session::set('web_setting',$config,'global');
+            }
+        }
+        
+        $this->assign('web_setting',Session::get('web_setting','global'));
+    }
+
+
 
     # 请求验证
     public function Verification_Client(){
@@ -52,6 +72,7 @@ class Base extends Controller
         }
 
     }
+
 
     /**
      * 发送邮件 基础方法

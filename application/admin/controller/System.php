@@ -16,7 +16,7 @@ class System extends Base
         parent::__construct();
 
         $this->list = array(
-            'shop_info' => ['order'=>0,'url'=>'setting','name'=>"商店信息"],
+            'shop_info' => ['order'=>0,'url'=>'setting','name'=>"网站信息"],
             'smtp'      => ['order'=>1,'url'=>'smtp','name'=>"邮箱设置"],
             'weixin'      => ['order'=>2,'url'=>'weixin','name'=>"微信设置"],
             'cash'      => ['order'=>3,'url'=>'cash','name'=>"资金设置"],
@@ -29,7 +29,7 @@ class System extends Base
 
     }
 
-    # 商店设置
+    # 网站设置
     public function setting()
     {
         $type = "web_setting";
