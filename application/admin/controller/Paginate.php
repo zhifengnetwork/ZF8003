@@ -43,7 +43,6 @@ class Paginate extends  Controller
 
         $p = Bootstrap::make($showData, $listRow, $curPage, count($data), false, [
             'var_page' => 'page',
-
             'path'     => url($this->url),
             'fragment' => '',
         ]);
