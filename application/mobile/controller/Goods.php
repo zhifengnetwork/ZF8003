@@ -113,7 +113,7 @@ class Goods extends Base
 
         // 优惠券信息
         $coupon_info = Db::name('goods_coupon')->where('id',$data['coupon_id'])->find();
-
+         
         if($coupon_info){
             // 判断是否已经领取
             $where=[
@@ -167,8 +167,7 @@ class Goods extends Base
         if(Session::has('user')){
             $user_id = Session::get('user.id');
         }else{
-            Session::set('re_url', '/mobile/goods/goodinfo/id/'.$id);
-            return json(['status'=>-1,'msg'=>'请登录']); 
+            return $this->fetch('index/login');
         }  
         $price = 0;
         $get_address = [
