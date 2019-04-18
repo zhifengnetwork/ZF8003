@@ -1,6 +1,6 @@
 <?php
 
-namespace app\mobile\cotroller;
+namespace app\mobile\controller;
 
 use think\Db;
 use think\Session;
@@ -9,15 +9,12 @@ class Comment extends Base
 {
     public $user_id = 0;
 
-    public function __construct(){
-        parent::__construct();
+    public function _initialize(){
+        parent::_initialize();
         
         # 验证登录
         $this->Verification_User();
         $this->user_id = session('user.id');
-        if ($this->user_id <= 0) {
-            return redirect('mobile/article/m')
-        }
     }
 
     # 评论

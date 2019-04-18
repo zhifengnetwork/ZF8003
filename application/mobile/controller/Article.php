@@ -9,10 +9,11 @@ class Article extends Base{
 
     public $user_id = 0;//用户id
 
-    public function __construct(){
-        parent::__construct();
+    public function _initialize(){
+        parent::_initialize();
 
-        $this->user_id = session('user_id.id');
+        $this->user_id = session('user.id');
+        $this->assign('user_id',$this->user_id);
     }
 
     public function index(){
@@ -163,108 +164,13 @@ class Article extends Base{
         if(!$info){
             layer_error('内容不存在或已禁止访问！');
         }
-        
-        $info['is_like'] = $this->is_like($info['id']);
+        $info['is_like'] = 0;
+        if ($this->user_id > 0) {
+            $like = new \app\mobile\controller\Like;
+            $info['is_like'] = $like->is_like($id);
+        }
         
         $this->assign('info', $info);
         return $this->fetch();
     }
-
-    # 点赞/取消点赞
-    public function give_a_like()
-    {
-        $id = input('id/d');
-        $user_id = $this->user_id;
-        $return = ['code' => 0];
-        if ($id && $user_id) {
-            $where = array('user_id'=>$user_id,'article_id'=>$id);
-            $is_like = Db::name('article_star')->where($where)->find();
-            $count = 0;
-            Db::startTrans();
-            if ($is_like) {
-                $bool = Db::name('article_star')->where($where)->delete();
-                $count = -1;
-            } else {
-                $where['addtime'] = time();
-                $bool = Db::name('article_star')->insertGetId($where);
-                $count = 1;
-            }
-
-            if ($bool) {
-                $is_update = Db::name('article')->where('id',$id)->setInc('star',$count);
-                if ($is_update) {
-                    Db::commit();
-                    $return['code'] = 1;
-                } else {
-                    Db::rollback();
-                }
-            }
-        }
-
-        return $return;
-    }
-
-    # 是否点赞
-    public function is_like($id)
-    {
-        $like = Db::name('article_star')->where('user_id',$this->user_id)->where('article_id',$id)->find();
-        $is_like = $like ? 1 : 0;
-        return $is_like;
-    }
-
-    # 评论
-    public function comment()
-    {
-        $id = input('id/d');
-        
-        if(!$id){
-            layer_error('参数错误！');
-        }
-        
-        $this->assign('id',$id);
-        return $this->fetch();
-    }
-
-    # 获取评论
-    public function get_comment()
-    {
-        $data = input('get.');
-        $result['lists'] = Db::name('comment')->where(['to'=>$data['id'],'type'=>$data['type'],'status'=>1])->page($data['page'],$data['count'])->select();
-        
-        if ($result['lists']) {
-            $id = array_column($result['lists'],'user_id');
-            $user = Db::name('users')->field('id,avatar,nickname')->select($id);
-            
-            foreach ($result['lists'] as $k1 => $v1) {
-                $result['lists'][$k1]['avatar'] = '';
-                $result['lists'][$k1]['nickname'] = '';
-                $result['lists'][$k1]['del'] = '';
-                foreach ($user as $k2 => $v2) {
-                    if ($v1['user_id'] == $v2['id']) {
-                        $result['lists'][$k1]['avatar'] = $v2['avatar'];
-                        $result['lists'][$k1]['nickname'] = $v2['nickname'];
-                    }
-                }
-            }
-        }
-        
-        return json($result);
-    }
-
-    // # 处理评论
-    // public function handle_comment()
-    // {
-    //     $id = input('id/d');
-    //     $comment = input('comment/s');
-    //     $type = input('type/d');
-    //     $comment = trim($comment);
-    //     $user_id = $this->user_id;
-        
-    //     $result['code'] = 0;
-    //     if (($id > 0) && ($user_id > 0) && $comment) {
-    //         $bool = Db::name('comment')->insert(['user_id'=>$user_id,'to'=>$id,'content'=>$comment,'status'=>0,'type'=>$type,'addtime'=>time()]);
-    //         $result['code'] = $bool ? 1 : 0;
-    //     }
-    //     return json($result);
-    // }
 }

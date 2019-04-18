@@ -29,12 +29,12 @@
                             <div class="text">
                                 <h3><a href="/mobile/article/details?id={$vo.id}&type=1">{$vo.title}</a></h3>
                                 <div class="operation-bar">
-                                    <span class="praiseBtn {eq name='$vo.is_like' value='1'} praised {/eq}" onclick="javaScript:like('{$vo.id}')">
+                                    <span class="praiseBtn {eq name='$vo.is_like' value='1'} praised {/eq}" onclick="javaScript:like('{$user_id}','{$vo.id}')">
                                         <i class="praise-icon"></i>
                                         <em class="num">{$vo.star}</em>
                                     </span>
                                     <span class="commentBtn">
-                                        <a href="/mobile/article/comment?id={$vo.id}&type=1">
+                                        <a href="/mobile/comment/comment?id={$vo.id}&type=1">
                                             <i class="discuss-icon"></i>
                                             <em class="num">{$vo.comment}</em>
                                         </a>
@@ -53,7 +53,11 @@
         </div>
         <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
         <script src="__STATIC__/js/public/public.js"></script>
+        <script src="__PUBLIC__/public/jquery.min.js"></script>
+        <script src="__PUBLIC__/public/layer/layer.js"></script>
         <script src="__STATIC__/js/example/like.js"></script>
-        <script src="__STATIC__/js/home/index.js"></script>
+        {gt name="$user_id" value="0"}
+            <script src="__STATIC__/js/home/index.js"></script>
+        {/gt}
 	</body>
 </html>

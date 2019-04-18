@@ -30,13 +30,15 @@
            <!-- 底部点赞、评论 -->
            <div class="bottom-bar">
                <div class="operation-bar">
-                    <span class="praiseBtn {eq name='$info.is_like' value='1'} praised {/eq}" onclick="javaScript:like('{$info.id}')">
+                    <span class="praiseBtn {eq name='$info.is_like' value='1'} praised {/eq}" onclick="javaScript:like('{$user_id}','{$info.id}')">
                         <i class="praise-icon"></i>
                         <em class="num">{$info.star}</em>
                     </span>
                     <span class="commentBtn">
-                        <i class="discuss-icon"></i>
-                        <em class="num">{$info.comment}</em>
+                        <a href="/mobile/comment/comment?id={$info.id}&type=1">
+                            <i class="discuss-icon"></i>
+                            <em class="num">{$info.comment}</em>
+                        </a>
                     </span>
                </div>
            </div>
@@ -44,7 +46,11 @@
 		</div>
         <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
         <script src="__STATIC__/js/public/public.js"></script>
+        <script src="__PUBLIC__/public/jquery.min.js"></script>
+        <script src="__PUBLIC__/public/layer/layer.js"></script>
         <script src="__STATIC__/js/example/like.js"></script>
-        <script src="__STATIC__/js/home/index.js"></script>
+        {gt name="$user_id" value="0"}
+            <script src="__STATIC__/js/home/index.js"></script>
+        {/gt}
 	</body>
 </html>
