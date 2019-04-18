@@ -79,63 +79,13 @@ class Goods extends Base
                 $is_focus = 1;
             }
             
-            // 显示该商品未失效的优惠券
-            $where1 = [
-                'g.goods_id' =>$id,
-                'g.status' => 0,
-                'u.status' => 0   
+            $where = [
+                'goods_id' => $id,
+                'status' => 0,
+                
             ];
 
-
-            //判断用户是否已经使用该卷,用户在该商品使用过的券  
-            // $is_use = Db::name('user_coupon')->where(['goods_id'=>$id,'status'=>1])->select(); 
-            // 可以获得券id
-            // if($is_use){
-            //     foreach ($is_use as $k => $v) {
-            //         # code...
-            //         $ids[] = $v['coupon_id'];
-            //     }
-            // }
-
-
-            //查询券id对应的券
-            // $coupon = Db::name('goods_coupon')->whereIn('id',$ids)->select();
-
-            // 可以知道限制次数
-
-
-            // 判断该券的使用次数
-            // foreach ($ids as $k1 => $v1) {
-            //     # code...
-            //     // dump($v1);
-            //     $use_num = Db::name('user_coupon')->where(['coupon_id'=>$v1,'status'=>1])->count();
-            //     // $num = count($use_num);
-            //     $t[$v1] = $use_num;
-
-            // }
-            // $this->assign('num',$t);      
-            // $use_num = Db::name('user_coupon')->whereIn('coupon_id',$ids)->select(); 
-            // dump($use_num);
-
-            // 判断卷是否可以重复次数
-
-            // 最终效果：如果该券超过限制领取次数，则不显示该券
-            // 显示该商品所有券
-            $coupon1 = Db::name('goods_coupon')->where($where1)->where('deadline', '>= time', time())->select();  
-            $coupon = Db::name('goods_coupon')
-                    ->alias('g')
-                    ->join('user_coupon u', 'g.id = u.coupon_id')
-                    ->where($where1)
-                    ->where('deadline', '>= time', time())
-                    ->field('g.*')
-                    ->select();  
-                    dump($coupon1);     
-            // $where2 = [
-            //     'goods_id' => $id,
-            //     'status'   => 0
-            // ];
-
-
+            $coupon = Db::name('goods_coupon')->where($where)->where('deadline', '>= time', time())->select();  
 
             $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
             // 用来判断用户是否已经领取优惠券
