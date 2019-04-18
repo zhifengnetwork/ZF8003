@@ -37,7 +37,10 @@
 				<div class="fl"><span>头像</span></div>
 				<div class="fr">
 					<img class="avatarPic_icon" id="avatarPic" {if condition="$user.avatar"}src="{$user.avatar}"{else /}src="/public/mobile-default-user-icon.png"{/if} />
-					<input type="file" id="selectAvatar" accept="image/*" name="avatar-pic">
+					<form method="POST" id="hidden-form" action="/mobile/user/set_icon" enctype="multipart/form-data" target="image-ajaxR" style="display:none;">
+						<input type="file" accept="image/*" name="icon" id="hidden-icon" />
+					</form>
+					<iframe style="display:none;" name="image-ajaxR"></iframe>
 				</div>
 			</div>
 
@@ -58,7 +61,7 @@
 						<!-- public 下拉框 -->
 						<div class="drop_down_box">
 							<div class="drop_down_inp_box">
-								<input type="text" class="drop_down_inp" placeholder="请输入新昵称">
+								<input type="text" class="drop_down_inp" id="new_nickname" placeholder="请输入新昵称">
 							</div>
 							<!--按钮-->
 							<div class="drop_down_btn_box">
@@ -71,15 +74,16 @@
 						<div class="item_top drop_own" data-state="1" onclick="dropDownFun(this)">
 							<p class="fl"><span>性别</span></p>
 							<p class="fr">
-								<span id="sexVal">{$user.sex_name}</span>
+								<span id="sexVal" data-sex="{$user.sex}">{$user.sex_name}</span>
 							</p>
 							<img  src="__STATIC__/img/my/youjian2@2x.png" />
 						</div>
 						<!-- public 下拉框 -->
 						<div class="drop_down_box clearfloat">
 							<div class="drop_down_gender_box clearfloat">
-								<p class="drop_down_gende_left choice_but drop_down_gende_active" data-val="male">男</p>
-								<p class="drop_down_gende_right choice_but"  data-val="female">女</p>
+								<p class="drop_down_gende_left choice_but {if condition='$user.sex eq 1'}drop_down_gende_active{/if}" data-val="male" data-sex='1'>男</p>
+								<p class="drop_down_gende_right choice_but {if condition='$user.sex eq 2'}drop_down_gende_active{/if}"  data-val="female" data-sex='2'>女</p>
+								<p class="drop_down_gende_right choice_but {if condition='$user.sex eq 0'}drop_down_gende_active{/if}"  data-val="female" data-sex='0'>保密</p>
 							</div>
 						</div>
 					</div>
@@ -96,13 +100,13 @@
 							<!--绑定手机-->
 							<div class="drop_down_bind_wrap">
 								<div class="drop_down_bind_box">
-									<p class="drop_down_bind_box_titile">绑定手机号:</p>
-									<input class="drop_down_bind_box_inp" type="number" class="" placeholder="请输入绑定手机号">
+									<p class="drop_down_bind_box_titile">{if condition="$user.mobile"}修改{else /}绑定{/if}手机号:</p>
+									<input class="drop_down_bind_box_inp" type="number" id="mobile" class="" placeholder="请输入手机号">
 								</div>
 							</div>
 							<!--按钮-->
 							<div class="drop_down_btn_box">
-								<p class="drop_down_btn binding_but">绑定</p>
+								<p class="drop_down_btn binding_but">确定</p>
 							</div>
 						</div>
 					</div>
@@ -213,43 +217,61 @@
 				/**
 				 * 上传头像
 				 * **/
-			    $("#selectAvatar").change(function (e) {
-			        for (var i = 0; i < e.target.files.length; i++) {
-			            var file = e.target.files.item(i);
-			            //验证是否为图片，不是就跳出循环
-			            if (!(/^image\/.*$/i.test(file.type))) {
-			                alert("请选择图片上传！")
-			                continue;
-			            }
-			            //实例化FileReader API  
-			            var freader = new FileReader();
-			            freader.readAsDataURL(file);
-			            freader.onload = function (e) {
-			                $("#avatarPic").attr("src", e.target.result);  //显示图片
-			            }
-			        }
-    			});
+				 
+				$("#avatarPic").on('click', function(){
+					
+					$("#hidden-icon").click();
+				 });
+				$("#hidden-icon").on('change', function(e){
+					
+					var file = e.target.files.item(0);
+					if (!(/^image\/.*$/i.test(file.type))) {
+						layer.msg("请选择图片上传！",{icon:5});
+						return false;
+					}
+					$('#hidden-form').submit();
+
+				});
+
     			
     			/*修改昵称*/
     			$('.modify_nickname').on('click',function(){
-    				
-    				/*收起下拉框*/
-    				retractFun($(this));
-    			})
+    				var new_nickname = $('#new_nickname').val();
+					if(new_nickname){
+						go_ajax_post('nickname',new_nickname);
+					}
+    			});
+
+				function go_ajax_post(t,value){
+					$.post('/mobile/user/edit_userInfo',{t:t,value:value},function(res){
+						if(res.status == 1){
+							window.location.replace(location.href);
+						}else{
+							layer.msg(res.msg,{icon:5});
+						}
+					});
+				};
+				
     			/*选择性别*/
     			$('.drop_down_gender_box .choice_but').on('click',function(){
     				$(this).addClass('drop_down_gende_active').siblings().removeClass('drop_down_gende_active');
-    				/*更改渲染信息*/
-    				$('#sexVal').html($(this).html());
-    				console.log('性别选择:',$(this).attr('data-val'));
-    				/*收起下拉框*/
-    				retractFun($(this));
-    			})
+
+					var default_sex = $('#sexVal').data('sex');
+					var sex = $(this).data('sex');
+					if(sex != default_sex){
+						go_ajax_post('sex',sex);
+					}
+    			});
+
     			/*绑定手机号*/
     			$('.binding_but').on('click',function(){
-    				
-    				/*收起下拉框*/
-    				retractFun($(this));
+					
+					var mobile = $('#mobile').val();
+					if(!(/^1[34578]\d{9}$/.test(mobile))){
+						layer.msg('手机号格式错误！',{icon:5});
+						return false;
+					}
+					go_ajax_post('mobile',mobile);
     			})
     			
     			/*绑定手机号 input*/

@@ -22,6 +22,7 @@
             </div>
             <!-- body -->
             <div class="coupon_box">
+                {if condition = "isset($list) AND !empty($list)"}
                 {volist name="list" id="vo"}
                  <div class="coupon_list">
                    
@@ -35,7 +36,7 @@
                             <div class="price_box">
                                 ￥
                                 <span class="price">{$vo.money}</span>
-                                <span class="original">满{$vo.quota}减{$vo.money}</span>
+                                <span class="original">满{$vo.quota1}减{$vo.money1}</span>
                             </div>
                             <p class="pro_ori">{$vo.name}</p>
                             <p class="time publicEllipsis" >{:date('Y-m-d',$vo.addtime)}-{:date('Y-m-d',$vo.etime)}</p>
@@ -49,6 +50,12 @@
                     
                  </div>
                 {/volist}
+                {else/}
+                <div>
+                    暂无数据
+                </div>
+                
+                {/if}
             </div>
         </div>
 </body>

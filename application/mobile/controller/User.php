@@ -19,7 +19,6 @@ class User extends Base
         
         # 验证登录
         $this->Verification_User();
-        $this->user_id = session('user.id');
     }
 
     /** 
@@ -31,6 +30,19 @@ class User extends Base
 
 
         $this->assign('user', $this->user);
+        return $this->fetch();
+    }
+
+    /**
+     * 基因查询
+     */
+    public function my_gene(){
+
+        $gene = '';
+        $result = $gene ? 'success' : 'error';
+
+        $this->assign('gene', $gene);
+        $this->assign('result', $result);
         return $this->fetch();
     }
 
@@ -47,6 +59,8 @@ class User extends Base
      */
     public function distribution()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -55,6 +69,8 @@ class User extends Base
      */
     public function team_list()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -63,6 +79,8 @@ class User extends Base
      */
     public function commission()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -71,6 +89,8 @@ class User extends Base
      */
     public function performance()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -506,14 +526,28 @@ class User extends Base
     public function collection()
     {
         $user_id = $this->user_id;
+        // 删除收藏
+        if($_POST){
+            $goods_id = input('post.goods_id');
+            $where = [
+                'goods_id' => $goods_id,
+                'user_id'  => $user_id
+            ];
+            $del_foc = Db::name('goods_focus')->where($where)->delete();
+            if($del_foc){
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else{
+                return json(['status'=>0,'msg'=>'删除失败']);
+            }
+        }
 
-        $info = Db::name('goods_focus')
+        $list = Db::name('goods_focus')
             ->alias('g')
             ->join('goods go', 'g.goods_id = go.id')
             ->where('user_id', $user_id)
             // ->field('u.*,g.name')
-            ->select();
-        $this->assign('list', $info);
+            ->select();   
+        $this->assign('list', $list);
         return $this->fetch();        
     }
 
@@ -578,14 +612,18 @@ class User extends Base
     public function coupons()
     {
         $user_id = $this->user_id;
-
+        $where = [
+           'user_id' => $user_id,
+           'u.status'  => 0
+        ];
+        // 未使用未过期的优惠券
         $list = Db::name('user_coupon')
                 ->alias('u')
                 ->join('goods_coupon g', 'u.coupon_id = g.id')
-                ->where('user_id', $user_id)
+                ->where($where)
                 ->where('etime', '>= time', time())
-                ->field('u.*,g.name')                
-                ->select();
+                ->field('u.*,g.name,g.quota quota1,g.money money1')                
+                ->select(); 
         $this->assign('list',$list);
         return $this->fetch();
     }
@@ -596,10 +634,63 @@ class User extends Base
     public function set_up()
     {
         $user = $this->user;
-        $user['avatar'] = $user['avatar'] ? '/public/images/users/avatar/'.$user['avatar'] : '';
         $user['sex_name'] = [0=>'保密',1=>'男',2=>'女'][$user['sex']]; 
 
         $this->assign('user',$user);
         return $this->fetch();
+    }
+
+    /**
+     * 修改个人信息
+     */
+    public function edit_userInfo(){
+        $t = isset($_POST['t']) && in_array($_POST['t'],['nickname','sex','mobile']) ? trim($_POST['t']) : '';
+        $value = isset($_POST['value']) ? trim($_POST['value']) : '';
+        $user_id = $this->user_id;
+        if(!$user_id){
+            return json(['status'=>0,'msg'=>'用户未登陆']);
+        }
+        if(!$t || $value == ''){
+            return json(['status'=>0,'msg'=>'请求参数错误']);
+        }
+        $res = Db::name('users')->where('id', $user_id)->update([$t => $value]);
+        if($res){
+            $user = Db::name('users')->find($user_id);
+            Session::set('user',$user);
+            $this->user = $user;
+            return json(['status'=>1,'msg'=>'操作成功！']);
+        }else{
+            return json(['status'=>0,'msg'=>'操作失败！']);
+        }
+        exit;
+    }
+
+    /**
+     * 修改用户头像
+     */
+    public function set_icon(){
+
+        if(isset($_FILES['icon'])){
+            $user_id = $this->user_id;
+            if(!$user_id){
+                return json(['status'=>0,'msg'=>'用户未登录！']);
+            }
+            $file = request()->file('icon');
+            $files_dir = ROOT_PATH . 'public/images/user/icon/';
+            
+            $info = $file->move($files_dir, $this->user_id.'-icon.png');
+            if($info){
+                $src_dir = '/public/images/user/icon/';
+                $savename = str_replace('\\','/',$info->getSaveName());
+                $src_dir .= $savename.'?t='.time();
+                Db::name('users')->where('id',$user_id)->update(['avatar'=>$src_dir]);
+                $user = $this->user;
+                $user['avatar'] = $src_dir;
+                Session::set('user',$user);
+                $this->user =  $user;
+                echo "<script>parent.$('#avatarPic').attr('src','$src_dir');</script>";
+            }
+        }
+        exit;
     }
 }
