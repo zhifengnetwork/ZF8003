@@ -47,6 +47,8 @@ class User extends Base
      */
     public function distribution()
     {
+        layer_msg('功能未开放...');
+        exit;
         return $this->fetch();
     }
 
@@ -55,6 +57,8 @@ class User extends Base
      */
     public function team_list()
     {
+        layer_msg('功能未开放...');
+        exit;
         return $this->fetch();
     }
 
@@ -63,6 +67,8 @@ class User extends Base
      */
     public function commission()
     {
+        layer_msg('功能未开放...');
+        exit;
         return $this->fetch();
     }
 
@@ -71,6 +77,8 @@ class User extends Base
      */
     public function performance()
     {
+        layer_msg('功能未开放...');
+        exit;
         return $this->fetch();
     }
 
