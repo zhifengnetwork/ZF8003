@@ -15,7 +15,9 @@
     <div class="login">
         <div class="login-in">
             {if condition="$user"}
-                <span class="fl"><img src="{$user.avatar}" onerror="this.src='/public/mobile-default-user-icon'"></span>
+                <span class="fl" onclick="javascript:location.href='/index/user/index'">
+                    <img src="{$user.avatar}" onerror="this.src='/public/mobile-default-user-icon'">
+                </span>
                 <a class="outBtn fl" href="javascript:void(0)" onclick="logout()">退出</a>
             {else /}
                 <a href="/index/login/login">登录</a>

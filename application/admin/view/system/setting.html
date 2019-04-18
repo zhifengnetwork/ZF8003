@@ -97,6 +97,24 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">
 						<span class="c-red">*</span>
+						关注二维码：</label>
+					<div class="formControls col-xs-8 col-sm-9 logo-image" id="logo-image-3">
+						{empty name="$config.weixin_qrcode"}
+							<a onclick="upload_image(3);" id="add-goods-image-3">
+								<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+							</a>
+						{else/}
+							<a>
+								<img src="{$config.weixin_qrcode}" alt="上传图片"/>
+								<input type="hidden" id="website-weixin_qrcode" name="weixin_qrcode" value="{$config.weixin_qrcode}" class="input-text">
+								<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,3,'{$config.weixin_qrcode}')">&#xe6e2;</i>
+							</a>
+						{/empty}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">
+						<span class="c-red">*</span>
 						关键词：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" id="website-Keywords" name="key_words" placeholder="5个左右,8汉字以内,用英文,隔开" value="{$config.key_words ?? ''}" class="input-text">
@@ -202,7 +220,16 @@
 			var str3 = str1 + num + ' ' + str2 + num;
 			var size = $(str_logo).size();
 			var type = "{$type}";
-			var name = (num == 1) ? 'web_logo' : 'title_logo';
+			var name = '';
+			if(num == 1){
+				name = 'web_logo';
+			}
+			if(num == 2){
+				name = 'title_logo';
+			}
+			if(num == 2){
+				name = 'weixin_qrcode';
+			}
             if(size > 0){
                 if($(str3).length == 0) {
 					$.ajax({
@@ -213,13 +240,7 @@
 							if (data.code == 1) {
 								layer.msg('删除成功！', {icon: 1, time: 1000},function(){
 									window.location.href = "/admin/system/setting";
-									//元素不存在时执行的代码
 									
-									// var _html = ''+
-									// 	'<a onclick="upload_image(' + num + ');" id="' + str2 + '">'+
-									// 		'<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
-									// 	'</a>';
-									// $(str_logo).append(_html);
 								});
 							} else {
 								layer.msg('删除失败！', {icon: 2, time: 1000});
@@ -259,6 +280,9 @@
 			var name = 'web_logo';
 			if (flag == 2) {
 				name = 'title_logo';
+			}
+			if(flag == 3){
+				name = 'weixin_qrcode';
 			}
 
             var _html = ''+

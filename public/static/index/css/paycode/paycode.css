@@ -1,0 +1,193 @@
+.left_text{
+	
+	float: left;
+	
+}
+.left_text{
+	
+	display:inline-block;
+	width:400px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow: ellipsis;
+	/*border: 1px solid green;*/
+	color: #545454;
+
+}
+.text{
+	
+	padding-top: 80px;
+	height: 30px;
+	line-height: 30px;
+	/*border: 1px solid green;*/
+	color: #545454;
+	
+}
+.right_text{
+	
+	float: right;
+	color: red;
+	
+}
+.qrcode_ear{
+	
+	height: 640px;
+	background: white;
+	
+	
+}
+.qrcode_ear_center{
+	
+	position: relative;
+	width: 680px;
+	height: 600px;
+	margin: auto;
+	/*border: 1px solid red;*/
+	box-sizing: border-box;
+
+}
+.qrcode_ear_left{
+	
+	position: absolute;
+	display: inline-block;
+	width: 50%;
+	/*border: 1px solid green;*/
+	text-align: center;
+	padding-top: 80px;
+	box-sizing: border-box;
+	
+	
+}
+.qrcode_ear_right{
+	
+	display: inline-block;
+	width: 50%;
+	
+}
+.qrcode_eara{
+	
+	width: 280px;
+	height:320px;
+	border: 1px solid #BCBCBC;
+	margin: auto;
+	padding-bottom: 18px;
+	box-sizing: border-box;
+
+}
+.erweima{
+	padding-top: 20px;
+	width: 240px;
+	height: 240px;
+	box-sizing: border-box;
+
+}
+.saoyisao{
+	
+	position: relative;
+	width: 60%;
+	margin: 0 auto;
+	/*border: 1px solid green;*/
+	font-size: 14px;
+	margin-top: 30px;
+	color: #777777;
+	
+	
+	
+
+}
+.saoyisao img{
+	
+	position: absolute;
+	bottom: 0px;
+	top: 50%;
+	left: 0%;
+	transform: translate(0%,-50%);
+	-webkit-transform: translate(0,-50%);
+	-ms-transform: translate(0,-50%);
+	-moz-transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	width: 30px;
+
+}
+.saoyisao span{
+
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	transform: translate(0,-50%);
+	-webkit-transform: translate(0,-50%);
+	-ms-transform: translate(0,-50%);
+	-moz-transform: translate(0,-50%);
+	-o-transform: translate(0,-50%);
+	/*border: 1px solid red;*/
+	text-align: left;
+	left: 40px;
+
+}
+.qrcode_ear_right{
+	
+	position: absolute;
+	top: -20px;
+	right: 0px;
+	padding-top: 80px;
+	box-sizing: border-box;
+	
+	
+}
+.payment_button{
+	
+	position: absolute;
+	bottom: 0px;
+	left: 50%;
+	transform: translate(-50%,0%);
+	-moz-transform: translate(-50%,0%);
+	-ms-transform: translate(-50%,0%);
+	-o-transform: translate(-50%,0%);
+	-webkit-transform: translate(-50%,0%);	
+	width: 300px;
+	height: 45px;
+	line-height: 45px;
+	color: white;
+	background:#37AFE6;
+	text-align: center;
+	font-size: 16px;
+	border-radius: 10px;
+	
+	
+}
+.footer{
+	
+	margin-top: 120px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
