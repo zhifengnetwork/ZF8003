@@ -50,24 +50,24 @@
 		<script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
 		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 		<script>
-                   function del(goods_id){
-					   layer.confirm('您确定删除吗？', {
-						   btn: ['是', '否'] //按钮
-					   },  function () {
-							$.post("/mobile/user/collection", {'goods_id':goods_id }, function (data) {
-									if(data.status == 1){
-										layer.msg(data.msg, { time: 1000 },function () {
-										        window.location()    	
-										})                                             
-									}else{
-										layer.msg(data.msg, { time: 1000 },function () {
-											    window.location()
-										})  
-									}
-							}); 
-					   });					   
+            function del(goods_id){
+							layer.confirm('您确定删除吗？', {
+								btn: ['是', '否'] //按钮
+							},  function () {
+									$.post("/mobile/user/collection", {'goods_id':goods_id }, function (data) {
+											if(data.status == 1){
+												layer.msg(data.msg, { time: 1000 },function () {
+																location.reload()    	
+												})                                             
+											}else{
+												layer.msg(data.msg, { time: 1000 },function () {
+															location.reload()
+												})  
+											}
+									}); 
+							});					   
 
-				   }
+				  }
 
 		</script>
 	</body>
