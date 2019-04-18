@@ -40,7 +40,7 @@
 							<!--<p>身份证正面</p>-->
 							<div class="imageEchoBox">
 								<!--回显的图片-->
-								<img class="preViewImg" src="__STATIC__/images/personal/ren.png"
+								<img class="preViewImg" src="{$avatar}"
 									style="width: 80px;height: 80;border-radius: 50%;" />
 								<!--上传图片 tyle='file'-->
 								<a class="uploadFile2" href="#">修改头像</a>
@@ -153,8 +153,33 @@
 							//创建一个image对象，给canvas绘制使用 
 							image.onload = function () {
 								/*图片 回显 */
-								that.siblings(".preViewImg").eq(ind).attr("src", result);
-								console.log(result);
+								$.ajax({
+									url: '/index/user/upload',
+									type: 'post',
+									dataType: 'json',
+									data: {
+										dataImg: image.src
+									},
+									success: function (msg) {
+										if (msg.code == 200) {
+											// $('#qrcode_addr').val(msg.imgUrl);
+											// $('.text').html('成功');
+											// console.log(msg);
+											layer.msg(msg.msg, { time: 1000 },function(){
+												location.reload()
+											})
+											
+										} else {
+											// $('.text').html('失败');
+											layer.msg(msg.msg, { time: 1000 }, function () {
+												location.reload()
+											})
+											return false;
+										}
+									}
+								});
+								/*ajax=> 回显图片*/
+								that.siblings(".preViewImg").attr("src", result);
 							}
 						}
 					}
