@@ -3,7 +3,7 @@
  * 系统设置
  */
 
-namespace app\admin\Controller;
+namespace app\admin\controller;
 
 use think\Db;
 use think\Exception;

@@ -135,7 +135,7 @@
             console.log(textVal)
             $.ajax({
                 type: "POST",
-                url: '/mobile/article/handle_comment',
+                url: '/mobile/comment/handle_comment',
                 data: {'id':id,'comment':textVal,'type':1},
                 success: function(data){
                     if (data.code == 1) {
@@ -181,7 +181,7 @@
                 loadUpFn: function (me) {
                     $.ajax({
                         type: 'GET',
-                        url: '/mobile/article/get_comment',
+                        url: '/mobile/comment/get_comment',
                         dataType: 'json',
                         data: {'id':id,'type':type,'page':page,'count':count},
                         success: function (data) {
@@ -235,7 +235,7 @@
                     $.ajax({
                         type: 'GET',
                         // url: '/mobile/article/get_comment',
-                        url: '/mobile/article/get_comment',
+                        url: '/mobile/comment/get_comment',
                         dataType: 'json',
                         data: {'id':id,'type':type,'page':page,'count':count},
                         success: function (data) {
