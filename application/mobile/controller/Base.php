@@ -51,6 +51,8 @@ class Base extends Controller
             $this->user = Session::get('user');
             $this->user_id = Session::get('user.id');
         }
+
+        Session::set('_url',"/$this->module/$this->controller/$this->action");
     }
 
 

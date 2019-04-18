@@ -19,7 +19,6 @@ class User extends Base
         
         # 验证登录
         $this->Verification_User();
-        $this->user_id = session('user.id');
     }
 
     /** 
@@ -31,6 +30,19 @@ class User extends Base
 
 
         $this->assign('user', $this->user);
+        return $this->fetch();
+    }
+
+    /**
+     * 基因查询
+     */
+    public function my_gene(){
+
+        $gene = '';
+        $result = $gene ? 'success' : 'error';
+
+        $this->assign('gene', $gene);
+        $this->assign('result', $result);
         return $this->fetch();
     }
 
@@ -47,6 +59,8 @@ class User extends Base
      */
     public function distribution()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -55,6 +69,8 @@ class User extends Base
      */
     public function team_list()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -63,6 +79,8 @@ class User extends Base
      */
     public function commission()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
@@ -71,6 +89,8 @@ class User extends Base
      */
     public function performance()
     {
+        layer_error('功能暂未开放！');
+        exit;
         return $this->fetch();
     }
 
