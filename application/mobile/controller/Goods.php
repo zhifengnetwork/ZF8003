@@ -160,6 +160,53 @@ class Goods extends Base
 
 
 
+    public function check_order(){
+        $goods_id = isset($_GET['goods_id']) ? intval($_GET['goods_id']) : 0;
+        $info = Db::name('goods')->find($goods_id);
+        if(!$info){
+            layer_error('商品信息不存在或已下架！');
+            exit;
+        }
+        if($info['status'] != 1 || $info['is_del'] == 1){
+            layer_error('商品信息不存在或已下架！');
+            exit;
+        }
+        if($info['is_stock'] == 1 && $info['stock'] < 1){
+            layer_error('商品库存不足，无法购买！');
+            exit;
+        }
+
+        # 用户验证
+        if(!$this->user_id){
+            Session::set('re_url', '/mobile/goods/check_order?goods_id='.$goods_id);
+            $this->redirect('/mobile/index/login');
+        }
+        
+        # 默认地址
+        $def_address_id = $this->user['default_address_id'];
+        if($def_address_id){
+            $def_address = Db::name('user_address')->find($def_address_id);
+        }else{
+            $def_address = Db::name('user_address')->where('user_id', $this->user_id)->find();
+            if($def_address){
+                $def_address_id = $def_address['id'];
+            }
+        }
+
+        
+
+
+        $this->assign('return', '/mobile/goods/goodInfo?id='.$goods_id);
+        $this->assign('user', $this->user);
+        $this->assign('def_address', $def_address);
+        $this->assign('def_address_id', $def_address_id);
+        $this->assign('info', $info);
+        $this->assign('goods_id', $goods_id);
+        return $this->fetch();
+    }
+
+
+
     public function order()
     {
         // 商品id 

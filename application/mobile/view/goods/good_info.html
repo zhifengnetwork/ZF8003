@@ -124,7 +124,7 @@
 					</p>
 				</a>
 				{/if}
-				<a class="store_buy" onclick="pageJump('{:url('goods/order',array('id'=>$info.id))}')">
+				<a class="store_buy" onclick="javascript:location.href='/mobile/goods/check_order?goods_id={$info.id}'">
                       立即购买
 				</a>
 

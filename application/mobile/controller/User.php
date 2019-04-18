@@ -353,10 +353,15 @@ class User extends Base
      */
     public function my_address()
     {
+        $re_url = isset($_GET['re_url']) ? trim($_GET['re_url']) : '';
+        if($re_url){
+            Session::set('re_url', str_replace('`','',$re_url));
+        }
         $user_id = $this->user_id;
         $address_list = Db::name('user_address')->where('user_id',$user_id)->select();
         $list = $this->address_join($address_list);
-        
+
+        $this->assign('return',Session::has('re_url') ? Session::get('re_url') : '/mobile/user/index');
         $this->assign('list',$list);
         return $this->fetch();
     }
@@ -626,11 +631,134 @@ class User extends Base
      */
     public function set_up()
     {
+
+
+        // $user = Db::name('users')->where('id',$this->user_id)->find();
+
+        // Session::set('user', $user);
+        // $this->user = $user;
+        // dump($user);exit;
         $user = $this->user;
-        $user['avatar'] = $user['avatar'] ? '/public/images/users/avatar/'.$user['avatar'] : '';
         $user['sex_name'] = [0=>'保密',1=>'男',2=>'女'][$user['sex']]; 
+
 
         $this->assign('user',$user);
         return $this->fetch();
     }
+
+
+    /**
+     * 绑定邮箱
+     */
+    public function edit_email(){
+        
+        $user_email = $this->user['email'];
+        if($user_email){
+            $this->redirect('index');
+        }
+
+        if($_POST){
+            $pass_id = isset($_POST['pass_id']) ? trim($_POST['pass_id']) : '';
+            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+            $code = isset($_POST['code']) ? trim($_POST['code']) : '';
+
+            $user_id = $this->user_id;
+
+            if(!$user_id){
+                return json(['status'=>0,'msg'=>'用户未登录，非法访问']);
+            }
+            
+            $info = Db::name('users')->field('email')->find($user_id);
+            if($info['email']){
+                return json(['status'=>0,'msg'=>'暂不开放修改邮箱账号功能！']);
+            }
+
+            if(!$pass_id){
+                return json(['status'=>0,'msg'=>'系统错误，请刷新页面后重试！']);
+            }
+            
+            if(!check_email($email)){
+                return json(['status'=>0,'msg'=>'邮箱格式错误！']);
+            }
+
+            $code_info = Db::name('mail_code')->where(['type'=>'edit_mail', 'sn'=>$pass_id, 'code'=>$code])->find();
+            if(!$code_info){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            }
+
+            $check_mail = Db::name('users')->field('id')->where('email',$email)->find();
+            if($check_mail){
+                return json(['status'=>0,'msg'=>'邮箱已被使用，请更换！']);
+            }
+
+            
+            $sql = "update `zf_users` set `email` = '$email', `email_verification` = '`' where `id` = '$user_id'";
+            $res = Db::execute($sql);
+
+            if($res){
+                $user = Db::name('users')->find($user_id);
+                Session::set('user',$user);
+                $this->user = $user;
+                $re_url = Session::has('re_url') ? Session::get('re_url') : '/mobile/user/set_up';
+                return json(['status'=>1,'msg'=>'邮箱绑定成功！', 'url'=> $re_url]);
+            }
+
+            return json(['status'=>0,'msg'=>'邮箱绑定成功，请重试！']);
+            exit;
+        }
+
+        $this->assign('pass_id', md5(time().rand(1000,9999).rand(1000,9999)));
+        return $this->fetch();
+    }
+
+
+     /**
+     * 修改个人信息
+     */
+    public function edit_userInfo(){
+        $t = isset($_POST['t']) && in_array($_POST['t'],['nickname','sex','mobile']) ? trim($_POST['t']) : '';
+        $value = isset($_POST['value']) ? trim($_POST['value']) : '';
+        $user_id = $this->user_id;
+        if(!$user_id){
+            return json(['status'=>0,'msg'=>'用户未登陆']);
+        }
+        if(!$t || $value == ''){
+            return json(['status'=>0,'msg'=>'请求参数错误']);
+        }
+        $res = Db::name('users')->where('id', $user_id)->update([$t => $value]);
+        if($res){
+            $user = Db::name('users')->find($user_id);
+            Session::set('user',$user);
+            $this->user = $user;
+            return json(['status'=>1,'msg'=>'操作成功！']);
+        }else{
+            return json(['status'=>0,'msg'=>'操作失败！']);
+        }
+        exit; 
+    }
+    /**
+     * 修改用户头像
+     */
+    public function set_icon(){
+        if(isset($_FILES['icon'])){
+            $user_id = $this->user_id;
+            if(!$user_id){
+                return json(['status'=>0,'msg'=>'用户未登录！']);
+            }
+            $file = request()->file('icon');
+            $files_dir = ROOT_PATH . 'public/images/user/icon/';
+            
+            $info = $file->move($files_dir, $this->user_id.'-icon.png');
+            if($info){
+                $src_dir = '/public/images/user/icon/';
+                $savename = str_replace('\\','/',$info->getSaveName());
+                $src_dir .= $savename.'?t='.time();
+                Db::name('users')->where('id',$user_id)->update(['avatar'=>$src_dir]);
+                $this->user['avatar'] =  $src_dir;
+                echo "<script>parent.$('#avatarPic').attr('src','$src_dir');</script>";
+            }
+        }
+        exit;
+    }
+
 }
