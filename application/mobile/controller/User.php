@@ -506,7 +506,19 @@ class User extends Base
     public function collection()
     {
         $user_id = $this->user_id;
-
+        if($_POST){
+            $goods_id = input('post.goods_id');
+            $where = [
+              'user_id' => $this->user_id,
+              'goods_id'=> $goods_id
+            ];
+            $res = Db::name('goods_focus')->where($where)->delete();
+            if($res){
+                return json(['status'=>1,'msg'=>'删除成功']);
+            }else{
+                return json(['status' => 1,'msg'=>'删除失败']);
+            }
+        }
         $info = Db::name('goods_focus')
             ->alias('g')
             ->join('goods go', 'g.goods_id = go.id')
@@ -595,8 +607,8 @@ class User extends Base
                 ->join('goods_coupon g', 'u.coupon_id = g.id')
                 ->where('user_id', $user_id)
                 ->where('etime', '>= time', time())
-                ->field('u.*,g.name')                
-                ->select();
+                ->field('u.*,g.name,g.quota quota1,g.money money1')                
+                ->select();       
         $this->assign('list',$list);
         return $this->fetch();
     }
