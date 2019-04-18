@@ -335,7 +335,7 @@ class Article extends Base{
     # 评论审核
     public function audit()
     {
-        $list = Db::name('comment')->where(['type'=>1])->order('status','asc')->paginate(3,false)->each(function($item, $key){
+        $list = Db::name('comment')->where(['type'=>1])->order('status','asc')->paginate(15,false)->each(function($item, $key){
             $id = $item['user_id'];
             $result = Db::name('users')->where(['id'=>$id])->field('nickname,mobile')->find();
             $item['nickname'] = $result['nickname'] ? $result['nickname'] : $result['mobile'];
