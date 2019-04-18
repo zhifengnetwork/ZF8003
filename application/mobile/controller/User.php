@@ -317,7 +317,7 @@ class User extends Base
         $panme = ['weixin'=>'微信','alipay'=>'支付宝'];
         $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
 
-        $this->assign('panme', $panme);
+        $this->assign('pname', $pname);
         $this->assign('sname', $sname);
         $this->assign('lists', $lists);
         return $this->fetch();
