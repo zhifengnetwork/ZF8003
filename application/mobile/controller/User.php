@@ -120,7 +120,21 @@ class User extends Base
                         'desc' => $info['attach'],
                         'init_time' => $info['addtime'],
                     ];
+
+
+                    $recharge_log = [
+                        'user_id' => $info['user_id'],
+                        'money' => $info['money'],
+                        'body' => $info['body'],
+                        'attach' => $info['attach'],
+                        'addtime' => time(),
+                        'init_time' => $info['addtime'],
+                        'platform' => 'weixin',
+                        'status' => 1,
+                    ];
+
                     Db::name('transaction_log')->insert($transaction);
+                    Db::name('recharge')->insert($recharge_log);
                     Db::name('wxpay_cache')->where('sn', $sn)->delete();
                     if($info['user_id'] == $this->user_id){
                         $user = Db::name('users')->find($info['user_id']);
