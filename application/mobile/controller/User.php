@@ -570,7 +570,7 @@ class User extends Base
      */
     public function set_up()
     {
-        $user = Db::name('users')->field('sex,mobile,nickname,avatar')->find($this->user_id);
+        $user = $this->user;
         $user['sex_name'] = [0=>'保密',1=>'男',2=>'女'][$user['sex']]; 
 
         $this->assign('user',$user);
@@ -621,7 +621,10 @@ class User extends Base
                 $savename = str_replace('\\','/',$info->getSaveName());
                 $src_dir .= $savename.'?t='.time();
                 Db::name('users')->where('id',$user_id)->update(['avatar'=>$src_dir]);
-                $this->user['avatar'] =  $src_dir;
+                $user = $this->user;
+                $user['avatar'] = $src_dir;
+                Session::set('user',$user);
+                $this->user =  $user;
                 echo "<script>parent.$('#avatarPic').attr('src','$src_dir');</script>";
             }
         }
