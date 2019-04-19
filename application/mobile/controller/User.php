@@ -34,6 +34,13 @@ class User extends Base
         return $this->fetch();
     }
 
+    # 我的基因
+    public function my_gene(){
+
+        $this->assign('result', 'error');
+        return $this->fetch();
+    }
+
     /**
      * 我的订单
      */
