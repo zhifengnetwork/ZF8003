@@ -67,20 +67,23 @@ class Money extends Base
         $where['r.id'] = ['>', '0'];
         $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
         //搜索条件
-        if($keywords){
+         if($keywords){
             $page = 0;
             $total = 0;
-            if($keywords['m_conditions']){
-                $m_conditions = str_replace(' ', '', $keywords['m_conditions']);
+            $m_conditions1 = trim($keywords['m_conditions']);
+            $datemin1      = trim($keywords['datemin']);
+            $datemax1      = trim($keywords['datemax']);
+            if($m_conditions1){
+                $m_conditions = str_replace(' ', '', $m_conditions1);
                 $where['u.nickname'] = ['like',"%$m_conditions%"];
             }
-            if ($keywords['datemin'] && $keywords['datemax']) {
-                $datemin = strtotime($keywords['datemin']);
-                $datemax = strtotime($keywords['datemax']);
+            if ($datemin1 && $datemax1) {
+                $datemin = strtotime($datemin1);
+                $datemax = strtotime($datemax1);
                 $where['addtime'] = [['>= time',$datemin],['<= time',$datemax],'and'];
-            } elseif ($keywords['datemin']) {
+            } elseif ($datemin1) {
                 $where['addtime'] = ['>= time',strtotime($keywords['datemin'])];
-            } elseif ($keywords['datemax']) {
+            } elseif ($datemax1) {
                 $where['addtime'] = ['<= time',strtotime($keywords['datemax'])];
             }
         }
@@ -109,22 +112,25 @@ class Money extends Base
         if($keywords){
             $page = 0;
             $total = 0;
-            if($keywords['m_conditions']){
-                $m_conditions = str_replace(' ', '', $keywords['m_conditions']);
+            $m_conditions1 = trim($keywords['m_conditions']);
+            $datemin1      = trim($keywords['datemin']);
+            $datemax1      = trim($keywords['datemax']);
+            if($m_conditions1){
+                $m_conditions = str_replace(' ', '', $m_conditions1);
                 $where['u.nickname'] = ['like',"%$m_conditions%"];
             }
-            if ($keywords['datemin'] && $keywords['datemax']) {
-                $datemin = strtotime($keywords['datemin']);
-                $datemax = strtotime($keywords['datemax']);
+            if ($datemin1 && $datemax1) {
+                $datemin = strtotime($datemin1);
+                $datemax = strtotime($datemax1);
                 $where['addtime'] = [['>= time',$datemin],['<= time',$datemax],'and'];
-            } elseif ($keywords['datemin']) {
+            } elseif ($datemin1) {
                 $where['addtime'] = ['>= time',strtotime($keywords['datemin'])];
-            } elseif ($keywords['datemax']) {
+            } elseif ($datemax1) {
                 $where['addtime'] = ['<= time',strtotime($keywords['datemax'])];
             }
         }
-
-        $list = Db::name('recharge')
+        
+        $list = Db::name('transaction_log')
                 ->alias('r')
                 ->join('users u', 'r.user_id = u.id')
                 ->where($where)

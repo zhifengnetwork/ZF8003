@@ -37,13 +37,13 @@
                 <thead>
                     <tr class="text-c">
                         <th width="150">会员名</th>
-                        <th width="130">充值金额</th>
-                        <th width="150">说明</th>
-                        <th width="110">附加数据</th>
-                        <th width="120">充值时间</th>
+                        <th width="130">交易金额</th>
+                        <th width="150">交易单号</th>
+                        <th width="150">描述</th>
+                        <th width="120">交易完成时间</th>
                         <th width="60">发起交易时间</th>
-                        <th width="70">交易平台</th>
-                        <th width="70">状态</th>
+                        <th width="70">支付平台</th>
+                        <th width="110">交易类型</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,19 +52,13 @@
                     <tr class="text-c">
                         <td>{$vo.nickname}</td>
                         <td>{$vo.money}</td>
-                        <td>{$vo.body}</td>
-                        <td>{$vo.attach}</td>
+                        <td>{$vo.sn}</td>
+                        <td>{$vo.desc}</td>
                         <td>{:date('Y-m-d,H:i:s',$vo.addtime)}</td>
                         <td>{:date('Y-m-d,H:i:s',$vo.init_time)}</td>
                         <td>{$vo.platform}</td>
-                        <td class="td-status">
-                            {if condition="$vo.status == 0"}
-                            <span>系统处理中</span>
-                            {elseif condition = "$vo.status == 1"/}
-                            <span>充值成功</span>
-                            {else/}
-                            <span>充值失败</span>
-                            {/if}
+                        <td>
+                            {$vo.type}
                         </td>
                     </tr>
                     {/foreach}
