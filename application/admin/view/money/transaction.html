@@ -36,29 +36,56 @@
             <table class="table table-border table-bordered table-hover table-bg table-sort">
                 <thead>
                     <tr class="text-c">
+                        <th width="50">ID</th>
                         <th width="150">会员名</th>
                         <th width="130">交易金额</th>
                         <th width="150">交易单号</th>
                         <th width="150">描述</th>
                         <th width="120">交易完成时间</th>
-                        <th width="60">发起交易时间</th>
-                        <th width="70">支付平台</th>
-                        <th width="110">交易类型</th>
+                        <th width="120">发起交易时间</th>
+                        <th width="50">支付平台</th>
+                        <th width="50">交易类型</th>
                     </tr>
                 </thead>
                 <tbody>
                     {if condition="isset($list)"}
                     {foreach name="list" item="vo"}
                     <tr class="text-c">
-                        <td>{$vo.nickname}</td>
+                        <td>{$vo.id}</td>
+                        <td>
+                            <a href="#" onclick="member_show('{$vo.nickname}','/admin/member/show?id={$vo.uid}','10001','550','750')" title="用户详情">
+                            {$vo.nickname}
+                            </a>
+                        </td>
                         <td>{$vo.money}</td>
-                        <td>{$vo.sn}</td>
-                        <td>{$vo.desc}</td>
+                        <td>
+                            <p>系统单号:{$vo.sn}</p>
+                            <p>第三方单号:{$vo.transaction_id}</p>
+                        </td>
+                        <td>
+                            {$vo.desc}
+                        </td>
                         <td>{:date('Y-m-d,H:i:s',$vo.addtime)}</td>
                         <td>{:date('Y-m-d,H:i:s',$vo.init_time)}</td>
-                        <td>{$vo.platform}</td>
                         <td>
-                            {$vo.type}
+                            {if condition = "$vo.platform eq 'system'"}
+                            平台
+                            {elseif condition = "$vo.platform eq 'weixin'"/}
+                            微信
+                            {elseif condition = "$vo.platform eq 'alipay'"/}
+                            支付宝
+                            {else/}
+                            {/if}
+                        </td>
+                        <td>
+                            {if condition = "$vo.type eq 'recharge'"}
+                            充值
+                            {elseif condition = "$vo.type eq 'withdrawal'"/}
+                            提现
+                            {elseif condition = "$vo.type eq 'order'"/}
+                            商品订单支付
+                            {else/}
+                            {/if}
                         </td>
                     </tr>
                     {/foreach}
@@ -81,7 +108,10 @@
         function reflsh() {
             window.location.href = "{:url('admin/money/recharge')}";
         }
-
+        /*用户-查看*/
+        function member_show(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
     </script>
 </body>
 

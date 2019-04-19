@@ -64,37 +64,21 @@ class Money extends Base
      * 充值记录
      */
     public function recharge(){
-        $where['r.id'] = ['>', '0'];
+        
         $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $total = 0;
         //搜索条件
-         if($keywords){
-            $page = 0;
-            $total = 0;
-            $m_conditions1 = trim($keywords['m_conditions']);
-            $datemin1      = trim($keywords['datemin']);
-            $datemax1      = trim($keywords['datemax']);
-            if($m_conditions1){
-                $m_conditions = str_replace(' ', '', $m_conditions1);
-                $where['u.nickname'] = ['like',"%$m_conditions%"];
-            }
-            if ($datemin1 && $datemax1) {
-                $datemin = strtotime($datemin1);
-                $datemax = strtotime($datemax1);
-                $where['addtime'] = [['>= time',$datemin],['<= time',$datemax],'and'];
-            } elseif ($datemin1) {
-                $where['addtime'] = ['>= time',strtotime($keywords['datemin'])];
-            } elseif ($datemax1) {
-                $where['addtime'] = ['<= time',strtotime($keywords['datemax'])];
-            }
+        if($keywords){ 
+           $where =$this->search_data($keywords);
         }
-
+        $where['r.id'] = ['>', '0'];
         $list = Db::name('recharge')
                 ->alias('r')
                 ->join('users u', 'r.user_id = u.id')
                 ->where($where)
                 ->field('r.*,u.nickname')
                 ->order('addtime desc')
-                ->paginate(15);
+                ->paginate(15, false, ['query' => request()->param()]);;
         if($list){
             $total = count($list);
         }        
@@ -106,12 +90,29 @@ class Money extends Base
      * 交易记录
      */
     public function transaction(){
-       $where['r.id'] = ['>', '0'];
         $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $total = 0;
         //搜索条件
         if($keywords){
-            $page = 0;
-            $total = 0;
+            $where = $this->search_data($keywords);
+        }
+        $where['r.id'] = ['>', '0'];
+        $list = Db::name('transaction_log')
+                ->alias('r')
+                ->join('users u', 'r.user_id = u.id')
+                ->where($where)
+                ->field('r.*,u.nickname,u.id uid')
+                ->order('addtime desc')
+                ->paginate(15, false, ['query' => request()->param()]);
+        if($list){
+            $total = count($list);
+        }       
+        $this->assign('list',$list);
+        $this->assign('total', $total);
+        return $this->fetch();  
+    }
+
+     public function search_data($keywords){
             $m_conditions1 = trim($keywords['m_conditions']);
             $datemin1      = trim($keywords['datemin']);
             $datemax1      = trim($keywords['datemax']);
@@ -128,20 +129,7 @@ class Money extends Base
             } elseif ($datemax1) {
                 $where['addtime'] = ['<= time',strtotime($keywords['datemax'])];
             }
-        }
-        
-        $list = Db::name('transaction_log')
-                ->alias('r')
-                ->join('users u', 'r.user_id = u.id')
-                ->where($where)
-                ->field('r.*,u.nickname')
-                ->order('addtime desc')
-                ->paginate(15);
-        if($list){
-            $total = count($list);
-        }        
-        $this->assign('list',$list);
-        $this->assign('total', $total);
-        return $this->fetch();  
-    }
+            return $where;
+     }
+
 }
