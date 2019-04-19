@@ -60,4 +60,88 @@ class Money extends Base
 
         return json($result);
     }
+    /**
+     * 充值记录
+     */
+    public function recharge(){
+        $where['r.id'] = ['>', '0'];
+        $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
+        //搜索条件
+         if($keywords){
+            $page = 0;
+            $total = 0;
+            $m_conditions1 = trim($keywords['m_conditions']);
+            $datemin1      = trim($keywords['datemin']);
+            $datemax1      = trim($keywords['datemax']);
+            if($m_conditions1){
+                $m_conditions = str_replace(' ', '', $m_conditions1);
+                $where['u.nickname'] = ['like',"%$m_conditions%"];
+            }
+            if ($datemin1 && $datemax1) {
+                $datemin = strtotime($datemin1);
+                $datemax = strtotime($datemax1);
+                $where['addtime'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($datemin1) {
+                $where['addtime'] = ['>= time',strtotime($keywords['datemin'])];
+            } elseif ($datemax1) {
+                $where['addtime'] = ['<= time',strtotime($keywords['datemax'])];
+            }
+        }
+
+        $list = Db::name('recharge')
+                ->alias('r')
+                ->join('users u', 'r.user_id = u.id')
+                ->where($where)
+                ->field('r.*,u.nickname')
+                ->order('addtime desc')
+                ->paginate(15);
+        if($list){
+            $total = count($list);
+        }        
+        $this->assign('list',$list);
+        $this->assign('total', $total);
+        return $this->fetch();         
+    } 
+    /**
+     * 交易记录
+     */
+    public function transaction(){
+       $where['r.id'] = ['>', '0'];
+        $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
+        //搜索条件
+        if($keywords){
+            $page = 0;
+            $total = 0;
+            $m_conditions1 = trim($keywords['m_conditions']);
+            $datemin1      = trim($keywords['datemin']);
+            $datemax1      = trim($keywords['datemax']);
+            if($m_conditions1){
+                $m_conditions = str_replace(' ', '', $m_conditions1);
+                $where['u.nickname'] = ['like',"%$m_conditions%"];
+            }
+            if ($datemin1 && $datemax1) {
+                $datemin = strtotime($datemin1);
+                $datemax = strtotime($datemax1);
+                $where['addtime'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($datemin1) {
+                $where['addtime'] = ['>= time',strtotime($keywords['datemin'])];
+            } elseif ($datemax1) {
+                $where['addtime'] = ['<= time',strtotime($keywords['datemax'])];
+            }
+        }
+        
+        $list = Db::name('transaction_log')
+                ->alias('r')
+                ->join('users u', 'r.user_id = u.id')
+                ->where($where)
+                ->field('r.*,u.nickname')
+                ->order('addtime desc')
+                ->paginate(15);
+        if($list){
+            $total = count($list);
+        }        
+        $this->assign('list',$list);
+        $this->assign('total', $total);
+        return $this->fetch();  
+    }
 }

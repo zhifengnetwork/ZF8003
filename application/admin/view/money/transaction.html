@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页<span class="c-gray en">&gt;</span> 资金管理 <span
+            class="c-gray en">&gt;</span> 交易记录 <a class="btn btn-success radius r"
+            style="line-height:1.6em;margin-top:3px" href="javascript:reflsh();" title="刷新"><i
+                class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <form method="GET" action="">
+            <div class="text-c"> 日期范围：
+                <input type="text" {literal}
+                    onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
+                    {if condition="isset($seach.datemin) && $seach.datemax gt 0" } value="{$seach.datemin|date='Y-m-d H:i:s',###}" {/if}
+                    id="datemin" name="seach[datemin]" class="input-text Wdate" style="width:180px;">
+                -
+                <input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
+                    {/literal} {if condition="isset($seach.datemax) && $seach.datemax gt 0" }
+                    value="{$seach.datemax|date='Y-m-d H:i:s',###}" {/if} id="datemax" name="seach[datemax]" class="input-text Wdate"
+                    style="width:180px;">
+                <input type="text" class="input-text" style="width:250px"
+                    value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入会员名称"
+                    id="m_conditions" name="seach[m_conditions]">
+                <button type="submit" class="btn btn-success radius" id="m_search" name=""><i
+                        class="Hui-iconfont">&#xe665;</i>
+                    搜用户</button>
+            </div>
+
+        </form>
+
+        <div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="r">共有数据：<strong>{$total}</strong> 条</span>
+        </div>
+        <div class="mt-20">
+            <table class="table table-border table-bordered table-hover table-bg table-sort">
+                <thead>
+                    <tr class="text-c">
+                        <th width="150">会员名</th>
+                        <th width="130">交易金额</th>
+                        <th width="150">交易单号</th>
+                        <th width="150">描述</th>
+                        <th width="120">交易完成时间</th>
+                        <th width="60">发起交易时间</th>
+                        <th width="70">支付平台</th>
+                        <th width="110">交易类型</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {if condition="isset($list)"}
+                    {foreach name="list" item="vo"}
+                    <tr class="text-c">
+                        <td>{$vo.nickname}</td>
+                        <td>{$vo.money}</td>
+                        <td>{$vo.sn}</td>
+                        <td>{$vo.desc}</td>
+                        <td>{:date('Y-m-d,H:i:s',$vo.addtime)}</td>
+                        <td>{:date('Y-m-d,H:i:s',$vo.init_time)}</td>
+                        <td>{$vo.platform}</td>
+                        <td>
+                            {$vo.type}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    {/if}
+                </tbody>
+            </table>
+            <div class="pages">{$list->render()}</div>
+            {if condition="!isset($list) or !$list"}
+            <p class="no-data">暂无数据</p>
+            {/if}
+        </div>
+    </div>
+
+    {include file='layout/footer' /}
+
+    <script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        /* 刷新 */
+        function reflsh() {
+            window.location.href = "{:url('admin/money/recharge')}";
+        }
+
+    </script>
+</body>
+
+</html>
