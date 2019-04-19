@@ -47,7 +47,7 @@
              <div class="product">
                  <div class="product-list">
                        <div class="item-img">
-                           <img src="__STATIC__/img/purchase/jq.jpg" alt="">
+                           <img src="/public/images/goods/{$info.thumb}" alt="商品图片">
                        </div>
                        <div class="item-name">
                            <span class="name">{$info.name}</span>
@@ -61,7 +61,7 @@
                       <span> 购买数量</span>
                       <div class="quantity">
                         <a href="javascript:void(0);" class="subtract">-</a>
-                        <input type="number" class="num" value="1" max="100" min="1" disabled/>
+                        <input type="number" id="number" class="num" value="1" max="100" min="1" disabled/>
                         <a href="javascript:void(0);" class="add">+</a>
                       </div>
                  </div>
@@ -82,16 +82,18 @@
                         <!-- <img src="__STATIC__/img/purchase/button@2x.png" alt=""> -->
                     </div>
                     <div class="balance" style="display: none">
-                        <input type="hidden" value="">
+                        <input type="hidden" id="my_money" value="{$user.money}">
                         <input type="text" disabled value="可用余额:￥{$user.money}" class="balance_text">
                     </div>
                  </div>
                  <div class="mode zfmm" style="display: none">
                         <div class=" pwd">支付密码:</div>
                         <div class="balance">
-                            <form action="" method="post">
-                                    <input type="password" value class="pwdnum" placeholder="请输入支付密码" required="required" autocomplete/>
-                            </form>
+                        {if condition="$user.payment_password"}
+                            <input type="password" id="paypass" value="" class="pwdnum" placeholder="请输入支付密码" autocomplete/>
+                        {else /}
+                            <a style="color:red;">请先设置支付密码</a>
+                        {/if}
                         </div>  
                  </div>
              </div>
@@ -102,12 +104,7 @@
                             <div class="discount">
                                 <div class="yhqq numm">
                                         <span >
-                                            <span class="discount_num">0</span>张可用
-                                        </span>
-                                </div>
-                                <div class="yhqq man" style="margin-left: 1.5rem;display: none">
-                                        <span>
-                                            <span class="discount_num">满699减100</span>
+                                            <span class="discount_num">{count($my_coupon)}</span>张可用
                                         </span>
                                 </div>
                             </div>
@@ -117,7 +114,7 @@
                     </div>
                     <div class="mode mode-bz">
                             <div class=" bz">备注</div>
-                            <textarea name="" id="" cols="103" rows="10" placeholder="暂无备注!" class="remark" ></textarea>
+                            <textarea name="" id="note" id="" cols="103" rows="10" placeholder="暂无备注!" class="remark" ></textarea>
                     </div>
              </div>
                 <!-- favourable price -->
@@ -125,7 +122,7 @@
                  <div class="favourable_item">
                      <div class="item_name">邮费:</div>
                      <div>
-                         ￥ <span class="postage">8.00</span>
+                         ￥ <span class="postage">{$freight}</span>
                      </div>
                  </div>
                  <div class="favourable_item">
@@ -150,73 +147,34 @@
              <!-- receive a coupon -->
 			<div class="receive_coupon"></div>
 			<div class="receive_box">
-					  <P class="receive_tit">领取优惠券</P>
-					  <div class="coupon_box">
-						    <div class="coupon_list">
-							   <div class="coupon_msg">
-								   <div class="price_box">
-									   ￥
-									   <span class="price">100</span>
-									   <span class="original">满599减100</span>
-								   </div>
-								   <p class="pro_ori">商品优惠卷</p>
-								   <p class="time publicEllipsis" >2019.20.20-2019.20.20</p>
-							</div>
-							<div class="coupon_use ">
-								<p class="use">立即使用</p>
-								<!-- <img src="__STATIC__/img/purchase/logo@2x.png" alt="" class="been"> -->
-							</div>
-						    </div>
-							<div class="coupon_list">
-										<div class="coupon_msg">
-											<div class="price_box">
-												￥
-												<span class="price">100</span>
-												<span class="original">满599减100</span>
-											</div>
-											<p class="pro_ori">商品优惠卷</p>
-											<p class="time publicEllipsis" >2019.20.20-2019.20.20</p>
-									</div>
-									<div class="coupon_use">
-										<p class="use">立即使用</p>
-									</div>
-							</div>
-							<div class="coupon_list">
-									<div class="coupon_msg">
-										<div class="price_box">
-											￥
-											<span class="price">100</span>
-											<span class="original">满599减100</span>
-										</div>
-										<p class="pro_ori">商品优惠卷</p>
-										<p class="time publicEllipsis" >2019.20.20-2019.20.20</p>
-								</div>
-								<div class="coupon_use">
-									<p class="use">立即使用</p>
-								</div>
-							</div>
-							<div class="coupon_list">
-								<div class="coupon_msg">
-									<div class="price_box">
-										￥
-										<span class="price">100</span>
-										<span class="original">满599减100</span>
-									</div>
-									<p class="pro_ori">商品优惠卷</p>
-									<p class="time publicEllipsis" >2019.20.20-2019.20.20</p>
-							</div>
-							<div class="coupon_use">
-								<p class="use">立即使用</p>
-							</div>
-							</div>
-				   </div>
-				   <div class="popup">
-						使用成功
-					</div>
-					<div class="achieve">
-						完成
-					</div>
-			</div>
+                    <P class="receive_tit">我的优惠券</P>
+                    <div class="coupon_box">
+                        {volist name="my_coupon" id="vo"}
+                        <div class="coupon_list">
+                                <div class="coupon_msg">
+                                    <div class="price_box">
+                                        ￥
+                                        <span class="price">{$vo.money}</span>
+                                        <span class="original">{$vo.name}</span>
+                                    </div>
+                                    <p class="pro_ori">有效期</p>
+                                    <p class="time publicEllipsis" >{$vo.stime|date="Y-m-d",###} - {$vo.etime|date="Y-m-d",###}</p>
+                            </div>
+                            <div class="coupon_use ">
+                                <p class="use" data-id="{$vo.id}">立即使用</p>
+                                <!-- <img src="__STATIC__/img/purchase/logo@2x.png" alt="" class="been"> -->
+                            </div>
+                        </div>
+                        {/volist}
+                        
+                </div>
+                <div class="popup">
+                    使用成功
+                </div>
+                <div class="achieve">
+                    完成
+                </div>
+        </div>
         </div>
                 <!-- footer -->
             <div class="footer">
@@ -234,10 +192,31 @@
     <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
     <script>
         function submit(){
-
+            var goods_id = '{$goods_id}';
             var balance = $('#balance').val();
-            alert(balance);
+            var paypass = $('#paypass').val();
+            var number = $('#number').val();
+            var note = $('#note').val();
+
+            if(balance == 1 && paypass == ''){
+                layer.msg('请输入支付密码');
+                return false;
+            }
+
+            $.post('/mobile/goods/order_info',{goods_id:goods_id,balance:balance,paypass:paypass,number:number,note:note},function(res){
+
+                if(res.status == 1){
+                    layer.msg(res.msg,{icon:6});
+                    setTimeout(function(){
+                        window.location.href=res.url;
+                    },1500);
+                }else{
+                    layer.msg(res.msg,{icon:5});
+                    return false;
+                }
+            });
         }
+
     </script>
 </body>
 </html>

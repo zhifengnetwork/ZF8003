@@ -387,9 +387,9 @@ class Index extends Base
                 'port'      => $conf['port'],
                 'nickname'  => $conf['nickname'],
                 'to'        => $email,
-                'title'     => $conf['edit_pay_title'],
-                'body'      => $conf['edit_pay_body'] ? str_replace('{{$code}}', $code, $conf['edit_pay_body']) : "<h1>您正在修改支付密码，验证码：$code</h1>",
-                'altbody'   => $conf['edit_pay_altbody'] ? str_replace('{{$code}}', $code, $conf['edit_pay_altbody']) : "您正在修改支付密码，验证码：$code",
+                'title'     => '重置支付密码',
+                'body'      => "<h1>您正在重置支付密码，验证码：$code</h1>",
+                'altbody'   => "您正在重置支付密码，验证码：$code",
             ];
             
             if($this->base_send_mail($param)){
