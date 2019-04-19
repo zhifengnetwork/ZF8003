@@ -1,0 +1,37 @@
+{include file="layout/head"}
+<article class="page-container">
+    <form class="form form-horizontal">
+        <div class="row cl">
+            <label class="form-label col-xs-2"></label>
+            手机端 - 微解读：
+            <span class="select-box" style="width:200px;">
+                <select class="select" id="select" size="1">
+                    <option value="0">--请选择--</option>
+                    {volist name="lists" id="vo"}
+                    <option value="{$vo.id}" >{$vo.name}</option>
+                    {/volist}
+                </select>
+            </span>
+        <div class="row cl">
+            <label class="form-label col-xs-5"></label>
+            <button class="btn btn-success" id="success">确定</button>
+            <button class="btn btn-default" id="del">取消</button>
+
+        </div>
+        
+
+    </form>
+</article>
+{include file="layout/footer"}
+<script>
+    $('#success').click(function(){
+        var cate = $('#select option:selected').text();
+        var cateid = $('#select').val();
+        parent.open_callback(cate,cateid);
+        parent.layer.closeAll();
+    });
+
+    $('#del').click(function(){
+        parent.layer.closeAll();
+    });
+</script>

@@ -20,7 +20,7 @@ class System extends Base
             'smtp'      => ['order'=>1,'url'=>'smtp','name'=>"邮箱设置"],
             'weixin'    => ['order'=>2,'url'=>'weixin','name'=>"微信设置"],
             'cash'      => ['order'=>3,'url'=>'cash','name'=>"资金设置"],
-            'content'   => ['order'=>4,'url'=>'content','name'=>"内容管理"],
+            'module'   => ['order'=>4,'url'=>'module_bind','name'=>"模块设置"],
         );
 
         $this->assign('list',$this->list);
@@ -329,16 +329,19 @@ class System extends Base
         return $this->fetch();
     }
 
-    # 资金设置
-    public function content(){
-
+    # 内容设置
+    public function module_bind(){
         if($_POST){
             
             $data = $_POST;
+            dump($data);exit;
             $type = $data['type'];
             unset($data['type']);
             foreach($data as $k=>$v){
                 $v = Digital_Verification($v) ? Digital_Verification($v) : 0;
+                if($k == 'skinss'){
+                    $k = 'skin';
+                }
                 if(Db::name('config')->field('id')->where(['type'=>$type,'name'=>$k])->find()){
 
                     Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
@@ -351,19 +354,41 @@ class System extends Base
             exit;
         }
 
-        $info = Db::name('config')->where('type','cash_setting')->select();
+        $info = Db::name('config')->where('type','hom_module_bind')->select();
         if($info){
             foreach($info as $v){
                 $data[$v['name']] = $v['value']; 
             }
             $info = $data;
         }
-
+        // dump($info);exit;
 
         $this->assign('info', $info);
-        $this->assign('type', 'cash_setting');
+        $this->assign('type', 'hom_module_bind');
         $this->assign('index',4);
         return $this->fetch();
+    }
+
+    # 选择模块内容
+    public function select_module(){
+        $module = isset($_GET['module']) ? trim($_GET['module']) : '';
+
+        $index = $module;
+        if(in_array($module,['micro','skinss','example'])){
+            $index = 'cate';
+        }
+        
+        switch($index){
+            # 微解读
+            case 'cate':
+                $lists = Db::name('category')->where(['type'=>'article','level'=>1])->order('sort desc,id desc')->select();
+                $this->assign('lists', $lists);
+                return $this->fetch('select_module_cate');
+                break;
+
+
+        }
+        exit;
     }
 
 

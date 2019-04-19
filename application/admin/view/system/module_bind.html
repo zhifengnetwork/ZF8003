@@ -1,0 +1,79 @@
+{include file="layout/setting_head"}
+<style>
+ .module-select{
+     color:blue;
+ }
+
+
+</style>
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add" method="POST" target="ajaxR">
+        <input type="hidden" name="type" value="{$type}">
+        <div id="tab-system" class="HuiTab">
+            <div class="tabBar cl">
+                {foreach name="list" item="vo"}
+                <a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
+                {/foreach}
+            </div>
+            <div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">手机端 - 微解读：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <a class="module-select" id="micro-module" data-id="" onclick="select_module('micro');">请绑定模块内容</a>
+                        <input type="hidden" id="micro" name="micro" value="{$info.micro}">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">手机端 - 皮肤管理：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <a class="module-select" id="skinss-module" data-id="" onclick="select_module('skinss');">请绑定模块内容</a>
+                        <input type="hidden" id="skinss" name="skinss" value="{$info.skin}">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">手机端 - 示例报告：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <a class="module-select" id="example-module" data-id="" onclick="select_module('example');">请绑定模块内容</a>
+                        <input type="hidden" id="example" name="example" value="{$info.example}">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i
+                        class="Hui-iconfont">&#xe632;</i> 保存</button>
+                <button onClick="layer_close();" class="btn btn-default radius"
+                    type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+    <iframe name="ajaxR" style="display:none;width:1200px;height:500px;"></iframe>
+    <input type="hidden" id="hidden-module" value="" />
+</div>
+<script>
+    function select_module(module){
+        $('#hidden-module').val(module);
+        layer.open({
+            title:'绑定模块内容',
+            type:2,
+            content:'/admin/system/select_module?module='+module,
+            area:['500px','200px'],
+        });
+    }
+    function open_callback(name,id){
+
+        var module = $('#hidden-module').val();
+        $('#'+ module+'-module').html(name);
+        $('#'+module).val(id);
+        $('#'+ module+'-module').attr('data-id', id);
+        $('#hidden-module').val('');
+    }
+</script>
+{include file="layout/setting_footer"/}
