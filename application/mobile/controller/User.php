@@ -39,6 +39,22 @@ class User extends Base
      */
     public function my_order()
     {
+        $status = isset($_GET['status']) ? intval($_GET['status']) : 0;
+        $user_id = $this->user_id;
+
+        $where = "a.user_id = '$user_id'";
+        if($status > 0){
+            $where .= " and a.order_status = ".($status - 1);
+        }
+
+        $lists = Db::query("select a.*,b.name,b.thumb from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where $where order by a.order_status asc,a.add_time desc");
+    
+        $sname = [0=>'待支付',1=>'待发货',2=>'待收货',3=>'待评价',4=>'交易成功'];
+
+
+        $this->assign('status', $status);
+        $this->assign('sname', $sname);
+        $this->assign('lists', $lists);
         return $this->fetch();
     }
 
