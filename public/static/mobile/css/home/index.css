@@ -237,6 +237,9 @@
     background-color: #fff;
 }
 .nscramble-wrap .nscrambleItem{
+    width: 2.2rem;
+    height: 1.6rem;
+    overflow: hidden;
     position: relative;
 }
 .nscramble-wrap .nscramble-list{
