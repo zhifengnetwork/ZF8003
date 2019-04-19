@@ -21,7 +21,8 @@ class Base extends Controller
     public $controller;
     public $action;
     public $ip;
-    public $client;  
+    public $client; 
+    // public $avatar; 
     public function _initialize()
     {
         $this->base_web_config();
@@ -38,6 +39,7 @@ class Base extends Controller
         if(Session::has('user')){
             $this->user = Session::get('user');
             $this->user_id = Session::get('user.id');
+            // $this->avatar  = Session::get('user.avatar');
         }else{
             layer_error('请先登录！', false);
             $this->redirect('Login/login');
