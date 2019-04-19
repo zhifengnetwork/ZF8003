@@ -3,5 +3,6 @@ composer.lock
 composer.json
 *.log
 runtime
+uploads/
 application/database.php
 
