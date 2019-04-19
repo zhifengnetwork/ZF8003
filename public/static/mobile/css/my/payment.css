@@ -1,0 +1,41 @@
+li {
+	color: #333;
+	border-bottom: 1px solid #ccc;
+	height: 1rem;
+	line-height: 1rem;
+	font-size: .28rem;
+	padding-left: .3rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	letter-spacing: .02rem;
+}
+
+.zhanghao {
+	outline: none;
+	border: none;
+	background: #F5F5F5;
+	font-size: .28rem;
+	color: gray;
+}
+
+.queding_ear {
+	width: 100%;
+	height: auto;
+	padding-top: 2rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.queding {
+	width: 80%;
+	height: .8rem;
+	margin: 0 auto;
+	background: #37afe6;
+	border-radius: .06rem;
+	line-height: .8rem;
+	text-align: center;
+	color: white;
+	letter-spacing: .02rem;
+}

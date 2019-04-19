@@ -181,27 +181,238 @@ class Goods extends Base
             Session::set('re_url', '/mobile/goods/check_order?goods_id='.$goods_id);
             $this->redirect('/mobile/index/login');
         }
-        
+
+        # 更新用户缓存
+        $user = Db::name('users')->find($this->user_id);
+        $this->user = $user;
+        Session::set('user', $user);
+
         # 默认地址
+        $area_address = array();
         $def_address_id = $this->user['default_address_id'];
         if($def_address_id){
             $def_address = Db::name('user_address')->find($def_address_id);
         }else{
             $def_address = Db::name('user_address')->where('user_id', $this->user_id)->find();
-            if($def_address){
-                $def_address_id = $def_address['id'];
+            Db::name('users')->where('id', $this->user_id)->update(['default_address_id' => $def_address['id']]);
+        }
+        if($def_address){
+            $def_address_id = $def_address['id'];
+            $area_address = [$def_address['province'],$def_address['city'],$def_address['district']];
+        }
+
+        # 运费
+        $freight = $info['freight'];
+        if($info['freight_temp'] > 0){
+            $freight_temp = Db::name('freight_temp')->find($info['freight_temp']);
+            if($freight_temp){
+                $temp = json_decode($freight_temp['temp'],true);
+                $freight = $temp['freight'];
+                if($area_address){
+                    foreach($temp as $tk => $tv){
+                        if(in_array($tk, $area_address)){
+                            $freight = $tv;
+                        }
+                    }
+                }
             }
         }
 
+        # 优惠券
+        # 将过期的优惠券更新到已过期状态
+        Db::name('user_coupon')->where(['etime' => ['<=', time()]])->update(['status' => 2]);
+        # 我的优惠券
+        $my_coupon = Db::query("select a.*,b.name from `zf_user_coupon` as a left join `zf_goods_coupon` as b on a.coupon_id = b.id where a.user_id = '$this->user_id' and a.status = 0");
         
 
-
+        $this->assign('freight', $freight);
+        $this->assign('my_coupon', $my_coupon);
         $this->assign('return', '/mobile/goods/goodInfo?id='.$goods_id);
         $this->assign('user', $this->user);
         $this->assign('def_address', $def_address);
         $this->assign('def_address_id', $def_address_id);
         $this->assign('info', $info);
         $this->assign('goods_id', $goods_id);
+        return $this->fetch();
+    }
+
+    # 提交订单 | 订单详情
+    public function order_info(){
+        if($_POST){
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+            $balance = isset($_POST['balance']) ? intval($_POST['balance']) : 0;
+            $paypass = isset($_POST['paypass']) ? trim($_POST['paypass']) : '';
+            $number = isset($_POST['number']) ? intval($_POST['number']) : 1;
+            $note = isset($_POST['note']) ? addslashes($_POST['note']) : '';
+            
+            $info = Db::name('goods')->find($goods_id);
+            if(!$info){
+                return json(['status'=>0,'msg'=>'商品信息不存在或已下架！']);
+                exit;
+            }
+            if($info['status'] != 1 || $info['is_del'] == 1){
+                return json(['status'=>0,'msg'=>'商品信息不存在或已下架！']);
+                exit;
+            }
+            if($info['is_stock'] == 1 && $info['stock'] < $number){
+                return json(['status'=>0,'msg'=>'商品库存不足，无法购买！']);
+                exit;
+            }
+            if(!$this->user_id){
+                return json(['status'=>0,'msg'=>'用户未登录']);
+                exit;
+            }
+            
+            # 用户信息
+            $user = Db::name('users')->find($this->user_id);
+            if(!$user['default_address_id']){
+                return json(['status'=>0,'msg'=>'未设置收货地址']);
+                exit;
+            }
+            
+            # 支付密码判断
+            if($balance){
+                if(!$paypass){
+                    return json(['status'=>0,'msg'=>'请输入支付密码！']);
+                    exit;
+                }
+                if(pwd_encryption($paypass) != $user['payment_password']){
+                    return json(['status'=>0,'msg'=>'支付密码错误！']);
+                    exit;
+                }
+            }
+
+            
+            # 收货信息
+            $area_address = array();
+            $def_address = Db::name('user_address')->find($user['default_address_id']);
+            $area_address = [$def_address['province'],$def_address['city'],$def_address['district']];
+            
+            
+            # 运费
+            $freight = $info['freight'];
+            if($info['freight_temp'] > 0){
+                $freight_temp = Db::name('freight_temp')->find($info['freight_temp']);
+                if($freight_temp){
+                    $temp = json_decode($freight_temp['temp'],true);
+                    $freight = $temp['freight'];
+                    if($area_address){
+                        foreach($temp as $tk => $tv){
+                            if(in_array($tk, $area_address)){
+                                $freight = $tv;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        
+            ### 状态
+            #订单状态
+            $order_status = 0;
+            #支付状态
+            $pay_status = 0;
+
+            ### 价格
+            # 商品总价
+            $goods_price = $info['price'] * $number;
+            # 运费
+            $shipping_price = $freight;
+            # 订单总价
+            $total_amount = $goods_price + $shipping_price;
+            # 优惠券抵扣
+            $coupon_price = 0;
+            # 应付金额
+            $order_amount = $total_amount - $coupon_price;
+            # 余额抵扣
+            $user_money = 0;
+            if($balance && $user['money'] > 0){
+                if($user['money'] >=  $order_amount){
+                    $user_money = $order_amount;
+                    $order_status = 1;
+                    $pay_status = 1;
+                }else{
+                    $user_money = $user['money'];
+                    $order_amount = $order_amount -  $user['money'];
+                    $pay_status = 2;
+                }
+            }
+
+            # 时间
+            $time = time();
+            # 订单号
+            $sn = order_sn();
+            # 订单信息
+            $order_data = [
+                'order_sn' => $sn,
+                'user_id' => $this->user_id,
+                'order_status' => $order_status,
+                'pay_status' => $pay_status,
+                'consignee' => $def_address['consignee'],
+                'province' => $def_address['province'],
+                'city' => $def_address['city'],
+                'district' => $def_address['district'],
+                'address' => $def_address['address'],
+                'mobile' => $def_address['mobile'],
+                'goods_price' => $goods_price,
+                'shipping_price' => $shipping_price,
+                'user_money' => $user_money,
+                'coupon_price' => $coupon_price,
+                'order_amount' => $order_amount,
+                'total_amount' => $total_amount,
+                'add_time' => $time,
+                'pay_time' => $pay_status == 1 ? $time : 0,
+                'user_note' => $note,
+            ];
+            
+            $o_res = Db::name('order')->insertGetId($order_data);
+            if($o_res){
+                if($user_money > 0){
+                    $pay_name = $pay_status == 1 ? '已支付' : '部分支付';
+                    $t_log = [
+                        'user_id' => $this->user_id,
+                        'type' => 'order',
+                        'sn' => $sn,
+                        'platform' => 'system',
+                        'to' => $o_res,
+                        'money' => $user_money,
+                        'addtime' => $time,
+                        'desc' => '订单：'.$o_res.' 使用了余额支付, 时订单状态为：$pay_name',
+                        'init_time' => $time,
+                    ];
+                    Db::name('transaction_log')->insert($t_log);
+                }
+                $url = $pay_status == 1 ? '/mobile/goods/order_pay?id='.$o_res : '/mobile/goods/order_info?id='.$o_res;
+                return json(['status'=>1,'msg'=>'订单提交成功！正在跳转...','url'=>$url]);
+                exit;
+            }
+            return json(['status'=>0,'msg'=>'订单提交失败，请重试']);
+            exit;
+        }
+
+
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $info = Db::name('order')->find($id);
+        
+        if(!$info){
+            $this->error('订单信息不存在', '/mobile/user/index');
+            exit;
+        }
+        if($info['user_id'] != $this->user_id){
+            $this->error('非法访问！', '/mobile/user/index');
+            exit;
+        }
+
+        
+        return $this->fetch();
+    }
+
+    # 订单支付
+    public function order_pay(){
+
+
+
+        echo '订单支付';exit;
         return $this->fetch();
     }
 
@@ -214,7 +425,7 @@ class Goods extends Base
         if(Session::has('user')){
             $user_id = Session::get('user.id');
         }else{
-            return $this->fetch('index/login');
+            // return $this->fetch('index/login');
         }  
         $price = 0;
         $get_address = [
@@ -330,20 +541,6 @@ class Goods extends Base
         }
     }
 
-    # 订单详情
-    public function order_info(){
-
-        if($_POST){
-
-
-            dump($_POST);
-            exit;
-        }
-
-
-
-    }
-
     public function focus()
     {
         $data = input('post.');
@@ -383,11 +580,6 @@ class Goods extends Base
         }
 
 
-    }
-
-    public function pay(){
-
-        return $this->fetch();
     }
 
     /**

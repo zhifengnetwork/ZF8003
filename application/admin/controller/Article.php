@@ -341,6 +341,8 @@ class Article extends Base{
             $item['nickname'] = $result['nickname'] ? $result['nickname'] : $result['mobile'];
             $article = Db::name('article')->where(['id'=>$item['to']])->field('title')->find();
             $item['title'] = $article['title'];
+            $admin = Db::name('admin')->where(['id'=>$item['admin']])->field('name')->find();
+            $item['admin'] = $admin['name'];
             return $item;
         });
         

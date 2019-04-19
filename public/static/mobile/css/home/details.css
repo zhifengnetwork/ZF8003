@@ -152,7 +152,7 @@
     width: .26rem;
     height: .26rem;
     display: inline-block;
-    background: url(/public/static/mobile/img/public/praise@2x.png) no-repeat;
+    background: url(../../img/public/praise@2x.png) no-repeat;
     background-size: 100%;
 }
 .operation-bar .commentBtn a{
@@ -164,7 +164,7 @@
     width: .26rem;
     height: .26rem;
     display: inline-block;
-    background: url(/public/static/mobile/img/public/comments@2x.png) no-repeat;
+    background: url(../../img/public/comments@2x.png) no-repeat;
     background-size: 100%;
 }
 
@@ -181,7 +181,7 @@
     width: .26rem;
     height: .26rem;
     display: inline-block;
-    background: url(/public/static/mobile/img/public/praise-r@2x.png) no-repeat;
+    background: url(../../img/public/praise-r@2x.png) no-repeat;
     background-size: 100%;
 }
 .operation-bar .praised .num{

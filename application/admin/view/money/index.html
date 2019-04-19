@@ -1,9 +1,10 @@
 <!DOCTYPE HTML>
 <html>
 {include file='layout/head' /}
+
 <body>
 	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 文章管理 <span
-			class="c-gray en">&gt;</span> 评论审核列表 <a class="btn btn-success radius r replace"
+			class="c-gray en">&gt;</span> 提现审核列表 <a class="btn btn-success radius r replace"
 			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
@@ -12,16 +13,21 @@
 		<table class="table table-border table-bordered table-bg">
 			<thead>
 				<tr>
-					<th scope="col" colspan="9">评论审核列表</th>
+					<th scope="col" colspan="14">提现审核列表</th>
 				</tr>
 				<tr class="text-c">
                     <th width="40">ID</th>
                     <th width="100">用户名</th>
-                    <th width="130">文章标题</th>
-					<th width="300">评论内容</th>
+                    <th width="100">提现金额</th>
+                    <th width="100">手续费</th>
+                    <th width="100">提现方式</th>
+                    <th width="200">提现账号</th>
+                    <th width="100">账号名称</th>
                     <th width="50">审核</th>
+                    <th width="300">会员备注</th>
                     <th width="100">审批管理员</th>
-                    <th width="130">评论时间</th>
+                    <th width="300">管理员备注</th>
+                    <th width="130">申请时间</th>
                     <th width="130">最新更新时间</th>
 					<th width="100">操作</th>
                 </tr>
@@ -32,8 +38,17 @@
                         <tr class="text-c">
                             <td>{$vo.id}</td>
                             <td>{$vo.nickname}</td>
-                            <td>{$vo.title}</td>
-                            <td>{$vo.content}</td>
+                            <td>{$vo.money}</td>
+                            <td>{$vo.fee}</td>
+                            <td>
+                                {switch name='$vo.type'}
+                                    {case value='weixin'}微信{/case}
+                                    {case value='alipay'}支付宝{/case}
+                                    {default /}暂无
+                                {/switch}
+                            </td>
+                            <td>{$vo.account}</td>
+                            <td>{$vo.name}</td>
                             <td>
                                 {switch name='$vo.status'}
                                     {case value='0'}审核中{/case}
@@ -42,7 +57,9 @@
                                     {default /}暂无状态
                                 {/switch}
                             </td>
+                            <td>{$vo.note}</td>
                             <td>{$vo.admin}</td>
+                            <td>{$vo.admin_note}</td>
                             <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                             <td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
                             <td class="td-manage" data-id="{$vo.id}">
@@ -78,18 +95,23 @@
         }
         function audit(id){
             
-            url = "/admin/article/audit_result"
+            url = "/admin/money/audit"
             layer.open({
                 title:'安全提示',
                 type:1,
-                content:'<div style="padding:15px 0px 10px 20px;font-size:14px">通过审核?</div>',
-                time:5000,
+                content:'<div style="padding:15px 0px 10px 20px;font-size:14px">通过审核?'
+                        +'<div class="input-group" style="padding:20px 10px 20px 0px;">'
+                        +'<span class="input-group-addon" style="margin-right:5px;"> 备注：</span>'
+                        +'<textarea id="notic" class="textarea radius"></textarea>'
+                        +'</div>'
+                        +'</div>',
                 closeBtn:1,
                 btn:['通过','不通过','取消'],
-
+                
                 //通过
                 yes:function(index,layero){
-                    $.post(url,{'id':id,'status':1},function(data){
+                    var notic = $('#notic').val();
+                    $.post(url,{'id':id,'status':1,'notic':notic},function(data){
                         layer.close(index);
                         if(data.code == 1){
                             layer.msg('审核成功！', {icon: 1, time: 1000},function(){
@@ -102,7 +124,8 @@
                 },
                 //不通过
                 btn2:function(index,layero){
-                    $.post(url,{'id':id,'status':2},function(data){
+                    var notic = $('#notic').val();
+                    $.post(url,{'id':id,'status':2,'notic':notic},function(data){
                         layer.close(index);
                         if(data.code == 1){
                             layer.msg('审核成功！', {icon: 1, time: 1000},function(){
