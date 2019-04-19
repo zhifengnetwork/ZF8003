@@ -151,6 +151,7 @@
                     <div class="coupon_box">
                         {volist name="my_coupon" id="vo"}
                         <div class="coupon_list">
+                            <input type="hidden" value="{$vo.id}">
                                 <div class="coupon_msg">
                                     <div class="price_box">
                                         ￥
@@ -191,19 +192,27 @@
     <script src="__STATIC__/js/purchase/order.js"></script>
     <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
     <script>
+        var coupon_id 
+        $('.use ').click(function(){
+            if($(this).parent().hasClass('coupon_use ')){
+                coupon_id =   $(this).parent().prev().prev().attr("value");
+            }else if($(this).parent().hasClass('add')){
+                coupon_id = 0;
+            }
+        })
         function submit(){
             var goods_id = '{$goods_id}';
             var balance = $('#balance').val();
             var paypass = $('#paypass').val();
             var number = $('#number').val();
             var note = $('#note').val();
-
+            
             if(balance == 1 && paypass == ''){
                 layer.msg('请输入支付密码');
                 return false;
             }
 
-            $.post('/mobile/goods/order_info',{goods_id:goods_id,balance:balance,paypass:paypass,number:number,note:note},function(res){
+            $.post('/mobile/goods/order_info',{goods_id:goods_id,balance:balance,paypass:paypass,number:number,note:note,coupon_id:coupon_id},function(res){
 
                 if(res.status == 1){
                     layer.msg(res.msg,{icon:6});

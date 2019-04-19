@@ -58,6 +58,10 @@
 										<p class="commodity_term_but button_red" onclick="javascript:location.href='/mobile/weixin/pay?t=order_pay&id={$vo.id}'">付款</p>
 										<!-- <p class="commodity_term_but button_ash">取消订单</p> -->
 										{/if}
+										{if condition="$vo.order_status eq 3"}
+										<p class="commodity_term_but button_red" onclick="error_msg('敬请期待！');">评价</p>
+										<!-- <p class="commodity_term_but button_ash">取消订单</p> -->
+										{/if}
 									</div>
 								</div>
 
@@ -72,9 +76,12 @@
 
 		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
 		<script src="__STATIC__/js/public/public.js"></script>
-
-		<script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 			
+		<script>
+			function error_msg(msg){
+				layer.msg(msg,{icon:6});
+			}
 		</script>
 	</body>
 

@@ -138,9 +138,8 @@ $(function(){
 
     //使用优惠券
     $('.use').click(function(){
-        var goods_id = $('#goods_id').val()
-        var coupon = $('.coupon_use').data('id')
-
+         var goods_id = $('#goods_id').val()
+         var coupon = $('.coupon_use').data('id')
          var employ = $(this)
          var length = $('.coupon_list').length  //优惠券长度
          var lengthh = $('.coupon_list').children('.employ').length  //使用优惠券的长度
@@ -155,7 +154,6 @@ $(function(){
          employ.parent().append(img)
         //  employ.addClass('use1').removeClass('use')
          length--;   //优惠券长度-1
-
          $('.numm').find('.discount_num').html(length)
          $('.popup').fadeIn(500)  //使用成功
          $('.popup').animate({
@@ -165,8 +163,9 @@ $(function(){
             $('.popup').fadeOut(500)
          })
          }
-      else if(employ.parent().hasClass('add')){
-            employ.parent().addClass('coupon_use').removeClass('employ').children('.been').remove()
+         else if(employ.parent().hasClass('add')){
+            $('.numm').find('.discount_num').html(length)
+            employ.parent().addClass('coupon_use').removeClass('employ').children('.been').remove();
             console.log(employ.parent().children('.been'))
          }
     })

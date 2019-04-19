@@ -244,7 +244,8 @@ class Goods extends Base
             $paypass = isset($_POST['paypass']) ? trim($_POST['paypass']) : '';
             $number = isset($_POST['number']) ? intval($_POST['number']) : 1;
             $note = isset($_POST['note']) ? addslashes($_POST['note']) : '';
-            
+            $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
+           
             $info = Db::name('goods')->find($goods_id);
             if(!$info){
                 return json(['status'=>0,'msg'=>'商品信息不存在或已下架！']);
@@ -323,7 +324,26 @@ class Goods extends Base
             # 优惠券抵扣
             $coupon_price = 0;
             # 应付金额
-            $order_amount = $total_amount - $coupon_price;
+            $order_amount = 0;
+
+            if($coupon_id > 0){
+                $coupon_info = Db::name('user_coupon')->where(['id'=>$coupon_id,'user_id'=>$this->user_id,'status'=>0])->find();
+                if(!$coupon_info){
+                    return json(['status'=>0,'msg'=>'优惠券信息读取失败，请刷新页面重试！']);
+                    exit;
+                }
+                if($total_amount >= $coupon_info['quota']){
+                    $coupon_price = $coupon_info['money'];
+
+                    if($total_amount - $coupon_price > 0){
+                        $order_amount = $total_amount - $coupon_price;
+                    }else{
+                        $order_amount = 0;
+                    }
+                }
+            }
+
+            
             # 余额抵扣
             $user_money = 0;
             if($balance && $user['money'] > 0){
@@ -366,9 +386,15 @@ class Goods extends Base
                 'pay_time' => $pay_status == 1 ? $time : 0,
                 'user_note' => $note,
             ];
-        
+            
             $o_res = Db::name('order')->insertGetId($order_data);
             if($o_res){
+
+                if($coupon_id > 0){
+                    # 删除优惠券
+                    Db::name('user_coupon')->where('id', $coupon_id)->update(['status' => 1]);
+                }
+
                 if($user_money > 0){
                     $pay_name = $pay_status == 1 ? '已支付' : '部分支付';
                     $t_log = [
@@ -393,6 +419,10 @@ class Goods extends Base
                     Db::name('goods')->where('id', $goods_id)->setDec('stock', $number);
                 }
 
+                # 更新缓存
+                $user = Db::name('users')->find($this->user_id);
+                Session::set('user', $user);
+                $this->user = $user;
 
                 $url = $pay_status != 1 ? '/mobile/weixin/pay?t=order_pay&id='.$o_res : '/mobile/goods/order_info?id='.$o_res;
                 return json(['status'=>1,'msg'=>'订单提交成功！正在跳转...','url'=>$url]);
