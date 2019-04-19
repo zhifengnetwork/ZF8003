@@ -1,0 +1,108 @@
+{include file="layout/setting_head"}
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add" method="POST" target="ajaxR">
+        <input type="hidden" name="type" value="{$type}">
+        <div id="tab-system" class="HuiTab">
+            <div class="tabBar cl">
+                {foreach name="list" item="vo"}
+                <a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
+                {/foreach}
+            </div>
+            <div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">充值功能1：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box" style="width:150px;">
+                            <select class="select" id="recharge" name="recharge" size="1">
+                                <option value="0" {if condition="isset($info.recharge) && $info.recharge eq '0'"
+                                    }selected{/if}>关闭</option>
+                                <option value="1" {if condition="isset($info.recharge) && $info.recharge eq '1'"
+                                    }selected{/if}>开启</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">单笔提现最高限制（元）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="recharge_cash_max" name="recharge_cash_max" value="{if condition="
+                            isset($info.recharge_cash_max)"}{$info.recharge_cash_max}{/if}" class="input-text"
+                            placeholder="单笔充值最高限制">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">单笔提现最低限制（元）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="recharge_cash_min" name="recharge_cash_min" value="{if condition="
+                            isset($info.recharge_cash_min)"}{$info.recharge_cash_min}{/if}" class="input-text"
+                            placeholder="单笔充值最低限制">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">提现功能：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <span class="select-box" style="width:150px;">
+                            <select class="select" id="withdrawal" name="withdrawal" size="1">
+                                <option value="0" {if condition="isset($info.withdrawal) && $info.withdrawal eq '0'"
+                                    }selected{/if}>关闭</option>
+                                <option value="1" {if condition="isset($info.withdrawal) && $info.withdrawal eq '1'"
+                                    }selected{/if}>开启</option>
+                            </select>
+                        </span>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">单笔提现最高限制（元）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="withdrawal_cash_max" name="withdrawal_cash_max" value="{if condition="
+                            isset($info.withdrawal_cash_max)"}{$info.withdrawal_cash_max}{/if}" class="input-text"
+                            placeholder="单笔提现最高限制">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">单笔提现最低限制（元）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="withdrawal_cash_min" name="withdrawal_cash_min" value="{if condition="
+                            isset($info.withdrawal_cash_min)"}{$info.withdrawal_cash_min}{/if}" class="input-text"
+                            placeholder="单笔提现最低限制">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">提现手续费（百分比）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="withdrawal_fee" name="withdrawal_fee" value="{if condition="
+                            isset($info.withdrawal_fee)"}{$info.withdrawal_fee}{/if}" class="input-text"
+                            placeholder="提现手续费：">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">提现手续费最大值（元）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="withdrawal_fee_max" name="withdrawal_fee_max" value="{if condition="
+                            isset($info.withdrawal_fee_max)"}{$info.withdrawal_fee_max}{/if}" class="input-text"
+                            placeholder="提现手续费最大值">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-3">提现手续费最小值（元）：</label>
+                    <div class="formControls col-xs-8 col-sm-2">
+                        <input type="text" id="withdrawal_fee_min" name="withdrawal_fee_min" value="{if condition="
+                            isset($info.withdrawal_fee_min)"}{$info.withdrawal_fee_min}{/if}" class="input-text"
+                            placeholder="提现手续费最小值（元）：">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i
+                        class="Hui-iconfont">&#xe632;</i> 保存</button>
+                <button onClick="layer_close();" class="btn btn-default radius"
+                    type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+    <iframe name="ajaxR" style="display:none;width:1200px;height:500px;"></iframe>
+</div>
+{include file="layout/setting_footer"/}

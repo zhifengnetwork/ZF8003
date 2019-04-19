@@ -13,15 +13,14 @@ class User extends Base{
     }
 
     public function index(){
-
-        
-        $coupon = Db::name('user_coupon')->where('user_id',$this->user_id)->count();
+        $coupon = Db::name('user_coupon')->where('user_id',$this->user_id)->where('etime', '>= time', time())->count();
         $avatar = Db::name('users')->where('id',$this->user_id)->value('avatar');
         $this->assign('avatar', $avatar);
         $this->assign('coupon',$coupon);          
         $this->assign('info', $this->user);
         return $this->fetch();
     }
+
     /**
      * 修改密码
      */
@@ -47,8 +46,8 @@ class User extends Base{
                 return json(['status'=>0,'msg'=>'修改失败']);
             }
         }
-
     }
+      
     /**
      * 上传头像
      */
