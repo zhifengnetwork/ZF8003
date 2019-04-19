@@ -27,7 +27,9 @@ class Base extends Controller
     {
         $this->base_web_config();
         $this->Verification_Client();
-
+        // $config = Db::name('config')->select();
+        // Session::set('config.icp', $config['1']['value']);
+        // Session::set('config.qrcode', $config['47']['value']);
         if($this->client == 'mobile'){
             $this->redirect('/mobile/index/index');
         }
@@ -39,6 +41,7 @@ class Base extends Controller
         if(Session::has('user')){
             $this->user = Session::get('user');
             $this->user_id = Session::get('user.id');
+            
             // $this->avatar  = Session::get('user.avatar');
         }else{
             layer_error('请先登录！', false);
@@ -59,7 +62,6 @@ class Base extends Controller
                 Session::set('web_setting',$config);
             }
         }
-
         $user = Session::has('user') ? Session::get('user') : '';
         
         $this->assign('web_setting',Session::get('web_setting'));
