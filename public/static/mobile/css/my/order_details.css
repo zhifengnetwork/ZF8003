@@ -1,0 +1,132 @@
+.content {
+	padding: 0 .2rem;
+	background: #fff;
+}
+.content .status-wrap {
+	height: .88rem;
+	line-height: .88rem;
+}
+.content .status-wrap div:nth-child(1) {
+	float: left;
+	font-size: .26rem;
+	color: #666;
+}
+.content .status-wrap div:nth-child(2) {
+	float: right;
+	font-size: .28rem;
+	color: #e63737;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.content .detail-wrap {
+	margin-bottom: 5%;
+}
+.content .detail-wrap .tu_wrap {
+	margin-bottom: 5%;
+}
+.content .detail-wrap .tu_wrap div {
+	display: inline-block;
+	vertical-align: top;
+}
+.content .detail-wrap .tu_wrap .left_img {
+	width: 1.8rem;
+	height: 1.8rem;
+}
+.content .detail-wrap .tu_wrap .right_tu {
+	padding-left: .25rem;
+	width: 70%;
+}
+.content .detail-wrap .tu_wrap .right_tu p:nth-child(1) {
+	font-size: .3rem;
+	color: #333;
+}
+.content .detail-wrap .tu_wrap .right_tu p:nth-child(2) {
+	font-size: .32rem;
+	color: #999;
+	text-align: right;
+}
+
+.content .detail-wrap .prices {
+	font-size: .26rem;
+	color: #999;
+	line-height: .5rem;
+}
+.content .detail-wrap .prices span:nth-child(2) {
+	float: right;
+}
+
+.content .detail-wrap .order {
+	font-size: .32rem;
+	color: #333;
+	line-height: .75rem;
+}
+.content .detail-wrap .order span:nth-child(2) {
+	float: right;
+}
+.content .detail-wrap .pay {
+	font-size: .32rem;
+	line-height: .75rem;
+	border-top: 1px solid #ccc;
+}
+.content .detail-wrap .pay span:nth-child(2) {
+	float: right;
+	color: #ec2d2d;
+}
+
+.content .buy-wrap h2 {
+	font-size: .34rem;
+	color: #333;
+}
+.content .buy-wrap .deta span {
+	display: inline-block;
+	font-size: .26rem;
+	color: #666;
+	line-height: .5rem;
+}
+.content .buy-wrap .deta span:nth-child(1) {
+	width: 22%;
+}
+
+.content .buy-wrap .time {
+	font-size: .26rem;
+	color: #666;
+	line-height: .5rem;
+}
+.content .buy-wrap .time span:nth-child(1) {
+	display: inline-block;
+	width: 22%;
+}
+.content .buy-wrap .time span:nth-child(2) {
+	margin-right: 5%;
+}
+
+.bottom_buy {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: .88rem;
+}
+.bottom_buy div {
+	float: left;
+	width: 50%;
+	height: .88rem;
+	font-size: .32rem;
+	text-align: center;
+	line-height: .88rem;
+	color: #fff;
+}
+.bottom_buy div:nth-child(1) {
+	background: #999;
+}
+.bottom_buy div:nth-child(2) {
+	background: #ff0000;
+}
+
+.wrap_frame {
+	padding-bottom: .88rem;
+}
