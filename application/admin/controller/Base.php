@@ -11,7 +11,7 @@ namespace app\admin\Controller;
 
 use think\Controller;
 use think\Db;
-
+use think\Session;
 class Base extends Controller
 {
 
@@ -19,7 +19,7 @@ class Base extends Controller
     {
         parent::__construct();
 
-
+        $this->base_web_config();
         $global_menu_list = $this->get_menu();
         $this->assign('global_menu_list', $global_menu_list);
     }
@@ -36,7 +36,22 @@ class Base extends Controller
         return $global_menu_list;
     }
 
+    # 网站基本信息设置
+    public function base_web_config(){
 
+        if(!Session::has('web_setting')){
+            $config = Db::name('config')->where('type','web_setting')->select();
+            if($config){
+                foreach($config as $v){
+                    $conf[$v['name']] = $v['value'];
+                }
+                $config = $conf;
+                Session::set('web_setting',$config);
+            }
+        }
+        // dump(Session::get('web_setting'));
+        $this->assign('web_setting',Session::get('web_setting'));
+    }
 
 }
 
