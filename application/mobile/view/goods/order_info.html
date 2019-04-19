@@ -13,7 +13,7 @@
 		<div class="wrap_frame">
 			<!--public head-->
 			<div class="lb_headWrap">
-				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/my_order'">
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
 				</p>
 				<span>订单详情</span>
@@ -22,40 +22,52 @@
 			<div class="content">
 				<!--订单号，状态-->
 				<div class="status-wrap">
-					<div>订单编号：000000</div>
-					<div>买家已收货</div>
+					<div>订单编号：{$info.order_sn}</div>
+					<div>{$sname[$info.order_status]}</div>
 				</div>
 				<!--商品-->
 				<div class="detail-wrap">
 					<!---->
 					<div class="tu_wrap">
 						<div class="left_img">
-							<img src="__STATIC__/img/public/00001_orIcon.png" />
+							<img src="/public/images/goods/{$info.thumb}" />
 						</div>
 						<div class="right_tu">
-							<p>全人类的历史与未来 [A Brief History of Everyone Who Ever Lived]</p>
-							<p>x1</p>
+							<p>{$info.name}</p>
+							<p>x{$info.number}</p>
 						</div>
 					</div>
 					<!--总价-->
 					<div class="prices">
 						<span>商品总价</span>
-						<span>￥9.90</span>
+						<span>￥{$info.goods_price}</span>
 					</div>
 					<!--运费-->
 					<div class="prices">
 						<span>运费（快递）</span>
-						<span>￥0.00</span>
+						<span>￥{$info.shipping_price}</span>
 					</div>
+					{if condition="$info.coupon_price gt 0"}
+					<div class="prices">
+						<span>优惠券抵扣</span>
+						<span>- ￥{$info.coupon_price}</span>
+					</div>
+					{/if}
+					{if condition="$info.user_money gt 0"}
+					<div class="prices">
+						<span>余额抵扣</span>
+						<span>- ￥{$info.user_money}</span>
+					</div>
+					{/if}
 					<!--订单总价-->
 					<div class="order">
 						<span>订单总价</span>
-						<span>￥9.90</span>
+						<span>￥{$info.total_amount}</span>
 					</div>
 					<!--实付款-->
 					<div class="pay">
 						<span>实付款</span>
-						<span>￥9.90</span>
+						<span>￥{$info.order_amount}</span>
 					</div>
 				</div>
 				<!--购买详细-->
@@ -64,53 +76,59 @@
 					
 					<div class="deta">
 						<span>收货人：</span>
-						<span>李大爷</span>
+						<span>{$info.consignee}</span>
 					</div>
 					
 					<div class="deta">
 						<span>手机号：</span>
-						<span>13685858855</span>
+						<span>{$info.mobile}</span>
 					</div>
 					
 					<div class="deta publicEllipsis">
 						<span>收货地址：</span>
-						<span>广东省广州市白云区</span>
+						<span>{$info.address}</span>
 					</div>
 					
 					<div class="deta publicEllipsis">
 						<span>订单编号：</span>
-						<span>405340128923354867</span>
+						<span>{$info.order_sn}</span>
 					</div>
 					
+					{if condition="$info.transaction_id"}
 					<div class="deta publicEllipsis">
-						<span>微信交易号：</span>
-						<span>2019041122008974579845</span>
+						<span>交易号：</span>
+						<span>{$info.transaction_id}</span>
 					</div>
+					{/if}
 					
 					<div class="time">
 						<span>创建时间：</span>
-						<span>2019-04-11</span>
-						<span>12:40:32</span>
+						<span>{$info.add_time|date="Y-m-d",###}</span>
+						<span>{$info.add_time|date="H:i:s",###}</span>
 					</div>
-					
+					{if condition="$info.pay_status eq 1"}
 					<div class="time">
 						<span>付款时间：</span>
-						<span>2019-04-11</span>
-						<span>12:40:32</span>
+						<span>{$info.pay_time|date="Y-m-d",###}</span>
+						<span>{$info.pay_time|date="H:i:s",###}</span>
 					</div>
-					
+					{/if}
+					{if condition="$info.order_status gt 2"}
 					<div class="time">
 						<span>发货时间：</span>
-						<span>2019-04-11</span>
-						<span>12:40:32</span>
+						<span>{$info.shipping_time|date="Y-m-d",###}</span>
+						<span>{$info.shipping_time|date="H:i:s",###}</span>
 					</div>
+					{/if}
 				</div>
 			</div>
 			<!--底部购买-->
+			{if condition="$info.pay_status neq 1"}
 			<div class="bottom_buy">
-				<div>应付金额：9.90</div>
-				<div>立即购买</div>
+				<div>应付金额：{$info.order_amount}</div>
+				<div onclick="javascript:location.href='/mobile/weixin/pay?t=order_pay&id={$info.id}'">立即支付</div>
 			</div>
+			{/if}
 		</div>
 		
 		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>

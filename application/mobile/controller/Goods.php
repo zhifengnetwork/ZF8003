@@ -329,6 +329,7 @@ class Goods extends Base
             if($balance && $user['money'] > 0){
                 if($user['money'] >=  $order_amount){
                     $user_money = $order_amount;
+                    $order_amount = 0;
                     $order_status = 1;
                     $pay_status = 1;
                 }else{
@@ -337,7 +338,6 @@ class Goods extends Base
                     $pay_status = 2;
                 }
             }
-
             # 时间
             $time = time();
             # 订单号
@@ -346,6 +346,7 @@ class Goods extends Base
             $order_data = [
                 'order_sn' => $sn,
                 'user_id' => $this->user_id,
+                'goods_id' => $goods_id,
                 'order_status' => $order_status,
                 'pay_status' => $pay_status,
                 'consignee' => $def_address['consignee'],
@@ -355,6 +356,7 @@ class Goods extends Base
                 'address' => $def_address['address'],
                 'mobile' => $def_address['mobile'],
                 'goods_price' => $goods_price,
+                'number' => $number,
                 'shipping_price' => $shipping_price,
                 'user_money' => $user_money,
                 'coupon_price' => $coupon_price,
@@ -364,7 +366,7 @@ class Goods extends Base
                 'pay_time' => $pay_status == 1 ? $time : 0,
                 'user_note' => $note,
             ];
-            
+        
             $o_res = Db::name('order')->insertGetId($order_data);
             if($o_res){
                 if($user_money > 0){
@@ -377,12 +379,22 @@ class Goods extends Base
                         'to' => $o_res,
                         'money' => $user_money,
                         'addtime' => $time,
-                        'desc' => '订单：'.$o_res.' 使用了余额支付, 时订单状态为：$pay_name',
+                        'desc' => '订单：'.$o_res.' 使用了余额支付, 时订单状态为：'.$pay_name,
                         'init_time' => $time,
                     ];
                     Db::name('transaction_log')->insert($t_log);
+                    Db::name('users')->where('id', $this->user_id)->setDec('money', $user_money);
                 }
-                $url = $pay_status == 1 ? '/mobile/goods/order_pay?id='.$o_res : '/mobile/goods/order_info?id='.$o_res;
+
+                # 增加购买数量
+                Db::name('goods')->where('id',$goods_id)->setInc('sold', $number);
+                # 减库存
+                if($info['is_stock'] == 1){
+                    Db::name('goods')->where('id', $goods_id)->setDec('stock', $number);
+                }
+
+
+                $url = $pay_status != 1 ? '/mobile/weixin/pay?t=order_pay&id='.$o_res : '/mobile/goods/order_info?id='.$o_res;
                 return json(['status'=>1,'msg'=>'订单提交成功！正在跳转...','url'=>$url]);
                 exit;
             }
@@ -392,30 +404,25 @@ class Goods extends Base
 
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = Db::name('order')->find($id);
+        $info = Db::query("select a.*,b.name,b.thumb from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where a.id = '$id'");
         
         if(!$info){
             $this->error('订单信息不存在', '/mobile/user/index');
             exit;
         }
+        $info = $info[0];
         if($info['user_id'] != $this->user_id){
             $this->error('非法访问！', '/mobile/user/index');
             exit;
         }
 
-        
+        $sname = [0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'已完成'];
+
+
+        $this->assign('sname', $sname);
+        $this->assign('info', $info);
         return $this->fetch();
     }
-
-    # 订单支付
-    public function order_pay(){
-
-
-
-        echo '订单支付';exit;
-        return $this->fetch();
-    }
-
 
 
     public function order()
