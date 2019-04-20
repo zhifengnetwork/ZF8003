@@ -39,6 +39,7 @@ class System extends Base
         
         if($_POST){
             $data = input('post.');
+            // dump($data);exit;
             if (isset($data['type'])) {
                 if (isset($data['web_logo'])) {
                     if (isset($config['web_logo']) && ($data['web_logo'] == $config['web_logo'])) {
@@ -64,10 +65,18 @@ class System extends Base
                         $data['weixin_qrcode'] = $weixin_qrcode;
                     }
                 }
-
-                $bool = $this->setting_handle($data);
-                $temp = $this->get_setting($type);
-                $config = $this->handle_setting($temp);
+                $type = $data['type'];
+                unset($data['type']); 
+                foreach($data as $k => $v){
+                    if(Db::name('config')->where(['type'=>$type,'name'=>$k])->find()){
+                        Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
+                    }else{
+                        Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>$type]);
+                    }
+                }
+                echo "<script>parent.form_callback('1','');</script>"; 
+                exit;
+                
             }
         }
         
@@ -335,14 +344,9 @@ class System extends Base
         if($_POST){
             
             $data = $_POST;
-            dump($data);exit;
             $type = $data['type'];
             unset($data['type']);
             foreach($data as $k=>$v){
-                $v = Digital_Verification($v) ? Digital_Verification($v) : 0;
-                if($k == 'skinss'){
-                    $k = 'skin';
-                }
                 if(Db::name('config')->field('id')->where(['type'=>$type,'name'=>$k])->find()){
 
                     Db::name('config')->where(['type'=>$type,'name'=>$k])->update(['value'=>$v]);
@@ -358,7 +362,15 @@ class System extends Base
         $info = Db::name('config')->where('type','hom_module_bind')->select();
         if($info){
             foreach($info as $v){
-                $data[$v['name']] = $v['value']; 
+                $data[$v['name']]['id'] = '';
+                $data[$v['name']]['name'] =  '';
+                $data[$v['name']]['value'] = $v['value'];
+                if($v['value']){
+                    list($id,$name) = explode(',',$v['value']);
+                    $data[$v['name']]['id'] = $id;
+                    $data[$v['name']]['name'] =  $name;
+                }
+                
             }
             $info = $data;
         }

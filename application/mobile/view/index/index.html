@@ -117,14 +117,14 @@
 						<div class="nscramble-list">
 						{volist name="article.recom" id="vo"}
 							<li class="nscrambleItem" style="overflow: hidden; width:2.2rem;height:1.6rem;">
-								<a href="#">
+								<a href="/mobile/article/details?id={$vo.id}"> 
 									<img style="width:2.2rem;height: 1.6rem;" src="__IMAGES__article/{$vo.thumb}" />
 									<span class="mask"></span>
 								</a>
 							</li>
 						{/volist}
 						</div>
-						{/if}
+						{/if} 
 					</div>
 					
 					{if condition="isset($article.list) && $article.list"}
@@ -135,7 +135,7 @@
 									{volist name="vo.list" id="vl"}
 										<li>
 											<div class="text">
-												<h3><a href="#">{$vl.title}</a></h3>
+												<h3><a href="/mobile/article/details?id={$vl.id}">{$vl.title}</a></h3>
 												<p>{$vl.desc}</p>
 											</div>
 											<div class="img-wrap">

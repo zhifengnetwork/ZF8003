@@ -9,9 +9,7 @@ class Login extends Base
 
     public function _initialize(){
         parent::_initialize();
-        if(Session::has('user')){
-         return $this->redirect('index/index/index');   
-        }
+        
     }
 
     public function index()
@@ -24,10 +22,12 @@ class Login extends Base
      */
     public function login()
     {
+        if(Session::has('user')){
+            return $this->redirect('index/index/index');   
+        }
         if($_POST){
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
             $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-            // $captcha = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
 
             if(!check_email($email)){
                 return json(['status'=>0,'msg'=>'邮箱格式错误！']);
@@ -35,9 +35,6 @@ class Login extends Base
             if(!$password){
                 return json(['status'=>0,'msg'=>'请填写登录密码！']);
             }
-            // if(!captcha_check($captcha)){
-            //     return json(['status'=>0,'msg'=>'验证码错误！']);
-            // };
             $user = Db::name('users')->where('email',$email)->find();
             if(!$user){
                 return json(['status'=>0,'msg'=>'账户不存在！']);
@@ -73,6 +70,9 @@ class Login extends Base
      * 注册
      */
     public function register(){
+        if(Session::has('user')){
+            return $this->redirect('index/index/index');   
+        }
         if($_POST){
             $register_id = isset($_POST['register_id']) ? trim($_POST['register_id']) : '';
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -150,5 +150,12 @@ class Login extends Base
 
         $this->assign('register_id', md5(time().rand(1000,9999).rand(1000,9999)));
         return $this->fetch();
+    }
+
+    # 退出登录
+    public function logout(){
+        Session::delete('user');
+        $this->redirect('/index/login/login');
+
     }
 }

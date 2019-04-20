@@ -60,47 +60,87 @@
 					<label class="form-label col-xs-4 col-sm-2"></label>
 					<div class="formControls col-xs-8 col-sm-9">
 						{literal}
-						<p style="color:red;">注意：下面邮件模板使用 {{$code}} 代替验证码，必须填写，否则无效！</p>
+						<p style="color:red;">注意：下面邮件模板使用 {{$code}} 代替验证码，必须填写无误，否则用户收不到验证码！</p>
 						{/literal}
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">注册邮件标题：</label>
+					<label class="form-label col-xs-4 col-sm-2">注册-邮件标题：</label> 
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{if condition="isset($info.register_title)"}{$info.register_title}{/if}" id="register_title" name="register_title" >
+						<input type="text" class="input-text" value="{$info.register_title ? $info.register_title : ''}" id="register_title" name="register_title" >
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">注册邮件模板 HTML：</label>
+					<label class="form-label col-xs-4 col-sm-2">注册-邮件模板 HTML：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<textarea name="register_body" id="register_body" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.register_body)"}{$info.register_body}{/if}</textarea>
+						<textarea name="register_body" id="register_body" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.register_body ? $info.register_body : ''}</textarea>
 						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">注册邮件模板 文本：</label>
+					<label class="form-label col-xs-4 col-sm-2">注册-邮件模板 文本：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<textarea name="register_altbody" id="register_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.register_altbody)"}{$info.register_altbody}{/if}</textarea>
+						<textarea name="register_altbody" id="register_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.register_altbody ? $info.register_altbody : ''}</textarea>
 						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">重置密码邮件标题：</label>
+					<label class="form-label col-xs-4 col-sm-2">重置密码-邮件标题：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{if condition="isset($info.edit_title)"}{$info.edit_title}{/if}" id="edit_title" name="edit_title" >
+						<input type="text" class="input-text" value="{$info.edit_pass_title ? $info.edit_pass_title : ''}" id="edit_pass_title" name="edit_pass_title" >
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">重置密码邮件模板 HTML：</label>
+					<label class="form-label col-xs-4 col-sm-2">重置密码-邮件模板 HTML：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<textarea name="edit_body" id="edit_body" cols="" rows="" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.edit_body)"}{$info.edit_body}{/if}</textarea>
+						<textarea name="edit_pass_body" id="edit_pass_body" cols="" rows="" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.edit_pass_body ? $info.edit_pass_body : ''}</textarea>
 						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">重置密码邮件模板 文本：</label>
+					<label class="form-label col-xs-4 col-sm-2">重置密码-邮件模板 文本：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<textarea name="edit_altbody" id="edit_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{if condition="isset($info.edit_altbody)"}{$info.edit_altbody}{/if}</textarea>
+						<textarea name="edit_pass_altbody" id="edit_pass_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.edit_pass_altbody ? $info.edit_pass_altbody : ''}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">绑定邮箱-邮件标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{$info.bind_email_title ? $info.bind_email_title : ''}" id="bind_email_title" name="bind_email_title" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">绑定邮箱-邮件模板 HTML：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="bind_email_body" id="bind_email_body" cols="" rows="" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.bind_email_body ? $info.bind_email_body : ''}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">绑定邮箱-邮件模板 文本：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="bind_email_altbody" id="bind_email_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.bind_email_altbody ? $info.bind_email_altbody : ''}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">重置支付密码-邮件标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{$info.edit_paypass_title ? $info.edit_paypass_title : ''}" id="edit_paypass_title" name="edit_paypass_title" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">重置支付密码-邮件模板 HTML：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="edit_paypass_body" id="edit_paypass_body" cols="" rows="" class="textarea"  placeholder="可填写HTML内容的模板" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.edit_paypass_body ? $info.edit_paypass_body : ''}</textarea>
+						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">重置支付密码-邮件模板 文本：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea name="edit_paypass_altbody" id="edit_paypass_altbody" cols="" rows="" class="textarea"  placeholder="填写文本内容，当HTML模板发送失败时调用" dragonfly="true" onKeyUp="$.Huitextarealength(this,250)">{$info.edit_paypass_altbody ? $info.edit_paypass_altbody : ''}</textarea>
 						<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 					</div>
 				</div>

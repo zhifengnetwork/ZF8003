@@ -22,12 +22,9 @@
             </div>
             <!-- body -->
             <div class="coupon_box">
-                {if condition = "isset($list) AND !empty($list)"}
-                {volist name="list" id="vo"}
+                {volist name="list" id="vo" empty="<p style='text-align:center; height: 75px;line-height: 75px;'>暂无数据！</p>"}
                  <div class="coupon_list">
-                   
                      <div class="coupon_img">
-                        
                         <div class="cou_img">
                            <img src="__STATIC__/img/purchase/youhui@2x.png" alt="">
                         </div>
@@ -50,12 +47,6 @@
                     
                  </div>
                 {/volist}
-                {else/}
-                <div>
-                    暂无数据
-                </div>
-                
-                {/if}
             </div>
         </div>
 </body>

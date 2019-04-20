@@ -19,8 +19,8 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">手机端 - 微解读：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <a class="module-select" id="micro-module" data-id="" onclick="select_module('micro');">请绑定模块内容</a>
-                        <input type="hidden" id="micro" name="micro" value="{$info.micro}">
+                        <a class="module-select" id="micro-module" data-id="" onclick="select_module('micro');">{$info.micro.name ? $info.micro.name : '请绑定模块内容'}</a>
+                        <input type="hidden" id="micro" name="micro" value="{$info.micro.value ? $info.micro.value :''}">
                     </div>
                 </div>
             </div>
@@ -28,8 +28,8 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">手机端 - 皮肤管理：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <a class="module-select" id="skinss-module" data-id="" onclick="select_module('skinss');">请绑定模块内容</a>
-                        <input type="hidden" id="skinss" name="skinss" value="{$info.skin}">
+                        <a class="module-select" id="skinss-module" data-id="" onclick="select_module('skinss');">{$info.skinss.name ? $info.skinss.name : '请绑定模块内容'}</a>
+                        <input type="hidden" id="skinss" name="skinss" value="{$info.skinss.value ? $info.skinss.value :''}">
                     </div>
                 </div>
             </div>
@@ -37,8 +37,8 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">手机端 - 示例报告：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <a class="module-select" id="example-module" data-id="" onclick="select_module('example');">请绑定模块内容</a>
-                        <input type="hidden" id="example" name="example" value="{$info.example}">
+                        <a class="module-select" id="example-module" data-id="" onclick="select_module('example');">{$info.example.name ? $info.example.name : '请绑定模块内容'}</a>
+                        <input type="hidden" id="example" name="example" value="{$info.example.value ? $info.example.value :''}">
                     </div>
                 </div>
 
@@ -70,8 +70,9 @@
     function open_callback(name,id){
 
         var module = $('#hidden-module').val();
+        var value = id+','+name;
         $('#'+ module+'-module').html(name);
-        $('#'+module).val(id);
+        $('#'+module).val(value);
         $('#'+ module+'-module').attr('data-id', id);
         $('#hidden-module').val('');
     }

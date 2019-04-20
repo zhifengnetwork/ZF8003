@@ -26,12 +26,12 @@
 						</div>
 						
 						<h2>{$info.name}</h2>
-						<div class="color-blue">￥{$info.price}</div>
+						<div class="color-blue" id="price">￥{$info.price}</div>
 						
 						<div class="and">
-							<span class="minus us" id="jian">-</span>
-							<input class="inp" id="ku" type="number" value="1"/>
-							<span class="plus us" id="jia">+</span>
+							<span class="minus us" id="jian" onclick="del_num();">-</span>
+							<input class="inp" id="buy_num" name="number" onchange="change_num();" type="number" value="1"/>
+							<span class="plus us" id="jia" onclick="add_num();">+</span>
 						</div>
 					</div>
 					<!--右边-->
@@ -45,19 +45,19 @@
 								<li>
 									<div class="form">收货人：</div>
 									<div>
-										<input class="form-control" type="text" />
+										<input class="form-control" type="text" name="consignee" value="{$default_address['consignee'] ? $default_address['consignee'] : ''}" />
 									</div>
 								</li>
 								<li>
 									<div class="form">邮箱：</div>
 									<div>
-										<input class="form-control" type="text" />
+										<input class="form-control" type="text" name="email" value="{$default_address['email'] ? $default_address['email'] : ''}" />
 									</div>
 								</li>
 								<li>
 									<div class="form">手机号码：</div>
 									<div>
-										<input class="form-control" type="text" />
+										<input class="form-control" type="text" name="mobile" value="{$default_address['mobile'] ? $default_address['mobile'] : ''}" />
 									</div>
 								</li>
 								<li>
@@ -65,18 +65,19 @@
 									<div>
 
 										<select class="v-item" id="province" >
-                                        <option value="0">请选择</option>
+										<option value="0">请选择</option>
+										
                                         {volist name="province" id="vo"}
-                                        <option value="{$vo.id}">{$vo.name}</option>
+                                        <option value="{$vo.id}" {$default_address.province == $vo.id ? 'selected' : ''}>{$vo.name}</option>
                                         {/volist}
 										</select>
 										 
 										<select class="v-item" id="city" >
-                                            <option value="0">请选择</option>
+                                            <option value="{$default_address.city ? $default_address.city : '0'}">{$default_address.city ? $default_address.city_name : '请选择'}</option>
 										</select>
 										 
 										<select class="v-item" id="district">
-                                            <option value="0">请选择</option>
+                                            <option value="{$default_address.district ? $default_address.district : '0'}">{$default_address.district ? $default_address.district_name : '请选择'}</option>
 										</select>
                                     </div>
                                     
@@ -84,7 +85,7 @@
 								<li>
 									<div class="form">详细地址：</div>
 									<div>
-										<input class="form-control" type="text" />
+										<input class="form-control" type="text" name="address" value="{$default_address.address ? $default_address.address : ''}" />
 									</div>
 								</li>
 							</ul>
@@ -100,8 +101,8 @@
 						<!--总计，运费-->
 						<div class="total-wrap">
 							<div class="clearfix">
-								<div class="pull-left">总计：￥499.00</div>
-								<div class="pull-right">应付: <b>￥499.00</b><a class="btn-submit" href="__STATIC__/html/order/order.html">提交订单</a></div>
+								<div class="pull-left">总计：￥<span id="goods_total">499.00</span></div>
+								<div class="pull-right">应付: <b>￥<span id="order_total">499.00</span></b><a class="btn-submit" onclick="submit();">提交订单</a></div> 
 							</div>
 						</div>
 					</div>
@@ -116,87 +117,97 @@
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
 		<!-- <script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script> -->
 		<script>
-    $('#province').on('change',function(){
-        var area_id = $('#province').val();
-        var area = $('#province option:selected').html();
+			var price = '{$info.price}';
+			// 购买数量 - 减少
+			function del_num(){
+				var num = $('#buy_num').val();
+				if(num == 1){
+					return false;
+				}
+				$('#buy_num').val(parseInt(num)-1);
+				change_num();
+			}
 
-        re_ad_option('city');
-        re_ad_option('district');            
+			// 购买数量 - 增加
+			function add_num(){
+				var num = $('#buy_num').val();
+				$('#buy_num').val(parseInt(num)+1);
+				change_num();
+			}
+			// 计算价格
+			function change_num(){
+				var num = $('#buy_num').val();
+				var goods_price = parseInt(num)*price;
+				$('#goods_total').html(goods_price);
+				$('#order_total').html(goods_price);
+			}
 
-        se_ad_option('city',area_id);
+			// 提交订单
+			
+			
 
-        if(area_id > 0){
-            hidden_input_area(area,area_id);
-        }else{
-            hidden_input_area('',area_id);
-        }
-    });
-    $('#city').on('change',function(){
-        var area_id = $('#city').val();
-        var area = $('#city option:selected').html();
-        re_ad_option('district');
 
-        se_ad_option('district',area_id);
+			$('#province').on('change',function(){
+				var area_id = $('#province').val();
+				var area = $('#province option:selected').html();
 
-        if(area_id > 0){
-            hidden_input_area(area,area_id);
-        }else{
-            var p_area_id = $('#province').val();
-            var p_area = $('#province option:selected').html();
-            hidden_input_area(p_area,p_area_id);
-        }
-    });
+				re_ad_option('city');
+				re_ad_option('district');            
 
-    $('#district').on('change',function(){
-        var area_id = $('#district').val();
-        var area = $('#district option:selected').html();
+				se_ad_option('city',area_id);
 
-        if(area_id > 0){
-            hidden_input_area(area,area_id);
-        }else{
-            var p_area_id = $('#city').val();
-            var p_area = $('#city option:selected').html();
-            hidden_input_area(p_area,p_area_id);
-        }
-    });
+				if(area_id > 0){
+					hidden_input_area(area,area_id);
+				}else{
+					hidden_input_area('',area_id);
+				}
+			});
+			$('#city').on('change',function(){
+				var area_id = $('#city').val();
+				var area = $('#city option:selected').html();
+				re_ad_option('district');
 
-    function hidden_input_area(area,areaid){
-        $('#se-hid-area').val(area);
-        $('#se-hid-area-id').val(areaid);
-    }
+				se_ad_option('district',area_id);
 
-    function re_ad_option(area){
-        $('#'+area+' option').remove();
-        var _html = '<option value="0">请选择</option>';
-        $('#'+area).append(_html);
-    }
+				if(area_id > 0){
+					hidden_input_area(area,area_id);
+				}else{
+					var p_area_id = $('#province').val();
+					var p_area = $('#province option:selected').html();
+					hidden_input_area(p_area,p_area_id);
+				}
+			});
 
-    function se_ad_option(area,id){
-        $.post('/admin/system/ajax_area',{parent_id:id},function(res){
-            $('#'+area).append(res);
-        });
-    }
+			$('#district').on('change',function(){
+				var area_id = $('#district').val();
+				var area = $('#district option:selected').html();
 
-			//数量增加减少
-			var Jian = document.getElementById('jian');
-		    var Ku = document.getElementById('ku');
-		    var Jia = document.getElementById('jia');
-			       
-		    Jia.onclick = function () {
-		    	if (Ku.value >= 100) {
-		    		return;
-		    	} else {
-		    	Ku.value = parseInt(Ku.value)+1;
-		    	}
-		    }
-		    
-		   	Jian.onclick = function () {
-		   	   if (Ku.value <= 0) {
-		   	   	return;
-		    	} else {
-		   	   Ku.value = parseInt(Ku.value)-1;
-		   	  }
-		    }
+				if(area_id > 0){
+					hidden_input_area(area,area_id);
+				}else{
+					var p_area_id = $('#city').val();
+					var p_area = $('#city option:selected').html();
+					hidden_input_area(p_area,p_area_id);
+				}
+			});
+
+			function hidden_input_area(area,areaid){
+				$('#se-hid-area').val(area);
+				$('#se-hid-area-id').val(areaid);
+			}
+
+			function re_ad_option(area){
+				$('#'+area+' option').remove();
+				var _html = '<option value="0">请选择</option>';
+				$('#'+area).append(_html);
+			}
+
+			function se_ad_option(area,id){
+				$.post('/admin/system/ajax_area',{parent_id:id},function(res){
+					$('#'+area).append(res);
+				});
+			}
+
 		</script>
 
 	</body>

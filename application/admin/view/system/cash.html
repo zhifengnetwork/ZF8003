@@ -8,7 +8,7 @@
 					<a href="/admin/system/{$vo.url}"><span>{$vo.name}</span></a>
 				{/foreach}
 			</div>
-			<div>
+			<div> 
                 <div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3">充值功能：</label>
 					<div class="formControls col-xs-8 col-sm-9"> 
@@ -21,15 +21,15 @@
 					</div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">单笔提现最高限制（元）：</label>
+                    <label class="form-label col-xs-4 col-sm-3">单笔充值最高限制（元）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="recharge_cash_max" name="recharge_cash_max" value="{if condition="isset($info.recharge_cash_max)"}{$info.recharge_cash_max}{/if}" class="input-text" placeholder="单笔充值最高限制">
+                        <input type="text" id="recharge_cash_max" name="recharge_cash_max" value="{$info.recharge_cash_max ? $info.recharge_cash_max : 0}" class="input-text" placeholder="单笔充值最高限制">
                     </div>
                 </div>
                 <div class="row cl">
-                    <label class="form-label col-xs-4 col-sm-3">单笔提现最低限制（元）：</label>
+                    <label class="form-label col-xs-4 col-sm-3">单笔充值最低限制（元）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="recharge_cash_min" name="recharge_cash_min" value="{if condition="isset($info.recharge_cash_min)"}{$info.recharge_cash_min}{/if}" class="input-text" placeholder="单笔充值最低限制">
+                        <input type="text" id="recharge_cash_min" name="recharge_cash_min" value="{$info.recharge_cash_min ? $info.recharge_cash_min : 0}" class="input-text" placeholder="单笔充值最低限制">
                     </div>
                 </div>
                 <div class="row cl">
@@ -46,31 +46,31 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">单笔提现最高限制（元）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="withdrawal_cash_max" name="withdrawal_cash_max" value="{if condition="isset($info.withdrawal_cash_max)"}{$info.withdrawal_cash_max}{/if}" class="input-text" placeholder="单笔提现最高限制">
+                        <input type="text" id="withdrawal_cash_max" name="withdrawal_cash_max" value="{$info.withdrawal_cash_max ? $info.withdrawal_cash_max : 0}" class="input-text" placeholder="单笔提现最高限制">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">单笔提现最低限制（元）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="withdrawal_cash_min" name="withdrawal_cash_min" value="{if condition="isset($info.withdrawal_cash_min)"}{$info.withdrawal_cash_min}{/if}" class="input-text" placeholder="单笔提现最低限制">
+                        <input type="text" id="withdrawal_cash_min" name="withdrawal_cash_min" value="{$info.withdrawal_cash_min ? $info.withdrawal_cash_min : 0}" class="input-text" placeholder="单笔提现最低限制">
                     </div>
                 </div>
 				<div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">提现手续费（百分比）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="withdrawal_fee" name="withdrawal_fee" value="{if condition="isset($info.withdrawal_fee)"}{$info.withdrawal_fee}{/if}" class="input-text" placeholder="提现手续费：">
+                        <input type="text" id="withdrawal_fee" name="withdrawal_fee" value="{$info.withdrawal_fee ? $info.withdrawal_fee : 0}" class="input-text" placeholder="提现手续费：">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">提现手续费最大值（元）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="withdrawal_fee_max" name="withdrawal_fee_max" value="{if condition="isset($info.withdrawal_fee_max)"}{$info.withdrawal_fee_max}{/if}" class="input-text" placeholder="提现手续费最大值">
+                        <input type="text" id="withdrawal_fee_max" name="withdrawal_fee_max" value="{$info.withdrawal_fee_max ? $info.withdrawal_fee_max : 0}" class="input-text" placeholder="提现手续费最大值">
                     </div>
                 </div>
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">提现手续费最小值（元）：</label>
                     <div class="formControls col-xs-8 col-sm-2">
-                        <input type="text" id="withdrawal_fee_min" name="withdrawal_fee_min" value="{if condition="isset($info.withdrawal_fee_min)"}{$info.withdrawal_fee_min}{/if}" class="input-text" placeholder="提现手续费最小值（元）：">
+                        <input type="text" id="withdrawal_fee_min" name="withdrawal_fee_min" value="{$info.withdrawal_fee_min ? $info.withdrawal_fee_min : 0}" class="input-text" placeholder="提现手续费最小值（元）：">
                     </div>
                 </div>
 				
@@ -85,4 +85,4 @@
 	</form>
 	<iframe name="ajaxR" style="display:none;width:1200px;height:500px;"></iframe>
 </div>
-{include file="layout/setting_footer"/}
+{include file="layout/setting_footer"/} 

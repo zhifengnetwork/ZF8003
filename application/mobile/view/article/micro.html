@@ -24,17 +24,17 @@
             <!-- 微解读列表 -->
             <div class="unscramble-list">
                 <ul>
-                    {volist name="lists" id="vo"}
+                    {volist name="lists" id="vo"} 
                         <li class="list-item">
                             <div class="text">
-                                <h3><a href="/mobile/article/details?id={$vo.id}&type=1">{$vo.title}</a></h3>
+                                <h3><a href="/mobile/article/details?id={$vo.id}">{$vo.title}</a></h3>
                                 <div class="operation-bar">
                                     <span class="praiseBtn {eq name='$vo.is_like' value='1'} praised {/eq}" onclick="javaScript:like('{$user_id}','{$vo.id}')">
                                         <i class="praise-icon"></i>
                                         <em class="num">{$vo.star}</em>
                                     </span>
                                     <span class="commentBtn">
-                                        <a href="/mobile/comment/comment?id={$vo.id}&type=1">
+                                        <a href="/mobile/comment/comment?id={$vo.id}">
                                             <i class="discuss-icon"></i>
                                             <em class="num">{$vo.comment}</em>
                                         </a>
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="img-wrap">
-                                <a href="/mobile/article/details?id={$vo.id}&type=1">
+                                <a href="/mobile/article/details?id={$vo.id}">
                                     <img src="__IMAGES__article/{$vo.thumb}" />
                                 </a>
                             </div>

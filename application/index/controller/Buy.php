@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;
 use think\Db;
+use think\Session;
+
 class Buy extends Base
 {
     public function index()
@@ -8,6 +10,7 @@ class Buy extends Base
         return $this->redirect('index/buy/buy');
     }
 
+    # 商品列表
     public function buy()
     {
         $where = [
@@ -19,9 +22,10 @@ class Buy extends Base
         return $this->fetch();
     }
 
+    # 商品详情
     public function details()
     { 
-        // return json(['检验报告'=> '约200项', '基因位点'=> '2000万', '生成报告'=> '约2周']);exit;
+       
         $id = input('get.id');
         $info = Db::name('goods')->where('id', $id)->find();
         if(!$info){
@@ -37,6 +41,9 @@ class Buy extends Base
         $this->assign('list', $info);
         return $this->fetch();
     }
+
+
+    # 提交订单
     public function submit_order()
     {
         $id = input('get.id');
@@ -45,8 +52,28 @@ class Buy extends Base
             layer_error('商品信息不存在或已下架');
             exit;
         }
+
+        $user = $this->user;
+        if(!$user){
+            Session::set('re_url', '/index/buy/submit_order?id='.$id);
+            $this->redirect('/index/login/login');
+        }
+
+        # 地址 - 省
         $province = Db::name('area')->field('`id`,`name`')->where('parent_id', 0)->select();
+
+        # 用户默认收货地址
+        $default_address_id = $user['default_address_id'];
+        if($default_address_id > 0){
+            $default_address = Db::name('user_address')->where('id', $default_address_id)->find();
+            if($default_address){
+                $default_address['city_name'] = Db::name('area')->field('name')->where('id', $default_address['city'])->find()['name'];
+                $default_address['district_name'] = Db::name('area')->field('name')->where('id', $default_address['district'])->find()['name'];
+            }
+        }
+
         $this->assign('province', $province);
+        $this->assign('default_address', $default_address);
         $this->assign('info',$info); 
         return $this->fetch();
     }

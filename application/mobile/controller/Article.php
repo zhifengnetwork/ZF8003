@@ -130,7 +130,7 @@ class Article extends Base{
     # 皮肤管理
     public function skin(){
         # 系统设置
-        $conf = Db::query("select `value` from `zf_config` where `type` = 'hom_module_bind' and `name` = 'skin'");
+        $conf = Db::query("select `value` from `zf_config` where `type` = 'hom_module_bind' and `name` = 'skinss'");
         if (!$conf) {
             layer_error('访问信息不存在或已禁止访问！');
             exit;
@@ -167,6 +167,7 @@ class Article extends Base{
             layer_error('参数错误！');
         }
         $info = Db::name('article')->field('id,title,details,star,comment')->where(['id'=>$id,'is_lock'=>0])->find();
+        // dump($info);exit;
         if(!$info){
             layer_error('内容不存在或已禁止访问！');
             exit;

@@ -121,6 +121,25 @@ class User extends Base
      */
     public function top_up()
     {
+        
+        #充值设置
+        $config = Db::name('config')->where('type','cash_setting')->select();
+        if($config){
+            foreach($config as $v){
+                $conf[$v['name']] = $v['value'];
+            }
+            $config = $conf;
+        }else{
+            layer_error('管理员未开放充值入口！');
+            exit;
+        }
+
+        if($config['recharge'] == 0){
+            layer_error('管理员未开放充值入口！');
+            exit;
+        }
+
+
         $sn = isset($_GET['sn']) ? trim($_GET['sn']) : '';
         if($sn){
 
@@ -130,7 +149,7 @@ class User extends Base
             }
             require_once ROOT_PATH."plugins/pay/weixinpay/lib/WxPay.Api.php";
             require_once ROOT_PATH."plugins/pay/weixinpay/WxPay.Config.php";
-            $input = new \WxPayOrderQuery();
+            $input = new \WxPayOrderQuery(); 
             $input->SetOut_trade_no($sn);
             $config = new \WxPayConfig();
             $res = \WxPayApi::orderQuery($config, $input);
@@ -194,6 +213,9 @@ class User extends Base
                 $conf[$v['name']] = $v['value'];
             }
             $config = $conf;
+        }else{
+            layer_error('管理员未开放提现入口！');
+            exit;
         }
 
         if($_POST){
@@ -210,13 +232,13 @@ class User extends Base
                 return json(['status'=>0,'msg'=>'单笔提现最低：'.$config['withdrawal_cash_min'].' 元']);
             }
             $fee = 0;
-            if($config['withdrawal_fee']){
+            if($config['withdrawal_fee'] > 0){
                 $fee = $money * ($config['withdrawal_fee'] * 0.01);
                 
-                if($config['withdrawal_fee_max'] && $fee > $config['withdrawal_fee_max']){
+                if($config['withdrawal_fee_max'] > 0 && $fee > $config['withdrawal_fee_max']){
                     $fee = $config['withdrawal_fee_max'];
                 }
-                if($config['withdrawal_fee_min'] && $fee < $config['withdrawal_fee_min']){
+                if($config['withdrawal_fee_min'] > 0 && $fee < $config['withdrawal_fee_min']){
                     $fee = $config['withdrawal_fee_min'];
                 }
                 
@@ -258,7 +280,7 @@ class User extends Base
 
 
         if(!array_key_check($config,'withdrawal', true)){
-            layer_error('管理员未开启提现功能！');
+            layer_error('管理员未开放提现入口！');
             exit;
         }
 

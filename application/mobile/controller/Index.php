@@ -25,9 +25,8 @@ class Index extends Base
         $recom_goods = Db::query("select `id`,`name`,`desc`,`thumb`,`price` from `zf_goods` where `type` = 3 and `is_del` = 0 order by `utime` desc");
         $this->assign('recom_goods', $recom_goods);
 
-
         # 微解读
-        $article_cate = Db::query("select `id`,`name` from `zf_category` where `type` = 'article' and `is_view` = 1");
+        $article_cate = Db::query("select `id`,`name` from `zf_category` where `type` = 'article' and `is_view` = 1 and `is_lock` = 0");
         if($article_cate){
             $ignore = [0];
             $article['recom'] = Db::query("select `id`,`title`,`desc`,`thumb` from `zf_article` where `type` = 1 order by `utime` desc limit 3");
@@ -41,6 +40,8 @@ class Index extends Base
                 $article['list'][$k] = $v;
                 $article['list'][$k]['list'] = Db::query("select `id`,`title`,`desc`,`thumb` from `zf_article` where `cate_id` = '$v[id]' and id not in ('$ignore') order by `utime` desc");
             }
+
+            // dump($article);exit;
             
             $this->assign('article', $article);
 
@@ -357,7 +358,7 @@ class Index extends Base
         return $this->fetch();
     }
 
-     # 发送重置密码邮件
+     # 发送重置支付密码邮件
      public function send_editpaypass_mail(){
         $pass_id = isset($_POST['pass_id']) ? trim($_POST['pass_id']) : '';
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -387,9 +388,9 @@ class Index extends Base
                 'port'      => $conf['port'],
                 'nickname'  => $conf['nickname'],
                 'to'        => $email,
-                'title'     => '重置支付密码',
-                'body'      => "<h1>您正在重置支付密码，验证码：$code</h1>",
-                'altbody'   => "您正在重置支付密码，验证码：$code",
+                'title'     => $conf['edit_paypass_title'] ? $conf['edit_paypass_title'] : '重置支付密码',
+                'body'      => $conf['edit_paypass_body'] ? str_replace('{{$code}}', $code, $conf['edit_paypass_body']) : "<h1>您正在重置支付密码，验证码：$code</h1>",
+                'altbody'   => $conf['edit_paypass_altbody'] ? str_replace('{{$code}}', $code, $conf['edit_paypass_altbody']) : "您正在重置支付密码，验证码：$code",
             ];
             
             if($this->base_send_mail($param)){
@@ -434,9 +435,9 @@ class Index extends Base
                 'port'      => $conf['port'],
                 'nickname'  => $conf['nickname'],
                 'to'        => $email,
-                'title'     => $conf['edit_title'],
-                'body'      => $conf['edit_body'] ? str_replace('{{$code}}', $code, $conf['edit_body']) : "<h1>您正在修改登录密码，验证码：$code</h1>",
-                'altbody'   => $conf['edit_altbody'] ? str_replace('{{$code}}', $code, $conf['edit_altbody']) : "您正在修改登录密码，验证码：$code",
+                'title'     => $conf['edit_pass_title'] ? $conf['edit_pass_title'] : '重置登录密码',
+                'body'      => $conf['edit_pass_body'] ? str_replace('{{$code}}', $code, $conf['edit_pass_body']) : "<h1>您正在修改登录密码，验证码：$code</h1>",
+                'altbody'   => $conf['edit_pass_altbody'] ? str_replace('{{$code}}', $code, $conf['edit_pass_altbody']) : "您正在修改登录密码，验证码：$code",
             ];
             
             if($this->base_send_mail($param)){
@@ -482,7 +483,7 @@ class Index extends Base
                 'port'      => $conf['port'],
                 'nickname'  => $conf['nickname'],
                 'to'        => $email,
-                'title'     => $conf['register_title'],
+                'title'     => $conf['register_title'] ? $conf['register_title'] : '账号注册',
                 'body'      => $conf['register_body'] ? str_replace('{{$code}}', $code, $conf['register_body']) : "<h1>注册码：$code</h1>",
                 'altbody'   => $conf['register_altbody'] ? str_replace('{{$code}}', $code, $conf['register_altbody']) : "注册码：$code",
             ];
@@ -529,9 +530,9 @@ class Index extends Base
                 'port'      => $conf['port'],
                 'nickname'  => $conf['nickname'],
                 'to'        => $email,
-                'title'     => '绑定电子邮箱',
-                'body'      => "<h1>您正在操作绑定电子邮箱，验证码：$code</h1>",
-                'altbody'   => "您正在操作绑定电子邮箱，验证码：$code",
+                'title'     => $conf['bind_email_title'] ? $conf['bind_email_title'] : '绑定登录邮箱账号',
+                'body'      => $conf['bind_email_body'] ? str_replace('{{$code}}', $code, $conf['bind_email_body']) : "<h1>您正在绑定登录邮箱账号，验证码：$code</h1>",
+                'altbody'   => $conf['bind_email_altbody'] ? str_replace('{{$code}}', $code, $conf['bind_email_altbody']) : "您正在绑定登录邮箱账号，验证码：$code",
             ];
            
             if($this->base_send_mail($param)){

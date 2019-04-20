@@ -31,10 +31,31 @@ class Weixin extends Base{
         switch($t){
             # 账号充值
             case 'recharge':
+                #充值设置
+                $config = Db::name('config')->where('type','cash_setting')->select();
+                if($config){
+                    foreach($config as $v){
+                        $conf[$v['name']] = $v['value'];
+                    }
+                    $config = $conf;
+                }else{
+                    layer_error('管理员未开放充值入口！');
+                    exit;
+                }
                 if($money <= 0){
                     layer_error('请输入充值金额');
                     exit;
+                }else{
+                    if($money > $config['recharge_cash_max'] && $config['recharge_cash_max'] > 0){
+                        layer_error('单笔充值最高限额：'.$config['recharge_cash_max'].' 元');
+                        exit;
+                    }
+                    if($money < $config['recharge_cash_min'] && $config['recharge_cash_min'] > 0){
+                        layer_error('单笔充值最低限额：'.$config['recharge_cash_min'].' 元');
+                        exit;
+                    }
                 }
+                
                 $data = [
                     'sn'    =>  $sn,
                     'user_id'   =>  $this->user_id,
