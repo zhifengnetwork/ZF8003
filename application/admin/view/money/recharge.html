@@ -12,12 +12,19 @@
             <div class="text-c"> 日期范围：
                 <input type="text" {literal}
                     onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
-                    {if condition="isset($seach.datemin) && $seach.datemax gt 0" } value="{$seach.datemin|date='Y-m-d H:i:s',###}" {/if}
+                    {if condition="isset($seach.datemin) && !empty($seach.datemin)" }
+                     value="{$seach.datemin|date='Y-m-d H:i:s',###}"
+					{else/}
+					value=""                     
+                     {/if}
                     id="datemin" name="seach[datemin]" class="input-text Wdate" style="width:180px;">
                 -
                 <input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
-                    {/literal} {if condition="isset($seach.datemax) && $seach.datemax gt 0" }
-                    value="{$seach.datemax|date='Y-m-d H:i:s',###}" {/if} id="datemax" name="seach[datemax]" class="input-text Wdate"
+                    {/literal} {if condition="isset($seach.datemax) && !empty($seach.datemax)" }
+                    value="{$seach.datemax|date='Y-m-d H:i:s',###}" 
+					{else/}
+					value=""                    
+                    {/if} id="datemax" name="seach[datemax]" class="input-text Wdate"
                     style="width:180px;">
                 <input type="text" class="input-text" style="width:250px"
                     value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入会员名称"

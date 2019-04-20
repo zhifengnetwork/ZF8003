@@ -14,20 +14,33 @@
 				角色：
 			<select class="input-text" style="width:120px;" name="seach[role]">
 				<option value="">请选择角色</option>
-				{volist name="role" id="ro"}	
+				{volist name="role" id="ro"}
+				{if condition = "isset($seach.role) && !empty($seach.role) && ($ro.id eq $seach.role)"}
+				<option value="{$ro.id}" selected>{$ro.name}</option>
+				{else/}
 				<option value="{$ro.id}">{$ro.name}</option>
+				{/if}
 				{/volist}
 			</select>
 				日期范围：
-				<input type="text" onfocus="WdatePicker()" id="datemin" name="seach[datemin]"
-					value="{if condition='isset($seach.datemin)'}{$seach.datemin}{/if}" class="input-text Wdate"
-					style="width:120px;">
+				<input type="text" {literal}
+					onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
+					{if condition="isset($seach.datemin) && !empty($seach.datemin)" } value="{$seach.datemin|date='Y-m-d H:i:s',###}"
+					{else/}
+					value=""
+					{/if}
+					id="datemin" name="seach[datemin]" class="input-text Wdate" style="width:180px;">
+                  
 				-
-				<input type="text" onfocus="WdatePicker()" id="datemax" name="seach[datemax]"
-					value="{if condition='isset($seach.datemax)'}{$seach.datemax}{/if}" class="input-text Wdate"
-					style="width:120px;">
+				<input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
+					{/literal} {if condition="isset($seach.datemax) && !empty($seach.datemax)" }
+					value="{$seach.datemax|date='Y-m-d H:i:s',###}"
+					{else/}
+					value=""
+					{/if} id="datemax" name="seach[datemax]" class="input-text Wdate"
+					style="width:180px;">
 				<input type="text" class="input-text" style="width:250px"
-					value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入管理员名称、角色"
+					value="{if condition='isset($seach.m_conditions)'}{$seach.m_conditions}{/if}" placeholder="输入管理员名称"
 					id="m_conditions" name="seach[m_conditions]">
 				<button type="submit" class="btn btn-success radius" id="m_search" name=""><i class="Hui-iconfont">&#xe665;</i>
 					搜用户</button>

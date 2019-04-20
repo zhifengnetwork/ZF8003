@@ -12,11 +12,14 @@ class Goods extends Base{
         $where['is_del'] = ['=', 0];
 
         $field = '`id`,`name`,`cate_id`,`price`,`self_price`,`promotion_price`,`promotion_to`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
-
-        $list = Db::name('goods')->field($field)->where($where)->order('utime desc')->paginate(15);
-        
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+        if ($keywords) {
+            $where['name'] = ['like', "%$keywords%"];
+        }
+        $list = Db::name('goods')->field($field)->where($where)->order('utime desc')->paginate(15);      
         $count = Db::name('goods')->where($where)->count();
         $cname[0] = '';
+
         if($list){
             foreach($list as $v){
                 $cids[] = $v['cate_id'];

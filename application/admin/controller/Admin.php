@@ -30,10 +30,21 @@ class Admin extends Base
     public function list1()
     {
         $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $m_conditions   = isset($seach['m_conditions']) ? $seach['m_conditions'] : '';
+        $datemin        = isset($seach['datemin']) ? $seach['datemin'] : '';
+        $datemax        = isset($seach['datemax']) ? $seach['datemax'] : '';
+        $role           = isset($seach['role']) ? $seach['role'] : '';
         $where = '';
         if($seach){
             // 搜索条件
-            $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax'],$seach['role']); 
+            $where=$this->s_condition($seach['m_conditions'],$seach['datemin'], $seach['datemax'],$seach['role']);
+            $seach = [
+                'm_conditions'  => $m_conditions,
+                'datemin'       => strtotime($datemin),
+                'datemax'       => strtotime($datemax),
+                'role'          => $seach['role']
+            ];
+            $this->assign('seach', $seach); 
             // 列出数据
         }
             $list = Db::name('admin')->where($where)->order('addtime desc')->paginate(15, false, ['query' => request()->param()]);
@@ -72,12 +83,12 @@ class Admin extends Base
         }
         if ($datemins && $datemaxs) {
             $datemin = strtotime($datemins);
-            $datemax = strtotime($datemaxs . $time);
+            $datemax = strtotime($datemaxs);
             $where['addtime'] = [['>= time', $datemin], ['<= time', $datemax], 'and'];
         } elseif ($datemins) {
             $where['addtime'] = ['>= time', strtotime($datemins)];
         } elseif ($datemaxs) {
-            $where['addtime'] = ['<= time', strtotime($datemaxs . $time)];
+            $where['addtime'] = ['<= time', strtotime($datemaxs)];
         } elseif ($role) {
             $where['group_id'] = $role;
         }

@@ -65,12 +65,22 @@ class Money extends Base
      */
     public function recharge(){
         
-        $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $keywords       = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $m_conditions   = isset($keywords['m_conditions']) ? $keywords['m_conditions'] : '';
+        $datemin        = isset($keywords['datemin']) ? $keywords['datemin'] : '';
+        $datemax        = isset($keywords['datemax']) ? $keywords['datemax'] : '';
         $total = 0;
         //搜索条件
-        if($keywords){ 
-           $where =$this->search_data($keywords);
+        if($keywords){
+            $seach = [
+                'm_conditions'  => $m_conditions,
+                'datemin'       => strtotime($datemin),
+                'datemax'       => strtotime($datemax),
+            ]; 
+           $this->assign('seach', $seach);  
+           $where =$this->search_data($keywords);          
         }
+        
         $where['r.id'] = ['>', '0'];
         $list = Db::name('recharge')
                 ->alias('r')
@@ -81,7 +91,9 @@ class Money extends Base
                 ->paginate(15, false, ['query' => request()->param()]);;
         if($list){
             $total = count($list);
-        }        
+        }
+
+       
         $this->assign('list',$list);
         $this->assign('total', $total);
         return $this->fetch();         
@@ -91,9 +103,18 @@ class Money extends Base
      */
     public function transaction(){
         $keywords = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $m_conditions   = isset($keywords['m_conditions']) ? $keywords['m_conditions'] : '';
+        $datemin        = isset($keywords['datemin']) ? $keywords['datemin'] : '';
+        $datemax        = isset($keywords['datemax']) ? $keywords['datemax'] : '';        
         $total = 0;
         //搜索条件
         if($keywords){
+            $seach = [
+                'm_conditions'  => $m_conditions,
+                'datemin'       => strtotime($datemin),
+                'datemax'       => strtotime($datemax),
+            ];
+            $this->assign('seach', $seach);   
             $where = $this->search_data($keywords);
         }
         $where['r.id'] = ['>', '0'];
