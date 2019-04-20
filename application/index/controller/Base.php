@@ -22,14 +22,11 @@ class Base extends Controller
     public $action;
     public $ip;
     public $client; 
-    // public $avatar; 
+
     public function _initialize()
     {
         $this->base_web_config();
         $this->Verification_Client();
-        // $config = Db::name('config')->select();
-        // Session::set('config.icp', $config['1']['value']);
-        // Session::set('config.qrcode', $config['47']['value']);
         if($this->client == 'mobile'){
             $this->redirect('/mobile/index/index');
         }

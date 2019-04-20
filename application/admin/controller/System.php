@@ -296,10 +296,11 @@ class System extends Base
     public function cash(){
 
         if($_POST){
-            
+             
             $data = $_POST;
             $type = $data['type'];
             unset($data['type']);
+            
             foreach($data as $k=>$v){
                 $v = Digital_Verification($v) ? Digital_Verification($v) : 0;
                 if(Db::name('config')->field('id')->where(['type'=>$type,'name'=>$k])->find()){
@@ -319,7 +320,7 @@ class System extends Base
             foreach($info as $v){
                 $data[$v['name']] = $v['value']; 
             }
-            $info = $data;
+            $info = $data; 
         }
 
 
@@ -372,7 +373,7 @@ class System extends Base
     # 选择模块内容
     public function select_module(){
         $module = isset($_GET['module']) ? trim($_GET['module']) : '';
-
+         
         $index = $module;
         if(in_array($module,['micro','skinss','example'])){
             $index = 'cate';
@@ -385,8 +386,6 @@ class System extends Base
                 $this->assign('lists', $lists);
                 return $this->fetch('select_module_cate');
                 break;
-
-
         }
         exit;
     }

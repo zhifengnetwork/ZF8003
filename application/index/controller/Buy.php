@@ -14,7 +14,7 @@ class Buy extends Base
             'is_del' => 0,
             'status' => 1
         ];
-        $list = Db::name('goods')->where($where)->order('addtime desc')->paginate(4);
+        $list = Db::name('goods')->where($where)->order('addtime desc')->paginate(16);
         $this->assign('list',$list);
         return $this->fetch();
     }

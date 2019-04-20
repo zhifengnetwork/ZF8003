@@ -238,7 +238,8 @@ class Admin extends Base
     public function logout()
     {
         Session::clear();
-        $this->success("退出成功", 'Admin/Login/index');        
+        // $this->success("退出成功", 'Admin/Login/index');
+        $this->redirect('Login/index');     
     }
 
 }

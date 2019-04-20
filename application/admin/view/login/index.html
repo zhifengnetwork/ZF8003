@@ -3,9 +3,24 @@
 
 {include file='layout/head' /}
 <link href="/__STATIC__/h-ui.admin/css/H-ui.login.css" rel="stylesheet" type="text/css" />
+<style>
+/* .header{top:0; height:60px; background:#426374 0 center} */
+.tit{
+    display: block;
+    font-size: 30px;
+    font-family: cursive;
+    color: white;
+    padding: 5px 10px;
+}
+</style>
 <body>
     <input type="hidden" id="TenantId" name="TenantId" value="" />
-    <div class="header"></div>
+    <div class="header">
+        <span class="tit">
+            {$web_setting.web_name}&nbsp;后台管理系统
+        </span>
+        
+    </div>
     <div class="loginWraper">
         <div id="loginform" class="loginBox">
             <form class="form form-horizontal" action="" method="post">
