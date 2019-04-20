@@ -432,7 +432,7 @@ class User extends Base
                 $address = $city ? $address . ' ' . $city : $address;
                 $address = $district ? $address . ' ' . $district : $address;
                 $info['area'] = $address;
-                $info['key'] = $info['province'] . "-" . $info['province'] . "-" . $info['province'];
+                $info['key'] = $info['province'] . "-" . $info['city'] . "-" . $info['district'];
             } else {
                 foreach($info as $key => $value){
                     $province = $area->where('id',$value['province'])->value('name');
