@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商城管理 <span
+			class="c-gray en">&gt;</span> 订单列表 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<form method="GET" action="">
+		<div class="text-c"> 
+            时间区间：
+            <span class="select-box inline">
+                <select name="time" class="select" style="width:100px;">
+                    <option value="add_time" {$time == 'add_time' ? 'selected' : ''}>下单时间</option>
+                    <option value="pay_time" {$time == 'pay_time' ? 'selected' : ''}>付款时间</option>
+                </select>
+            </span>
+            <input type="text" {literal}onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })"{/literal} value="{$time_min}" id="datemin" name="time_min" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" {literal}onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })"{/literal} value="{$time_max}" id="datemax" name="time_max" class="input-text Wdate" style="width:120px;">
+            &nbsp;订单状态：
+            <span class="select-box inline">
+                <select name="status" class="select" style="width:100px;">
+                    <option value="0" {$status == '0' ? 'selected' : ''}>全部</option>
+                    <option value="1" {$status == '1' ? 'selected' : ''}>待付款</option>
+                    <option value="2" {$status == '2' ? 'selected' : ''}>待发货</option>
+                    <option value="3" {$status == '3' ? 'selected' : ''}>待收货</option>
+                    <option value="4" {$status == '4' ? 'selected' : ''}>待评价</option>
+                    <option value="5" {$status == '5' ? 'selected' : ''}>交易完成</option>
+                </select>
+            </span>
+            &nbsp;名称：
+            <span class="select-box inline">
+                <select name="type" class="select" style="width:100px;">
+                    <option value="order" {$type == 'order' ? 'selected' : ''}>订单号</option>
+                    <option value="user" {$type == 'user' ? 'selected' : ''}>会员名称</option>
+                </select>
+            </span><input type="text" class="input-text" style="width:250px" placeholder="输入搜索名称" value="{$name}" name="name">
+            <button class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i>搜索</button>
+		</div>
+		</form>
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="r">共有数据：<strong>{$count}</strong> 条</span> 
+        </div>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+					<th scope="col" colspan="13">订单列表</th>
+				</tr>
+				<tr class="text-c">
+					<!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+					<th width="100">订单号</th>
+					<th width="150">商品名称</th>
+					<th width="100">会员名称</th>
+					<th width="100">订单金额</th>
+					<th width="60">状态</th>
+					<th width="100">收货人信息</th>
+					<th width="100">支付信息</th>
+					<th width="80">下单时间</th>
+					<th width="20">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+                {volist name="list" id="vo"} 
+                <tr class="text-c">
+                    <!-- <td><input type="checkbox" value="{$vo.id}" name=""></td> -->
+					<td>{$vo.order_sn}</td>
+					<td>{$vo.name}</td>
+                    <td>
+                        <p>{$vo.user_info.nickname}</p>
+                        <p>{$vo.user_info.email}</p>
+                    </td>
+                    <td>
+                        <p>商品总价：{$vo.goods_price}</p>
+                        <p>运费：{$vo.shipping_price}</p>
+                        <p>订单总价：{$vo.total_amount}</p>
+                    </td>
+                    <td>{$sname[$vo.order_status]}</td>
+                    <td>
+                        <p>{$vo.consignee} - {$vo.mobile}</p>
+                        {if condition="$vo.email"}
+                        <p>{$vo.email}</p>
+                        {/if}
+                        <p>{$vo.province_name}{$vo.city_name}{$vo.district_name}</p>
+                        <p>{$vo.address}</p>
+
+                    </td>
+                    <td>
+                        {if condition="$vo.order_status gt 0"}
+                            {if condition="$vo.coupon_price gt 0"}
+                            <p>优惠券抵扣：{$vo.coupon_price}</p>
+                            {/if}
+                            {if condition="$vo.user_money gt 0"}
+                            <p>余额抵扣：{$vo.user_money}</p>
+                            {/if}
+                            <p>实付金额：{$vo.order_amount}</p>
+                            <p>付款时间：{$vo.pay_time|date="Y-m-d H:i:s",###}</p>
+                        {/if}
+                    </td>
+                    <td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+                        <a title="编辑" href="javascript:;" onclick="order_info('编辑订单','/admin/goods/order_info?id={$vo.id}','','1360','800')"
+                            class="ml-5" style="text-decoration:none">
+                        	<i class="Hui-iconfont">&#xe6df;</i>
+                        </a>
+                    </td>
+                </tr>
+				{/volist}
+			</tbody>
+		</table>
+		<div class="pages">{$lists->render()}</div>
+		{if condition="!isset($list) or !$list"}
+		<p class="no-data">暂无数据</p>
+		{/if}
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+	<script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		
+
+		function open_closeAll(msg=''){ 
+            if(msg){
+                layer.msg(msg,{time:3000});
+                layer.open({
+                    content:msg,
+                    btn:['确定'],
+                    btnAlign:'c',
+                    end:function(){
+                        layer.closeAll();
+                    }
+                });
+                return false;
+            }else{
+                layer.closeAll();
+                window.location.replace(location.href);
+            }
+		}
+
+
+		/*商品-编辑*/
+		function order_info(title, url, id, w, h) {
+			layer_show(title, url, w, h,true);
+		}
+		
+	</script>
+</body>
+
+</html>

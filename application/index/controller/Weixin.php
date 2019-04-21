@@ -8,11 +8,7 @@ class Weixin{
     public function native_notify(){
         
         $data = file_get_contents("php://input");
-    	if ($data) {
-            $re = $this->xmlToArray($data);
-            
-            Db::name('wx_temp')->insert(['text' => json_encode($re)]);
-        }
+    	
 
     }
  

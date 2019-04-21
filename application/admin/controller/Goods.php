@@ -702,4 +702,112 @@ class Goods extends Base{
         return json(['status' => 0,'msg'=>'操作失败']);
     }
 
+
+    # 订单列表
+    public function order(){
+
+        $where['id'] = ['>', 0];
+
+        $time = isset($_GET['time']) ? trim($_GET['time']) : 'add_time';
+        $time_min = isset($_GET['time_min']) ? trim($_GET['time_min']) : '';
+        $time_max = isset($_GET['time_max']) ? trim($_GET['time_max']) : '';
+        $name = isset($_GET['name']) ? trim($_GET['name']) : '';
+        $status = isset($_GET['status']) ? intval($_GET['status']) : 0;
+        $type = isset($_GET['type']) ? trim($_GET['type']) : 'order';
+
+        if($time_min){
+            $where[$time] = ['>=', strtotime($time_min)];
+        }
+        if($time_max){
+            $where[$time] = ['<=', strtotime($time_max)+86399];
+        }
+        if($status){
+            $where['order_status'] = ['=', $status - 1];
+        }
+        if ($name) {
+            if($type == 'order'){
+                $where['order_sn'] = ['like',"%$name%"];
+            }else{
+                $user_id = Db::name('users')->where('nickname',$name)->value('id');
+                if($user_id){
+                    $where['user_id'] = ['=', "$user_id"];
+                }
+            }
+        }
+        
+        $lists = Db::name('order')->where($where)->order('add_time desc')->paginate(15);      
+        $count = Db::name('order')->where($where)->count();
+        $list = array();
+        if($lists){
+            foreach($lists as $k => $v){
+                $list[$k] = $v;
+                # 地址
+                $list[$k]['province_name'] = Db::name('area')->where('id',$v['province'])->value('name');
+                $list[$k]['city_name'] = Db::name('area')->where('id',$v['city'])->value('name');
+                $list[$k]['district_name'] = Db::name('area')->where('id',$v['district'])->value('name');
+
+                # 商品信息
+                $list[$k]['name'] = Db::name('goods')->where('id',$v['goods_id'])->value('name');
+
+                # 会员信息
+                $list[$k]['user_info'] = Db::name('users')->field('nickname,email')->where('id',$v['user_id'])->find();
+            }
+
+        }
+
+
+        # 搜索条件
+        $this->assign('time',$time);
+        $this->assign('time_min',$time_min);
+        $this->assign('time_max',$time_max);
+        $this->assign('name',$name);
+        $this->assign('status',$status);
+        $this->assign('type',$type);
+
+
+        $this->assign('sname',[0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'交易成功']);
+        $this->assign('list',$list);
+        $this->assign('lists',$lists);
+        $this->assign('count', $count);
+        return $this->fetch();
+    }
+
+
+    # 订单详情 | 编辑订单
+    public function order_info(){
+
+
+        if($_POST){
+            if($_POST['submit'] == '发货'){
+                
+                $id = intval($_POST['id']);
+                $shipping_name = trim($_POST['shipping_name']);
+                $shipping_code = trim($_POST['shipping_code']);
+                $admin_note = trim($_POST['admin_note']);
+                $res = Db::name('order')->where('id',$id)->update(['shipping_name'=>$shipping_name, 'shipping_code'=>$shipping_code, 'admin_note'=>$admin_note, 'order_status' => 2]);
+                if($res){
+                    echo "<script>parent.success('操作成功！');</script>";exit;
+                }else{
+                    echo "<script>parent.error('操作失败！');</script>";exit;
+                }
+            }
+
+
+
+            exit;
+        }
+
+
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        $info = Db::query("select a.*,b.name,c.nickname,c.email as user_email from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id left join `zf_users` as c on a.user_id = c.id where a.id = '$id'");
+        if(!$info){
+            echo "<script>parent.open_closeAll('订单信息不存在！');</script>";exit;
+        }
+
+
+        $this->assign('sname',[0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'交易成功']);
+        $this->assign('info', $info[0]);
+        return $this->fetch();
+    }
 }
