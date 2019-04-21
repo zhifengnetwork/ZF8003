@@ -45,19 +45,19 @@
 								<li>
 									<div class="form">收货人：</div>
 									<div>
-										<input class="form-control" type="text" name="consignee" value="{$default_address['consignee'] ? $default_address['consignee'] : ''}" />
+										<input class="form-control" type="text" name="consignee" id="consignee" value="{$default_address['consignee'] ? $default_address['consignee'] : ''}" />
 									</div>
 								</li>
 								<li>
 									<div class="form">邮箱：</div>
 									<div>
-										<input class="form-control" type="text" name="email" value="{$default_address['email'] ? $default_address['email'] : ''}" />
+										<input class="form-control" type="text" name="email" id="email" value="{$default_address['email'] ? $default_address['email'] : ''}" />
 									</div>
 								</li>
 								<li>
 									<div class="form">手机号码：</div>
 									<div>
-										<input class="form-control" type="text" name="mobile" value="{$default_address['mobile'] ? $default_address['mobile'] : ''}" />
+										<input class="form-control" type="text" name="mobile" id="mobile" value="{$default_address['mobile'] ? $default_address['mobile'] : ''}" />
 									</div>
 								</li>
 								<li>
@@ -66,7 +66,6 @@
 
 										<select class="v-item" id="province" >
 										<option value="0">请选择</option>
-										
                                         {volist name="province" id="vo"}
                                         <option value="{$vo.id}" {$default_address.province == $vo.id ? 'selected' : ''}>{$vo.name}</option>
                                         {/volist}
@@ -85,7 +84,7 @@
 								<li>
 									<div class="form">详细地址：</div>
 									<div>
-										<input class="form-control" type="text" name="address" value="{$default_address.address ? $default_address.address : ''}" />
+										<input class="form-control" type="text" id="address" name="address" value="{$default_address.address ? $default_address.address : ''}" />
 									</div>
 								</li>
 							</ul>
@@ -115,9 +114,12 @@
 		</div>
 		
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 		<!-- <script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script> -->
 		<script>
 			var price = '{$info.price}';
+			var goods_id = '{$info.id}';
+
 			// 购买数量 - 减少
 			function del_num(){
 				var num = $('#buy_num').val();
@@ -143,7 +145,64 @@
 			}
 
 			// 提交订单
-			
+			function submit(){
+				var number = $('#buy_num').val();
+				var consignee = $('#consignee').val();
+				var email = $('#email').val();
+				var mobile = $('#mobile').val();
+				var province = $('#province').val();
+				var city = $('#city').val();
+				var district = $('#district').val();
+				var address = $('#address').val();
+
+				if(number < 1){
+					number = 1;
+				}
+				if(!consignee){
+					layer.msg('请填写收货人信息',{icon:5});
+					return false;
+				}
+				if(!mobile){
+					layer.msg('请填写收货人联系电话',{icon:5});
+					return false;
+				}
+				if(!mobile){
+					layer.msg('请填写收货人联系电话',{icon:5});
+					return false;
+				}
+				if(!province || !city){
+					layer.msg('请选择配送地址所在地区',{icon:5});
+					return false;
+				}
+				if(!address){
+					layer.msg('请填写收货人详细地址',{icon:5});
+					return false;
+				}
+
+				var data = {
+					'goods_id' : goods_id,
+					'number' : number,
+					'consignee' : consignee,
+					'email' : email,
+					'mobile' : mobile,
+					'province' : province,
+					'city' : city,
+					'district' : district,
+					'address' : address,
+				};
+				
+				$.post('/index/buy/check_order',{data:data},function(res){
+					if(res.status == 1){
+						layer.msg(res.msg,{icon:6});
+						setTimeout(function(){
+							window.location.href=res.url;
+						},1500);
+					}else{
+						layer.msg(res.msg,{icon:5});
+					}
+
+				});
+			}
 			
 
 

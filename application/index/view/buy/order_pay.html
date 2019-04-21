@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <title class="pageTopTitle" page-id="4">订单支付{$web_setting.web_name ? ' '.$web_setting.web_name : ''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
+        <meta name="keywords" content="{$web_setting.key_words}" />
+        <meta name="description" content="{$web_setting.copyright}" />
+        <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/login/login.css" />
+		<link rel="stylesheet" href="__STATIC__/css/paycode/paycode.css" />
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
+		
+	</head>
+	<body>
+		<div class="wrapper">
+			
+			<!--头部-->
+	    <div class="header">{include file="header"}</div>
+		<div class="inner-wrap">
+			
+	        <div>
+	        	<!--顶部文字区域-->
+	        	<div class="text">        	
+	        	<span class="left_text">{$info.name}</span>      
+	        	<span>(订单号：{$info.order_sn})</span>
+	        	<span class="right_text">￥{$info.order_amount}</span>
+	        	</div>
+	        	
+	        	<!--二维码区域-->
+	        	<div class="qrcode_ear">
+	        		
+	        		<div class="qrcode_ear_center">
+	        			
+	        			<div class="qrcode_ear_left">
+	        			
+	        				<div class="qrcode_eara">
+	        					
+	        					<img  src="/index/buy/create_wx_qrcode?url={$code_url}" class="erweima"/>
+	        					<div class="saoyisao">
+	        						
+	        						<img src="__STATIC__/images/paycode/saoyisao.png" />
+	        						<span>请使用微信扫一扫 扫描二维码完成支付</span>       						
+	        					</div>  					
+	        				</div>
+	        				
+	        			</div><div class="qrcode_ear_right">	        				
+	        			      <img src="__STATIC__/images/paycode/shuoji.png" />		
+	        			</div>
+   			
+   			             <!--去支付按钮-->
+	                    <div class="payment_button">我已支付</div>
+	        		</div>
+	        		  
+	        	
+	        	</div>
+	        	
+	        </div>
+		
+		</div>
+		<div class="footer"></div>
+	
+		</div>
+	<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+	<script src="__STATIC__/js/public/footer.js"></script>
+    <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+    <script>
+    var sn = '{$sn}';
+    var order_id = '{$info.id}';
+    function ajax_check_order_staus(){
+        $.post('ajax_order_pay_status',{sn:sn,order_id:order_id},function(res){
+            if(res.status == 1){
+                window.clearTimeout(t1);
+                layer.open({
+                    title:'提示信息',
+                    content:'<p style="text-align:center;">支付成功</p>',
+                    btn:['确定'],
+                    btnAlign:'c',
+                    end:function(){
+                        window.location.href="/index/buy/order_info?id="+order_id;
+                    }
+                });
+            }
+        });
+    }
+
+    var t1 = window.setInterval(ajax_check_order_staus,3000);
+    
+    </script>
+	</body>
+</html>

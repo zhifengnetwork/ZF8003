@@ -72,9 +72,330 @@ class Buy extends Base
             }
         }
 
+        
         $this->assign('province', $province);
         $this->assign('default_address', $default_address);
         $this->assign('info',$info); 
         return $this->fetch();
     }
+
+
+    # 确认订单 | 生成订单转支付
+    public function check_order(){
+
+        if($_POST['data']){
+            $data = $_POST['data'];
+            
+            # 用户
+            $user_id = Session::has('user') ? Session::get('user.id') : 0;
+
+            # 商品信息
+            $info = Db::name('goods')->where('id', $data['goods_id'])->find();
+            
+            if(!$info){
+                return json(['status'=>0,'msg'=>'订单提交失败，商品信息不存在或已下架！']);
+                exit;
+            }
+            if($info['status'] != 1 || $info['is_del'] == 1){
+                return json(['status'=>0,'msg'=>'订单提交失败，商品信息不存在或已下架！']);
+                exit;
+            }
+            if($info['is_stock'] == 1 && $info['stock'] < $number){
+                return json(['status'=>0,'msg'=>'订单提交失败，商品库存不足，无法购买！']);
+                exit;
+            }
+            if(!$this->user_id){
+                return json(['status'=>0,'msg'=>'订单提交失败，未检测到用户信息，请先登录']);
+                exit;
+            }
+
+            # 运费
+            $freight = $info['freight'];
+            if($info['freight_temp'] > 0){
+                $freight_temp = Db::name('freight_temp')->find($info['freight_temp']);
+                if($freight_temp){
+                    $temp = json_decode($freight_temp['temp'],true);
+                    $freight = $temp['freight'];
+                    foreach($temp as $tk => $tv){
+                        if(in_array($tk, [ $data['province'],$data['city'],$data['district'] ])){
+                            $freight = $tv;
+                        }
+                    }
+                }
+            }
+            
+            # 状态
+            $order_status = 0;
+            $pay_status = 0;
+
+            ### 价格
+            # 商品总价
+            $goods_price = $info['price'] * $data['number'];
+            # 运费
+            $shipping_price = $freight;
+            # 订单总价
+            $total_amount = $goods_price + $shipping_price;
+            # 应付金额
+            $order_amount = $total_amount;
+            # 时间
+            $time = time();
+            # 订单号
+            $sn = order_sn();
+
+            if($order_amount == 0){
+                $order_status = 1;
+                $pay_status = 1;
+            }
+
+            # 填充数据
+            $data['order_sn'] = $sn;
+            $data['user_id'] = $user_id;
+            $data['order_status'] = $order_status;
+            $data['pay_status'] = $pay_status;
+            $data['goods_price'] = $goods_price;
+            $data['shipping_price'] = $shipping_price;
+            $data['total_amount'] = $total_amount;
+            $data['order_amount'] = $order_amount;
+            $data['add_time'] = $time;
+
+            $res = Db::name('order')->insertGetId($data);
+            if($res){
+                # 增加购买数量
+                Db::name('goods')->where('id',$data['goods_id'])->setInc('sold', $data['number']);
+                # 减库存
+                if($info['is_stock'] == 1){
+                    Db::name('goods')->where('id', $data['goods_id'])->setDec('stock', $data['number']);
+                }
+
+                $url = '/index/buy/order_pay?id='.$res;
+                if($order_status == 1){
+                    # 当交易金额为 0 时，自动跳过支付，写入空交易记录
+                    $url = '/index/buy/order_info?id='.$res;
+                    $transaction = [
+                        'user_id' => $user_id,
+                        'type' => 'order',
+                        'sn' => $sn,
+                        'transaction_id' => '',
+                        'platform' => 'system',
+                        'trade_type' => '',
+                        'to' => $res,
+                        'money' => $order_amount,
+                        'addtime' => $time,
+                        'desc' => '',
+                        'init_time' => $time,
+                    ];
+                    Db::name('transaction_log')->insert($transaction);
+                }
+                return json(['status'=>1,'msg'=>'订单提交成功，正在跳转...', 'url'=>$url]);
+                exit;
+            }else{
+                return json(['status'=>0,'msg'=>'订单提交失败，请重试！']);
+                exit;
+            }
+        }
+        exit;
+    }
+
+
+    # 订单支付
+    public function order_pay(){
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        # 用户判断
+        Session::set('re_url', '/index/buy/order_pay?id='.$id);
+        $this->Verification_User();
+        $user = $this->user;
+        
+        # 订单信息
+        $info = Db::query("select a.*,b.name from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where a.id = '$id' and a.user_id = '$this->user_id'");
+        if(!$info){
+            layer_error('订单信息不存在');
+            exit;
+        }
+        $info = $info[0];
+        if($info['order_status'] > 0){
+            layer_error('订单已完成支付，请勿重复支付订单！',true,'/index/buy/order_info?id='.$id);
+            exit;
+        }
+
+        # 标识符，订单号
+        $sn = get_rand_str(22,1,1);
+        $data = [
+            'sn'    =>  $sn,
+            'user_id'   =>  $this->user_id,
+            'money' =>  $info['order_amount'],
+            'body'  =>  '订单支付',
+            'attach'    =>  '订单支付:'.$info['id'],
+            'addtime'   =>  time(),
+            'type'  =>  'order_pay',
+            'order_id' => $id,
+        ];
+        
+        # 微信支付缓存
+        $res = Db::name('wxpay_cache')->insert($data);
+        if(!$res){
+            layer_msg('订单发起失败，请重试！',true,'/index/buy/order_info?id='.$id);
+            exit;
+        }
+
+        require_once ROOT_PATH."plugins/pay/weixinpay/lib/WxPay.Api.php";
+        require_once ROOT_PATH."plugins/pay/weixinpay/WxPay.JsApiPay.php";
+        require_once ROOT_PATH."plugins/pay/weixinpay/WxPay.Config.php";
+
+        $tools = new \JsApiPay();
+        //②、统一下单
+        $input = new \WxPayUnifiedOrder();
+        $config = new \WxPayConfig();
+        $input->SetBody($data['body']);
+        $input->SetAttach($data['attach']);
+        $input->SetOut_trade_no($data['sn']);
+        $input->SetTotal_fee(1);
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 600));
+        $input->SetNotify_url($_SERVER["REQUEST_SCHEME"].'://'.$_SERVER['HTTP_HOST'].'/index/weixin/native_notify');
+        $input->SetTrade_type("NATIVE");
+        $input->SetProduct_id($info['order_sn']);
+        $order = \WxPayApi::unifiedOrder($config, $input);
+        
+        if( (!$order['return_code'] || $order['return_code'] != 'SUCCESS') || (!$order['result_code'] || $order['result_code'] != 'SUCCESS')){
+            layer_error('微信支付订单发起失败，请重试！',true,'/index/buy/order_info?id='.$id);
+            exit;
+        }
+
+        $this->assign('code_url', $order['code_url']);
+        $this->assign('info', $info);
+        $this->assign('sn',$sn);
+        return $this->fetch(); 
+    }
+    
+    # 生成微信支付二维码
+    public function create_wx_qrcode($url = ''){
+        if(!$url){
+            return false;
+        }
+        include ROOT_PATH.'/vendor/phpqrcode/phpqrcode.php';
+        
+        return \QRcode::png($url);
+        exit;
+
+        
+    }
+
+    # 异步订单交易结果查询
+    public function ajax_order_pay_status(){
+
+        $sn = isset($_POST['sn']) ? trim($_POST['sn']) : '';
+        $order_id = isset($_POST['order_id']) ? intval($_POST['order_id']) : 0;
+        // dump([$sn,$order_id]);exit;
+        # 订单查询
+        if($order_id){
+            $order_info = Db::name('order')->field('id,pay_status')->find($order_id);
+            if($order_info && $order_info['pay_status'] == 1){
+                return json(['status'=>1]);
+                exit;
+            }
+        }
+        if($sn){
+            require_once ROOT_PATH."plugins/pay/weixinpay/lib/WxPay.Api.php";
+            require_once ROOT_PATH."plugins/pay/weixinpay/WxPay.Config.php";
+            $input = new \WxPayOrderQuery(); 
+            $input->SetOut_trade_no($sn);
+            $config = new \WxPayConfig();
+            $res = \WxPayApi::orderQuery($config, $input);
+            if($res && $res['return_code'] == 'SUCCESS' && $res['result_code'] == 'SUCCESS'){
+                $info = Db::name('wxpay_cache')->where(['sn' => $sn, 'type' => 'order_pay'])->find();
+                if($info){
+                    if($res['trade_state'] == 'SUCCESS'){
+                        $order_id = $info['order_id'];
+                        $time = time();
+                        $udata = [
+                            'pay_status'=>1,
+                            'order_status'=>1,
+                            'pay_time' => $time,
+                            'transaction_id' => isset($res['transaction_id']) ? $res['transaction_id'] : '',
+                        ];
+
+                        $transaction = [
+                            'user_id' => $info['user_id'],
+                            'type' => 'order',
+                            'sn' => $sn,
+                            'transaction_id' => isset($res['transaction_id']) ? $res['transaction_id'] : '',
+                            'platform' => 'weixin',
+                            'trade_type' => isset($res['trade_type']) ? $res['trade_type'] : '',
+                            'to' => $info['order_id'],
+                            'money' => $info['money'],
+                            'addtime' => $time,
+                            'desc' => $info['attach'],
+                            'init_time' => $info['addtime'],
+                        ];
+
+                        Db::name('order')->where('id', $order_id)->update($udata);
+                        Db::name('transaction_log')->insert($transaction);
+                        Db::name('wxpay_cache')->where('sn', $sn)->delete();
+
+                        return json(['status'=>1]);
+                    }
+
+                }
+            }
+        }
+    }
+
+    # 我的订单
+    public function my_order(){
+        # 用户判断
+        Session::set('re_url', '/index/buy/my_order');
+        $this->Verification_User();
+
+        $where['user_id'] = ['=', $this->user_id];
+
+        $lists = Db::name('order')->where($where)->order('order_status asc, add_time desc')->paginate(3);
+        foreach($lists as $k => $v){
+            $list[$k] = $v;
+            $goods = Db::name('goods')->field('name,thumb')->find($v['goods_id']);
+            $list[$k]['name'] = $goods['name'];
+            $list[$k]['thumb'] = $goods['thumb'];
+        }
+
+        $sname = [0=>'待付款', 1=>'待发货', 2=>'待收货', 3=>'待评价', 4=>'交易完成'];
+
+        $this->assign('sname',$sname);
+        $this->assign('list',$list);
+        $this->assign('lists',$lists);
+        return $this->fetch();
+    }
+
+
+    # 订单详情
+    public function order_info(){
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        # 用户判断
+        Session::set('re_url', '/index/buy/order_info?id='.$id);
+        $this->Verification_User();
+
+        # 订单信息
+        $info = Db::query("select a.*,b.name,b.thumb from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where a.id = '$id' and a.user_id = '$this->user_id'");
+
+        if(!$info){
+            layer_error('订单信息不存在');
+            exit;
+        }
+
+        $info = $info[0];
+
+        $info['address_info'] = Db::name('area')->where('id',$info['province'])->value('name');
+        $info['address_info'] .= ' '.Db::name('area')->where('id',$info['city'])->value('name');
+        $info['address_info'] .= ' '.Db::name('area')->where('id',$info['district'])->value('name');
+        $info['address_info'] .= ' '.$info['address'];
+
+
+        $sname = [0=>'待付款', 1=>'待发货', 2=>'待收货', 3=>'待评价', 4=>'交易完成'];
+
+        
+        $this->assign('info',$info);
+        $this->assign('sname',$sname);
+        return $this->fetch();
+    }
+
 }

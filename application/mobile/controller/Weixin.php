@@ -164,6 +164,7 @@ class Weixin extends Base{
         $this->assign('editAddress', $editAddress);
     }
 
+    # 订单支付回调 jsapi
     public function order_pay_notify(){
 
         $sn = isset($_POST['sn']) ? trim($_POST['sn']) : '';
@@ -258,6 +259,14 @@ class Weixin extends Base{
     }
 
 
+    # 订单支付回调
+    public function order_notify_url(){
+
+        $data = input('get.');
+        Db::name('weixin_order_notify')->insert(['text'=>json_encode($data)]);
+
+
+    }
 
 
 }

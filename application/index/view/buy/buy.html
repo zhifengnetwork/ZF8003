@@ -3,14 +3,17 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title class="pageTopTitle" page-id="2">购买{$web_setting.web_name}{$web_setting.web_title}</title>
+	<title class="pageTopTitle" page-id="2">购买{$web_setting.web_name ? ' '.$web_setting.web_name : ''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
 	<meta name="keywords" content="{$web_setting.key_words}" />
 	<meta name="description" content="{$web_setting.copyright}" />
 	<link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
 	<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
 	<link rel="stylesheet" type="text/css" href="__STATIC__/css/buy/buy.css" />
 </head>
-<STyle>
+<style>
+	.dzcpage{
+		margin: 0 auto 35px 30%;
+	}
 	.dzcpage li {
 		padding: 10px 0;
 		text-align: center;

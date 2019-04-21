@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <title class="pageTopTitle" page-id="4">我的订单{$web_setting.web_name ? ' '.$web_setting.web_name : ''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
+        <meta name="keywords" content="{$web_setting.key_words}" />
+        <meta name="description" content="{$web_setting.copyright}" />
+        <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css"/>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/order/order.css"/>
+    </head>
+    <style>
+        .dzcpage{
+            margin: 0 auto 35px 30%;
+        }
+        .dzcpage li {
+            padding: 10px 0;
+            text-align: center;
+            display: inline;
+        }
+    
+        .dzcpage span,
+        .dzcpage a {
+            border-radius: 3px;
+            border: 1px solid #dfdfdf;
+            display: inline-block;
+            padding: 5px 12px;
+        }
+    
+        .dzcpage a {
+            margin: 0 3px;
+        }
+    
+        .dzcpage .active span {
+            background: #09F;
+            color: #FFF;
+            border-color: #09F;
+            margin: 0 2px;
+        }
+    
+        .dzcpage a:hover {
+            background: #09F;
+            color: #FFF;
+            border-color: #09F;
+        }
+    
+        .dzcpage label {
+            padding-left: 15px;
+            color: #999;
+        }
+    
+        .dzcpage label b {
+            color: red;
+            font-weight: normal;
+            margin: 0 3px;
+        }
+    </STyle>
+	<body>
+		<div class="wrapper">
+			<!-- 头部 -->
+			<div class="header">{include file="header"}</div>
+            <!--内容区-->
+            <div class="content inner-wrap">
+            	
+            	<div class="order-wrap">
+                    {volist name="list" id="vo"}
+                    <div class="order">
+                        <div class="odd"><span>订单号：</span>{$vo.order_sn}</div>
+                        <div class="box_tu x_tu">
+                            <div class="img">
+                                <img src="/public/images/goods/{$vo.thumb}" />
+                            </div>
+                            
+                            <div class="time">下单时间：{$vo.add_time|date="Y-m-d H:i:s",###}</div>
+                            
+                            <div class="num">
+                                <span class="dot">数量{$vo.number}</span>
+                                <span class="val">￥{$vo.order_amount}</span>
+                            </div>
+                            
+                        </div>
+                        <div class="right_u x_tu">
+                            
+                            <p>{$vo.name}</p>
+                            <div class="fade">
+                                {if condition="$vo.order_status eq 0"}
+                                <a class="btn_1" onclick="javascript:location.href='/index/buy/order_pay?id={$vo.id}'">付款</a>
+                                {/if}
+                                <a class="btn_2" onclick="javascript:location.href='/index/buy/order_info?id={$vo.id}'">详情</a>
+                            </div>
+                        </div>
+                        <div class="sta x_tu">{$sname[$vo.order_status]}</div>
+                    </div>
+                    {/volist}
+                </div>
+                <div class="dzcpage">{$lists->render()}</div>
+            </div>
+            <!-- 底部 -->
+		    <div class="footer"></div>
+        </div>    
+            
+		
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script>
+	</body>
+</html>
