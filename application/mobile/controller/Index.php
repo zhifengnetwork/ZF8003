@@ -348,12 +348,13 @@ class Index extends Base
                 return json(['status'=>1,'msg'=>'支付密码重置成功', 'url'=> $re_url]);
             }
 
+            
             return json(['status'=>0,'msg'=>'支付密码重置失败，请重试！']);
             exit;
         }
 
 
-
+        
         $this->assign('pass_id', md5(time().rand(1000,9999).rand(1000,9999)));
         return $this->fetch();
     }

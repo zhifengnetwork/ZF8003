@@ -31,6 +31,7 @@ class Base extends Controller
     {
         $this->Verification_Client();
 
+
     }
 
     # 请求验证
