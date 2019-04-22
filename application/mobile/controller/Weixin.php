@@ -19,7 +19,7 @@ class Weixin extends Base{
         $money = isset($_GET['money']) ? Digital_Verification($_GET['money']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-        
+        $this->get_weixin_global_token();
         
         if(!$t){
             layer_error('参数错误！');
@@ -101,7 +101,7 @@ class Weixin extends Base{
                     layer_error('请在微信浏览器上操作！',true,'/mobile/user/my_order');
                     exit;
                 }
-
+                
                 $data = [
                     'sn'    =>  $sn,
                     'user_id'   =>  $this->user_id,
@@ -154,8 +154,10 @@ class Weixin extends Base{
         $input->SetNotify_url($_SERVER["REQUEST_SCHEME"].'://'.$_SERVER['HTTP_HOST'].'/mobile/weixin/jsapi_notify_url');
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openid);
+        $input->SetSignType('MD5');
+        
         $order = \WxPayApi::unifiedOrder($config, $input);
-
+        
         $jsApiParameters = $tools->GetJsApiParameters($order);
         //获取共享收货地址js函数参数
         $editAddress = $tools->GetEditAddressParameters();
