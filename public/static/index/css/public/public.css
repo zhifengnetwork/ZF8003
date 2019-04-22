@@ -56,8 +56,16 @@ body{
 	width: 190px;
 	height: 90px;
 	float: left;
-	background-color:#37afe6;
+	/* background-color:#37afe6; */
 	margin-right: 65px;
+	position: relative;
+}
+.header .inner-wrap .logo img{
+	width: 190px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 }
 
 /* 导航 */

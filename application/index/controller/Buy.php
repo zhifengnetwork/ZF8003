@@ -350,6 +350,7 @@ class Buy extends Base
         $where['user_id'] = ['=', $this->user_id];
 
         $lists = Db::name('order')->where($where)->order('order_status asc, add_time desc')->paginate(3);
+        $list = array();
         foreach($lists as $k => $v){
             $list[$k] = $v;
             $goods = Db::name('goods')->field('name,thumb')->find($v['goods_id']);

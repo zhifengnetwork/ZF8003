@@ -63,7 +63,7 @@
             <div class="content inner-wrap">
             	
             	<div class="order-wrap">
-                    {volist name="list" id="vo"}
+                    {volist name="list" id="vo" empty="<p style='line-height: 600px;height:600px;text-align:center;'>暂无订单！</p>"}
                     <div class="order">
                         <div class="odd"><span>订单号：</span>{$vo.order_sn}</div>
                         <div class="box_tu x_tu">
