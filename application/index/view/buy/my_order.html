@@ -86,6 +86,9 @@
                                 {if condition="$vo.order_status eq 0"}
                                 <a class="btn_1" onclick="javascript:location.href='/index/buy/order_pay?id={$vo.id}'">付款</a>
                                 {/if}
+                                {if condition="$vo.order_status eq 2"}
+                                <a class="btn_1" onclick="confirm_order('{$vo.id}');">确认收货</a>
+                                {/if}
                                 <a class="btn_2" onclick="javascript:location.href='/index/buy/order_info?id={$vo.id}'">详情</a>
                             </div>
                         </div>
@@ -101,6 +104,30 @@
             
 		
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
-		<script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script>
+        <script type="text/javascript" src="__STATIC__/js/public/footer.js" ></script>
+        <script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+        <script>
+        function confirm_order(id){
+            layer.confirm('确认已收货么？', {icon: 3, title:'提示'}, function(index){
+                //do something
+                $.post('/index/buy/confirm_order',{id:id},function(res){
+                    if(res.status == 1){
+                        layer.open({
+                            title:'提示信息',
+                            content:'<p>'+res.msg+'</p>',
+                            btn:['确认'],
+                            btnAlign:'c',
+                            end:function(){
+                                window.location.replace(location.href);
+                            }
+                        });
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                });
+                layer.closeAll();
+            });
+        }
+        </script>
 	</body>
 </html>

@@ -77,6 +77,10 @@
 							<span class="rigt">{$info.order_sn}</span>
 						</p>
 						<p>
+							<span>备注留言：</span>
+							<span class="rigt">{$info.user_note}</span>
+						</p>
+						<p>
 							<span>交易流水号：</span>
 							<span class="rigt">{$info.transaction_id}</span>
 						</p>
@@ -92,6 +96,18 @@
 							<span>发货时间：</span>
 							<span class="rigt">{if condition="$info.shipping_time"}{$info.shipping_time|date="Y-m-d H:i:s",###}{/if}</span>
 						</p>
+						{if condition="$info.shipping_name"}
+						<p>
+							<span>物流信息：</span>
+							<span class="rigt">{$info.shipping_name} {$info.shipping_code}</span>
+						</p>
+						{/if}
+						{if condition="$info.admin_note"}
+						<p>
+							<span>系统回复：</span>
+							<span class="rigt">{$info.admin_note}</span>
+						</p>
+						{/if}
 				
                     </div>
                     {if condition="$info.order_status eq 0"}

@@ -399,4 +399,32 @@ class Buy extends Base
         return $this->fetch();
     }
 
+
+    # 确认收货
+    public function confirm_order(){
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $user_id = $this->user_id;
+        if(!$user_id){
+            return json(['status'=>0,'msg'=>'用户未登录']);
+            exit;
+        }
+        
+        $info = Db::name('order')->where(['id'=>$id,'user_id'=>$user_id])->field('order_sn,order_status')->find();
+        if(!$info){
+            return json(['status'=>0,'msg'=>'订单信息不存在！']);
+            exit;
+        }
+        if($info['order_status'] != 2){
+            return json(['status'=>0,'msg'=>'订单状态错误，请刷新页面！']);
+            exit;
+        }
+        $res = Db::name('order')->where('id',$id)->update(['order_status' => 3]);
+        if($res){
+            return json(['status'=>1,'msg'=>'订单状态更新成功！']);
+            exit;
+        }else{
+            return json(['status'=>0,'msg'=>'订单状态更新失败，请重试！']);
+            exit;
+        }
+    }
 }

@@ -784,7 +784,7 @@ class Goods extends Base{
                 $shipping_name = trim($_POST['shipping_name']);
                 $shipping_code = trim($_POST['shipping_code']);
                 $admin_note = trim($_POST['admin_note']);
-                $res = Db::name('order')->where('id',$id)->update(['shipping_name'=>$shipping_name, 'shipping_code'=>$shipping_code, 'admin_note'=>$admin_note, 'order_status' => 2]);
+                $res = Db::name('order')->where('id',$id)->update(['shipping_name'=>$shipping_name, 'shipping_code'=>$shipping_code, 'shipping_time'=>time(), 'admin_note'=>$admin_note, 'order_status' => 2]);
                 if($res){
                     echo "<script>parent.success('操作成功！');</script>";exit;
                 }else{

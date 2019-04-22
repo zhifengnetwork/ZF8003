@@ -5,7 +5,7 @@
 <body>
     <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页<span class="c-gray en">&gt;</span> 资金管理 <span
             class="c-gray en">&gt;</span> 交易记录 <a class="btn btn-success radius r"
-            style="line-height:1.6em;margin-top:3px" href="javascript:reflsh();" title="刷新"><i
+            style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
                 class="Hui-iconfont">&#xe68f;</i></a></nav>
     <div class="page-container">
         <form method="GET" action="">
@@ -37,8 +37,8 @@
                 <thead>
                     <tr class="text-c">
                         <th width="50">ID</th>
-                        <th width="150">会员名</th>
-                        <th width="130">交易金额</th>
+                        <th width="100">会员名</th>
+                        <th width="80">交易金额</th>
                         <th width="150">交易单号</th>
                         <th width="150">描述</th>
                         <th width="120">交易完成时间</th>
@@ -59,8 +59,10 @@
                         </td>
                         <td>{$vo.money}</td>
                         <td>
-                            <p>系统单号:{$vo.sn}</p>
-                            <p>第三方单号:{$vo.transaction_id}</p>
+                            <p>系统单号:</p>
+                            <p>{$vo.sn}</p>
+                            <p>第三方单号:</p>
+                            <p>{$vo.transaction_id}</p>
                         </td>
                         <td>
                             {$vo.desc}
