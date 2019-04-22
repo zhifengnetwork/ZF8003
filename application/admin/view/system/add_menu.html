@@ -80,16 +80,13 @@
             if(res){
                 var res = JSON.parse(res);
                 if(res.status == 1){
-                    layer.open({
-                        content:res.msg,
-                        end:function(){
-                            parent.layer.closeAll();
-                        }
-                    });
+						layer.msg(res.msg,{icon: 1,time: 1000},function () {
+							parent.location.reload()
+						})
                 }else{
-                    layer.open({
-                        content:res.msg,
-                    });
+						layer.msg(res.msg,{icon: 2,time: 1000},function () {
+							parent.location.reload()
+						})
                 }
             }
         });
