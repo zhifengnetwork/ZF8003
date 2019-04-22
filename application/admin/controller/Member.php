@@ -54,6 +54,102 @@ class Member extends Base
     }
 
     /**
+     * 分组
+     */
+    public function group()
+    {
+         $list = Db::name('user_group')->order('addtime desc')->paginate(15);
+         $num  = count($list);
+         $this->assign('num', $num);
+         $this->assign('list',$list);
+         return $this->fetch();
+    }
+    /**
+     * 添加分组
+     */
+    public function groupAdd(){
+        $data = input();
+        if($_POST){
+            $member = Loader::validate('Member');
+            if(!$member->scene('groupAdd')->check($data)){
+                $baocuo=$member->getError();
+                return json(['status'=>-1,'msg'=> $baocuo]);
+            }
+
+            if($data['id']){   
+                $data1 = [
+                    'name' => $data['name'],
+                    'desc' => $data['desc'],
+                    'updatetime' => time()
+                ];                
+                $res = Db::name('user_group')->where('id',$data['id'])->update($data1);
+                if ($res) {
+                    $action = 'edit';
+                    $log = adminLog($action);
+                    return json(['status' => 1, 'msg' => '更新成功！']);
+                } else {
+                    return json(['status' => 0, 'msg' => '更新失败！']);
+                } 
+            }
+            $data1 = [
+              'name' => $data['name'],
+              'desc' => $data['desc'],
+              'addtime' => time()
+            ];
+            $data['addtime']=time();  
+            $res = Db::name('user_group')->insert($data1);
+            
+            if($res){
+                $action = 'add';
+                $log = adminLog($action);   
+                return json(['status'=>1,'msg'=>'添加成功！']);
+            }else{
+                return json(['status'=>0,'msg'=>'添加失败！']);
+            }            
+        }
+        if(isset($data['id'])){
+            $info = Db::name('user_group')->where('id',$data['id'])->find();
+            $this->assign('info',$info); 
+        } 
+        return $this->fetch(); 
+    }
+    /**
+     * 分组删除和批量删除
+     */
+    public function del(){
+        $data = input('post.');
+        // dump($data);exit;
+        if($_POST){
+            if($data['act'] == 'batchdel'){
+                    $id = json_decode($data['id'], true);
+                    $where['id'] = array('in', $id);
+                    $res = Db::name('user_group')->where($where)->delete();
+            }else{
+                    // $is_super = Db::name('admin')->where('id',$data['id'])->value('is_super');
+                    // if ($is_super == 1) {
+                    //     return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
+                    // }else{
+                        $res = Db::name('user_group')->where('id', $data['id'])->delete();
+                    
+                    // } 
+            }
+            // 日志
+
+
+            if($res){
+                $action = 'del';
+                $log = adminLog($action);
+                return json(['status'=>1,'msg'=>'操作成功']);
+            }else{
+                return json(['status'=>-1,'msg'=>'操作失败']);
+            }
+        }
+ 
+        // Db::name('admin')->where('name', $data['name'])->select();
+    }
+
+
+    /**
      * 添加会员
      */
     public function add()
@@ -247,5 +343,7 @@ class Member extends Base
 
         return $this->fetch();
     }
+
+
 }
 

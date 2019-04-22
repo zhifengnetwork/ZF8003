@@ -12,6 +12,7 @@ class Member extends Validate
         'email'    => 'require|unique:users',
         'group_id' => 'require',
         'money'    => 'number',
+        'name'=> 'require|unique:user_group|max:16|chsAlphaNum'
     ];
     
     //错误消息
@@ -23,7 +24,12 @@ class Member extends Validate
         'email.require'       => '请输入邮箱！',
         'email.unique'        => '该邮箱已注册！',
         'group_id.require'    => '请输选择分组！',
-        'money.number'        => '余额必须是数字！'
+        'money.number'        => '余额必须是数字！',
+        'name.require'   => '请填写组名！',
+        'name.unique'    => '组名已经存在！',
+        'name.max'           => '组名长度最大16位！',
+        'name.chsAlphaNum'   => '组名必须是汉字、字母，数字',
+            
     ];
 
     //错误消息
@@ -47,5 +53,6 @@ class Member extends Validate
 
         'set_pwd' => ['password'],
         'reg'     => ['nickname','password'],
+        'groupAdd'=> ['name'],
     ];
 }

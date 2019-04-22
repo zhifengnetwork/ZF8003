@@ -8,21 +8,10 @@ use think\Db;
 use think\Loader;
 use think\Session;
 use think\Config;
-class Login extends Base
+class Login extends Logbase
 {
 
-    public function _initialize()
-    {
 
-        parent::_initialize();
-        // Session::clear();
-        $admin_name = session('admin_name');
-        if(!empty($admin_name)){
-            $url = "http://".$_SERVER['HTTP_HOST']. "/index.php/admin";
-            header("refresh:1;url=$url");
-            exit;
-        }        
-    }
     public function index()
     {
         return $this->fetch();
