@@ -21,12 +21,13 @@ function first_leader($user_id){
     return $name;
 }
 
-function adminLog($log_info)
+function adminLog($log_info,$desc)
 {
-    $add['log_time'] = time();
+    $add['addtime'] = time();
     $add['admin_id'] = session('admin_id');
-    $add['log_info'] = $log_info;
-    // $add['log_ip'] = request()->ip();
+    $add['action'] = $log_info;
+    $add['desc']   = $desc;
+    $add['ip'] = request()->ip();
     // $add['log_url'] = request()->baseUrl();
-    M('admin_log')->add($add);
+    Db::name('admin_log')->insert($add);
 }

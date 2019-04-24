@@ -118,9 +118,14 @@ class Goods extends Base{
             if($goods_id){
 
                 $sql = "update `zf_goods` set `cate_id` = '$category_id', `name` = '$name',`desc` = '$desc', `price` = '$price', `self_price` = '$self_price', `image` = '$image', `is_stock` = '$is_stock', `stock` = '$stock', `details` = '$details', `discount` = '$discount', `status` = '$status', `type` = '$type', `promotion_price` = '$promotion_price', `promotion_to` = '$promotion_to', `limit_stime` = '$limit_stime', `limit_etime` = '$limit_etime', `freight` = '$freight', `freight_temp` = '$freight_temp', `utime` = '$time' where `id` = '$goods_id'";
-
+                $action = 'edit_goods';
+                $desc   = '编辑商品';
+                $log    = adminLog($action, $desc);   
             }else{
                 $sql = "insert into `zf_goods` (`cate_id`,`name`,`desc`,`price`,`self_price`,`image`,`is_stock`,`stock`,`details`,`discount`,`status`,`type`,`promotion_price`,`promotion_to`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`addtime`,`utime`) values('$category_id','$name','$desc','$price','$self_price','$image','$is_stock','$stock','$details','$discount','$status','$type','$promotion_price','$promotion_to','$limit_stime','$limit_etime','$freight','$freight_temp','$time','$time')";
+                $action = 'add_goods';
+                $desc   = '添加商品';
+                $log    = adminLog($action, $desc);   
             }
 
             $res = Db::execute($sql);
@@ -207,6 +212,9 @@ class Goods extends Base{
             $time = time();
             $res = Db::name('goods')->where('id',$goods_id)->update(['is_del' => 1]);
             if($res){
+                $action = 'del_goods';
+                $desc   = '删除商品';
+                $log    = adminLog($action, $desc);                   
                 return json(['status' => 1]);
             }
         }
@@ -279,8 +287,14 @@ class Goods extends Base{
             $time = time();
             if($category_id > 0){
                 $sql = "update `zf_category` set `name` = '$name', `parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids' where `id` = '$category_id'";
+                $action = 'edit_goods';
+                $desc   = '编辑商品分类';
+                $log    = adminLog($action, $desc);               
             }else{
                 $sql = "insert into `zf_category` (`name`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`) values ('$name','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','goods')";
+                $action = 'add_goods';
+                $desc   = '添加商品分类';
+                $log    = adminLog($action, $desc);                
             }
             $res = Db::execute($sql);
             if($res){
@@ -338,6 +352,9 @@ class Goods extends Base{
             if($category_id){
                 $res = Db::table('zf_category')->delete($category_id);
                 if($res){
+                    $action = 'del_goods';
+                    $desc   = '删除商品分类';
+                    $log    = adminLog($action, $desc); 
                     return json(['status' => 1]);
                 }
             }
@@ -415,8 +432,15 @@ class Goods extends Base{
 
             if($freight_id > 0){
                 $sql = "update `zf_freight_temp` set `name` = '$name',`temp` = '$temp',`desc` = '$desc',`time` = '$time' where `id` = '$freight_id'";
+                $action = 'edit_freight';
+                $desc   = '编辑运费模板';
+                $log    = adminLog($action, $desc);             
             }else{
                 $sql = "insert into `zf_freight_temp` (`name`,`temp`,`desc`,`time`) values ('$name','$temp','$desc','$time')";
+                $action = 'add_freight';
+                $desc   = '添加运费模板';
+                $log    = adminLog($action, $desc);   
+            
             }
             $res = Db::execute($sql);
             if($res){
@@ -477,6 +501,9 @@ class Goods extends Base{
             if($freight_id){
                 $res = Db::table('zf_freight_temp')->delete($freight_id);
                 if($res){
+                    $action = 'del_freight';
+                    $desc   = '删除运费模板';
+                    $log    = adminLog($action, $desc);   
                     return json(['status' => 1]);
                 }
             }
@@ -584,6 +611,9 @@ class Goods extends Base{
                         'money' => $money
                     ];
                     $u_cou = Db::name('user_coupon')->where($where)->update($where1);
+                    $action = 'update_coupon';
+                    $desc   = '编辑优惠券';
+                    $log    = adminLog($action, $desc); 
                     // 提交事务
                     Db::commit();
                 } catch (\Exception $e) {
@@ -593,6 +623,9 @@ class Goods extends Base{
                 }                
             }else{
                 $res = Db::name('goods_coupon')->insert($data);
+                $action = 'add_coupon';
+                $desc   = '添加优惠券';
+                $log    = adminLog($action, $desc);   
             }
             
             if($res){
@@ -673,6 +706,9 @@ class Goods extends Base{
                         $u_res = Db::name('user_coupon')->where('coupon_id', $coupon_id)->delete();
                         // 提交事务
                         Db::commit();
+                        $action = 'del_coupon';
+                        $desc   = '删除优惠券';
+                        $log    = adminLog($action, $desc); 
                         return json(['status' => 1,'msg'=>'删除成功']);
                     } catch (\Exception $e) {
                         // 回滚事务
@@ -691,6 +727,9 @@ class Goods extends Base{
                     $u_res =  Db::name('user_coupon')->where($where1)->delete();      
                     // 提交事务
                     Db::commit();
+                    $action = 'bdel_coupon';
+                    $desc   = '批量删除优惠券';
+                    $log    = adminLog($action, $desc); 
                     return json(['status' => 1,'msg'=>'删除成功']);
                 } catch (\Exception $e) {
                     // 回滚事务

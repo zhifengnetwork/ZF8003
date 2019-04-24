@@ -50,7 +50,7 @@ class Login extends Logbase
                 // 此处插入日志
                 $action = 'sign';
                 $desc   = '登录';
-                $log = $this->adminLog($action,$desc);
+                $log = adminLog($action,$desc);
 
                 return json(['status' => 1, 'msg' => '登录成功']);
             }else{
@@ -64,16 +64,6 @@ class Login extends Logbase
 
 
 
-    function adminLog($action,$desc)
-    {
-        $add['addtime'] = time();
-        $add['admin_id'] = session('admin_id');
-        $add['action'] = $action;
-        $add['desc']   = $desc; 
-        // $add['log_ip'] = request()->ip();
-        // $add['log_url'] = request()->baseUrl();
-        Db::name('admin_log')->insert($add);
-        return true;
-    }
+
 
 }

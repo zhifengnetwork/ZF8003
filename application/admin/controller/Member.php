@@ -84,8 +84,9 @@ class Member extends Base
                 ];                
                 $res = Db::name('user_group')->where('id',$data['id'])->update($data1);
                 if ($res) {
-                    $action = 'edit';
-                    $log = adminLog($action);
+                    $action = 'edit_group';
+                    $desc   = '编辑分组';
+                    $log = adminLog($action, $desc);
                     return json(['status' => 1, 'msg' => '更新成功！']);
                 } else {
                     return json(['status' => 0, 'msg' => '更新失败！']);
@@ -100,8 +101,9 @@ class Member extends Base
             $res = Db::name('user_group')->insert($data1);
             
             if($res){
-                $action = 'add';
-                $log = adminLog($action);   
+                $action = 'add_group';
+                $desc   = '添加分组';
+                $log = adminLog($action, $desc);  
                 return json(['status'=>1,'msg'=>'添加成功！']);
             }else{
                 return json(['status'=>0,'msg'=>'添加失败！']);
@@ -137,8 +139,9 @@ class Member extends Base
 
 
             if($res){
-                $action = 'del';
-                $log = adminLog($action);
+                $action = 'del_group';
+                $desc   = '删除分组';
+                $log = adminLog($action, $desc);
                 return json(['status'=>1,'msg'=>'操作成功']);
             }else{
                 return json(['status'=>-1,'msg'=>'操作失败']);
@@ -229,6 +232,9 @@ class Member extends Base
                 $bool = $user->save($result);
 
                 if ($bool) {
+                    $action = 'add_member';
+                    $desc   = '添加会员';
+                    $log = adminLog($action, $desc);
                     $return = array('code' => 1, 'msg' => "添加成功！");
                 } else {
                     $return = array('code' => 0, 'msg' => "添加失败！");
@@ -262,6 +268,9 @@ class Member extends Base
                 $bool = $user->where('id',$data['id'])->update($result);
                 
                 if ($bool) {
+                    $action = 'edit_member';
+                    $desc   = '编辑会员';
+                    $log    = adminLog($action, $desc);                    
                     $return = array('code' => 1, 'msg' => "修改成功！");
                 } elseif ($bool === 0) {
                     $return = array('code' => 0, 'msg' => "你没有任何修改");
@@ -277,6 +286,9 @@ class Member extends Base
             $bool = $user->destroy($id);
 
             if ($bool) {
+                $action = 'del_member';
+                $desc   = '删除会员';
+                $log = adminLog($action, $desc);
                 $return = array('code' => 1, 'msg' => "删除成功！");
             } else {
                 $return = array('code' => 0, 'msg' => "删除失败！");
@@ -292,6 +304,9 @@ class Member extends Base
                 $bool = $user->where('id',$data['id'])->update(['password' => $pwd1]);
 
                 if ($bool) {
+                    $action = 'change_pwd';
+                    $desc   = '更改密码';
+                    $log = adminLog($action, $desc);
                     $return = array('code' => 1, 'msg' => "成功修改密码！");
                 } else {
                     $return = array('code' => 0, 'msg' => "修改密码失败！");

@@ -68,8 +68,15 @@ class Article extends Base{
 
             if($article_id > 0){
                 $sql = "update `zf_article` set `title` = '$title', `cate_id` = '$category_id', `desc` = '$desc', `author` = '$author', `source` = '$source', `sort` = '$sort', `is_lock` = '$is_lock', `details` = '$details',`utime` = '$time' where `id` = '$article_id'";
+                $action = 'add_art';
+                $desc   = '添加文章';
+                $log    = adminLog($action, $desc);             
+            
             }else{
                 $sql = "insert into `zf_article` (`title`,`cate_id`,`desc`,`details`,`addtime`,`utime`,`sort`,`author`,`source`,`is_lock`) values ('$title','$category_id','$desc','$details','$time','$time','$sort','$author','$source','$is_lock')";
+                $action = 'edit_art';
+                $desc   = '编辑文章';
+                $log    = adminLog($action, $desc);               
             }
             $res = Db::execute($sql);
             if($res){
@@ -132,6 +139,9 @@ class Article extends Base{
             if($article_id){
                 $res = Db::table('zf_article')->delete($article_id);
                 if($res){
+                    $action = 'del_art';
+                    $desc   = '删除文章';
+                    $log    = adminLog($action, $desc);  
                     return json(['status' => 1]);
                 }
             }
@@ -208,8 +218,14 @@ class Article extends Base{
             $time = time();
             if($category_id > 0){
                 $sql = "update `zf_category` set `name` = '$name', `desc` = '$desc',`parent_id` = '$parent_id', `sort` = '$sort', `is_lock` = '$is_lock', `parent_ids` = '$parent_ids',`is_view` = '$is_view', `time` = '$time' where `id` = '$category_id'";
+                $action = 'edit_cate';
+                $desc   = '编辑文章分类';
+                $log    = adminLog($action, $desc);             
             }else{
                 $sql = "insert into `zf_category` (`name`,`desc`,`level`,`sort`,`parent_id`,`parent_ids`,`is_lock`,`time`,`type`,`is_view`) values ('$name','$desc','$level','$sort','$parent_id','$parent_ids','$is_lock','$time','article','$is_view')";
+                $action = 'add_cate';
+                $desc   = '添加文章分类';
+                $log    = adminLog($action, $desc);  
             }
             $res = Db::execute($sql);
             if($res){
@@ -307,6 +323,9 @@ class Article extends Base{
             if($category_id){
                 $res = Db::table('zf_category')->delete($category_id);
                 if($res){
+                    $action = 'del_cate';
+                    $desc   = '删除文章分类';
+                    $log    = adminLog($action, $desc);                     
                     return json(['status' => 1]);
                 }
             }

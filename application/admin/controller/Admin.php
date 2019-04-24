@@ -160,7 +160,8 @@ class Admin extends Base
             ];
             $res =  Db::name('admin')->insert($data1);
             $action = 'add';
-            $log = adminLog($action);   
+            $desc = '添加管理员';
+            $log = adminLog($action,$desc);   
     	}
     	// 编辑
     	if($data['act'] == 'edit'){
@@ -172,7 +173,8 @@ class Admin extends Base
             ];            
             $res = Db::name('admin')->where('id', $data['id'])->update($data1);
             $action = 'edit';
-            $log = adminLog($action);               
+            $desc = '编辑管理员';
+            $log = adminLog($action, $desc);                
     	}
  	
     	if($res){
@@ -204,7 +206,8 @@ class Admin extends Base
         if($res){
             // 日志
             $action = 'del';
-            $log = adminLog($action);            
+            $desc = '删除管理员';
+            $log = adminLog($action,$desc);            
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
             return json(['status'=>-1,'msg'=>'操作失败']);
@@ -218,12 +221,18 @@ class Admin extends Base
         // dump($data);exit;
         if($data['status'] == 'stop'){
             $res = Db::name('admin')->where('id',$data['id'])->update(['is_lock' => 1]);
+            $action = 'start_admin';
+            $desc = '启用管理员';
+            $log = adminLog($action, $desc); 
         }else{
             $res = Db::name('admin')->where('id', $data['id'])->update(['is_lock' => 0]);
+            $action = 'stop_admin';
+            $desc = '停用管理员';
+            $log = adminLog($action, $desc); 
         }
         
         if($res){
-             return json(['status'=>1,'msg'=>'操作成功']);
+            return json(['status'=>1,'msg'=>'操作成功']);
         }else{
             return json(['status'=>-1,'msg'=>'操作失败']);
         }
@@ -233,17 +242,17 @@ class Admin extends Base
           return $this->fetch();
       }
 
-    function adminLog($action, $desc)
-    {
-        $add['addtime'] = time();
-        $add['admin_id'] = session('admin_id');
-        $add['action'] = $action;
-        $add['desc']   = $desc;
-        // $add['log_ip'] = request()->ip();
-        // $add['log_url'] = request()->baseUrl();
-        Db::name('admin_log')->insert($add);
-        return true;
-    }
+    // function adminLog($action, $desc)
+    // {
+    //     $add['addtime'] = time();
+    //     $add['admin_id'] = session('admin_id');
+    //     $add['action'] = $action;
+    //     $add['desc']   = $desc;
+    //     // $add['log_ip'] = request()->ip();
+    //     // $add['log_url'] = request()->baseUrl();
+    //     Db::name('admin_log')->insert($add);
+    //     return true;
+    // }
     public function logout()
     {
         Session::clear();
