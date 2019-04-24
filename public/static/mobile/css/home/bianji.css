@@ -1,0 +1,105 @@
+.lb_headWrap_return_img22{
+	
+	display: inline-block;
+	width: 1.2rem;
+	font-size: .26rem;
+	
+}
+.liebiao_ear{
+	
+	width: 90%;
+	margin: auto;
+	border: 1px solid #30ADE5;
+	margin-top: 1rem;
+	
+}
+.liebiao_ear ul{
+	
+	width: 90%;
+	margin: auto;
+	/*border: 1px solid green;*/
+	font-size: .27rem;
+
+}
+.liebiao_ear ul li{
+	
+	height: 1rem;
+	line-height: 1rem;
+	border-bottom: 1px solid #30ADE5;
+	position: relative;
+	
+}
+.liebiao_ear ul li:last-child{
+	
+	border-bottom: none;
+	
+}
+.fist{
+	
+	position: absolute;
+	top: 0;
+	right: -5%;
+	z-index: 1;
+	display: block;
+	width:15%;
+	height: 100%;
+}
+
+
+.span_right{
+	
+	position: absolute;
+	right:0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	z-index: 1;
+	width: .3rem;
+	height: .3rem;
+	border: .05rem solid #30ADE5;
+	border-radius: 50%;
+	/*background-color: rgb(225,6,2);*/
+	display: inline-block;
+	display: none;
+	
+	
+	
+	
+	
+}
+.tip_ear{
+	
+	padding-top: .1rem;
+	padding-left: 9%;
+	display: none;
+	
+	
+}
+.tip{
+	
+	color: gray;
+	color: .3rem;
+	
+}
+.span_right22{
+	
+	float: right;
+	
+}
+.span_right22 img{
+	
+	width: .24rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: .3rem;
+	margin: auto 0;
+	
+}
+.lb_header_righticon{
+	
+	display: none;
+	
+}
+

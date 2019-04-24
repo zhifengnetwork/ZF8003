@@ -1,59 +1,147 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
-		 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
-		<title></title>
-		<!--public-->
-		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>我的基因数据</title>
 		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css">
-		<link rel="stylesheet" href="__STATIC__/css/home/jiyin_daoru.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/bianji.css" />
 		<script src="__STATIC__/js/public/rem.js"></script>
 	</head>
+
 	<body>
-		
-		<div >
-			<!--头部-->
+		<div>
 			<div class="lb_headWrap">
-                <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
-                    <img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
-                </p>
-                <span>基因导入</span>
-                <p  class="lb_headWrap_text" onClick="window.location.href='bianji.html'">编辑</p>
-            </div>
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" onclick="returnFun()" />
+					<span class="lb_headWrap_return_img22" style="display: none;">取消</span>
+					
+				</p>
+				<span>基因数据</span>
+				    <p class="lb_headWrap_text lb_header_righticon">删除</p>
+				    <p class="lb_headWrap_text lb_header_righticon22">编辑</p>
+			</div>
+
 			<div class="liebiao_ear">
 				<ul>
-					<li onclick="window.location.href='./genequery.html'">
-						<span class="span_left">0119-29Y&nbsp;&nbsp;张李兴-基因数据</span>
-						<span class="span_right"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
-						
+					{volist name="list" id="vo" empty="<p style='text-align: center;line-height: 75px;height:75px;'>暂无数据！</p>"}
+					<li id="li_{$vo.id}" item="{$vo.id}">
+						<span class="span_left" >{$vo.name}</span>
+						<p class="fist">
+							<span  class="span_right"></span>
+							<span class="span_right22"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
+						</p>
 					</li>
-					<li onclick="window.location.href='./genequery.html'">
-						<span class="span_left">0119-29Y&nbsp;&nbsp;张李兴-基因数据</span>
-						<span class="span_right"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
-						
-					</li>
-					<li onclick="window.location.href='./genequery.html'">
-						<span class="span_left">0119-29Y&nbsp;&nbsp;张李兴-基因数据</span>
-						<span class="span_right"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
-						
-					</li>
-					<li>
-						<span class="span_left">0119-29Y&nbsp;&nbsp;张李兴-基因数据</span>
-						<span class="span_right"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
-						
-					</li>
-					<li onclick="window.location.href='./genequery.html'">
-						<span class="span_left">0119-29Y&nbsp;&nbsp;张李兴-基因数据</span>
-						<span class="span_right"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
-						
-					</li>
-					
+					{/volist}
 				</ul>
+
 			</div>
+
+			<div class="tip_ear">
+				<p class="tip">您的基因检测结果尚未生成</p>
+				<p class="tip">请在PC上登录网站，上传您的基因数据</p>
 			</div>
+
 		</div>
-	<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
-     <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>		
+		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		<script>
+			/*编辑-是否选中*/
+			//$(".span_right").click(function() {
+//			$('#id').css('display')
+		
+			$(".fist").click(function() {
+				
+				 if($(".span_right").css('display')!="none"){
+				var childElen = $(this).find('.span_right');
+				if(childElen.css("background-color") == 'rgb(225, 6, 2)') {
+					childElen.css("background-color", '#F5F5F5');
+					$(this).parent("li").removeClass("selected")
+
+				} else {
+					childElen.css("background-color", 'rgb(225, 6, 2)');
+					$(this).parent("li").addClass("selected")
+				}
+              }
+			})
+			
+          //删除功能
+			$(".lb_header_righticon").click(function() {
+				var ids = '';
+				$(".liebiao_ear ul li").each(function(index) {
+
+					var _this = $(this)
+					if(_this.hasClass("selected")) {
+						// ids.push($(this).attr('item'))
+						// console.log($(this).attr('id'))
+						// _this.remove();
+						ids = ids ? ids+','+$(this).attr('item') : $(this).attr('item');
+
+					}
+				})
+				if(ids){
+
+					$.post('/mobile/user/del_my_gene',{ids:ids},function(res){
+						if(res.status == 1){
+							layer.msg('删除成功！',{icon:6});
+							setTimeout(function(){
+								window.location.replace(location.href);
+							},1500);
+						}else{
+							layer.msg('删除失败！请重试',{icon:5});
+						}
+					});
+				}
+				if($(".liebiao_ear ul li").length == 0) {
+					$(".liebiao_ear").hide()
+					$(".tip_ear").css({"margin-top":"1rem"});
+					
+				}
+		
+			})
+			
+            //点击编辑,右箭头隐藏,圈圈出现
+			$(".lb_header_righticon22").click(function(){
+				
+				$(".span_right").show();
+				$(".span_right22").hide();
+				$(".lb_header_righticon22").hide();
+				$(".lb_header_righticon").show();
+				$(".tip_ear").show();
+				$(".lb_headWrap_return_img22").show()
+				$(".lb_headWrap_return_img").hide()
+				
+				
+			})
+			//点击取消按钮，取消编辑状态
+			$(".lb_headWrap_return_img22").click(function(){
+				
+				$(".span_right").hide();
+				$(".span_right22").show();		
+				$(".lb_header_righticon22").show();
+				$(".lb_header_righticon").hide();
+				$(".tip_ear").hide();
+				$(".lb_headWrap_return_img22").hide()
+				$(".lb_headWrap_return_img").show()
+		
+			})
+			
+            //点击li页面跳转
+			$(".liebiao_ear ul li").click(function(){
+				var id = $(this).attr('item');
+				if($(".span_right").css('display')=="none"){
+					
+					$(location).attr('href',"/mobile/user/gene_info?id="+id);
+	
+				}
+			
+			})
+			
+		</script>
+
 	</body>
+
 </html>

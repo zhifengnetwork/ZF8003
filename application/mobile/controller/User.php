@@ -37,7 +37,9 @@ class User extends Base
     # 我的基因
     public function my_gene(){
 
+        $list = Db::name('gene')->where('user_id',$this->user_id)->field('id,`name`')->select();
         
+        $this->assign('list',$list);
         return $this->fetch();
     }
 
@@ -45,27 +47,40 @@ class User extends Base
     public function gene_info(){
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = Db::name('gene')->where(['user_id'=>$this->id,'id'=>$id])->find();
-        if($find){
-
-            $name = $info['name'];
-            unset($info['name']);
-            unset($info['desc']);
-
-            $completion = Db::name('gene_completion')->field('key,value')->where(['gene_id'=>$info['id']])->select();
-            if($completion){
-                foreach($completion as $v){
-                    $info[$v['key']] = $v['value'];
-                }
-            }
-
-        }else{
+        $info = Db::name('gene')->where(['user_id'=>$this->user_id,'id'=>$id])->find();
+        if(!$info){
             layer_error('查询结果不存在！');
             exit;
         }
+        $name = $info['name'];
+        $id = $info['id'];
+        $completion = $info['completion'];
+        unset($info['id'],$info['user_id'],$info['name'],$info['desc'],$info['addtime'],$info['utime'],$info['completion']);
+        if($completion){
+            $completion = json_decode($completion,true);
+            foreach($completion as $k => $v){
+                $info[$k] = $v;
+            }
+        }
+
+        // dump($info);exit;
         $this->assign('name',$name);
         $this->assign('info',$info);
         return $this->fetch();
+    }
+
+    # 删除基因报告
+    public function del_my_gene(){
+        
+        $ids = isset($_POST['ids']) ? $_POST['ids'] : '';
+        $sql = "delete from `zf_gene` where `user_id` = '$this->user_id' and `id` in ('$ids')";
+        $res = Db::execute($sql);
+        if($res){
+            return json(['status'=>1]);
+        }else{
+            return json(['status'=>0]);
+        }
+        exit;
     }
 
     /**

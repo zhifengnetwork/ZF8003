@@ -29,13 +29,13 @@
 		    	<tr style="height:.9rem">
 		    		<td style="text-align: left;">基因座/样本号</td>
 		    		<td>{$name}</td>
-                </tr>
-                {volist name="$info" id="vo" key="k"}
-		    	<tr>
-		    		<td >{$k|strtoupper}</td>
-		    		<td>{$vo}</td>
-                </tr>
-                {/vo}
+					</tr>
+					{foreach name="$info" id="vo" key="k"}
+						<tr>
+							<td >{$k|strtoupper}</td>
+							<td>{$vo/100}</td>
+						</tr>
+					{/foreach}
 		    </table>		
 		</div>
 	  </div>	
