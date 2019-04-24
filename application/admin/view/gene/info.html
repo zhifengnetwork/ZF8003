@@ -1,0 +1,337 @@
+{include file="layout/head"}
+<style>
+    .table thead th{
+        color:#4ced6a;
+    }
+    .adds{
+        color:blue;
+    }
+    .dels{
+        color:red;
+    }
+</style>
+<article class="page-container">
+    <form class="form form-horizontal" target="ajaxR" method="POST" action="">    
+        <input type="hidden" id="id" name="id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>基因报告名称：</label>
+            <div class="formControls col-xs-8 col-sm-8">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.name}{/if}" placeholder="基因报告名称：" name="name" id="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">所属会员ID：</label>
+            <div class="formControls col-xs-8 col-sm-8">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.user_id}{/if}" placeholder="基因报告所属会员ID" name="user_id" id="user_id">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">备注描述：</label>
+            <div class="formControls col-xs-8 col-sm-8">
+                <textarea name="desc" cols="" rows="" class="textarea"  placeholder="备注描述：..." >{if condition="isset($info)"}{$info.desc}{/if}</textarea>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">特定 36STR 基因座</label>
+            <div class="formControls col-xs-8 col-sm-8"> 
+                <table class="table table-border table-bordered table-bg" >
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS19</th>
+                            <th width="50">DYS389I</th>
+                            <th width="50">DYS389b</th>
+                            <th width="50">DYS390</th>
+                            <th width="50">DYS391</th>
+                            <th width="50">DYS392</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys19]" value="{$info.dys19 ? $info.dys19*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys389i]" value="{$info.dys389i ? $info.dys389i*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys389b]" value="{$info.dys389b ? $info.dys389b*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys390]" value="{$info.dys390 ? $info.dys390*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys391]" value="{$info.dys391 ? $info.dys391*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys392]" value="{$info.dys392 ? $info.dys392*0.01 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS393</th>
+                            <th width="50">DYS437</th>
+                            <th width="50">DYS438</th>
+                            <th width="50">DYS439</th>
+                            <th width="50">DYS448</th>
+                            <th width="50">DYS456</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys393]" value="{$info.dys393 ? $info.dys393*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys437]" value="{$info.dys437 ? $info.dys437*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys438]" value="{$info.dys438 ? $info.dys438*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys439]" value="{$info.dys439 ? $info.dys439*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys448]" value="{$info.dys448 ? $info.dys448*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys456]" value="{$info.dys456 ? $info.dys456*0.01 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS458</th>
+                            <th width="50">DYS635</th>
+                            <th width="50">GATA-H4</th>
+                            <th width="50">DYS385a</th>
+                            <th width="50">DYS385b</th>
+                            <th width="50">DYS449</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys458]" value="{$info.dys458 ? $info.dys458*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys635]" value="{$info.dys635 ? $info.dys635*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[gata_h4]" value="{$info.gata_h4 ? $info.gata_h4*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys385a]" value="{$info.dys385a ? $info.dys385a*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys385b]" value="{$info.dys385b ? $info.dys385b*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys449]" value="{$info.dys449 ? $info.dys449*0.01 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS460</th>
+                            <th width="50">DYS481</th>
+                            <th width="50">DYS518</th>
+                            <th width="50">DYS533</th>
+                            <th width="50">DYS570</th>
+                            <th width="50">DYS576</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys460]" value="{$info.dys460 ? $info.dys460*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys481]" value="{$info.dys481 ? $info.dys481*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys518]" value="{$info.dys518 ? $info.dys518*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys533]" value="{$info.dys533 ? $info.dys533*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys570]" value="{$info.dys570 ? $info.dys570*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys576]" value="{$info.dys576 ? $info.dys576*0.01 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS627</th>
+                            <th width="50">DYS387S1a</th>
+                            <th width="50">DYS387S1b</th>
+                            <th width="50">DYS388</th>
+                            <th width="50">DYS444</th>
+                            <th width="50">DYS549</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys627]" value="{$info.dys627 ? $info.dys627*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys387s1a]" value="{$info.dys387s1a ? $info.dys387s1a*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys387s1b]" value="{$info.dys387s1b ? $info.dys387s1b*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys388]" value="{$info.dys388 ? $info.dys388*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys444]" value="{$info.dys444 ? $info.dys444*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys549]" value="{$info.dys549 ? $info.dys549*0.01 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS643</th>
+                            <th width="50">DYS722</th>
+                            <th width="50">DYS404S1a</th>
+                            <th width="50">DYS404S1b</th>
+                            <th width="50">DYS527a</th>
+                            <th width="50">DYS527b</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys643]" value="{$info.dys643 ? $info.dys643*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys722]" value="{$info.dys722 ? $info.dys722*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys404s1a]" value="{$info.dys404s1a ? $info.dys404s1a*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys404s1b]" value="{$info.dys404s1b ? $info.dys404s1b*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys527a]" value="{$info.dys527a ? $info.dys527a*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys527b]" value="{$info.dys527b ? $info.dys527b*0.01 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">额外的基因座数据：</label>
+            <div class="formControls col-xs-8 col-sm-8"> 
+                <table class="table table-border table-bordered table-bg" >
+                    <thead>
+                        <tr class="text-c">
+                            <th width="100">基因座 / 样板号</th>
+                            <th width="100">数值</th>
+                            <th width="10">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        {if condition="$comp"}
+                        {volist name="comp" id="vo" key="key"}
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="comp[key][]" value="{$key}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="comp[val][]" value="{$vo ? $vo*0.01 : 0}" />
+                            </td>
+                            <td width="50">
+                                <a class="adds" onclick="_add_comp(this);">增加一行</a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a class="dels" onclick="_del_comp(this);">删除此行</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        {else /}
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="comp[key][]" value="" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="comp[val][]" value="0" />
+                            </td>
+                            <td width="50">
+                                <a class="adds" onclick="_add_comp(this);">增加一行</a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a class="dels" onclick="_del_comp(this);">删除此行</a>
+                            </td>
+                        </tr>
+                        {/if}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+<iframe name="ajaxR" style="display: none;width:100%;height:500px;"></iframe>
+{include file="layout/footer"}
+<script>
+    function layermsg(msg,close,icon=6){
+        layer.msg(msg,{icon:icon});
+        if(close > 0){
+            setTimeout(function(){
+                // parent.layer.closeAll();
+                parent.open_closeAll();
+            },2000);
+        }
+    }
+
+    function _add_comp(obj){
+        var _html = `
+                <tr class="text-c">
+                    <td width="50">
+                        <input type="text" class="input-text" style="text-align: center;" name="comp[key][]" value="" />
+                    </td>
+                    <td width="50">
+                        <input type="text" class="input-text" style="text-align: center;" name="comp[val][]" value="0" />
+                    </td>
+                    <td width="50">
+                        <a class="adds" onclick="_add_comp(this)">增加一行</a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a class="dels" onclick="_del_comp(this)">删除此行</a>
+                    </td>
+                </tr>
+            `;
+        $(obj).parents('tr').after(_html);
+
+    }
+
+    function _del_comp(obj){
+        layer.confirm('确定要删除此行数据么？', {icon: 3, title:'删除提示！'}, function(index){
+            //do something
+            $(obj).parents('tr').remove();
+            layer.close(index);
+        });
+        
+
+    }
+</script>
