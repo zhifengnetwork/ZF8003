@@ -27,7 +27,8 @@ class Base extends Controller
     {
         $this->base_web_config();
         $this->Verification_Client();
-        if($this->client == 'mobile'){
+        # 如果访问的不是PC端，跳转到手机端
+        if($this->client != 'pc'){
             $this->redirect('/mobile/index/index');
         }
         

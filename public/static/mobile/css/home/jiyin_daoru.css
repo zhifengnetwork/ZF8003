@@ -1,0 +1,55 @@
+
+
+.liebiao_ear{
+	
+	width: 90%;
+	margin: auto;
+	border: 2px solid #30ADE5;
+	margin-top: 1.1rem;
+	
+}
+.liebiao_ear ul{
+	
+	width: 90%;
+	margin: auto;
+	/*border: 1px solid green;*/
+	font-size: .3rem;
+
+}
+.liebiao_ear ul li{
+	
+	height: 1rem;
+	line-height: 1rem;
+	border-bottom: 2px solid #30ADE5;
+	position: relative;
+	
+}
+.liebiao_ear ul li:last-child{
+	
+	border-bottom: none;
+	
+}
+.span_right{
+	
+	float: right;
+	
+}
+.span_right img{
+	
+	width: .24rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: .1rem;
+	margin: auto 0;
+	
+	
+	
+	
+}
+
+
+
+
+
+

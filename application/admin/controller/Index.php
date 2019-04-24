@@ -4,6 +4,7 @@
  */
 namespace app\admin\controller;
 use think\Db;
+use think\Session;
 class Index extends Base
 {
 
@@ -14,9 +15,7 @@ class Index extends Base
         $admin_name = session('admin_name');
         if (empty($admin_name)) {
             $this->redirect('Login/index');
-            // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
-            // header("refresh:1;url=$url");
-            // exit;
+            
         }
     }
 
@@ -39,7 +38,30 @@ class Index extends Base
 
     public function welcome(){
 
-        // dump($_SERVER);exit;
+        # 问候语
+        $greetings = '';
+        $admin_name = Session::get('admin_name'); 
+        $h = date('H',time());
+        if($h > 0 && $h < 6){
+            $greetings = '夜深了！' . $admin_name . ' 注意休息！';
+        }
+        if($h > 5 && $h < 12){
+            $greetings = '早上好！' . $admin_name;
+        }
+        if($h > 11 && $h < 14){
+            $greetings = '中午好！' . $admin_name;
+        }
+        if($h > 13 && $h < 19){
+            $greetings = '下午好！' . $admin_name;
+        }
+        if($h > 16 && $h <= 24 ){
+            $greetings = '晚上好！' . $admin_name;
+        }
+
+
+        // dump(Session::get());
+        $this->assign('title', '欢迎使用 '.Session::get('web_setting.web_name').' 后台管理系统');
+        $this->assign('greetings', $greetings);
         return $this->fetch();
     }
     

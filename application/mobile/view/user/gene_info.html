@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>基因报告详情</title>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/genequery.css" />
+	</head>
+	<body>
+		
+	  <div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/bottom_nav/back@2x.png" />
+				</p>
+				<span>基因报告详情</span>
+			</div>
+			
+		<div class="zuidadiv">	
+			<!--title-->
+		    <p class="form_title">基因报告详情</p>
+
+			<!--表格-->
+		    <table  frame="void" rules="all" class="biaogege">
+		    	<tr style="height:.9rem">
+		    		<td style="text-align: left;">基因座/样本号</td>
+		    		<td>{$name}</td>
+                </tr>
+                {volist name="$info" id="vo" key="k"}
+		    	<tr>
+		    		<td >{$k|strtoupper}</td>
+		    		<td>{$vo}</td>
+                </tr>
+                {/vo}
+		    </table>		
+		</div>
+	  </div>	
+	  
+	  <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	  <script src="__STATIC__/js/public/public.js"></script>
+	
+	</body>
+</html>

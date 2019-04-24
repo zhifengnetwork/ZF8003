@@ -37,7 +37,34 @@ class User extends Base
     # 我的基因
     public function my_gene(){
 
-        $this->assign('result', 'error');
+        
+        return $this->fetch();
+    }
+
+    # 基因数据报告详情
+    public function gene_info(){
+
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $info = Db::name('gene')->where(['user_id'=>$this->id,'id'=>$id])->find();
+        if($find){
+
+            $name = $info['name'];
+            unset($info['name']);
+            unset($info['desc']);
+
+            $completion = Db::name('gene_completion')->field('key,value')->where(['gene_id'=>$info['id']])->select();
+            if($completion){
+                foreach($completion as $v){
+                    $info[$v['key']] = $v['value'];
+                }
+            }
+
+        }else{
+            layer_error('查询结果不存在！');
+            exit;
+        }
+        $this->assign('name',$name);
+        $this->assign('info',$info);
         return $this->fetch();
     }
 

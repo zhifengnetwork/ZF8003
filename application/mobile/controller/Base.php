@@ -31,6 +31,12 @@ class Base extends Controller
     {
         $this->Verification_Client();
 
+        # 如果访问的不是 手机端 跳转到手机端
+        if($this->client != 'mobile'){
+            $this->redirect('/index/index/index');
+            exit;
+        }
+
     }
 
     # 请求验证

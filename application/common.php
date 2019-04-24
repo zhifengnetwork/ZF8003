@@ -11,6 +11,85 @@
 
 // 应用公共文件
 
+# 用于计算的基因座 17 STR
+function Gene_17STR(){
+
+    $array = [
+        "dys19",
+        "dys389i",
+        "dys389b",
+        "dys390",
+        "dys391",
+        "dys392",
+        "dys393",
+        "dys437",
+        "dys438",
+        "dys439",
+        "dys448",
+        "dys456",
+        "dys458",
+        "dys635",
+        "gata-h4",
+        "dys385a",
+        "dys385b",
+    ];
+
+    return $array;
+}
+
+
+# 标准基因座 | 判断
+function Standard_Gene($key = ''){
+
+    $array = [
+        "dys19",
+        "dys389i",
+        "dys389b",
+        "dys390",
+        "dys391",
+        "dys392",
+        "dys393",
+        "dys437",
+        "dys438",
+        "dys439",
+        "dys448",
+        "dys456",
+        "dys458",
+        "dys635",
+        "gata-h4",
+        "dys385a",
+        "dys385b",
+        "dys449",
+        "dys460",
+        "dys481",
+        "dys518",
+        "dys533",
+        "dys570",
+        "dys576",
+        "dys627",
+        "dys387s1a",
+        "dys387s1b",
+        "dys388",
+        "dys444",
+        "dys549",
+        "dys643",
+        "dys722",
+        "dys404s1a",
+        "dys404s1b",
+        "dys527a",
+        "dys527b"
+    ]; 
+    if($key){
+        return in_array(strtolower($key),$array);
+    }else{
+        return $array;
+    }
+    
+}
+
+
+
+
 # 判断数组元素
 function array_key_check($data, $key='', $re=false){
     if(!$data) return false;
