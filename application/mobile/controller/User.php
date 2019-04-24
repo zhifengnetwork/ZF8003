@@ -311,9 +311,12 @@ class User extends Base
                 'addtime' => time(),
                 'utime' => time(),
             ];
+            // dump( $inser_data);exit;
             $res = Db::name('withdrawal')->insert($inser_data);
             if($res){
                 return json(['status'=>1]);
+            }else{
+                return json(['status'=>0,'msg'=>'操作失败，请重试！']);
             }
 
             exit;
