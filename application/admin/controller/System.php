@@ -467,6 +467,9 @@ class System extends Base
             if($menu_id > 0){
                 $res = Db::execute("delete from `zf_menu` where `id` = '$menu_id' or `parent_id` = '$menu_id'");
                 if($res){
+                    $action = 'del_menu';
+                    $desc   = '删除菜单';
+                    $log = adminLog($action, $desc);                    
                     return json_encode(['status' => 1]);
                 }
             }
@@ -502,9 +505,14 @@ class System extends Base
 
             if($menu_id > 0){
                 $res = Db::execute("update `zf_menu` set `parent_id` = '$parent_id', `name` = '$name', `icon` = '$icon', `url` = '$url', `is_lock` = '$is_lock', `level` = '$level' where `id` = '$menu_id'");
-                
+                $action = 'edit_menu';
+                $desc   = '更新菜单';
+                $log = adminLog($action, $desc);                  
             }else{
                 $res = Db::execute("insert into `zf_menu` (`name`,`url`,`icon`,`is_lock`,`addtime`,`level`,`parent_id`) values ('$name','$url','$icon','$is_lock','$time','$level','$parent_id')");
+                $action = 'add_menu';
+                $desc   = '添加菜单';
+                $log = adminLog($action, $desc);              
             }
             if($res){
                 return json_encode(['status'=>1,'msg'=>'操作成功']);

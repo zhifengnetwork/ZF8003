@@ -13,26 +13,6 @@ class Role extends Base
 
     public function role()
     {
-
-        // $str = '';
-        //     $list=Db::name('admin_group')->select();
-        //     $list1 = Db::name('admin')->select();
-        //     if($list){
-        //         foreach ($list as $key => $value) {
-        //             # code...
-        //             if($list1){
-        //                 foreach ($list1 as $k => $val) {
-        //                     # code...
-        //                     if($val['group_id']==$value['id']){
-        //                         $str = $str ? $str.','.$val['name'] : $val['name'];
-        //                     }
-        //                 }
-        //                 $list[$key]['g_name'] = $str;
-        //             }
-        //             // $l = Db::name('admin')->where('group_id', $value['id'])->select();
-        //         }  
-        //     }
-
             $list = Db::name('admin_group')->select();
             $num = count($list);
             $this->assign('num', $num);
@@ -103,7 +83,7 @@ class Role extends Base
             //此处插入日志
             $action = 'add_role';
             $desc   = '添加角色';
-            $log = $this->adminLog($action, $desc);
+            $log = adminLog($action, $desc);
         }
         if ($data['act'] == 'edit') {
         
@@ -123,7 +103,7 @@ class Role extends Base
             //此处插入日志
             $action = 'edit_role';
             $desc   = '编辑角色';
-            $log = $this->adminLog($action, $desc);
+            $log = adminLog($action, $desc);
         }
         if($res){
             return json(['status' => 1,  'msg'  => '操作成功']);  
@@ -148,7 +128,7 @@ class Role extends Base
         }
         $action = 'del_role';
         $desc   = '删除角色';
-        $log = $this->adminLog($action, $desc);       
+        $log    = adminLog($action, $desc);       
         if($res){
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
