@@ -135,8 +135,8 @@
 				<div class="coupon_box">
 					<!-- 如果限制次数<使用次数，则不显示该券 -->
 					
-					{if condition = "!empty($coupon)"}
-					{volist name="coupon" id="vo"}
+
+					{volist name="coupon" id="vo" empty="<p style='text-align: center;height: 75px;line-height: 75px;'>暂无数据！</p>"}
 					<div class="coupon_list">
 
 						<div class="coupon_msg">
@@ -163,11 +163,7 @@
 					</div>
 
                    {/volist}
-				   {else/}
-						<div class="coupon_list">
-						暂无数据
-						</div>
-				   {/if}
+
 				</div>
 				<div class="popup">
 					领取成功

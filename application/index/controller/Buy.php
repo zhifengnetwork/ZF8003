@@ -249,7 +249,7 @@ class Buy extends Base
         $input->SetBody($data['body']);
         $input->SetAttach($data['attach']);
         $input->SetOut_trade_no($data['sn']);
-        $input->SetTotal_fee(1);
+        $input->SetTotal_fee($data['money'] * 100);
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetNotify_url($_SERVER["REQUEST_SCHEME"].'://'.$_SERVER['HTTP_HOST'].'/index/weixin/native_notify');

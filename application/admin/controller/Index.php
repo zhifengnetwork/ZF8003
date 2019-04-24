@@ -8,16 +8,18 @@ use think\Session;
 class Index extends Base
 {
 
-    public function _initialize()
-    {
+    // public function _initialize()
+    // {
 
-        parent::_initialize();
-        $admin_name = session('admin_name');
-        if (empty($admin_name)) {
-            $this->redirect('Login/index');
-            
-        }
-    }
+    //     parent::_initialize();
+    //     $admin_name = session('admin_name');
+    //     if (empty($admin_name)) {
+    //         $this->redirect('Login/index');
+    //         // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
+    //         // header("refresh:1;url=$url");
+    //         // exit;
+    //     }
+    // }
 
     public function index()
     {

@@ -160,8 +160,7 @@ class Admin extends Base
             ];
             $res =  Db::name('admin')->insert($data1);
             $action = 'add';
-            $desc   = '添加管理员';
-            $log = $this->adminLog($action, $desc);   
+            $log = adminLog($action);   
     	}
     	// 编辑
     	if($data['act'] == 'edit'){
@@ -173,8 +172,7 @@ class Admin extends Base
             ];            
             $res = Db::name('admin')->where('id', $data['id'])->update($data1);
             $action = 'edit';
-            $desc   = '编辑管理员';
-            $log = $this->adminLog($action, $desc);               
+            $log = adminLog($action);               
     	}
  	
     	if($res){
@@ -201,12 +199,12 @@ class Admin extends Base
                
             } 
         }
-        // 日志
-        $action = 'del';
-        $desc   = '删除管理员';
-        $log = $this->adminLog($action, $desc);
+
 
         if($res){
+            // 日志
+            $action = 'del';
+            $log = adminLog($action);            
             return json(['status'=>1,'msg'=>'操作成功']);
         }else{
             return json(['status'=>-1,'msg'=>'操作失败']);

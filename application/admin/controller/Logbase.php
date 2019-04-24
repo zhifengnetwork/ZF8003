@@ -12,7 +12,7 @@ namespace app\admin\Controller;
 use think\Controller;
 use think\Db;
 use think\Session;
-class Base extends Controller
+class Logbase extends Controller
 {
 
     public function __construct()
@@ -21,27 +21,13 @@ class Base extends Controller
 
         $this->base_web_config();
         $admin_name = session('admin_name');
-        if (empty($admin_name)) {
-            $this->redirect('Login/index');
-            // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
-            // header("refresh:1;url=$url");
-            // exit;
-        }
+        if (!empty($admin_name)) {
+            $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin";
+            header("refresh:1;url=$url");
+            exit;
+        } 
 
-        $global_menu_list = $this->get_menu();
-        $this->assign('global_menu_list', $global_menu_list);
-    }
 
-    # 获取菜单
-    public function get_menu(){
-
-        $global_menu_list = Db::query("select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0");
-        if($global_menu_list){
-            foreach($global_menu_list as $k => $v){
-                $global_menu_list[$k]['last'] = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'");
-            }
-        }
-        return $global_menu_list;
     }
 
     # 网站基本信息设置

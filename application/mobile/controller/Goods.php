@@ -317,7 +317,7 @@ class Goods extends Base
             # 优惠券抵扣
             $coupon_price = 0;
             # 应付金额
-            $order_amount = 0;
+            $order_amount = $total_amount;
 
             if($coupon_id > 0){
                 $coupon_info = Db::name('user_coupon')->where(['id'=>$coupon_id,'user_id'=>$this->user_id,'status'=>0])->find();
@@ -351,6 +351,13 @@ class Goods extends Base
                     $pay_status = 2;
                 }
             }
+
+            # 判断支付金额，修改订单状态
+            if($order_amount == 0){
+                $order_status = 1;
+                $pay_status = 1;
+            }
+
             # 时间
             $time = time();
             # 订单号

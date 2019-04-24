@@ -108,10 +108,16 @@
 				$.post('/admin/system/del_menu',{menu_id:id},function(res){
 					var res = JSON.parse(res);
 					if(res.status == 1){
-						layer.msg('操作成功', { icon: 6, time: 1000 });
-						window.location.replace(location.href);
+						layer.msg('删除成功',{icon: 1,time: 1000},function () {
+							window.location.reload()
+
+						})
+
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg('操作失败',{icon: 1,time: 1000},function () {
+							window.location.reload()
+
+						})
 					}
 				});
 			});
@@ -132,9 +138,15 @@
 						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="menu_start(this)" href="javascript:;" title="隐藏" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
 						$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">隐藏</span>');
 						$(obj).remove();
-						layer.msg('已隐藏菜单!', { icon: 6, time: 1000 });
+						layer.msg('已隐藏',{icon: 6,time: 1000},function () {
+							window.location()
+
+						})
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg('操作失败',{icon: 5,time: 1000},function () {
+							window.location()
+
+						})
 					}
 				});
 				
@@ -152,9 +164,14 @@
 						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="menu_stop(this)" href="javascript:;" title="显示" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
 						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">正常</span>');
 						$(obj).remove();
-						layer.msg('已启用!', { icon: 6, time: 1000 });
+						layer.msg('已显示',{icon: 6,time: 1000},function () {
+							window.location()
+
+						})
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg('操作失败',{icon: 5,time: 1000},function () {
+							window.location()
+						})
 					}
 				});
 			});
