@@ -12,7 +12,7 @@ class Gene extends Base{
         $search = isset($_GET['search']) ? $_GET['search'] : array();
         $where = ['id'=>['>',0]];
 
-
+		
 
         $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->paginate(15);
         $count = Db::name('gene')->where($where)->count();
@@ -26,7 +26,7 @@ class Gene extends Base{
             if(isset($user_ids)){
                 $user_ids = array_unique($user_ids);
                 $user_ids = implode("','",$user_ids);
-                $users = Db::query("select `id`,`nickname` from `zf_users` wehre `id` in ('$user_ids')");
+                $users = Db::query("select `id`,`nickname` from `zf_users` where `id` in ('$user_ids')");
                 if($users){
                     foreach($users as $u){
                         $user_name[$u['id']] = $u['nickname'];
@@ -34,7 +34,7 @@ class Gene extends Base{
                 }
             }
         }
-
+		
         $this->assign('user_name', $user_name);
         $this->assign('list', $list);
         $this->assign('search', $search);

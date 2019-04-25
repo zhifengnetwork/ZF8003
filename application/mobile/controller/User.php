@@ -106,6 +106,22 @@ class User extends Base
         $this->assign('lists', $lists);
         return $this->fetch();
     }
+	
+	# 确认收货
+	public function confirm_order(){
+		
+		$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+		
+		if($id > 0){
+			$res = Db::name('order')->where(['user_id' => $this->user_id, 'id' => $id])->update(['order_status' => 3]);
+			if($res){
+				return json(['status' => 1]);
+			}
+		}
+		return json(['status' => 0]);
+	}
+	
+	
 
     /**
      * 我的分销
