@@ -86,7 +86,7 @@
 		   	 	
 		   	 </div>
 		   	 <div class="section3">
-		   	 	<span id="fee">手续费：00.00</span>
+		   	 	<span id="fee">手续费：<span class="kou_shouxu">0.00</span></span>
 		   	 	<span style="float: right;color: #FF3B3B;" class="tixian_button">全部提现</span>
 		   	 </div>
 		   </div>	
@@ -108,7 +108,7 @@
 			var fee = '{$fee}';
 			var fee_max = '{$fee_max}';
 			var fee_min = '{$fee_min}';
-
+            
 
 			$('.tiqian').on('change',function(){
 
@@ -123,6 +123,9 @@
 				}
 				
 				$('#fee').html('手续费：'+fee);
+				
+				
+				
 			});
 
 			function set_account(){
@@ -229,7 +232,58 @@
 						
 						
 					}
+					
+					suanglv();
+					$('#money').bind('input propertychange', function(){
+								
+							var A=$("#money").val();
+							
+							if(A.length>0){
+								
+								suanglv()  
+								
+							}else{
+								
+								 $(".kou_shouxu").html("0.00")
+								
+							}
+                         	
+							})
+					
+					
+					
 				});
+				
+				
+				$('#money').bind('input propertychange', function(){
+								
+							var A=$("#money").val();
+							
+							if(A.length>0){
+								
+								suanglv()  
+								
+							}else{
+								
+								 $(".kou_shouxu").html("0.00")
+								
+							}
+                         	
+							})
+			
+			
+			
+			
+				function suanglv(){
+					
+					var shouxufei=parseFloat($("#money").val())*parseFloat(fee)*0.01
+                    $(".kou_shouxu").html(shouxufei)
+					
+				}
+				
+				
+				
+				
 	   </script>
 	</body>
 </html>

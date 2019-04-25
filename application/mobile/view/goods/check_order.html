@@ -97,8 +97,8 @@
                         </div>  
                  </div>
 
-                 <input type="text" id="quoto" value="{$my_coupon[0]['quota']}" >
-                 <input type="text" id="money" value="{$my_coupon[0]['money']}" >
+                 <input type="text" id="quoto" value="{$my_coupon[0]['quota']}" hidden>
+                 <input type="text" id="money" value="{$my_coupon[0]['money']}" hidden>
              </div>
                 <!-- discount coupon -->
              <div class="coupon">
@@ -164,7 +164,7 @@
                                     <p class="pro_ori">有效期</p>
                                     <p class="time publicEllipsis" >{$vo.stime|date="Y-m-d",###} - {$vo.etime|date="Y-m-d",###}</p>
                             </div>
-                            <div class="coupon_use ">
+                            <div class="coupon_use coupon_use2">
                                 <p class="use" data-id="{$vo.id}">立即使用</p>
                                 <!-- <img src="__STATIC__/img/purchase/logo@2x.png" alt="" class="been"> -->
                             </div>
@@ -183,7 +183,7 @@
                 <!-- footer -->
             <div class="footer">
                  <div class="price_box">
-                     应付金额: <span class="price_red">￥699</span>
+                     应付金额: <span class="price_red">￥<span class="zongqian">0.00</span></span>
                  </div>
                  <div class="sumb" onclick="submit();">
                      提交订单
