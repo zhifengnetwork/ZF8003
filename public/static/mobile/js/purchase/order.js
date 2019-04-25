@@ -1,7 +1,7 @@
 // 订单确认
 $(function(){
      //页面加载调用函数求总价
-     sumTotal()
+    //  sumTotal()
      
      $('.discount_num').html($('.coupon_list').length)
      //使用余额
@@ -31,7 +31,8 @@ $(function(){
        //单行数量
        $sub.parent().parent().prev().children(':last-child').children('.num').html(`x${s}`)
        //调用求和
-       sumTotal()
+    //    sumTotal()
+        amount_payable()
     })
 
     //减
@@ -44,26 +45,47 @@ $(function(){
         //单行数量
         $sub.parent().parent().prev().children(':last-child').children('.num').html(`x${s}`)
         //调用求和
-        sumTotal()
+        // sumTotal()
     })
 
-    //总价求和函数封装
-    function sumTotal(){
-        var total=0;  //总和
-        //邮费 优惠 余额
-        var postage = parseInt($('.postage').html())
-        var coupon = parseInt($('.coupon_discount').html())
-        var remaining = parseInt($('.balance_text').val().slice(6))   
-        $(".item-price .price").each((i,elem)=>{
-            total+=parseInt($(elem).html().slice(1))*parseInt($(elem).next().html().slice(1))
-        })
-        $(".price_red").html(`${(total+postage-coupon).toFixed(2)}`)  //应付金额
-        $("#order_amount").val(`${(total + postage-coupon).toFixed(2)}`);
-        $('#total').html(`${(total + postage).toFixed(2)}`)      //订单总和
-        $("#total_amount").val(`${(total+postage).toFixed(2)}`);
-        $('.remaining_discount').html(`${(total+postage-coupon).toFixed(2)}`) //余额抵扣
-        $("#coupon_price").val(`${(coupon).toFixed(2)}`);
-    }
+    // //总价求和函数封装
+    // function sumTotal(){
+    //     var total=0;  //总和
+    //     //邮费 优惠 余额
+    //     var postage = parseInt($('.postage').html())
+    //     var coupon = parseInt($('.coupon_discount').html())
+    //     var remaining = parseInt($('.balance_text').val().slice(6))   
+    //     $(".item-price .price").each((i,elem)=>{
+    //         total+=parseInt($(elem).html().slice(1))*parseInt($(elem).next().html().slice(1))
+    //     })
+    //     $(".price_red").html(`${(total+postage-coupon).toFixed(2)}`)  //应付金额
+    //     $("#order_amount").val(`${(total + postage-coupon).toFixed(2)}`);
+    //     $('#total').html(`${(total + postage).toFixed(2)}`)      //订单总和
+    //     $("#total_amount").val(`${(total+postage).toFixed(2)}`);
+    //     $('.remaining_discount').html(`${(total+postage-coupon).toFixed(2)}`) //余额抵扣
+    //     $("#coupon_price").val(`${(coupon).toFixed(2)}`);
+    // }
+    //  计算应付金额
+    var jiayoufei=0;
+    function amount_payable() {
+
+        console.log($(".num2").val())
+        console.log($(".price2").html().substring(1));
+        //	  	计算价格=单品*数量
+        var sum = $(".num2").val() * $(".price2").html().substring(1)
+        var youfei = $(".postage2").html();
+         jiayoufei = Number(sum) + Number(youfei)
+        console.log(jiayoufei)
+        
+        //  if (jiayoufei>)
+        
+        
+        
+        
+        
+	  	
+	  	
+	  }
 
     //修改地址
 //  $('.item-img').click(function(){
@@ -133,7 +155,7 @@ $(function(){
         // $(document).scrollTop(thisScrollNum);
         $("receive_coupon,body").unbind("touchmove");   
         //调用总和
-        sumTotal()
+        // sumTotal()
     }
 
     //使用优惠券
@@ -143,11 +165,28 @@ $(function(){
          var employ = $(this)
          var length = $('.coupon_list').length  //优惠券长度
          var lengthh = $('.coupon_list').children('.employ').length  //使用优惠券的长度
-         var html = employ.parent().prev().find('.original').html()  
-         var pri = employ.parent().prev().find('.price').html()
+         var html = employ.parent().prev().find('.original').html() 
+        //  获取优惠券的金额 
+        //  var pri = employ.parent().prev().find('.price').html()
 
          $('.man').show().find('.discount_num').html(html)
-         $('.coupon_discount').html(pri)
+         var man=$("#quoto").val()
+         var jian = $("#money").val()
+         console.log(jian)
+        //  console.log("ccc"+jiayoufei)
+         console.log(man)
+         console.log("jiayoufei"+jiayoufei)
+        if (jiayoufei > man){
+                 
+            $('.coupon_discount').html(jian)
+            
+
+        }else{
+
+            $('.coupon_discount').html("00.00")
+
+        }
+        
         var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
          if(employ.parent().hasClass('coupon_use')){
          employ.parent().addClass('employ').addClass('add').removeClass('coupon_use').parent().siblings().find('.employ').removeClass('employ').addClass('coupon_use').find('.been').remove()
@@ -169,5 +208,42 @@ $(function(){
             console.log(employ.parent().children('.been'))
          }
     })
+
+     $(".difference").click(function(){
+
+         console.log($('.yuer').hasClass("active"))
+         if ($('.yuer').is(".active")){
+
+            var qian=$("#my_money").val();
+            $(".remaining_discount").html(qian)
+             if (jiayoufei>qian){
+
+                alert("余额不足")
+
+             }else{
+
+                 var ccc=qian-jiayoufei
+                 console.log("ccddd"+ccc)
+
+
+             }
+
+
+         }else{
+
+             $(".remaining_discount").html("00.00")
+
+         }
+
+
+
+
+    })
+
+
+
+
+
+
 
 })
