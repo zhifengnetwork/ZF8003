@@ -82,7 +82,7 @@
 		   	 <div class="section1">提现金额(单次可提最大金额：<span class="erdu">{if condition="$money_max gt 0"}{$money_max}{else /}无限制{/if}</span>)</div>
 		   	 <div class="section2">
 		   	 	
-		   	 	￥<input type="number" id="money" placeholder="请输入提现金额" class="tiqian"/>
+		   	 	￥<input type="number" onkeyup="kou_shouxu();" onchange="kou_shouxu();"  id="money" placeholder="请输入提现金额" class="tiqian"/>
 		   	 	
 		   	 </div>
 		   	 <div class="section3">
@@ -108,26 +108,41 @@
 			var fee = '{$fee}';
 			var fee_max = '{$fee_max}';
 			var fee_min = '{$fee_min}';
-            
 
-			$('.tiqian').on('change',function(){
+			
 
-				var num=$('.tiqian').val(); 
-				var text=Number(num);
-				var fee = text * (fee * 0.01);
-				if((fee_max > 0) && (fee > fee_max)){
-					fee = fee_max;
-				}
-				if((fee_min > 0) && (fee < fee_min)){
-					fee = fee_min;
+			function kou_shouxu(){
+				
+				var num = $('.tiqian').val();
+				if(!num){
+					$('.kou_shouxu').html('0');
+					return false;
 				}
 				
-				$('#fee').html('手续费：'+fee);
-				
-				
-				
-			});
+				if(money_max > 0 && parseFloat(num) > money_max){
+					num = money_max;
+				}
+				if(money_min > 0 && parseFloat(num) < money_min){
+					num = money_min;
+				}
 
+
+				var wfee = parseFloat(num) * (fee * 0.01);
+				if((fee_max > 0) && (wfee > fee_max)){
+					wfee = fee_max;
+				}
+				if((fee_min > 0) && (wfee < fee_min)){
+					wfee = fee_min;
+				}
+
+				$('.tiqian').val(num);
+				$('.kou_shouxu').html(wfee);
+				
+				
+				
+			};
+
+			// 设置提现账号
 			function set_account(){
 
 				var type = $('#withdrawal-type').val();
@@ -195,95 +210,45 @@
 	   			
 	   	});
 
-			//	支付方式的选择结束	   	
-				//input标签获取焦点
-				
-				$(".tiqian,.zhifumima").focus(function(){
-					var u = navigator.userAgent;
-									var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-									if(isAndroid){
-									$('.wrap_frame').height( $('.wrap_frame').height()+200)
-						$('.wrap_frame').scrollTop(100)
-						// console.log($('.wrap_frame').scrollTop())
-						}
-				})
-				.blur(function(){  
-					var u = navigator.userAgent; //失去焦点时重新回到原来的状态
-									var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-									if(isAndroid){
-									$('.wrap_frame').height( $('.wrap_frame').height()-200)
-									$('.wrap_frame').scrollTop(0)
-									}
-				})
-				
-				$('.tixian_button').click(function(){
-					
-					var num=$('.zi_money').html(); 
-					var text=Number(num); 
-					var num1=$('.erdu').html(); 
-					var text1=Number(num1);	 
-					if(text>text1){
-						layer.msg("单次可提最大金额"+$('.erdu').html());
-						$('.tiqian').val($('.erdu').html())
-						
-					}else{
-						
-						$('.tiqian').val($('.zi_money').html())
-						
-						
-					}
-					
-					suanglv();
-					$('#money').bind('input propertychange', function(){
-								
-							var A=$("#money").val();
-							
-							if(A.length>0){
-								
-								suanglv()  
-								
-							}else{
-								
-								 $(".kou_shouxu").html("0.00")
-								
-							}
-                         	
-							})
-					
-					
-					
-				});
-				
-				
-				$('#money').bind('input propertychange', function(){
-								
-							var A=$("#money").val();
-							
-							if(A.length>0){
-								
-								suanglv()  
-								
-							}else{
-								
-								 $(".kou_shouxu").html("0.00")
-								
-							}
-                         	
-							})
-			
-			
-			
-			
-				function suanglv(){
-					
-					var shouxufei=parseFloat($("#money").val())*parseFloat(fee)*0.01
-                    $(".kou_shouxu").html(shouxufei)
-					
+		//	支付方式的选择结束	   	
+		//input标签获取焦点
+		
+		$(".tiqian,.zhifumima").focus(function(){
+			var u = navigator.userAgent;
+							var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+							if(isAndroid){
+							$('.wrap_frame').height( $('.wrap_frame').height()+200)
+				$('.wrap_frame').scrollTop(100)
+				// console.log($('.wrap_frame').scrollTop())
 				}
+		})
+
+		.blur(function(){  
+			var u = navigator.userAgent; //失去焦点时重新回到原来的状态
+							var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+							if(isAndroid){
+							$('.wrap_frame').height( $('.wrap_frame').height()-200)
+							$('.wrap_frame').scrollTop(0)
+							}
+		})
+		
+		$('.tixian_button').click(function(){
+			
+			var num=$('.zi_money').html(); 
+			var text=Number(num); 
+			var num1=$('.erdu').html(); 
+			var text1=Number(num1);	 
+			if(text>text1){
+				layer.msg("单次可提最大金额"+$('.erdu').html());
+				$('.tiqian').val($('.erdu').html())
+				
+			}else{
+				
+				$('.tiqian').val($('.zi_money').html())
 				
 				
-				
-				
+			}
+		});
 	   </script>
 	</body>
 </html>
