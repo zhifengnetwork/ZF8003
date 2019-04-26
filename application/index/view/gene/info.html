@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title class="pageTopTitle" page-id="1">基因座分型数据报告{$web_setting.web_name ? ' '.$web_setting.web_name : ''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
+        <meta name="keywords" content="{$web_setting.key_words}" />
+        <meta name="description" content="{$web_setting.copyright}" />
+        <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css">
+		<link rel="stylesheet" href="__STATIC__/css/home/chaxun_table.css">
+	</head>
+
+	<body>
+		<div>
+			<!-- 头部 -->
+			<div class="header"></div>
+			<!--内容区-->
+			<div class="zuixiaogaodu">
+
+				<div class="liebiao_ear inner-wrap">
+                  <img src="__STATIC__/images/home/fanghui.png" class="retrue" onclick="window.history.go(-1);"/>
+					<div class="zuidadiv">
+						<!--title-->
+						<p class="form_title">基因座分型数据报告</p>
+
+						<!--表格-->
+						<table frame="void" rules="all" class="biaogege">
+							<tr style="height:45px">
+								<td style="text-align: left;">基因座/样本号</td>
+								<td>{$name}</td>
+                            </tr>
+                            {foreach name="$list" id="v" key="k"}
+                            <tr>
+								<td>{$k|strtoupper}</td>
+								<td>{$v*0.01}</td>
+							</tr>
+                            {/foreach}
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- 底部 -->
+			<div class="footer"></div>
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+		<script src="__STATIC__/js/public/header.js"></script>
+		<script src="__STATIC__/js/public/footer.js"></script>
+	</body>
+
+</html>
