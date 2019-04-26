@@ -1,110 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title class="pageTopTitle" page-id="1">我的基因{$web_setting.web_name}{$web_setting.web_title}</title>
-    <meta name="keywords" content="{$web_setting.key_words}" />
-    <meta name="description" content="{$web_setting.copyright}" />
-    <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
-    <link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
-    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
-    <link rel="stylesheet" href="__STATIC__/css/my_genes/my_genes.css">
-    
-</head>
-<body>
-    <div class="wrapper">
+<html>
+	<head>
+		<meta charset="UTF-8">
+        <title class="pageTopTitle" page-id="1">我的基因数据{$web_setting.web_name ? ' '.$web_setting.web_name : ''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
+        <meta name="keywords" content="{$web_setting.key_words}" />
+        <meta name="description" content="{$web_setting.copyright}" />
+        <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
+	    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
+	    <link rel="stylesheet" href="__STATIC__/css/home/chaxun_shuju.css">
+	</head>
+	<body>
+		
+    <div >
         <!-- 头部 -->
         <div class="header">
             {include file="header"}
         </div>
-        
-        <div class="content inner-wrap">
-            <!-- 侧边栏 -->
-            <div class="siderNav">
-                <h3>检测结果<span class="dot"></span></h3>
-                <ul class="siderNav-list">
-                    <li class="active">我的基因检测结果<span class="dot"></span></li>
-                    <li>骨折综合风险评估<span class="dot"></span></li>
-                    <li>建议<span class="dot"></span></li>
-                    <li>影响因素<span class="dot"></span></li>
-                    <li>如何使用该检测结果<span class="dot"></span></li>
-                    <li>相关知识<span class="dot"></span></li>
-                    <li>结果反馈<span class="dot"></span></li>
+            <!--内容区-->
+        <div class="zuixiaogaodu">
+            <div class="liebiao_ear inner-wrap">
+                <p class="liebiao_ear_title">我的基因数据</p>
+                <ul>
+                    {volist name="$list" id="vo"}
+                    <li onclick="window.location.href='/index/gene/info?id={$vo.id}'">
+                        <span class="span_left">{$vo.name}</span>
+                        <span class="span_right"><img src="__STATIC__/images/home/youjian@2x.png"/></span>
+                    </li>
+                    {/volist}
                 </ul>
+                <div style="width: 150px;border: 1px solid green;text-align: center;margin: 0 auto;margin-top: 40px;height: 50px;line-height: 50px; border-radius: 10px;border: 1px solid black;cursor: pointer;" onclick="javascript:location.href='/index/index/import_data'">导入数据</div>
             </div>
-
-            <!-- 右边内容 -->
-            <div class="main">
-                <h1>骨质疏松</h1>
-                <p>由于骨密度下降，骨微结构破坏，造成骨脆性增加，从而容易发生骨折的全身性骨病。</p>
-                <p class="tips">平均人数每10万人中出现该疾病15700例</p>
-                <div class="floor-con">
-                    <div class="content-wrap center">
-                        <h2>我的基因检测结果</h2>
-                        <p>我的基因风险是平均人数的<br/>0.73倍</p>
-                    </div>
-                    <div class="content-wrap center">
-                        <h2>骨折综合风险评估</h2>
-                        <p>我的基因风险是平均人数的<br/>0.53倍</p>
-                    </div>
-                    <div class="content-wrap">
-                        <h2>建议</h2>
-                        <p>防止缺钙：获得钙的最好方法是吃富含钙的食品, 如:乳品，豆类，鱼和钙高的蔬菜和水果。当这不可能时，可能需要根据医嘱吃补充剂。</p>
-                        <p>适当运动：运动可促进人体的新陈代谢，进行户外运动以及接受适量的日光照射，都有利于钙的吸收。</p>
-                        <p>调整生活方式：避免嗜烟、酗酒以及适量饮用咖啡。</p>
-                    </div>
-                    <div class="content-wrap">
-                        <h2>影响因素</h2>
-                        <p>可控因素</p>
-                        <p>钙补充不足：维生素D缺乏或平时钙摄取量较少者，如素食或不喝牛奶更容易出现骨质疏松。</p>
-                        <p>缺乏户外运动：导致骨关节负重或阳关照射减少。</p>
-                        <p>不健康的生活方式：吸烟，喝酒或常喝大量咖啡者更容易导致骨质疏松的发生。不可控因素。</p>
-                        <p>种族：高加索人和亚洲人较非洲人群骨质疏松的发生率高。</p>
-                        <p>性别：女性患骨质疏松症风险高于男性。</p>
-                        <p>年龄：70岁以上的女性或80岁以上的男性体内成骨细胞活性减弱，导致合成新的骨量减少。</p>
-                        <p>家族史：家族中女性患者的后代患此病的概率更大。</p>
-                    </div>
-                    <div class="content-wrap">
-                        <h2>如何使用该检测结果</h2>
-                        <p>注意</p>
-                        <p>该检测不适用于临床诊断。</p>
-                        <p>疾病的发生发展由基因和环境等多重因素共同决定。本研究仅从基因层面对您患骨质疏松的风险进行预测，不代表您真实的健康状况，也不涉及您其他健康状况、生活习惯等的判断。如您的家族有骨质疏松的家族病史，或者您觉得自己有患上骨质疏松的可能性，建议您咨询权威的健康专家或临床医生寻求帮助。</p>
-                        <p>检测内容</p>
-                        <p>检测包括rs10457487、rs11003047等24个和骨质疏松风险相关的多态性位点。</p>
-                        <p>人群样本</p>
-                        <p>该检测使用的研究中，主要是以高加索人、中国人为主。</p>
-                        <p>检测局限</p>
-                        <p>受限于现有科技手段和科学认知水平，该检测未能覆盖所有和相关的基因或位点。</p>
-                    </div>
-                    <div class="content-wrap">
-                        <h2>相关知识</h2>
-                        <p>发病时间</p>
-                        <p>绝经后骨质疏松一般发生在妇女绝经后5～10年内；老年性骨质疏松一般指老人70岁后发生的骨质疏松；而特发性骨质疏松主要发生在青少年时期。</p>
-                        <p>流行程度</p>
-                        <p>我国50岁以上人群中骨质疏松症总患病率为15.7%，骨质疏松症会随著年纪增加而加重，亦多见于女性，甚于男性患者。</p>
-                        <p>典型症状</p>
-                        <p>腰背酸痛：以腰背痛多见，负荷增加时疼痛加重或活动受限，严重时翻身、起坐及行走有困难。</p>
-                    </div>
-                    <div class="content-wrap">
-                            <h2>结果反馈</h2>
-                            <p>结果反馈</p>
-                            <p>您或者您的直系亲属是否有人有骨质疏松</p>
-                        </div>
-                </div>
-            </div>
-        </div>
+                
+        </div> 		
         <!-- 底部 -->
-        <div class="footer">
-            {include file="footer"}
-        </div>
-       
-    </div>
-
-    <script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
-    <!-- <script src="__STATIC__/js/public/footer.js"></script> -->
-    <script src="__STATIC__/js/my_genes/my_genes.js"></script>
-
-</body>
+        <div class="footer"></div>
+    </div>    
+    <script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script> 
+    <script src="__STATIC__/js/public/header.js"></script>  
+    <script src="__STATIC__/js/public/footer.js"></script>	
+	</body>
 </html>

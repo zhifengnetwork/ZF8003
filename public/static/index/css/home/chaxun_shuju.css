@@ -1,0 +1,59 @@
+.liebiao_ear_title {
+	
+	font-size: 25px;
+	font-weight: bolder;
+	text-align: center;
+	padding-top: 80px;
+
+}
+.liebiao_ear{
+	
+	
+	background: white;
+	min-height: 500px;
+	height:auto;
+	margin-top: 60px;
+	padding-bottom: 35px; 
+	margin-bottom:75px;
+	
+}
+.zuixiaogaodu{
+	
+ min-height: 595px;
+	
+	
+}
+.liebiao_ear ul{
+	
+	width: 650px;
+	margin: auto;
+	margin-top: 30px;
+	font-size: 23px;
+	border: 1px solid #CCCCCC;
+	padding-left: 10px;
+	padding-right: 10px;
+	letter-spacing: 2px;
+}
+.liebiao_ear ul li{
+	
+	position: relative;
+	height: 40px;
+	border-bottom: 1px solid #CCCCCC;
+	line-height: 40px;
+
+}
+.liebiao_ear ul li:last-child{
+	
+	border: none;
+	
+}
+.span_right{
+	
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translate(0,-40%);
+	
+}
+
+

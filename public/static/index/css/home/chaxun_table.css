@@ -1,0 +1,66 @@
+.liebiao_ear{
+	
+	background: white;
+	margin: 80px auto;
+	
+}
+.zuixiaogaodu{
+	
+	
+	min-height: 800px;
+	
+}
+.zuidadiv{
+	
+	padding-bottom: 60px;
+	box-sizing: border-box;
+	
+}
+.form_title{
+	
+	
+	width: 88%;
+	margin: auto;
+	box-sizing: border-box;
+	margin-top: 10px;
+	border-bottom: none;
+	text-align: center;
+	height: 80px;
+	line-height: 80px;
+	font-size: 20px;
+	border-bottom: none;
+	
+}
+.biaogege{
+	
+	width: 88%;
+	margin: auto;
+	border: 1px solid #CCCCCC;
+	
+	
+}
+tr{
+	
+	height:60px;
+	line-height: 60px;
+	font-size: 18px;
+	letter-spacing: 2px;
+	text-align: center;
+	
+}
+tr td:nth-child(1){
+	
+	width: 60%;
+	text-align: left;
+	padding-left: .8rem;
+	
+}
+.retrue{
+	
+	width: 15px;
+	margin-left: 10px;
+	margin-top: 10px;
+	
+}
+
+

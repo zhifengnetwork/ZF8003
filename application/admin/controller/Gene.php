@@ -112,6 +112,38 @@ class Gene extends Base{
         return $this->fetch();
     }
 
+    # 用户上传的数据压缩包
+    public function import(){
+
+        $where['id'] = ['>', 0];
+
+        $list = Db::name('import_gene')->where($where)->order('id desc')->paginate(15);
+        $count = Db::name('gene')->where($where)->count();
+        $user_name = [0 => '--'];
+        if($list){
+            foreach($list as $v){
+                if($v['user_id'] > 0)
+                    $user_ids[] = $v['user_id'];
+            }
+            if(isset($user_ids)){
+                $user_ids = array_unique($user_ids);
+                $user_ids = implode("','",$user_ids);
+                $users = Db::query("select `id`,`nickname` from `zf_users` where `id` in ('$user_ids')");
+                if($users){
+                    foreach($users as $u){
+                        $user_name[$u['id']] = $u['nickname'];
+                    }
+                }
+            }
+        }
+        
+        $this->assign('sex_name', [0=>'保密',1=>'男性',2=>'女性']);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
+        $this->assign('user_name', $user_name);
+        return $this->fetch();
+    }
+
 }
 
 

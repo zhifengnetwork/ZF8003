@@ -19,6 +19,60 @@ class Index extends Base
      */
     public function import_data()
     {
+        if($_POST){
+            
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $sex = isset($_POST['sex']) ? intval($_POST['sex']) : 0;
+            $year = isset($_POST['year']) ? intval($_POST['year']) : 0;
+            $month = isset($_POST['month']) ? intval($_POST['month']) : 0;
+            $day = isset($_POST['day']) ? intval($_POST['day']) : 0;
+            $user_id = $this->user_id ? $this->user_id : 0;
+
+            if(!$name){
+                echo "<script>parent.layer.msg('请输入姓名！',{icon:5});</script>";
+                exit;
+            }
+            if(!$day){
+                echo "<script>parent.layer.msg('请选择出生日期',{icon:5});</script>";
+                exit;
+            }
+
+            $file = $file = request()->file('file');
+            if(!$file){
+                echo "<script>parent.layer.msg('请选择您要上传的检测报告',{icon:5});</script>";
+                exit;
+            }
+
+            $filename = md5(date('YmdHis',time()).'-'.$year.$month.$day);
+            $dirpath = ROOT_PATH . 'public' . DS . 'gene' . DS . 'zip';
+            $info = $file->validate(['ext'=>'zip'])->move($dirpath,$filename,false);
+            if(!$info){
+                echo "<script>parent.layer.msg('文件上传失败，请重试！',{icon:5});</script>";
+                exit;
+            }
+
+            $res = Db::name('import_gene')->insert([
+                'user_id' => $user_id,
+                'name' => $name,
+                'sex' => $sex,
+                'year' => $year,
+                'month' => $month,
+                'day' => $day,
+                'filepath' => $info->getSaveName(),
+                'addtime' => time(),
+            ]);
+            
+            if($res){
+                echo "<script>parent.success();</script>";
+                exit;
+            }else{
+                @unlink(ROOT_PATH . 'public' . DS . 'gene/'.$filename);
+                echo "<script>parent.layer.msg('上传数据失败，请重试！',{icon:5});</script>";
+                exit;
+            }
+            exit;
+        }
+
         return $this->fetch();
     }
 
