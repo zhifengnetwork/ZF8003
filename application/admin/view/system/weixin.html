@@ -28,6 +28,18 @@
 					</div>
 				</div>
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">加密TOKEN：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.weixin_token)"}{$info.weixin_token}{/if}" id="weixin_token" name="weixin_token" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">服务器交互地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" readonly value="你的服务器域名/index.php?m=index&c=weixin&a=index" >
+					</div>
+				</div>
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">商户号ID：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" class="input-text" value="{if condition="isset($info.mch_id)"}{$info.mch_id}{/if}" id="mch_id" name="mch_id" >
@@ -51,7 +63,18 @@
 						<input type="text" class="input-text" value="{if condition="isset($info.mch_key)"}{$info.mch_key}{/if}" id="mch_key" name="mch_key" >
 					</div>
 				</div>
-				
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">开放平台APPID：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.open_appid)"}{$info.open_appid}{/if}" id="open_appid" name="open_appid" >
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">开放平台APPSECRET：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{if condition="isset($info.open_appsecret)"}{$info.open_appsecret}{/if}" id="open_appsecret" name="open_appsecret" >
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="row cl">
