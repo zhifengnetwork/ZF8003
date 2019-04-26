@@ -8,13 +8,29 @@ class Gene extends Base{
     # 基因数据库
     public function index(){
 
-        
         $search = isset($_GET['search']) ? $_GET['search'] : array();
         $where = ['id'=>['>',0]];
 
-		
-
+        if(isset($search['name']) && $search['name']){
+            $where['name'] = ['like', "%$search[name]%"];
+        }
+        if(isset($search['user']) && $search['user']){
+            $search_userid = Db::name('users')->where('nickname|email',$search['user'])->value('id');
+            if($search_userid){
+                $where['user_id'] = ['=', $search_userid];
+            }else{
+                $where['id'] = ['=', '0'];
+            }
+        }
+        if(isset($search['datemin']) && $search['datemin']){
+            $where['addtime'] = ['>=', strtotime($search['datemin'])];
+        }
+		if(isset($search['datemax']) && $search['datemax']){
+            $where['addtime'] = ['<=', strtotime($search['datemax'])];
+        }
+        
         $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->paginate(15);
+        
         $count = Db::name('gene')->where($where)->count();
         
         $user_name = [0 => '--'];
@@ -115,7 +131,23 @@ class Gene extends Base{
     # 用户上传的数据压缩包
     public function import(){
 
-        $where['id'] = ['>', 0];
+        $search = isset($_GET['search']) ? $_GET['search'] : array();
+        $where = ['id'=>['>',0]];
+
+        if(isset($search['user']) && $search['user']){
+            $search_userid = Db::name('users')->where('nickname|email',$search['user'])->value('id');
+            if($search_userid){
+                $where['user_id'] = ['=', $search_userid];
+            }else{
+                $where['id'] = ['=', '0'];
+            }
+        }
+        if(isset($search['datemin']) && $search['datemin']){
+            $where['addtime'] = ['>=', strtotime($search['datemin'])];
+        }
+		if(isset($search['datemax']) && $search['datemax']){
+            $where['addtime'] = ['<=', strtotime($search['datemax'])];
+        }
 
         $list = Db::name('import_gene')->where($where)->order('id desc')->paginate(15);
         $count = Db::name('gene')->where($where)->count();
@@ -137,6 +169,7 @@ class Gene extends Base{
             }
         }
         
+        $this->assign('search', $search);
         $this->assign('sex_name', [0=>'保密',1=>'男性',2=>'女性']);
         $this->assign('list', $list);
         $this->assign('count', $count);

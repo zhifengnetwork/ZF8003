@@ -8,12 +8,22 @@
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
 		<form method="GET" action="">
-		<div class="text-c"> 用户上传基因数据列表
-			<input type="text" class="input-text" style="width:250px" placeholder="输入文章标题名称" value="{$search['keywords'] ? $search['keywords'] : ''}" name="search['keywords']">
-			<button type="submit" class="btn btn-success" id="" name="">
-				<i class="Hui-iconfont">&#xe665;</i>
-				搜索</button>
-		</div>
+            <div class="text-c"> 
+                
+                会员名称或账号：
+                <input type="text" class="input-text" style="width:250px" placeholder="输入会员名称或账号" value="{$search['user'] ? $search['user'] : ''}" name="search[user]">
+                添加时间：
+                <input type="text" {literal}
+                    onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
+                    value="{$search['datemin'] ? $search['datemin'] : ''}" id="datemin" name="search[datemin]" class="input-text Wdate" style="width:180px;">
+                -
+                <input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
+                    {/literal} value="{$search['datemax'] ? $search['datemax']: ''}" id="datemax" name="search[datemax]" class="input-text Wdate"
+                    style="width:180px;">
+                <button type="submit" class="btn btn-success" id="" name="">
+                    <i class="Hui-iconfont">&#xe665;</i>
+                    搜索</button>
+            </div>
 		</form>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<!-- <span class="l">
@@ -68,7 +78,8 @@
 	{include file='layout/footer' /}
 
 	<!--请在下方写此页面业务相关的脚本-->
-	<script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
     <script type="text/javascript">
         function open_closeAll(){
 			layer.closeAll();
