@@ -147,11 +147,11 @@ class Base extends Controller
         }
     }
 
-    # 用户openid补全
+    # 用户openid unionid补全
     public function user_wxinfo_completion(){
         $this->Verification_User();
         $data = $this->GetOpenid();
-        Db::name('users')->where('id', $this->user_id)->update(['openid'=>$data['openid']]);
+        Db::name('users')->where('id', $this->user_id)->update(['openid'=>$data['openid'],'unionid'=>$data['unionid']]);
         $user = $this->user;
         $user['openid'] = $data['openid'];
         Session::set('user',$user);
@@ -163,7 +163,6 @@ class Base extends Controller
     public function GetOpenid()
     {
         $this->wx_config();
-        
         if(Session::has('openid'))
             return Session::get('wx_user_data');
         //通过code获得openid
@@ -185,6 +184,7 @@ class Base extends Controller
             $data['oauth_child'] = 'mp';
             Session::set('openid', $data['openid']);
             $data['oauth'] = 'weixin';
+            $data['unionid'] = '';
             if(isset($data2['unionid'])){
             	$data['unionid'] = $data2['unionid'];
             }

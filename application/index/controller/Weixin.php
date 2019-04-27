@@ -48,4 +48,38 @@ class Weixin{
 		return $arr;
     }
 
+    public function login(){
+        $host = urlencode('http://zf8003.zhifengwangluo.c3w.cc/index/weixin/hd');
+        $appid = 'wx35fd392ad0d3b7be';
+        $url = "https://open.weixin.qq.com/connect/qrconnect?appid={$appid}&redirect_uri={$host}&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect";
+        header("location:$url");
+    }
+
+  
+    public function hd(){
+        $data = input('get.');
+
+        $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx35fd392ad0d3b7be&secret=aeb753813c5e6d538905daeda4bc4932&code={$data['code']}&grant_type=authorization_code";
+        $res = $this->curl($url);
+        echo '<pre>';
+        print_r($res);
+    }
+
+    public function curl($url){
+        // 1. 初始化
+        $ch = curl_init();
+        // 2. 设置选项，包括URL
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_HEADER,0);
+        // 3. 执行并获取HTML文档内容
+        $output = curl_exec($ch);
+        if($output === FALSE ){
+        echo "CURL Error:".curl_error($ch);
+        }
+        // 4. 释放curl句柄
+        curl_close($ch);
+        return $output;
+    }
+
 }

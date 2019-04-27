@@ -738,12 +738,6 @@ class User extends Base
     public function set_up()
     {
 
-
-        // $user = Db::name('users')->where('id',$this->user_id)->find();
-
-        // Session::set('user', $user);
-        // $this->user = $user;
-        // dump($user);exit;
         $user = $this->user;
         $user['sex_name'] = [0=>'保密',1=>'男',2=>'女'][$user['sex']]; 
 
@@ -865,6 +859,63 @@ class User extends Base
             }
         }
         exit;
+    }
+
+    # 绑定 | 编辑 微信账号
+    public function edit_wxaccount(){
+
+        if($_POST){
+            $sn = isset($_POST['sn']) ? trim($_POST['sn']) : '';
+            if(!Session::has('edit_weixin_temp_sn') || Session::get('edit_weixin_temp_sn') != $sn || $sn == ''){
+                return json(['status'=>0,'msg'=>'操作失败！']);
+            }
+            if(!Session::has('edit_weixin_account')){
+                return json(['status'=>0,'msg'=>'操作失败！']);
+            }
+            if(!$this->user_id){
+                return json(['status'=>0,'msg'=>'请先登录！']);
+            }
+            $e_data = Session::get('edit_weixin_account');
+            $user = $this->user;
+            $data['openid'] = $e_data['openid'];
+            $data['unionid'] = $e_data['unionid'];
+            if(!$user['avatar']){
+                $data['avatar'] = $e_data['head_pic'];
+            }
+            
+            $res = Db::name('users')->where('id',$this->user_id)->update($data);
+            if($res){
+                $user = Db::name('users')->find($this->user_id);
+                $this->user = $user;
+                Session::set('user',$user);
+
+                Session::delete('edit_weixin_temp_sn');
+                Session::delete('edit_weixin_account');
+                
+                return json(['status'=>1,'msg'=>'操作成功！']);
+            }
+            return json(['status'=>0,'msg'=>'操作失败！']);
+            exit;
+        }
+
+        if(!$this->user_id){
+            layer_error('请先登录！');
+            exit;
+        }
+        if($this->user['openid']){
+            layer_error('非法访问！');
+            exit;
+        }
+
+        $data = $this->GetOpenid();
+        Session::set('edit_weixin_account',['openid'=>$data['openid'], 'unionid'=>$data['unionid'],'head_pic' => $data['head_pic']]);
+        
+        $sn = order_sn();
+        Session::set('edit_weixin_temp_sn', $sn);
+
+        $this->assign('sn',$sn);
+        $this->assign('data',$data);
+        return $this->fetch();
     }
 
 }

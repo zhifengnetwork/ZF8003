@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>登陆</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<style>
+			/*头像 wrap*/
+			
+			.headPortraitWrap {
+				padding-top: .29rem;
+				box-sizing: border-box;
+				width: 7.5rem;
+				height: 2.17rem;
+				font-size: .2rem;
+				background-color: #fff;
+			}
+			/*头像 box*/
+			
+			.headPortraitBox {
+				position: relative;
+				margin: 0 auto;
+				box-sizing: border-box;
+				width: 1.4rem;
+				height: 1.4rem;
+				border-radius: 50%;
+				border: .01rem solid #dcdcdc;
+			}
+			/*头像 icon*/
+			
+			.headPortraitIcon {
+				display: block;
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				margin: auto;
+				width: 1.38rem;
+				height: 1.38rem;
+				border-radius: 50%;
+			}
+			/*内容*/
+			
+			.content {
+				padding-left: .3rem;
+				box-sizing: border-box;
+				width: 7.5rem;
+				height: auto;
+				background-color: #fff;
+			}
+			/*登录public输入框=>项*/
+			
+			.content_term {
+				position: relative;
+				padding-top: .27rem;
+				box-sizing: border-box;
+				width: 6.9rem;
+				height: 1.11rem;
+				font-size: .3rem;
+				border-bottom: .02rem solid #dcdcdc;
+			}
+			/*兄弟元素=>最后一个*/
+			
+			.content_term:last-child {
+				border-bottom: none;
+			}
+			/*左*/
+			
+			.content_term_left {
+				float: left;
+				width: 1.41rem;
+				height: .67rem;
+				color: #666;
+				font: .3rem/.67rem "微软雅黑";
+				text-indent: .05rem;
+				letter-spacing: .04rem;
+			}
+			/*右*/
+			
+			.content_term_right {
+				position: relative;
+				float: left;
+				width: 5.49rem;
+				height: .67rem;
+			}
+			.content_term_text {
+				width: 5.4rem;
+				height: .67rem;
+				line-height: .67rem;
+				font-size: .3rem;
+				color: #666;
+				letter-spacing: .01rem;
+				background-color: #fff; 
+			}
+			/*'登录'按钮 box*/
+			.confirm_but_box {
+				padding-top: .8rem;
+				box-sizing: border-box;
+				width: 7.5rem;
+				height: auto;
+			}
+			.confirm_but {
+				margin: 0 auto;
+				width: 6.9rem;
+				height: .91rem;
+				font: .3rem/.91rem "微软雅黑";
+				color: #fff;
+				text-align: center;
+				border-radius: .07rem;
+				letter-spacing: .03rem;
+				background-color: #37afe6;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/set_up'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
+				</p>
+				<span>微信绑定</span>
+			</div>
+			<!--头像 wrap-->
+			<div class="headPortraitWrap">
+				<!--头像 box-->
+				<div class="headPortraitBox">
+					<!--头像 icon-->
+					<img class="headPortraitIcon" src="{$data['head_pic']}" />
+				</div>
+			</div>
+			<!--内容 wrpa-->
+			<div class="content">
+				<!--项-->
+				<div class="content_term">
+					<p class="content_term_left">微信名：</p>
+					<div class="content_term_right">
+						<p class="content_term_text">{$data['nickname']}</p>
+					</div>
+				</div>
+			</div>
+			<!--'确认' 按钮-->
+			<div class="confirm_but_box">
+				<p class="confirm_but" onclick="edit_weixin('{$sn}');">绑定微信号</p>
+            </div>
+            <div class="confirm_but_box" style="">
+                <p class="confirm_but" style="background-color: #aeb7bc;" onclick="javascript:location.href='/mobile/user/set_up'">取消绑定</p>
+            </div>
+
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+        <script src="__STATIC__/js/public/public.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+        <script>
+        
+            function edit_weixin(sn){
+                
+                $.post('/mobile/user/edit_wxaccount',{sn:sn},function(res){
+                    
+                    if(res.status == 1){
+                        layer.msg('微信绑定成功！正在跳转...',{icon:6});
+                    }else{
+                        layer.msg(res.msg,{icon:5});
+                    }
+                    setTimeout(function(){
+                        window.location.href='/mobile/user/set_up';
+                    },1500);
+                });
+
+
+
+            }
+        </script>
+	</body>
+
+</html>

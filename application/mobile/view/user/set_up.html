@@ -120,6 +120,16 @@
 						</div>
 					</div>
 					{/if}
+					{if condition="!$user['openid']"}
+					<div class="item" onclick="edit_wxaccount();">
+						<div class="item_top">
+							<div class="fl"><span>微信绑定</span></div>
+							<div class="fr">
+								<img src="__STATIC__/img/my/youjian2@2x.png" />
+							</div>
+						</div>
+					</div>
+					{/if}
 					<div class="item" onclick="javascript:location.href='/mobile/index/edit_password'">
 						<div class="item_top">
 							<div class="fl"><span>修改密码</span></div>
@@ -146,6 +156,18 @@
 		<script src="__STATIC__/js/public/public.js"></script>
         <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 		<script>
+			function edit_wxaccount(){
+				
+				layer.open({
+					title:'敏感操作提示！',
+					content:'<p style="text-align:center;">你正在操作微信绑定功能？</p><p style="color:red;font-size:12px;text-align:center;">该功能需要微信浏览器内完成！</p>',
+					btn:['下一步','取消'],
+					btnAlign:'c',
+					yes:function(){
+						window.location.href='/mobile/user/edit_wxaccount';
+					}
+				});
+			}
 
 			/* 退出登录 */
 			function logout(){

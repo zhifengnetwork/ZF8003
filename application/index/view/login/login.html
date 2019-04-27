@@ -9,10 +9,13 @@
 		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
 		<link rel="stylesheet" href="__STATIC__/css/login/login.css" />
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js" ></script>
-		
-		
 	</head>
-	<body>
+	<style>
+		#weixin_qrcode{
+			padding-left:15%;
+		}
+	</style>
+<body>
 <div class="login_bigger">
 	<!--头部-->
 	<div class="header">
@@ -48,99 +51,101 @@
 			            	</div>
 			            	<div class="login_denglu" onclick="submit();">登录</div>
 			            </li>
-			            <li style="display: none;" class="erweima_ear">
-			            	
-			            	
+			            <li style="display: none;" class="erweima_ear" id="weixin_qrcode">
 			            	
 			            	<!--二维码图片-->
-			            	<div >
+			            	<!-- <div >
 
 			            	</div>
-			            	<p style="text-align: center;padding-top: 10px;">请扫码登陆</p>
+			            	<p style="text-align: center;padding-top: 10px;">请扫码登陆</p> -->
 			            </li>
 			       </ul>
           </div>
 		</div>
 	</div>
+</div>
 	<script src="__STATIC__/js/public/footer.js"></script>
 	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
-</div>
-
+	<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 	 <script>
+		 $(function(){
+			var obj = new WxLogin({
+				self_redirect:true,
+				id:"weixin_qrcode", 
+				appid: "{$appid}", 
+				scope: "snsapi_login", 
+				redirect_uri: "{$redirect_uri}",
+				state: "{$state}",
+				style: "",
+				href: "data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMDBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30="
+			});
+
+
+
+		 });
+
+		function wx_ifr_success(url){
+			layer.msg('登录成功！',{icon:6});
+			setTimeout(function(){
+				window.location.href=url;
+			},1500);
+		} 
+
+		function wx_ifr_error(msg){
+			layer.open({
+				content:msg,
+				btn:['我知道了'],
+				btnAlign:'c',
+				end:function(){
+					window.location.replace(location.href);
+				}
+			});
+		}
+
+
         $('#tit span').click(function() {
             var i = $(this).index();//下标第一种写法
             //var i = $('tit').index(this);//下标第二种写法
             $(this).addClass('select').siblings().removeClass('select');
             $('#con li').eq(i).show().siblings().hide();
         });
-        // 退出登录
-        // $(".outBtn").click(function(){
-        //     $(".login-in").hide();
-        //     $(".login-out").show();
-        // })        
-        // $(".login_denglu").click(function(){
-        	
-        	
-        	
-        // 	if($(".login_username").val()=="" && $(".login_passworld").val()=="")
-        // 	{
-        		
-        // 		alert("账号,密码不能为空！")
-        		
-        // 	}else if($(".login_username").val()==""){
-        		
-        // 		alert("账号不能为空！")
-        		
-        // 	}else if($(".login_passworld").val()==""){
-        		
-        // 		alert("密码不能为空！")
-        		
-        // 	}
-        	
-        	
-        	
-        // })
-        
- 			var re_email = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
-			var re_pass = /^([A-Za-z\d.]){6,20}$/;
+    
 
-			function submit(){
-				var email = $('#email').val();
-				var password = $('#password').val();
-				// var captcha = $('#captcha').val();
+		var re_email = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+		var re_pass = /^([A-Za-z\d.]){6,20}$/;
 
-				if(!re_email.test(email)){
-					layer.msg('邮箱错误！',{icon:5});
-					return false;
-				}
-				if(!re_pass.test(password)){
-					layer.msg('密码错误！',{icon:5});
-					return false;
-				}
-				// if(!captcha){
-				// 	layer.msg('验证码不能为空！',{icon:5});
-				// 	return false;
-				// }
+		function submit(){
+			var email = $('#email').val();
+			var password = $('#password').val();
+			// var captcha = $('#captcha').val();
 
-				$.post('/index/login/login',{email:email,password:password},function(res){
-
-					if(res.status == 1){
-						layer.msg(res.msg,{icon:6});
-						setTimeout(function(){
-							window.location.href = res.url;
-						},1500);
-					}else{
-						layer.msg(res.msg,{icon:5});
-						Refresh_Captcha();
-					}
-				});
+			if(!re_email.test(email)){
+				layer.msg('邮箱错误！',{icon:5});
+				return false;
 			}
+			if(!re_pass.test(password)){
+				layer.msg('密码错误！',{icon:5});
+				return false;
+			}
+			$.post('/index/login/login',{email:email,password:password},function(res){
 
-			function Refresh_Captcha(){
-				var timestamp = (new Date()).getTime();
-				var url = '/captcha.html?t='+timestamp;
-				$('#img-captcha').attr('src',url);
-			}       
+				if(res.status == 1){
+					layer.msg(res.msg,{icon:6});
+					setTimeout(function(){
+						window.location.href = res.url;
+					},1500);
+				}else{
+					layer.msg(res.msg,{icon:5});
+					Refresh_Captcha();
+				}
+			});
+		}
+
+		function Refresh_Captcha(){
+			var timestamp = (new Date()).getTime();
+			var url = '/captcha.html?t='+timestamp;
+			$('#img-captcha').attr('src',url);
+		}       
         
     </script>	
 		

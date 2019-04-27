@@ -15,6 +15,10 @@ class Index extends Base
         Db::name('mail_code')->where(['addtime'=>['<', time() - 1800]])->delete();
 
 
+        if($this->user_id && in_array($this->action,['login','wx_sign','register'])){
+            $this->redirect('user/index');
+        }
+
     }
 
 
@@ -70,9 +74,10 @@ class Index extends Base
         if(isset($data['openid'])){
             $user = Db::name('users')->where('openid',$data['openid'])->find();
             if($user){
-
                 # 已注册用户，直接登录
-
+                if(!$user['unionid'] && isset($data['unionid'])){
+                    Db::name('users')->where('id',$user['id'])->update(['unionid' => $data['unionid']]);
+                }
                 Session::set('user', $user);
                 $user_id = $user['id'];
             }else{
@@ -112,7 +117,7 @@ class Index extends Base
 
 
         }else{
-            echo '<h1>微信登陆失败，请重试！</h1>';
+            echo '<h1 style="text-align:center;height:300px;line-height:300px;">微信登陆失败，请重试！</h1>';
         }
         exit;
     }
@@ -160,6 +165,7 @@ class Index extends Base
             exit;
         }
         
+
         captcha_src();
         return $this->fetch();
     }
