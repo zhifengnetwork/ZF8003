@@ -41,6 +41,7 @@
                 </span>
                 {/foreach}
             </div>
+            <p style="color:rgb(180, 143, 143);">查询的基因点越多，数据越精细，查询速度越快！</p>
 		</form>
 		<table class="table table-border table-bordered table-bg">
 			<thead>
@@ -77,10 +78,6 @@
 				{/volist}
 			</tbody>
 		</table>
-		<div class="pages">{$list->render()}</div>
-		{if condition="!isset($list) or !$list"}
-		<p class="no-data">暂无数据</p>
-		{/if}
     </div>
 	<!--_footer 作为公共模版分离出去-->
 	{include file='layout/footer' /}
@@ -100,14 +97,14 @@
                         </tr>
                         <tr class="text-c">
                             <td>
-                                <select id="select-key" class="select">
+                                <select id="select-key" class="select" style="text-align:center;">
                                     {volist name="gene_list" id="vo"}
                                     <option value="{$vo}">{$vo}</option>
                                     {/volist}
                                 </select>
                             </td>
                             <td>
-                                <input id="select-value" type="text" class="input-text" value="" />
+                                <input id="select-value" type="text" style="text-align:center;" class="input-text" value="" />
                             </td>
                         </tr>
                     </table>

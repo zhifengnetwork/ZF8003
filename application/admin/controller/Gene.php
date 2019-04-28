@@ -75,7 +75,7 @@ class Gene extends Base{
             }
             $where = $w;
         }
-        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->paginate(10);
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->select();
         $count = Db::name('gene')->where($where)->count();
         
         $user_name = [0 => '--'];
