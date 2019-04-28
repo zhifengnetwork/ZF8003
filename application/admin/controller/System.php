@@ -414,7 +414,7 @@ class System extends Base
             $where['name'] = ['like', "%$keywords%"];
         }
         
-        $list = Db::name('menu')->where( $where )->select();
+        $list = Db::name('menu')->where( $where )->order('sort desc,id asc')->select();
         
         if($list){
             $result = array();
@@ -489,6 +489,7 @@ class System extends Base
             $icon = isset($_POST['icon']) ? trim($_POST['icon']) : '';
             $url = isset($_POST['url']) ? trim($_POST['url']) : '';
             $is_lock = isset($_POST['is_lock']) ? intval($_POST['is_lock']) : 0;
+            $sort = isset($_POST['sort']) ? intval($_POST['sort']) : 0;
 
 
             $level = $parent_id > 0 ? 2 : 1;
@@ -502,14 +503,14 @@ class System extends Base
                 return json_encode(['status'=>0,'msg'=>'请填写菜单地址']);
                 exit;
             }
-
+            
             if($menu_id > 0){
-                $res = Db::execute("update `zf_menu` set `parent_id` = '$parent_id', `name` = '$name', `icon` = '$icon', `url` = '$url', `is_lock` = '$is_lock', `level` = '$level' where `id` = '$menu_id'");
+                $res = Db::execute("update `zf_menu` set `parent_id` = '$parent_id', `name` = '$name', `icon` = '$icon', `url` = '$url', `is_lock` = '$is_lock', `level` = '$level',`sort` = '$sort',`utime` = '$time' where `id` = '$menu_id'");
                 $action = 'edit_menu';
                 $desc   = '更新菜单';
                 $log = adminLog($action, $desc);                  
             }else{
-                $res = Db::execute("insert into `zf_menu` (`name`,`url`,`icon`,`is_lock`,`addtime`,`level`,`parent_id`) values ('$name','$url','$icon','$is_lock','$time','$level','$parent_id')");
+                $res = Db::execute("insert into `zf_menu` (`name`,`url`,`icon`,`is_lock`,`addtime`,`level`,`parent_id`,`sort`) values ('$name','$url','$icon','$is_lock','$time','$level','$parent_id','$sort')");
                 $action = 'add_menu';
                 $desc   = '添加菜单';
                 $log = adminLog($action, $desc);              

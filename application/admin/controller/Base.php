@@ -60,10 +60,10 @@ class Base extends Controller
     # 获取菜单
     public function get_menu(){
 
-        $global_menu_list = Db::query("select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0");
+        $global_menu_list = Db::query("select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc");
         if($global_menu_list){
             foreach($global_menu_list as $k => $v){
-                $global_menu_list[$k]['last'] = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'");
+                $global_menu_list[$k]['last'] = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'  order by `sort` desc,`id` asc");
             }
         }
         return $global_menu_list;

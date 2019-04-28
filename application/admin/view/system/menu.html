@@ -29,6 +29,7 @@
 					<th width="40">ID</th>
 					<th width="150">菜单名称</th>
 					<th width="130">加入时间</th>
+					<th width="100">排序值</th>
 					<th width="100">状态</th>
 					<th width="100">操作</th>
                 </tr>
@@ -45,7 +46,8 @@
 							{default/}{$vo.name}
 						{/switch}
 					</td>
-                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.sort}</td>
                     <td class="td-status">
 						{if condition="$vo.is_lock eq 0"}
 						<span class="label label-success radius">正常</span>
