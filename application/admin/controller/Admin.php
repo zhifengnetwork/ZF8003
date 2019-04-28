@@ -8,21 +8,9 @@ use think\Session;
 use think\Paginator;
 class Admin extends Base
 {
-    // public function _initialize()
-    // {
-
-    //     parent::_initialize();
-    //     // Session::clear();
-    //     $admin_name = session('admin_name');
-    //     if (empty($admin_name)) {
-    //         $this->error('请先登陆', 'Login/index');
-    //         // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
-    //         // header("refresh:1;url=$url");
-    //         // exit;
-    //     }
-    // }
+    
     public function index(){
-
+        $this->redirect('list1');
     }
     /**
      * 管理员列表
@@ -99,16 +87,16 @@ class Admin extends Base
     /**
      * 添加或者编辑管理员页面
      */
-      public function add(){
+    public function add(){
 
         $act = empty($id) ? 'add' : 'edit';
         $this->assign('act', $act);
         $role = Db::name('admin_group')->select();
         $this->assign('role', $role);
         return $this->fetch();
-      } 
+    } 
 
-      public function edit($id){
+    public function edit($id){
       
         $info = Db::name('admin')->where("id", $id)->find();
         $info['password'] =  "";
@@ -121,7 +109,7 @@ class Admin extends Base
         $this->assign('role_name', $role_name);
     
         return $this->fetch();
-      } 
+    } 
     
 
     /**
@@ -129,8 +117,6 @@ class Admin extends Base
      */
     public function adminHandle(){
         $data = input('post.');
-        
-        // $this->ajaxReturn(['status'=>1,'msg'=>'操作成功','url'=>U('Admin/Admin/index')]);
 		$adminValidate = Loader::Validate('Admin');
 		if(!$adminValidate->check($data)){
             $baocuo=$adminValidate->getError();
@@ -150,7 +136,6 @@ class Admin extends Base
                 return json(['status' => -1, 'msg' => '用户名已经存在']);
             }
             unset($data['id']);
-            // unset($data['act']);
             unset($data['password2']); 
             $data1 = [
                 'name'    => $data['name'],
@@ -212,13 +197,11 @@ class Admin extends Base
         }else{
             return json(['status'=>-1,'msg'=>'操作失败']);
         }
-        // Db::name('admin')->where('name', $data['name'])->select();
     }
 
     //启用和停用
     public function is_handle(){
         $data = input('post.');
-        // dump($data);exit;
         if($data['status'] == 'stop'){
             $res = Db::name('admin')->where('id',$data['id'])->update(['is_lock' => 1]);
             $action = 'start_admin';
@@ -238,25 +221,13 @@ class Admin extends Base
         }
     }
  
-      public function permission(){
-          return $this->fetch();
-      }
+    public function permission(){
+        return $this->fetch();
+    }
 
-    // function adminLog($action, $desc)
-    // {
-    //     $add['addtime'] = time();
-    //     $add['admin_id'] = session('admin_id');
-    //     $add['action'] = $action;
-    //     $add['desc']   = $desc;
-    //     // $add['log_ip'] = request()->ip();
-    //     // $add['log_url'] = request()->baseUrl();
-    //     Db::name('admin_log')->insert($add);
-    //     return true;
-    // }
     public function logout()
     {
         Session::clear();
-        // $this->success("退出成功", 'Admin/Login/index');
         $this->redirect('Login/index');     
     }
 

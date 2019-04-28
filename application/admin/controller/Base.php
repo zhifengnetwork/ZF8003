@@ -12,24 +12,49 @@ namespace app\admin\Controller;
 use think\Controller;
 use think\Db;
 use think\Session;
+use think\Request;
+
 class Base extends Controller
 {
+    public $admin;
+    public $module;
+    public $controller;
+    public $action;
+    public $ip;
+    public $client;
 
-    public function __construct()
+    public function _initialize()
     {
-        parent::__construct();
-
+        $this->Verification_Client();
         $this->base_web_config();
+
         $admin_name = session('admin_name');
-        if (empty($admin_name)) {
+        
+        if ($this->controller != 'Login' && !Session::has('admin')){
+            Session::clear();
             $this->redirect('Login/index');
-            // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
-            // header("refresh:1;url=$url");
-            // exit;
         }
 
+        if($this->controller == 'Login' && $this->action == 'login' && Session::has('admin')){
+            $this->redirect('index/index');
+        }
+        
+        $this->admin = Session::get('admin');
+
+
+
+        // dump($this->admin);exit;
         $global_menu_list = $this->get_menu();
         $this->assign('global_menu_list', $global_menu_list);
+    }
+
+    # 请求验证
+    public function Verification_Client(){
+        $request= Request::instance();
+        $this->module = $request->module();
+        $this->controller = $request->controller();
+        $this->action = $request->action();
+        $this->ip = $request->ip();
     }
 
     # 获取菜单

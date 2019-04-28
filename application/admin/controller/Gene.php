@@ -150,7 +150,7 @@ class Gene extends Base{
         }
 
         $list = Db::name('import_gene')->where($where)->order('id desc')->paginate(15);
-        $count = Db::name('gene')->where($where)->count();
+        $count = Db::name('import_gene')->where($where)->count();
         $user_name = [0 => '--'];
         if($list){
             foreach($list as $v){

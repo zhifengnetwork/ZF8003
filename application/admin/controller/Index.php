@@ -8,19 +8,6 @@ use think\Session;
 class Index extends Base
 {
 
-    // public function _initialize()
-    // {
-
-    //     parent::_initialize();
-    //     $admin_name = session('admin_name');
-    //     if (empty($admin_name)) {
-    //         $this->redirect('Login/index');
-    //         // $url = "http://" . $_SERVER['HTTP_HOST'] . "/index.php/admin/";
-    //         // header("refresh:1;url=$url");
-    //         // exit;
-    //     }
-    // }
-
     public function index()
     {
 
@@ -60,11 +47,9 @@ class Index extends Base
             $greetings = '晚上好！' . $admin_name;
         }
 
-
-        // dump(Session::get());
-        $this->assign('title', '欢迎使用 '.Session::get('web_setting.web_name').' 后台管理系统');
-        $this->assign('greetings', $greetings);
-        return $this->fetch();
+        $html = '<h1 style="padding-top:80px;text-align:center;">欢迎使用 '.Session::get('web_setting.web_name').' 后台管理系统</h1>';
+        $html .= '<h1 style="padding-top:80px;text-align:center;">'.$greetings.'</h1>';
+        return $html;
     }
     
 

@@ -8,7 +8,7 @@ use think\Db;
 use think\Loader;
 use think\Session;
 use think\Config;
-class Login extends Logbase
+class Login extends Base
 {
 
 
@@ -34,8 +34,10 @@ class Login extends Logbase
             return json(['status' => -1, 'msg' => '验证码不正确']);
         };       
         // 判断是否有该用户
-        $res = Db::name('admin')->where('name', $data['username'])->find();
+        $sql = "select a.*,b.name as group_name,b.jurisdiction from `zf_admin` as a left join `zf_admin_group` as b on a.group_id = b.id where a.name = '$data[username]' limit 1";
+        $res = Db::query($sql);
         if($res){
+            $res = $res[0];
             //判断是否禁用
             if($res['is_lock'] == 1){
                 return json(['status' => -1, 'msg' => '用户已被禁用']);
@@ -43,7 +45,8 @@ class Login extends Logbase
             //  判断密码是否相等
             $password = pwd_encryption($data['password']); 
             if($res['password'] === $password){
-                
+
+                Session::set('admin',$res);
                 Session::set('admin_name', $data['username']);
                 $admin_user = Db::name('admin')->where('name', $data['username'])->find();
                 Session::set('admin_id', $admin_user['id']);
