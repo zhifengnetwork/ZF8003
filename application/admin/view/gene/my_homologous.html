@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<style>
+    #query-list{
+        min-height: 60px;
+        border:1px solid #6b6868;
+        padding: 10px;
+        margin-bottom: 20px; 
+    }
+    #query-list span{
+        display:inline-block;
+        padding:5px;
+        width:10%;
+    }
+    #query-list span:hover{
+        cursor:pointer;
+    }
+    #query-list span input{
+        border-radius:3px;
+    }
+</style>
+<body>
+	<div class="page-container">
+		<form method="GET" action="">
+            <input type="hidden" name="id" value="{$id}">
+            <p>
+                请勾选下列的基因座点进行匹配：
+                <button type="submit" class="btn btn-success" id="" name="" style="float:right;">
+                    <i class="Hui-iconfont">&#xe665;</i>
+                    搜索
+                </button>
+            </p>
+            <div id="query-list">
+                {volist name="$gene_list" id="vo"}
+                    <span><input name="check[]" type="checkbox" value="{$vo}" {if condition="in_array($vo,$check)"}checked{/if}> {$vo}</span>
+                {/volist}
+            </div>
+            <p style="color:rgb(180, 143, 143);">查询的基因点越多，数据越精细，查询速度越快！</p>
+		</form>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+                    <th scope="col" colspan="9">同位基因点数据 <span class="r">共有数据：<strong>{$count}</strong> 条</span></th>
+                    
+				</tr>
+				<tr class="text-c">
+                    <th width="30">ID</th>
+                    <th width="250">标题名称</th>
+                    <th width="250">备注描述</th>
+                    <th width="100">所属会员</th>
+					<th width="100">添加时间</th>
+					<th width="100">更新时间</th>
+					<th width="60">详情</th>
+                </tr>
+			</thead>
+			<tbody>
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.desc}</td>
+                    <td>{$user_name[$vo.user_id]}</td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe695;</i>
+                        </a>
+                    </td>
+                </tr>
+				{/volist}
+			</tbody>
+		</table>
+    </div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript">
+       
+		/*基因-详情*/
+		function gene_info(title,id=0) {
+			layer.open({
+                title: title,
+                type: 2,
+                content: '/admin/gene/info?id='+id,
+                btn:false,
+                area:['80%','90%'],
+            });
+		}
+
+	</script>
+</body>
+
+</html>

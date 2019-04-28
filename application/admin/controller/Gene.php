@@ -105,6 +105,56 @@ class Gene extends Base{
         return $this->fetch();
     }
 
+    # 我的基因同位点查询
+    public function my_homologous(){
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $check = isset($_GET['check']) ? $_GET['check'] : array();
+        $where = ['id'=>['=',0]];
+        
+        $info = Db::name('gene')->where('id',$id)->find();
+        if(!$info){
+            echo "<h1 style='text-align:center; margin-top:80px;'>出错啦！</h1><p style='text-align:center;'>请刷新上一级页面重新打开试试！</p>";exit;
+        }
+
+        if($check){
+            foreach($check as $v){
+                $v = strtolower(str_replace('-','_',$v));
+                $w[$v] = ['=', $info[$v]];
+            }
+            $where = $w;
+            $where['id'] = ['neq',$id];
+        }
+        
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->select();
+        $count = Db::name('gene')->where($where)->count();
+        
+        $user_name = [0 => '--'];
+        if($list){
+            foreach($list as $v){
+                if($v['user_id'] > 0)
+                    $user_ids[] = $v['user_id'];
+            }
+            if(isset($user_ids)){
+                $user_ids = array_unique($user_ids);
+                $user_ids = implode("','",$user_ids);
+                $users = Db::query("select `id`,`nickname` from `zf_users` where `id` in ('$user_ids')");
+                if($users){
+                    foreach($users as $u){
+                        $user_name[$u['id']] = $u['nickname'];
+                    }
+                }
+            }
+        }
+        
+        
+        $this->assign('gene_list', Standard_Gene_Up());
+        $this->assign('user_name', $user_name);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
+        $this->assign('id', $id);
+        $this->assign('check', $check);
+        return $this->fetch();
+    }
 
 
     # 详情

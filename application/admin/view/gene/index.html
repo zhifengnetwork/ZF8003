@@ -67,6 +67,10 @@
 						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
                             style="text-decoration:none">
                             <i class="Hui-iconfont">&#xe695;</i>
+						</a>
+						<a title="我的基因同位点查询" href="javascript:;" onclick="my_gene_homologous('{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe709;</i>
                         </a>
                     </td>
                 </tr>
@@ -113,6 +117,15 @@
             });
 		}
 
+		function my_gene_homologous(id=0){
+			layer.open({
+                title: '我的基因同位点查询',
+                type: 2,
+                content: '/admin/gene/my_homologous?id='+id,
+                btn:false,
+                area:['80%','90%'],
+            });
+		}
 	</script>
 </body>
 
