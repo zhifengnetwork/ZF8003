@@ -58,6 +58,54 @@ class Gene extends Base{
         return $this->fetch();
     }
 
+    # 同位点查询
+    public function homologous(){
+
+        $key = isset($_GET['key']) ? $_GET['key'] : array();
+        $value = isset($_GET['value']) ? $_GET['value'] : array();
+        $search = array();
+        $where = ['id'=>['=',0]];
+
+        if($key){
+            foreach($key as $k=>$v){
+                if($value[$k]){
+                    $w[strtolower($v)] = ['=', $value[$k]*100];
+                    $search[$v] = $value[$k];
+                }
+            }
+            $where = $w;
+        }
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->paginate(10);
+        $count = Db::name('gene')->where($where)->count();
+        
+        $user_name = [0 => '--'];
+        if($list){
+            foreach($list as $v){
+                if($v['user_id'] > 0)
+                    $user_ids[] = $v['user_id'];
+            }
+            if(isset($user_ids)){
+                $user_ids = array_unique($user_ids);
+                $user_ids = implode("','",$user_ids);
+                $users = Db::query("select `id`,`nickname` from `zf_users` where `id` in ('$user_ids')");
+                if($users){
+                    foreach($users as $u){
+                        $user_name[$u['id']] = $u['nickname'];
+                    }
+                }
+            }
+        }
+        
+        
+        $this->assign('gene_list', Standard_Gene_Up());
+        $this->assign('user_name', $user_name);
+        $this->assign('search', $search);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
+        return $this->fetch();
+    }
+
+
 
     # 详情
     public function info(){

@@ -87,7 +87,14 @@ function Standard_Gene($key = ''){
     
 }
 
-
+# 返回大写的标准基因座
+function Standard_Gene_Up(){
+    $data = Standard_Gene();
+    foreach($data as $v){
+        $r[] = strtoupper($v);
+    }
+    return $r;
+}
 
 
 # 判断数组元素

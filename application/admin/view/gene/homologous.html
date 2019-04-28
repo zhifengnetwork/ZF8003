@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<style>
+    #query-list{
+        min-height: 60px;
+        border:1px solid #6b6868;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    #query-list span{
+        background: #c7eaba;
+        height:16px;
+        line-height: 16px;
+        padding:5px;
+        margin-left:5px;
+        border-radius:3px;
+    }
+    #query-list span a{
+        color:crimson;
+        font-size: 12px;
+        padding-left:2px;
+    }
+</style>
+<body>
+	<div class="page-container">
+		<form method="GET" action="">
+            <p>
+                <a class="btn btn-primary radius" style="display: inline-block;" onclick="add_query();">
+                    <i class="Hui-iconfont">&#xe600;</i> 
+                    增加搜索基因点
+                </a>
+                <button type="submit" class="btn btn-success" id="" name="">
+                    <i class="Hui-iconfont">&#xe665;</i>
+                    搜索</button>
+            </p>
+            <div id="query-list">
+                {foreach name="$search" id="v" key="k"}
+                <span>
+                    <input type="hidden" name="key[]" value="{$k}"> {$k|strtoupper}：{$v}<input type="hidden" name="value[]" value="{$v}"><a onclick="del_query(this);">X</a>
+                </span>
+                {/foreach}
+            </div>
+		</form>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+                    <th scope="col" colspan="9">同位基因点数据 <span class="r">共有数据：<strong>{$count}</strong> 条</span></th>
+                    
+				</tr>
+				<tr class="text-c">
+                    <th width="30">ID</th>
+                    <th width="250">标题名称</th>
+                    <th width="250">备注描述</th>
+                    <th width="100">所属会员</th>
+					<th width="100">添加时间</th>
+					<th width="100">更新时间</th>
+					<th width="60">详情</th>
+                </tr>
+			</thead>
+			<tbody>
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.desc}</td>
+                    <td>{$user_name[$vo.user_id]}</td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe695;</i>
+                        </a>
+                    </td>
+                </tr>
+				{/volist}
+			</tbody>
+		</table>
+		<div class="pages">{$list->render()}</div>
+		{if condition="!isset($list) or !$list"}
+		<p class="no-data">暂无数据</p>
+		{/if}
+    </div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript">
+       
+        function add_query(){
+            var html = `
+                <div id="add_gene_select">
+                    <table class="table table-border table-bordered table-bg">
+                        <tr class="text-c">
+                            <th width="150">基因座</th>
+                            <th width="150">数值</th>
+                        </tr>
+                        <tr class="text-c">
+                            <td>
+                                <select id="select-key" class="select">
+                                    {volist name="gene_list" id="vo"}
+                                    <option value="{$vo}">{$vo}</option>
+                                    {/volist}
+                                </select>
+                            </td>
+                            <td>
+                                <input id="select-value" type="text" class="input-text" value="" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                `;
+            
+            layer.open({
+                title:'添加基因位点',
+                content:html,
+                btn:['确定','取消'],
+                btnAlign:'c',
+                yes:function(index){
+                    var key = $('#select-key option:selected').val();
+                    var value = $('#select-value').val();
+                    if(!key || !value){
+                        layer.msg('请输入基因位点信息！',{icon:5});
+                        return false;
+                    }
+                    var _tpl = `
+                        <span>
+                            <input type="hidden" name="key[]" value="`+key+`"> `+key+`：`+value+`<input type="hidden" name="value[]" value="`+value+`"><a onclick="del_query(this);">X</a>
+                        </span>
+                        `;
+                    
+                    $('#query-list').append(_tpl);
+                    layer.close(index);
+                }
+            });
+        }
+
+        function del_query(obj){
+            $(obj).parents('span').remove();
+        }
+
+		/*基因-详情*/
+		function gene_info(title,id=0) {
+			layer.open({
+                title: title,
+                type: 2,
+                content: '/admin/gene/info?id='+id,
+                btn:false,
+                area:['80%','90%'],
+            });
+		}
+
+	</script>
+</body>
+
+</html>
