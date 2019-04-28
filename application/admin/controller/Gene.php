@@ -58,6 +58,66 @@ class Gene extends Base{
         return $this->fetch();
     }
 
+    # 基因库配置
+    public function config(){
+        $gene_list = Standard_Gene_Up();
+
+        if($_POST){
+            
+            $standard = isset($_POST['standard']) ? $_POST['standard'] : array();
+            $check = isset($_POST['check']) ? $_POST['check'] : array();
+
+            # 基因突变率
+            foreach($standard as $k=>$v){
+                if(Db::name('config')->where(['name'=>$k,'type'=>'gene_config_mutation'])->find()){
+                    Db::name('config')->where(['name'=>$k,'type'=>'gene_config_mutation'])->update(['value'=>$v]);
+                }else{
+                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>'gene_config_mutation']);
+                }
+            }
+
+            # 用户计算的基因座
+            foreach($gene_list as $v){
+                $value = 0;
+                if(in_array($v,$check)){
+                    $value = 1;
+                }
+                $name = strtolower(str_replace('-','_',$v));
+                if(Db::name('config')->where(['type'=>'gene_config_calculation','name'=>$name])->find()){
+                    Db::name('config')->where(['type'=>'gene_config_calculation','name'=>$name])->update(['value'=>$value]);
+                }else{
+                    Db::name('config')->insert(['name'=>$name,'value'=>$value,'type'=>'gene_config_calculation']);
+                }
+            }
+
+            echo "<script>parent.layermsg('操作成功！正在刷新...')</script>";
+            exit;
+        }
+
+        $mutation_confg = Db::name('config')->field('name,value')->where('type', 'gene_config_mutation')->select();
+        $calculation_confg = Db::name('config')->field('name,value')->where('type', 'gene_config_calculation')->select();
+        
+        $check = $mutation = array();
+        if($mutation_confg){
+            foreach($mutation_confg as $v){
+                $mutation[$v['name']] = $v['value'];
+            }
+        }
+        if($calculation_confg){
+            foreach($calculation_confg as $v){
+                if($v['value']){
+                    $check[] = strtoupper(str_replace('_0','-',$v['name']));
+                }
+            }
+        }
+        
+        $this->assign('mutation', $mutation);
+        $this->assign('gene_list', $gene_list);
+        $this->assign('check', $check);
+        return $this->fetch();
+    }
+
+
     # 同位点查询
     public function homologous(){
 

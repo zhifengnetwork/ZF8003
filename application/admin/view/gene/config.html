@@ -1,0 +1,257 @@
+{include file="layout/head"}
+<style>
+    .table thead th{
+        color:#4ced6a;
+    }
+    
+    #query-list{
+        min-height: 60px;
+        border:1px solid #6b6868;
+        padding: 10px;
+        margin-bottom: 20px; 
+    }
+    #query-list span{
+        display:inline-block;
+        padding:5px;
+        width:13%;
+    }
+    #query-list span:hover{
+        cursor:pointer;
+    }
+    #query-list span input{
+        border-radius:3px;
+    }
+</style>
+<article class="page-container">
+    <form class="form form-horizontal" target="ajaxR" method="POST" action="">    
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">基因座突变率设置：</label>
+            <div class="formControls col-xs-8 col-sm-8"> 
+                <table class="table table-border table-bordered table-bg" >
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS19</th>
+                            <th width="50">DYS389I</th>
+                            <th width="50">DYS389b</th>
+                            <th width="50">DYS390</th>
+                            <th width="50">DYS391</th>
+                            <th width="50">DYS392</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys19]" value="{$mutation.dys19 ? $mutation.dys19 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys389i]" value="{$mutation.dys389i ? $mutation.dys389i : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys389b]" value="{$mutation.dys389b ? $mutation.dys389b : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys390]" value="{$mutation.dys390 ? $mutation.dys390 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys391]" value="{$mutation.dys391 ? $mutation.dys391 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys392]" value="{$mutation.dys392 ? $mutation.dys392 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS393</th>
+                            <th width="50">DYS437</th>
+                            <th width="50">DYS438</th>
+                            <th width="50">DYS439</th>
+                            <th width="50">DYS448</th>
+                            <th width="50">DYS456</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys393]" value="{$mutation.dys393 ? $mutation.dys393 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys437]" value="{$mutation.dys437 ? $mutation.dys437 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys438]" value="{$mutation.dys438 ? $mutation.dys438 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys439]" value="{$mutation.dys439 ? $mutation.dys439 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys448]" value="{$mutation.dys448 ? $mutation.dys448 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys456]" value="{$mutation.dys456 ? $mutation.dys456 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS458</th>
+                            <th width="50">DYS635</th>
+                            <th width="50">GATA-H4</th>
+                            <th width="50">DYS385a</th>
+                            <th width="50">DYS385b</th>
+                            <th width="50">DYS449</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys458]" value="{$mutation.dys458 ? $mutation.dys458 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys635]" value="{$mutation.dys635 ? $mutation.dys635 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[gata_h4]" value="{$mutation.gata_h4 ? $mutation.gata_h4 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys385a]" value="{$mutation.dys385a ? $mutation.dys385a : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys385b]" value="{$mutation.dys385b ? $mutation.dys385b : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys449]" value="{$mutation.dys449 ? $mutation.dys449 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS460</th>
+                            <th width="50">DYS481</th>
+                            <th width="50">DYS518</th>
+                            <th width="50">DYS533</th>
+                            <th width="50">DYS570</th>
+                            <th width="50">DYS576</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys460]" value="{$mutation.dys460 ? $mutation.dys460 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys481]" value="{$mutation.dys481 ? $mutation.dys481 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys518]" value="{$mutation.dys518 ? $mutation.dys518 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys533]" value="{$mutation.dys533 ? $mutation.dys533 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys570]" value="{$mutation.dys570 ? $mutation.dys570 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys576]" value="{$mutation.dys576 ? $mutation.dys576 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS627</th>
+                            <th width="50">DYS387S1a</th>
+                            <th width="50">DYS387S1b</th>
+                            <th width="50">DYS388</th>
+                            <th width="50">DYS444</th>
+                            <th width="50">DYS549</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys627]" value="{$mutation.dys627 ? $mutation.dys627 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys387s1a]" value="{$mutation.dys387s1a ? $mutation.dys387s1a : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys387s1b]" value="{$mutation.dys387s1b ? $mutation.dys387s1b : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys388]" value="{$mutation.dys388 ? $mutation.dys388 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys444]" value="{$mutation.dys444 ? $mutation.dys444 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys549]" value="{$mutation.dys549 ? $mutation.dys549 : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr class="text-c">
+                            <th width="50">DYS643</th>
+                            <th width="50">DYS722</th>
+                            <th width="50">DYS404S1a</th>
+                            <th width="50">DYS404S1b</th>
+                            <th width="50">DYS527a</th>
+                            <th width="50">DYS527b</th>
+                        </tr>
+                    </thead>
+                    <tbody class="other-temp">
+                        <tr class="text-c">
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys643]" value="{$mutation.dys643 ? $mutation.dys643 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys722]" value="{$mutation.dys722 ? $mutation.dys722 : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys404s1a]" value="{$mutation.dys404s1a ? $mutation.dys404s1a : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys404s1b]" value="{$mutation.dys404s1b ? $mutation.dys404s1b : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys527a]" value="{$mutation.dys527a ? $mutation.dys527a : 0}" />
+                            </td>
+                            <td width="50">
+                                <input type="text" class="input-text" style="text-align: center;" name="standard[dys527b]" value="{$mutation.dys527b ? $mutation.dys527b : 0}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">共祖基因座设置：</label>
+            <div class="formControls col-xs-8 col-sm-8" id="query-list"> 
+                {volist name="$gene_list" id="vo"}
+                    <span><input name="check[]" type="checkbox" value="{$vo}" {if condition="in_array($vo,$check)"}checked{/if}> {$vo}</span>
+                {/volist}
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="提交">
+            </div>
+        </div>
+    </form>
+</article>
+<iframe name="ajaxR" style="display: none;width:100%;height:500px;"></iframe>
+{include file="layout/footer"}
+<script>
+    function layermsg(msg,icon=6){
+        layer.msg(msg,{icon:icon});
+        setTimeout(function(){
+            // parent.layer.closeAll();
+            window.location.replace(location.href);
+        },2000);
+        
+    }
+</script>
