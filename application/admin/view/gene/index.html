@@ -71,6 +71,10 @@
 						<a title="我的基因同位点查询" href="javascript:;" onclick="my_gene_homologous('{$vo.id}')" class="ml-5"
                             style="text-decoration:none">
                             <i class="Hui-iconfont">&#xe709;</i>
+						</a>
+						<a title="删除" href="javascript:;" onclick="del_gene('{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe6e2;</i>
                         </a>
                     </td>
                 </tr>
@@ -93,6 +97,26 @@
         function open_closeAll(){
 			layer.closeAll();
 			window.location.replace(location.href);
+		}
+
+		/*-删除-*/
+		function del_gene(id){
+			layer.confirm('您正在执行删除操作！', {icon: 3, title:'敏感操作提醒'}, function(index){
+				//do something
+				$.post('/admin/gene/del_gene',{id:id},function(res){
+					if(res.status == 1){
+						layer.msg('操作成功！', {icon:6});
+						setTimeout(function(){
+							window.location.replace(location.href);
+						},1500);
+					}else{
+						layer.msg('操作失败，请重试！', {icon:5});
+					}
+				});
+				layer.close(index);
+			});
+
+
 		}
 		
 		/*基因-详情*/

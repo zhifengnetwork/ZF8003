@@ -58,6 +58,19 @@ class Gene extends Base{
         return $this->fetch();
     }
 
+    # 删除数据
+    public function del_gene(){
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        if($id > 0){
+            $res = Db::name('gene')->delete($id);
+            if($res){
+                return json(['status'=>1]);
+                exit;
+            }
+        }
+        return json(['status'=>0]);
+    }
+
     # 基因库配置
     public function config(){
         $gene_list = Standard_Gene_Up();
