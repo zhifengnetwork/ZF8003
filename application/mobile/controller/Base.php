@@ -99,7 +99,7 @@ class Base extends Controller
     public function get_weixin_global_token($refresh = false){
         if($refresh){
             $this->weixin_config = '';
-            Session::pull('wx_config');
+            Session::delete('wx_config');
         }
         $this->wx_config();
         $weixin_config = $this->weixin_config;

@@ -10,6 +10,18 @@
 			</div>
 			<div>
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">通信状态：</label>
+					<div class="formControls col-xs-8 col-sm-9"> 
+						<span class="select-box" style="width:150px;">
+							<select class="select" id="wait_access" name="wait_access" size="1">
+								<option value="1" {if condition="isset($info.wait_access) && $info.wait_access eq 1"}selected{/if}>已接入</option>
+								<option value="0" {if condition="isset($info.wait_access) && $info.wait_access eq 0"}selected{/if}>等待接入</option>
+							</select>
+						</span> 
+						<p style="color:red;font-seze:12px;">在调试配置微信服务器时请设置为“等待接入”状态，微信服务器接入成功后系统会自动变更为“已接入状态”，正常使用请保持“已接入”状态</p>
+					</div>
+				</div>
+				<div class="row cl">
                     <label class="form-label col-xs-4 col-sm-2">公众号名称：</label>
                     <div class="formControls col-xs-8 col-sm-9">
                         <input type="text" id="weixin_name" name="weixin_name" value="{if condition="isset($info.weixin_name)"}{$info.weixin_name}{/if}" class="input-text" placeholder="">

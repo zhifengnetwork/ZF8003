@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信公众系统 <span
+			class="c-gray en">&gt;</span> 自动回复 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<form method="GET" action="">
+			<div class="text-c"> 
+				标题：
+				<input type="text" class="input-text" style="width:250px" placeholder="输入标题名称" value="{$search['name'] ? $search['name'] : ''}" name="search[name]">
+				会员名称或账号：
+				<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称或账号" value="{$search['user'] ? $search['user'] : ''}" name="search[user]">
+				添加时间：
+				<input type="text" {literal}
+					onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
+					value="{$search['datemin'] ? $search['datemin'] : ''}" id="datemin" name="search[datemin]" class="input-text Wdate" style="width:180px;">
+				-
+				<input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
+					{/literal} value="{$search['datemax'] ? $search['datemax']: ''}" id="datemax" name="search[datemax]" class="input-text Wdate"
+					style="width:180px;">
+				<button type="submit" class="btn btn-success" id="" name="">
+					<i class="Hui-iconfont">&#xe665;</i>
+					搜索</button>
+			</div>
+		</form>
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<span class="l">
+                 <a href="javascript:;" onclick="gene_info('添加基因数据')" class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 
+                    添加基因数据
+				</a>
+				<a href="javascript:;" onclick="gene_homologous('同位点查询')" class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe709;</i> 
+                    同位点查询
+                </a>
+			</span> 
+            <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+					<th scope="col" colspan="9">基因数据列表</th>
+				</tr>
+				<tr class="text-c">
+                    <th width="30">ID</th>
+                    <th width="250">关键字</th>
+                    <th width="250">回复类型</th>
+                    <th width="100">回复内容</th>
+					<th width="100">添加时间</th>
+					<th width="100">更新时间</th>
+					<th width="60">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.desc}</td>
+                    <td>{$user_name[$vo.user_id]}</td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe695;</i>
+						</a>
+						<a title="我的基因同位点查询" href="javascript:;" onclick="my_gene_homologous('{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe709;</i>
+						</a>
+						<a title="删除" href="javascript:;" onclick="del_gene('{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe6e2;</i>
+                        </a>
+                    </td>
+                </tr>
+				{/volist}
+			</tbody>
+		</table>
+		<div class="pages">{$list->render()}</div>
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript">
+        function open_closeAll(){
+			layer.closeAll();
+			window.location.replace(location.href);
+		}
+
+	</script>
+</body>
+
+</html>
