@@ -91,7 +91,6 @@ $(function() {
 		//if (jiayoufei>)
 		//获取余钱包的钱
 		yuer = $(".remaining_discount").html()
-		console.log(yuer)
 		var zongmoney = $(".zongqian").html()
 		//      222222222222
 
@@ -99,10 +98,6 @@ $(function() {
 
 			var man = $("#quoto").val()
 			var jian = $("#money").val()
-			console.log(jian)
-			//  console.log("ccc"+jiayoufei)
-			console.log(man)
-			console.log("jiayoufei" + jiayoufei)
 			if(jiayoufei >= man) {
 
 				$('.coupon_discount').html(jian)
@@ -116,7 +111,6 @@ $(function() {
 		}
 
 		var xixi = parseFloat(jiayoufei) - parseFloat($(".coupon_discount2").html())
-		console.log("xixi" + parseFloat(xixi))
 		if($('.yuer').is(".active")) {
 
 			//上面的余额
@@ -139,7 +133,6 @@ $(function() {
 			} else {
 
 				var ccc = qian - jiayoufei
-				console.log("ccddd" + ccc)
 
 			}
 
@@ -150,10 +143,7 @@ $(function() {
 		}
 
 		var youhuiquan = $(".coupon_discount2").html()
-		console.log(jiayoufei)
-		console.log(youhuiquan)
 		var zongqian = parseFloat(jiayoufei) - parseFloat(youhuiquan) - parseFloat($(".remaining_discount").html())
-		console.log("zongqian" + zongqian)
 		//计算总应该付的钱
 		if(zongqian > 0) {
 
@@ -254,10 +244,6 @@ $(function() {
 		if($('.coupon_use2').hasClass("coupon_use")) {
 			var man = $("#quoto").val()
 			var jian = $("#money").val()
-			console.log(jian)
-			//  console.log("ccc"+jiayoufei)
-			console.log(man)
-			console.log("jiayoufei" + jiayoufei)
 			if(jiayoufei >= man) {
 
 				$('.coupon_discount').html(jian)
@@ -274,15 +260,6 @@ $(function() {
 		}
 
 		var youhuiquan = $(".coupon_discount2").html()
-		console.log(jiayoufei)
-
-		console.log(youhuiquan)
-
-		//     var zongqian = parseFloat(jiayoufei)-parseFloat(youhuiquan)-parseFloat(yuer)
-		//      console.log( "zongqian"+zongqian) 
-		//计算总应该付的钱
-		//        $(".zongqian").html(zongqian)
-		//amount_payable()
 		var xixi = parseFloat(jiayoufei) - parseFloat($(".coupon_discount2").html())
 		//     console.log("xixi"+parseFloat(xixi))
 		$(".remaining_discount").html(xixi)

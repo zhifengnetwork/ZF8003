@@ -55,6 +55,7 @@
 											2、class='button_red'; 灰色-按钮
 										-->
 										{if condition="$vo.order_status eq 0"}
+										<p class="commodity_term_but button_red" onclick="cancel_order('{$vo.id}');">取消订单</p>
 										<p class="commodity_term_but button_red" onclick="javascript:location.href='/mobile/weixin/pay?t=order_pay&id={$vo.id}'">付款</p>
 										{/if}
 										{if condition="$vo.order_status eq 2"}
@@ -85,6 +86,30 @@
 				layer.msg(msg,{icon:6});
 			}
 			
+			function cancel_order(id){
+				layer.confirm('确认要取消该订单? ', {icon: 3, title:'提示'}, function(index){
+				  //do something
+				  
+				  $.post('/mobile/user/cancel_order',{id:id},function(res){
+					if(res.status == 1){
+						layer.msg('操作成功!',{icon:6});
+						setTimeout(function(){
+							window.location.reload();
+						},1500);
+					}else{
+						layer.msg(res.msg,{icon:5});
+					}
+					
+					setTimeout(function(){
+						window.location.replace(location.href);
+					},1500);
+				  });
+				  
+				  
+				  layer.close(index);
+				});
+			}
+
 			function confirm_order(id){
 			
 				layer.confirm('确认已收货? ', {icon: 3, title:'提示'}, function(index){

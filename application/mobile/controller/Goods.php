@@ -216,7 +216,7 @@ class Goods extends Base
         Db::name('user_coupon')->where(['etime' => ['<=', time()]])->update(['status' => 2]);
         # 我的优惠券
         $my_coupon = Db::query("select a.*,b.name from `zf_user_coupon` as a left join `zf_goods_coupon` as b on a.coupon_id = b.id where a.user_id = '$this->user_id' and a.status = 0");
-
+        
 
         $this->assign('freight', $freight);
         $this->assign('my_coupon', $my_coupon);

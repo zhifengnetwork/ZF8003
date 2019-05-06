@@ -38,13 +38,13 @@
 	            	<div>
 	            		
 	            		<div class="title">
-	            			<span>订单</span>
+	            			<span>编号</span>
 	            			<span>金额</span>
 	            			<span>时间</span>
 						</div>
 						{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
 	            		<div class="text">
-	            			<span>{$vo.sn}</span>
+	            			<span>{$vo.id}</span>
 	            			<span>{$vo.money}</span>
 	            			<span>{$vo.addtime|date="Y-m-d",###}</span>
 	            		</div>

@@ -97,8 +97,8 @@
                         </div>  
                  </div>
 
-                 <input type="text" id="quoto" value="{$my_coupon[0]['quota']}" hidden>
-                 <input type="text" id="money" value="{$my_coupon[0]['money']}" hidden>
+                 <input type="text" id="quoto" value="{$my_coupon[0]['quota'] ? $my_coupon[0]['quota'] : 0}" hidden>
+                 <input type="text" id="money" value="{$my_coupon[0]['money'] ? $my_coupon[0]['money'] : 0}" hidden>
              </div>
                 <!-- discount coupon -->
              <div class="coupon">

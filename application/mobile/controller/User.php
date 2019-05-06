@@ -119,7 +119,37 @@ class User extends Base
 			}
 		}
 		return json(['status' => 0]);
-	}
+    }
+    
+    # 取消订单 | 取消待支付的订单
+    public function cancel_order(){
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $info = Db::name('order')->where(['id'=>$id,'user_id'=>$this->user_id,'order_status'=>0])->find();
+
+        if($info){
+            if($info['pay_status'] == 3){
+                return json(['status'=>0,'msg'=>'业务处理中，订单暂不可操作']);
+            }
+
+            if($info['pay_status'] == 2){
+                Db::name('users')->where(['id'=>$info['user_id']])->setInc('money', $info['user_money']);
+                Db::name('order')->where('id', $id)->update(['pay_status'=>0,'user_money'=>0]);
+                
+                Db::name('transaction_log')->insert(['user_id'=>$info['user_id'],'type'=>'recharge','sn'=>$info['order_sn'],'platform'=>'system','money'=>$info['user_money'],'addtime'=>time(),'desc'=>'取消订单，返回使用余额抵扣部分金额，请留意账户余额']);
+
+                $user = Db::name('users')->find($this->user_id);
+                Session::set('user', $user);
+                $this->user = $user;
+            }
+
+
+            $res = Db::name('order')->where(['id'=>$id,'user_id'=>$this->user_id])->delete();
+            if($res){
+                return json(['status'=>1]);
+            }
+        }
+        return json(['status'=>0,'msg'=>'操作失败，请重试！']);
+    }
 	
 	
 
@@ -409,11 +439,13 @@ class User extends Base
         $where = ' where `user_id` = '.$this->user_id;
         if($t == 1){
             $where .= " and `type` = 'recharge'";
-        }else{
-            $where .= " and `type` in ('recharge','order')";
         }
-        $sql = "select `sn`,`money`,`addtime` from `zf_transaction_log` $where order by `id` desc";
-        $lists = Db::execute($sql);
+        if($t == 2){
+            $where .= " and `type` in ('withdrawal','order')";
+        }
+        $sql = "select `id`,`money`,`addtime` from `zf_transaction_log` $where order by `id` desc";
+        $lists = Db::query($sql);
+
 
         $this->assign('lists', $lists);
         $this->assign('t', $t);
