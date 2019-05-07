@@ -1,0 +1,39 @@
+.zuidadiv{
+	
+	padding-bottom: .5rem;
+	box-sizing: border-box;
+	
+}
+
+.biaogege,.biaogege2{
+	
+	
+	width: 88%;
+	margin: 0 auto;
+	border: 1px solid #CCCCCC;
+	margin-top: .4rem;
+	
+	
+}
+tr{
+	
+	height: .7rem;
+	line-height: .7rem;
+	font-size: .3rem;
+	text-align: center;
+	
+}
+tr td:nth-child(1){
+	
+	width: 40%;
+	
+	
+}
+.biaogege2{
+	
+	margin-top: 1rem;
+	
+	
+}
+
+

@@ -11,6 +11,25 @@
 
 // 应用公共文件
 
+# 求两数字的差值
+function math_diff($str1 = 0.00, $str2 = 0.00){
+
+    $str1 = (double)$str1;
+    $str2 = (double)$str2;
+
+    if($str1 == $str2){
+        return 0;
+    }
+    if($str1 > $str2){
+        return $str1 - $str2;
+    }
+    if($str2 > $str1){
+        return $str2 - $str1;
+    }
+}
+
+
+
 # 用于计算的基因座 17 STR
 function Gene_17STR(){
 
@@ -276,6 +295,7 @@ function layer_error($msg, $re = true, $url = ''){
         }
         
     }
+    exit;
 }
 
 

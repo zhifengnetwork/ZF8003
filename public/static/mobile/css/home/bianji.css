@@ -72,7 +72,7 @@
 	
 	padding-top: .1rem;
 	padding-left: 9%;
-	display: none;
+	/*display: none;*/
 	
 	
 }
@@ -102,4 +102,19 @@
 	display: none;
 	
 }
-
+.gene_chaxun{
+	
+	width: 3rem;
+	height: .8rem;
+	line-height: .8rem;
+	text-align: center;
+	margin: auto;
+	background: #30ADE5;
+	margin-top: 1rem;
+	color: white;
+	font-size: .3rem;
+	border-radius: .2rem;
+	
+	
+	
+}

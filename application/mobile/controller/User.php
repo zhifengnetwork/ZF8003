@@ -36,7 +36,7 @@ class User extends Base
 
     # 我的基因
     public function my_gene(){
-
+       
         $list = Db::name('gene')->where('user_id',$this->user_id)->field('id,`name`')->select();
         
         $this->assign('list',$list);
@@ -69,7 +69,75 @@ class User extends Base
         return $this->fetch();
     }
 
-    # 删除基因报告
+    # 基因查询
+    public function gene_query(){
+
+        $list = Db::name('gene')->where('user_id',$this->user_id)->field('id,`name`')->select();
+        
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+
+    # 基因查询报告
+    public function gene_analysis(){
+        $q = isset($_GET['q']) ? explode(',',$_GET['q']) : '';
+        if(!$q || count($q) != 2){
+            layer_error('参数错误！',true);
+        }
+
+        $q1 = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$q[0]])->find();
+        $q2 = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$q[1]])->find();
+
+        if(!$q1 || !$q2){
+            layer_error('非法访问，无效的请求参数！',true);
+        }
+
+        $calculation = Db::name('config')->where(['value'=>['>', 0], 'type'=>['=', 'gene_config_calculation']])->field('name')->select();
+        if(!$calculation){
+            layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
+        }
+
+        foreach($calculation as $v){
+            $mutation[] = $v['name'];
+        }
+
+        $mutation = implode(",", $mutation);
+        $config_mutation = Db::name('config')->where(['type'=>['=', 'gene_config_mutation'], 'name'=>['in',"$mutation"]])->field('name,value')->select();
+        foreach($config_mutation as $v){
+            if($v['value'] == 0){
+                layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
+            }
+            $config[$v['name']] = $v['value'];
+        }
+
+        # 实际突变 | 基因座
+        $diff = $locus = array();
+        # 平均传递值 | 共祖年
+        $pass = $cay = 0;
+        
+        foreach($config as $k=>$v){
+            $d = math_diff($q1[$k],$q2[$k]);
+            if($d > 0){
+                $d = $d * 0.01;
+            }
+            $diff[$k] = $d;
+            $loc = $d > 0 && $v > 0 ? $d/$v : 0;
+            $locus[$k] = $loc;
+            $pass = $pass + $loc;
+        }
+        
+        $pass = $pass/count($locus);
+        $cay = $pass * 25 / 2;
+
+        // dump([$diff,$locus,$pass,$cay]);exit;
+        $this->assign('locus', $locus);
+        $this->assign('pass', $pass);
+        $this->assign('cay', $cay);
+        return $this->fetch();
+    }
+
+
+    # 删除基因数据
     public function del_my_gene(){
         
         $ids = isset($_POST['ids']) ? $_POST['ids'] : '';

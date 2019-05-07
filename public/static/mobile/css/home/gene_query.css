@@ -1,0 +1,93 @@
+.lb_headWrap_text{
+	
+	width: 1rem;
+	
+	
+}
+.gene_title{
+	
+	text-align: center;
+	font-size: .28rem;
+	padding-top: .4rem;
+	padding-bottom: .4rem;
+	color: #37AFE6;
+	
+	
+}
+/*下拉框样式start*/
+#main{
+	
+	height: .8rem;
+	line-height: .8rem;
+	border-radius: .05rem;
+	text-indent: .1rem;
+	
+}
+#main,#ul{
+  padding:0px;
+  width:70%;
+  list-style-type:none;  
+  margin:0px;
+  border:1px solid #ccc;
+  /*box-shadow:0 0 3px #aaa;*/
+  margin: 0 auto;
+ 
+}
+#ul li{
+	
+	height: .5rem;
+	line-height: .5rem;
+	
+}
+#div{
+  z-index: 10;	
+  display:none;
+}
+#ul li:hover{
+  background-color:#aaa;
+}
+#content,#tan{
+  display:inline-block;
+}
+#tan{
+  float:right;
+  padding-right: .1rem;
+}
+/*下拉框样式end*/
+.at_least{
+	
+
+	float: right;
+	margin-right: 15%;
+	margin-top: 1%;
+	color: #999;
+	
+	
+}
+.check_text{
+	
+	width:80%;
+	text-align: center;
+	color: #5D5D5D;
+	margin:0 auto;
+	margin-top: 1.5rem;
+	
+	
+}
+.analysis{
+	
+	position: fixed;
+	bottom: 4.8rem;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 3rem;
+	height: .8rem;
+	line-height: .8rem;
+	text-align: center;
+	background: #30ADE5;
+	color: white;
+	font-size: .3rem;
+	border-radius: .2rem;
+
+}

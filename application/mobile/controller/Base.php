@@ -66,7 +66,8 @@ class Base extends Controller
             $this->user = Session::get('user');
             $this->user_id = Session::get('user.id');
         }else{
-            layer_error('请先登录！', false);
+            Session::set('re_url',"/$this->module/$this->controller/$this->action");
+            layer_error('请先登录！', true,'/mobile/index/login');
             $this->redirect('Index/login');
         }
     }

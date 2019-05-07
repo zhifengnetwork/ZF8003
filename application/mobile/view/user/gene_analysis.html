@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>分析结果报告</title>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/gene_analysis.css" />
+	</head>
+	<body>
+		
+	  <div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/bottom_nav/back@2x.png" />
+				</p>
+				<!---->
+				<span>同位点基因查询</span>
+			</div>
+			
+		<div class="zuidadiv">	
+			<!--title-->
+		  
+			<!--表格-->
+		    <table  frame="void" rules="all" class="biaogege">
+		    	<tr style="height:.9rem">
+		    		<td style="text-align: center;">基因座</td>
+		    		<td>每个基因的基因座传递次数</td>
+					</tr>
+					{foreach name="$locus" id="vo" key="key"}
+		    	<tr>
+		    		<td >{$key}</td>
+		    		<td>{$vo}</td>
+		    	</tr>
+					{/foreach}
+		    	
+		    </table>	
+		    
+		    
+		    
+		    <table  frame="void" rules="all" class="biaogege2">
+		    	<tr style="height:.9rem">
+		    		<td style="text-align: center;">平均传递次数</td>
+		    		<td>共祖年代数</td>
+		    	</tr>
+		    	<tr>
+		    		<td>{$pass}</td>
+		    		<td>{$cay}</td>
+		    	</tr>
+			
+		    </table>		 
+		
+		</div>
+						
+			
+	  </div>	
+	  
+	  <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	  <script src="__STATIC__/js/public/public.js"></script>
+	
+	</body>
+</html>
