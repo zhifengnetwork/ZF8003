@@ -352,6 +352,25 @@ class Gene extends Base{
         return $this->fetch();
     }
 
+
+    # 删除用户上传的的数据
+    public function del_import(){
+
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+
+        $filename = Db::name('import_gene')->where('id',$id)->value('filepath');
+        if($filename){
+            $res = Db::name('import_gene')->delete($id);
+            if($res){
+                if(file_exists(ROOT_PATH."public/gene/import/$filename")){
+                    @unlink(ROOT_PATH."public/gene/import/$filename");
+                }
+                return json(['status'=>1]);
+            }
+        }
+        return json(['status'=>0]);
+    }
+
 }
 
 
