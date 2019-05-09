@@ -142,7 +142,9 @@ class Gene extends Base{
         if($key){
             foreach($key as $k=>$v){
                 if($value[$k]){
-                    $w[strtolower($v)] = ['=', $value[$k]*100];
+                    $min = $value[$k]*100-200 > 0 ? $value[$k]*100-200 : 0;
+                    $max = $value[$k]*100+200;
+                    $w[strtolower($v)] = ['between',"$min,$max"];
                     $search[$v] = $value[$k];
                 }
             }
@@ -192,7 +194,9 @@ class Gene extends Base{
         if($check){
             foreach($check as $v){
                 $v = strtolower(str_replace('-','_',$v));
-                $w[$v] = ['=', $info[$v]];
+                $min = $info[$v]-200 > 0 ? $info[$v]-200 : 0;
+                $max = $info[$v]+200;
+                $w[strtolower($v)] = ['between',"$min,$max"];
             }
             $where = $w;
             $where['id'] = ['neq',$id];
