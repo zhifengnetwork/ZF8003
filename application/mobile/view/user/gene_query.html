@@ -42,7 +42,7 @@
 						{/volist}
 					</ul>
 				</div>
-				<p class="at_least">只能添加两份数据</p>
+				<p class="at_least">至少选择两份数据</p>
 			</div>
 			<!--下拉框end-->
 
@@ -68,9 +68,7 @@
 			//下拉框start
 			$("#main").click(function() {
 
-				if(i >= 2) {
-					alert('只能添加两份数据')
-				} else {
+				
 
 					if($("#div").css("display") == "none") { //判断下拉还是上拉
 						$("#tan").text("▼");
@@ -88,7 +86,7 @@
 						}); //设置上拉动画
 
 					}
-				}
+				
 			})
 			var i = 0;
             var cc=[];

@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
-		<title>分析结果报告</title>
+		<title>结果报告</title>
 		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
 		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
 		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public_head.css" />
 		<link rel="stylesheet" href="__STATIC__/css/home/gene_analysis.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/swiper.css" />
 	</head>
+
 	<body>
-		
-	  <div class="wrap_frame">
+
+		<div class="wrap_frame">
 			<!--public head-->
 			<div class="lb_headWrap">
 				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
@@ -20,46 +23,146 @@
 				<!---->
 				<span>同位点基因查询</span>
 			</div>
-			
-		<div class="zuidadiv">	
-			<!--title-->
-		  
-			<!--表格-->
-		    <table  frame="void" rules="all" class="biaogege">
-		    	<tr style="height:.9rem">
-		    		<td style="text-align: center;">基因座</td>
-		    		<td>每个基因的基因座传递次数</td>
+
+			<div class="zuidadiv">
+				<!--title-->
+
+				<!-- Swiper -->
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+
+						{volist name="$data" id="vo"}
+						<div class="swiper-slide">
+							<div>
+									<p class="table_header">{$vo.name1}和{$vo.name2}</p>
+									<table frame="void" rules="all" class="biaogege">
+										<tr style="height:.9rem">
+											<td style="text-align: center;">基因座</td>
+											<td>每个基因的基因座传递次数</td>
+										</tr>
+										{volist name="$vo.locus" id="locus" key="key"}
+											<tr>
+												<td>{$key|strtoupper}</td>
+												<td>{$locus}</td>
+											</tr>
+										{/volist}
+									</table>
+							</div>
+						</div>
+						{/volist}
+					</div>
+				</div>
+
+				<!--<table frame="void" rules="all" class="biaogege2">
+					<tr style="height:.9rem">
+						<td></td>
+						<td style="text-align: center;">平均传递次数</td>
+						<td>共祖年代数</td>
 					</tr>
-					{foreach name="$locus" id="vo" key="key"}
-		    	<tr>
-		    		<td >{$key}</td>
-		    		<td>{$vo}</td>
-		    	</tr>
-					{/foreach}
-		    	
-		    </table>	
-		    
-		    
-		    
-		    <table  frame="void" rules="all" class="biaogege2">
-		    	<tr style="height:.9rem">
-		    		<td style="text-align: center;">平均传递次数</td>
-		    		<td>共祖年代数</td>
-		    	</tr>
-		    	<tr>
-		    		<td>{$pass}</td>
-		    		<td>{$cay}</td>
-		    	</tr>
-			
-		    </table>		 
-		
-		</div>
-						
-			
-	  </div>	
+					<tr>
+						<td>A和B</td>
+						<td>78</td>
+						<td>19</td>
+					</tr>
+					
+					<tr>
+						<td>B和C</td>
+						<td>89</td>
+						<td>19</td>
+					</tr>
+					<tr>
+						<td>C和A</td>
+						<td>89</td>
+						<td>19</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+				</table>-->
+				
+				<!--第二个表格-->
+				<div class="l3h5">
+					{volist name="$data" id="vo"}
+						<div>
+							<ul class="xiala">
+								<li class="xiala_name"><span class="first">{$vo.name1}</span><span class="he">和</span><span class="second">{$vo.name2}</span></li>
+								<li>{$vo.pass}</li>
+								<li>{$vo.cay}</li>
+							</ul>
+							<div style="text-align: left;" class="xiala_text">
+								<p class="fuzhi_first">{$vo.name1}</p>
+								<p class="fuzhi_second">{$vo.name2}</p>
+							</div>
+						</div>
+					{/volist}
+							
+				</div>
 	  
-	  <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
-	  <script src="__STATIC__/js/public/public.js"></script>
-	
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+
+			</div>
+
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/public/swiper.js"></script>
+		<script src="__STATIC__/js/public/public.js"></script>
+		<script>
+			var swiper = new Swiper('.swiper-container');
+			$(".xiala").click(function(){
+				
+				if($(this).parent().find('.xiala_text').is(':visible')){
+					
+					$(this).parent().find('.xiala_text').hide();
+				}else{
+					
+					$(this).parent().find('.xiala_text').show();
+				}
+				
+				console.log($(this).find('.first').text())
+				first_text=$(this).find('.first').text()
+				second_text=$(this).find('.second').text()
+				$(this).parent().find('.xiala_text').find(".fuzhi_first").html(first_text)
+				$(this).parent().find('.xiala_text').find(".fuzhi_second").html(second_text)
+				
+				
+				
+				
+			})
+			
+			
+			
+		</script>
+
 	</body>
+
 </html>

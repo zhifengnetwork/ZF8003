@@ -11,9 +11,7 @@
 	width: 88%;
 	margin: 0 auto;
 	border: 1px solid #CCCCCC;
-	margin-top: .4rem;
-	
-	
+
 }
 tr{
 	
@@ -23,9 +21,9 @@ tr{
 	text-align: center;
 	
 }
-tr td:nth-child(1){
+tr td{
 	
-	width: 40%;
+	width: 33%;
 	
 	
 }
@@ -35,5 +33,101 @@ tr td:nth-child(1){
 	
 	
 }
+.table_header{
+	
+	
+	text-align: center;
+	font-size: .28rem;
+	height: 1rem;
+	line-height: 1rem;
+	
+	
+}
+.swiper-slide{
+	
+	/*border: 1px solid red;*/
+	height: 8rem!important;
+	overflow: auto;
+	
+	
+}
+.l3h5 {
+			width: 87.5%;
+			border: 1px solid #D8D8D8;
+			border-bottom: none;
+			margin: 0 auto;
+			text-align: center;
+			margin-top: 1rem;
+			
+			
+		}
+		
+		.l3h5 ul {
+			width: 100%;
+			display: block;
+			overflow: hidden;
+			border-bottom: 1px solid #D8D8D8;
+			clear: both;
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			height: 30px
+		}
+		
+		.l3h5 ul li {
+			width: 33%;
+			height: 30px;
+			line-height: 30px;
+			float: left;
+			border-right: 1px solid #D8D8D8;
+			box-sizing: border-box;
+			
+		}
+		
+		.l3h5 .l3h5_lastLi,
+		.l3h5 .l3h5_lastUl {
+			width: 33%;
+			border: none;
+			
+		}
+		.l3h5 ul li:last-child{
+			
+			border-right: none;
+			
+			
+		}
+		.xiala_text{
+			
+			display: none;
+			background: #CCCCCC;
+			text-indent: .3rem;
+			
+			
+		}
+		.first,.second{
+			
+			
+			display: inline-block;
+			width: .6rem;
+			/*border: 1px solid green;*/
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis
+			
+			
+			
+			
+			
+			
+		}
+		.he{
+			
+			display: inline-block;
+			width: .3rem;
+			/*border: 1px solid green;*/
+			overflow: hidden;
+			
+			
+		}
 
 
