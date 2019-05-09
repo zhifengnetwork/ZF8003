@@ -59,7 +59,7 @@
                     <td>{$vo.year}年{$vo.month}月{$vo.day}日</td>
 					<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                     <td class="td-manage" data-id="{$vo.id}">
-						<a title="下载数据包" href="/public/gene/zip/{$vo.filepath}" class="ml-5"
+						<a title="下载数据包" href="/public/gene/import/{$vo.filepath}" download="{$vo.name}" class="ml-5"
                             style="text-decoration:none">
                             <i class="Hui-iconfont">&#xe640;</i>
                         </a>

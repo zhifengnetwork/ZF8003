@@ -44,7 +44,7 @@ class Index extends Base
             }
 
             $filename = md5(date('YmdHis',time()).'-'.$year.$month.$day);
-            $dirpath = ROOT_PATH . 'public' . DS . 'gene' . DS . 'zip';
+            $dirpath = ROOT_PATH . 'public' . DS . 'gene' . DS . 'import';
             $info = $file->validate(['ext'=>'zip,rar,xls,xlsx'])->move($dirpath,$filename,false);
             if(!$info){
                 echo "<script>parent.layer.msg('文件上传失败，请重试！',{icon:5});</script>";
