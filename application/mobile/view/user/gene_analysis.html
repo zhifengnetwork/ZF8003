@@ -32,7 +32,7 @@
 					<div class="swiper-wrapper">
 
 						{volist name="$data" id="vo"}
-						<div class="swiper-slide">
+						<div class="swiper-slide" style="border:1px solid #37afe6">
 							<div>
 									<p class="table_header">{$vo.name1}和{$vo.name2}</p>
 									<table frame="void" rules="all" class="biaogege">
@@ -97,6 +97,15 @@
 				<div class="l3h5">
 					{volist name="$data" id="vo"}
 						<div>
+
+								    
+								<ul class="xiala">
+
+											<li class="xiala_name"></li>
+											<li>平均传递次数</li>
+											<li>共祖年代数</li>
+								</ul>
+									 
 							<ul class="xiala">
 								<li class="xiala_name"><span class="first">{$vo.name1}</span><span class="he">和</span><span class="second">{$vo.name2}</span></li>
 								<li>{$vo.pass}</li>
