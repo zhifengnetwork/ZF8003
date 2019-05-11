@@ -4,6 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use think\Session;
+
 class Index extends Base
 {
     
@@ -19,6 +20,7 @@ class Index extends Base
      */
     public function import_data()
     {
+        
         if($_POST){
             
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -50,7 +52,35 @@ class Index extends Base
                 echo "<script>parent.layer.msg('文件上传失败，请重试！',{icon:5});</script>";
                 exit;
             }
+            $savename = $info->getSaveName();
+            if(strpos($savename, 'xls') || strpos($savename, 'xlsx')){
+                $file_name = ROOT_PATH.'public/gene/import/'.$savename;
+                vendor ('PHPExcel.PHPExcel');
+                $objPHPExcel = new \PHPExcel();
+                $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+                $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');
+                $excel_array = $obj_PHPExcel->getsheet(0)->toArray(); //转换为数组格式
+                if($excel_array[0][0] == '结果报告' && $excel_array[2][0] == '29Y-STR基因座分型结果'){
+                    $e['user_id'] = $this->user_id ? $this->user_id : 0;
+                    $e['name'] = isset($excel_array[1][0]) ? trim($excel_array[1][0]) : '';
+                    $e['addtime'] = $e['utime'] = time();
+                    $completion = '';
+                    foreach($excel_array as $k=>$v){
+                        if($k > 3){
+                            if($v && isset($v[0]) && isset($v[1])){
+                                if(Standard_Gene($v[0])){
+                                    $e[strtolower($v[0])] = $v[1] ? (double)$v[1] * 100 : 0;
+                                }else{
+                                    $completion[strtolower($v[0])] = $v[1] ? (double)$v[1] * 100 : 0;
+                                }
+                            }
+                        }
+                    }
 
+                    Db::name('gene')->insert($e);
+                }
+            }
+            
             $res = Db::name('import_gene')->insert([
                 'user_id' => $user_id,
                 'name' => $name,
@@ -58,7 +88,7 @@ class Index extends Base
                 'year' => $year,
                 'month' => $month,
                 'day' => $day,
-                'filepath' => $info->getSaveName(),
+                'filepath' => $savename,
                 'addtime' => time(),
             ]);
             
@@ -104,7 +134,7 @@ class Index extends Base
                 $data['name'] = $name;
                 $data['user_id'] = $user_id;
                 $data['completion'] = $completion;
-                $data['addtime'] = time();
+                $data['addtime'] = $data['utime'] = time();
 
                 $res = Db::name('gene')->insert($data);
                 if($res){
