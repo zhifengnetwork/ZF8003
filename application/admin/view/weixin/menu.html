@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<link rel="stylesheet" type="text/css" href="/__STATIC__/weixin/weixin_web_viwe.css" />
+<style>
+
+</style>
+<body style="background-color:#f4f5f9; padding:20px; overflow: hidden;">
+
+    <div class="page-container webcontent">
+            <!--左边的微信页面-->
+            <div class="row cl webviwe">
+                <img class="head" src="/public/static/admin/weixin/weixin_web_viwe.png">
+
+                <div class="bottom">
+                    <ul class="web_defalut_menu">
+                        <li>菜单1</li>
+                        <li>菜单2</li>
+                        <li>菜单3</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!--右边的微信菜单设置页面-->
+            <div class="row cl confviwe">
+
+                <p class="conf_title">菜单设置 <a class="conf_title_delmenu">删除菜单</a></p>
+                <article class="page-container" >
+                    <form class="form form-horizontal">
+                        <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">菜单名称：</label>
+                            <div class="formControls col-xs-8 col-sm-5">
+                                <input type="text" class="input-text" value="" placeholder="" id="menu_name" name="menu_name">
+                            </div>
+                        </div>
+    
+                        <div class="row cl">
+                            <label class="form-label col-xs-4 col-sm-2">菜单内容：</label>
+                            <div class="formControls col-xs-8 col-sm-6 skin-minimal">
+                                <div class="radio-box">
+                                    <input name="menu_type" type="radio" id="menu_type-1" checked>
+                                    <label for="menu_type-1">发送消息</label>
+                                </div>
+                                <div class="radio-box">
+                                    <input type="radio" id="menu_type-2" name="menu_type">
+                                    <label for="menu_type-2">跳转链接</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="conf_url_content">
+                            <p class="conf_url_title">订阅者点击该子菜单会跳到以下链接</p>
+                            <div class="row cl">
+                                <label class="form-label col-xs-4 col-sm-2">页面地址：</label>
+                                <div class="formControls col-xs-8 col-sm-9">
+                                    <input type="text" class="input-text" value="" placeholder="" id="menu_name" name="menu_name">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    
+                </article>
+                
+            </div>
+    </div>
+
+
+
+
+
+
+
+{include file='layout/footer' /}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/__STATIC__/weixin/weixin_web_viwe.js"></script> 
+<script type="text/javascript">
+    function open_closeAll(){
+        layer.closeAll();
+        window.location.replace(location.href);
+    }
+
+</script>
+</body>
+
+</html>
