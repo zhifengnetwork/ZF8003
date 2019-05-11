@@ -51,106 +51,30 @@
 						</div>
 						{/volist}
 					</div>
-<<<<<<< HEAD
 				</div> -->
-=======
-				</div>
-
-				<!--<table frame="void" rules="all" class="biaogege2">
-					<tr style="height:.9rem">
-						<td></td>
-						<td style="text-align: center;">平均传递次数</td>
-						<td>共祖年代数</td>
-					</tr>
-					<tr>
-						<td>A和B</td>
-						<td>78</td>
-						<td>19</td>
-					</tr>
-					
-					<tr>
-						<td>B和C</td>
-						<td>89</td>
-						<td>19</td>
-					</tr>
-					<tr>
-						<td>C和A</td>
-						<td>89</td>
-						<td>19</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-
-				</table>-->
-				
-				
->>>>>>> 7cbaabe839a6e2c312c5718e9e147ff4b698ce63
 				<!--第二个表格-->
 				<div class="l3h5">
 					<ul class="xiala">
 						<li class="xiala_name"></li>
-						<li>平均传递次数</li>
+						<!-- <li>平均传递次数</li> -->
 						<li>共祖年代数</li>
 					</ul>
 					{volist name="$data" id="vo"}
 						<div>
-<<<<<<< HEAD
-
-								    
-								<ul class="xiala">
-
-											<li class="xiala_name"></li>
-											<!-- <li>平均传递次数</li> -->
-											<li>共祖年代数</li>
-								</ul>
 									 
-=======
->>>>>>> 7cbaabe839a6e2c312c5718e9e147ff4b698ce63
 							<ul class="xiala">
 								<li class="xiala_name"><span class="first">{$vo.name1}</span><span class="he">和</span><span class="second">{$vo.name2}</span></li>
 								<!-- <li>{$vo.pass}</li> -->
 								<li>{$vo.cay}</li>
 							</ul>
 							<div style="text-align: left;" class="xiala_text">
-								<p class="fuzhi_first">{$vo.name1}</p>
+								<!-- <p class="fuzhi_first">{$vo.name1}</p> -->
 								<p class="fuzhi_second">{$vo.name2}</p>
 							</div>
 						</div>
 					{/volist}
 							
 				</div>
-	  
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-
 			</div>
 
 		</div>
@@ -176,13 +100,7 @@
 				$(this).parent().find('.xiala_text').find(".fuzhi_first").html(first_text)
 				$(this).parent().find('.xiala_text').find(".fuzhi_second").html(second_text)
 				
-				
-				
-				
 			})
-			
-			
-			
 		</script>
 
 	</body>
