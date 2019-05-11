@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title class="pageTopTitle" page-id="0">导入数据</title>
+    <link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
+    <link rel="stylesheet" href="__STATIC__/css/home/biaoge_bianji.css">
+    
+</head>
+<body>
+    <div class="wrapper">
+        <!-- 头部 -->
+        <div class="header"></div>
+       
+           <!-- 内容 -->
+          <div class="content inner-wrap">
+         
+            
+                 <div class="l3h5">
+					<div class="l3h5d">
+                        <form method="POST" target="ajaxR" id="form">
+						<ul class="xiala ">
+							
+							<li style="width: 100%;font-size: 20px;">结果报告</li>
+							
+						</ul>
+						<ul class="xiala ">
+							
+							<li style="width: 100%;font-size: 20px;">
+								<input type="text" placeholder="请输入您的姓名" name="name" style="color: #AEAEAE;"/>
+							</li>
+							
+						</ul>
+						
+						<ul class="xiala ">
+							
+							<li style="width: 100%;font-size: 20px;">29Y-STR基因座分型结果</li>
+							
+						</ul>
+						<ul class="xiala">
+							
+							<li>基因座/样本号</li>
+							<li>频度</li>
+						</ul>
+						<ul class="xiala">
+							
+							<li><input type="text" name="key[]" value="DYS19"/></li>
+							<li><input type="text" name="value[]" /></li>
+						</ul>
+						<ul class="xiala">
+							
+							<li><input type="text" value="DYS389I"/></li>
+							<li><input type="text" name="value[]" /></li>
+						</ul>
+						<ul class="xiala">
+							
+							<li><input type="text" name="key[]" value="DYS389b"/></li>
+							<li><input type="text" name="value[]" /></li>
+						</ul>
+						<ul class="xiala">
+							
+							<li><input type="text" name="key[]" value=""/></li>
+							<li><input type="text" name="value[]" /></li>
+						</ul>
+						<ul class="xiala">
+							
+							<li><input type="text" name="key[]" /></li>
+							<li><input type="text" name="value[]" /></li>
+						</ul>
+                    </form>
+					</div>	
+				
+					
+		        </div>
+                <p class="add">添加一行</p>
+                
+                <a onclick="submit();" style="display:inline-block;width:250px;height:50px; line-height: 50px;text-align:center;margin:20px 0 0 40%;background-color:#37afe6;color:#fff;border-radius: 8px;">提交保存</a>
+          </div> 
+          
+        <!-- 底部 -->
+        <div class="footer"></div>
+        <iframe name="ajaxR" style="display:none;"></iframe>
+    </div>  
+
+    <script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script> 
+    <script src="__STATIC__/js/public/header.js"></script>  
+    <script src="__STATIC__/js/public/footer.js"></script>
+    <script src="__STATIC__/js/public/selectDate.js"></script>
+	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+    <script>
+    	$(".add").click(function(){
+    		$(".l3h5d").append('<ul class="xiala"><li><input type="text" name="key[]" /></li><li><input type="text" name="value[]" /></li></ul>')
+    	})
+    	
+    	var sub = 1;
+
+        function submit(){
+            if(sub == 0){
+                return false;
+            }
+            
+            sub = 0;
+
+            $('#form').submit();
+            
+        }
+    	
+    	function error(msg){
+            layer.msg(msg,{icon:5});
+            sub = 1;
+        }
+    	
+        function success(msg){
+            layer.msg(msg,{icon:6});
+            setTimeout(function(){
+                window.location.replace(location.href);
+            },1500);
+            sub = 1;
+        }
+    	
+        </script>
+</body>
+</html>

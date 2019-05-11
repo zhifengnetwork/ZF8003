@@ -68,18 +68,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="groupl" style="display:inline-block;">
+                    <div class="form-group" style="margin-top:20px;">
+                        <div class="groupl">
                             文件：
                         </div>
-                        <div class="groupr upload" style="display:inline-block;">
-                            <a href="javascript:void(0)" id="filename">点击选择文件</a>
-                            <input type="file" id="file" name="file" class="selectFile" >
-                           
+                        <div class="groupr upload">
+                            <a href="javascript:void(0)" class="check_zip">点击选择文件</a>
+                              <input type="file" name="myfile" id="myfile" value="" onchange="checkField()" class="selectFile"/>
+                            	<img src="__STATIC__/images/home/shibai.png" class="cuo_pic" />
+                            	<img src="__STATIC__/images/home/dui_pic.png" class="dui_pic" />
+                             <p class="tips">请直接上传您从测序厂商获取的原始.ZIP .RAR .XLS .XLSX格式</p>
+                            
                         </div>
-                       
                     </div>
-                    <p class="tips">请直接上传您从测序厂商获取的原始文件，支持 .ZIP .RAR .XLS .XLSX 格式</p>
+                    <a style="float: left;" href="/index/index/online_import_data">在线填写数据</a>
+                    <a href="__STATIC__/检查结果.xlsx" download="检查结果.xlsx" class="downloadss">下载基因模板:检查结果.xlsx</a>
                     <div class="btn">
                         <button type="submit">确认</button>
                     </div>
@@ -130,6 +133,22 @@
                 return '点击选择文件';
             }
             return fileName;
+        }
+
+        function checkField(){
+           if(myfile.files[0] == undefined){
+                  $(".check_zip").html("导入失败")
+                  $(".check_zip").css("background-color","red")
+                  $(".dui_pic").hide()
+                  $(".cuo_pic").show()
+            }else{
+                $(".check_zip").html("导入完成")
+                $(".check_zip").css("background-color","#00FF00")
+                $(".cuo_pic").hide()
+                $(".dui_pic").show()
+                var filevalue = myfile.value;
+           }
+          
         }
         </script>
 </body>

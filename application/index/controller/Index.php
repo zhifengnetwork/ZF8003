@@ -37,7 +37,7 @@ class Index extends Base
                 exit;
             }
 
-            $file = $file = request()->file('file');
+            $file = $file = request()->file('myfile');
             if(!$file){
                 echo "<script>parent.layer.msg('请选择您要上传的检测报告',{icon:5});</script>";
                 exit;
@@ -73,6 +73,51 @@ class Index extends Base
             exit;
         }
 
+        return $this->fetch();
+    }
+
+    # 在线填写报告
+    public function online_import_data(){
+        
+        if($_POST){
+            $key = isset($_POST['key']) ? $_POST['key'] : array();
+            $value = isset($_POST['value']) ? $_POST['value'] : array();
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+
+            if(!$name){
+                echo "<script>parent.error('请输入您的姓名');</script>";
+                exit;
+            }
+            if($key){
+                $completion = '';
+                foreach($key as $k=>$v){
+                    if($v){
+                        if(Standard_Gene($v)){
+                            $data[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
+                        }else{
+                            $completion[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
+                        }
+                    }
+                }
+
+                $user_id = $this->user_id ? $this->user_id : 0;
+                $data['name'] = $name;
+                $data['user_id'] = $user_id;
+                $data['completion'] = $completion;
+                $data['addtime'] = time();
+
+                $res = Db::name('gene')->insert($data);
+                if($res){
+                    echo "<script>parent.success('提交成功！正在刷新...');</script>";
+                    exit;
+                }
+            }
+
+            echo "<script>parent.error('操作失败，请重试！');</script>";
+            exit;
+        }
+
+        
         return $this->fetch();
     }
 
