@@ -11,10 +11,21 @@ class Weixin extends Base
     # 自定义菜单
     public function menu()
     {
-        // $this->create_menu();
+        
+
+
 
 
         return $this->fetch();
+    }
+
+    # 自定义菜单查询
+    public function menu_query(){
+        $this->get_weixin_global_token();
+        $url ="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=".$this->weixin_config['weixin_access_token'];
+        $res = httpRequest($url,'GET');
+        $res = json_decode($res,true);
+        dump($res);exit;
     }
 
     # 创建自定义菜单

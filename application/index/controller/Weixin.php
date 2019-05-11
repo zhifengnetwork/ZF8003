@@ -13,8 +13,10 @@ class Weixin{
         $this->wx_config(true);
 
         $data = file_get_contents("php://input");
-
-        # 接入微信服务器 | 验证接入 | 接入成功，自动变更服务器接入状态 wait_access = 1
+        
+        # 接入微信服务器 | 验证接入 
+        # 接入成功，自动变更服务器接入状态 wait_access = 1 
+        # 清空自定义菜单
         if ($this->weixin_config['wait_access'] == 0) {
             ob_clean();
             $signature = isset($_GET["signature"]) ? $_GET["signature"] : '';
@@ -31,23 +33,19 @@ class Weixin{
             if($tmpStr == $signature){
                 echo $echostr;
                 Db::name('config')->where(['name'=>'wait_access', 'type'=>'weixin_config'])->update(['value' => 1]);
+                Db::name('wx_menu')->where(['id' => ['>', '0']])->delete();
             }else{
                 echo false;
             }
             exit;
         }
 
-
+        
         if($data){
             $re = $this->xmlToArray($data);
             Db::name('wx_temp')->insert(['content'=>json_encode($re)]);
 
             $this->SaveWxPushMessage($re);
-
-
-
-
-
             
         }
 

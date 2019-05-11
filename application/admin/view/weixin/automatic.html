@@ -7,25 +7,7 @@
 			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
 	<div class="page-container">
-		<form method="GET" action="">
-			<div class="text-c"> 
-				标题：
-				<input type="text" class="input-text" style="width:250px" placeholder="输入标题名称" value="{$search['name'] ? $search['name'] : ''}" name="search[name]">
-				会员名称或账号：
-				<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称或账号" value="{$search['user'] ? $search['user'] : ''}" name="search[user]">
-				添加时间：
-				<input type="text" {literal}
-					onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
-					value="{$search['datemin'] ? $search['datemin'] : ''}" id="datemin" name="search[datemin]" class="input-text Wdate" style="width:180px;">
-				-
-				<input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
-					{/literal} value="{$search['datemax'] ? $search['datemax']: ''}" id="datemax" name="search[datemax]" class="input-text Wdate"
-					style="width:180px;">
-				<button type="submit" class="btn btn-success" id="" name="">
-					<i class="Hui-iconfont">&#xe665;</i>
-					搜索</button>
-			</div>
-		</form>
+		
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l">
                  <a href="javascript:;" onclick="gene_info('添加基因数据')" class="btn btn-primary radius">

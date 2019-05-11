@@ -33,7 +33,7 @@ class Base extends Controller
         
         if ($this->controller != 'Login' && !Session::has('admin')){
             Session::clear();
-            $this->redirect('Login/index');
+            $this->redirect('/Admin/Login/index');
         }
 
         if($this->controller == 'Login' && $this->action == 'login' && Session::has('admin')){
@@ -61,7 +61,11 @@ class Base extends Controller
     # 获取菜单
     public function get_menu(){
 
-        $global_menu_list = Db::query("select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc");
+        $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc";
+        if($this->ip !== '119.131.61.72'){
+            $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 and id != 32 order by `sort` desc,`id` asc";
+        }
+        $global_menu_list = Db::query($sql);
         if($global_menu_list){
             foreach($global_menu_list as $k => $v){
                 $global_menu_list[$k]['last'] = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'  order by `sort` desc,`id` asc");
