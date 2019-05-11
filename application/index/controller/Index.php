@@ -62,7 +62,8 @@ class Index extends Base
                 $excel_array = $obj_PHPExcel->getsheet(0)->toArray(); //转换为数组格式
                 if($excel_array[0][0] == '结果报告' && $excel_array[2][0] == '29Y-STR基因座分型结果'){
                     $e['user_id'] = $this->user_id ? $this->user_id : 0;
-                    $e['name'] = isset($excel_array[1][0]) ? trim($excel_array[1][0]) : '';
+                    $e['name'] = $name;
+                    $e['desc'] = isset($excel_array[1][0]) ? trim($excel_array[1][0]) : '';
                     $e['addtime'] = $e['utime'] = time();
                     $completion = '';
                     foreach($excel_array as $k=>$v){
