@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css">
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/shaixuan.css" />
+		<script src="__STATIC__/js/public/rem.js"></script>
+	</head>
+
+	<body>
+		<div>
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" onclick="returnFun()" />
+					<span class="lb_headWrap_return_img22" style="display: none;">取消</span>
+				</p>
+				<span>基因数据</span>
+			</div>
+			<!--表格区域-->
+			<div class="table">
+
+				<p class="tianjia">添加基因位点</p>
+				<!--第二屏表格-->
+
+				<!--表格-->
+				<table frame="void" rules="all" class="biaogege">
+					<tr style="height:.9rem">
+						<td style="text-align: center;">基因座</td>
+						<td>频率</td>
+					</tr>
+				</table>
+
+				<div style="width: 5.226rem;margin: auto;height: .9rem;border: .02rem solid #CCCCCC;border-top: none;position: relative;">
+
+					<div class="left">
+
+						<div class="left_left">
+
+							<!--下拉框start-->
+							<div>
+								<div id="main">
+									<div id="content">请选择数据</div>
+									<div id="tan">▲</div>
+									<!--▲▼-->
+								</div>
+								<div id="div">
+									<ul id="ul">
+                                        {volist name="gene_list" id="vo"}
+                                        <li onclick="change(this,'{$vo}')">{$vo|strtoupper}</li>
+                                        {/volist}
+									</ul>
+								</div>
+							</div>
+							<!--下拉框end-->
+						</div>
+
+					</div>
+
+				</div>
+				<div class="right">
+					<input class="right_right" type="text" value="0"/>
+				</div>
+				<div class="sure">确 定</div>
+			</div>
+			<div class="tip_ear">
+				<p class="tip">查询的基因点数越多，数据越精细</p>
+				<p class="tip">基因查询匹配选定值上下浮动2个点</p>
+            </div>
+            
+            <form method="GET" action="/mobile/user/gene_matching_result" id="form">
+                <!--内容回显区-->
+                <ul class="huixiang_ear"></ul>
+                
+                <!--搜索按钮-->
+                <div class="search_button" onclick="submit();">搜索</div>
+            </form>
+			
+			
+		</div>
+
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script>
+
+            function submit(){
+                
+                $('#form').submit();
+            }
+			//下拉框start
+			$("#main").click(function() {
+					if($("#div").css("display") == "none") { //判断下拉还是上拉
+						$("#tan").text("▼");
+						$("#div").slideDown(); //设置下拉动画
+						$(".at_least").hide();
+					} else {
+						$("#tan").text("▲");
+						$("#div").slideUp(400, function() {
+							$(".at_least").show();							
+						}); //设置上拉动画
+					}
+			})
+		    var a='';
+			function change(e, id) { //把内容写入输入的div中
+
+				 a = $(e).text();
+				$("#content").text(a);
+
+				if($("#div").css("display") !== "none") {
+					$(".at_least").hide();
+					$("#div").slideUp(400, function() {
+						$(".at_least").show();
+					});
+					$("#tan").text("▲");
+				}
+			}
+			var bval=''
+			$(".sure").click(function(){
+						
+				if(a==''){
+					alert("请您先选择基因座")
+                    return false;
+				}else if($(".right_right").val() == '' || $(".right_right").val() == '0'){
+					alert("请您先输入频率")
+                    return false;
+				}else{
+                    bval=$(".right_right").val()
+                    let _tpl = `
+                        <li style="width:49%;">
+                            <div>
+                                <span class="jiyingzuo">`+a+`</span>:<span class="pinglv">`+bval+`</span>
+                                <input type="hidden" name="keyworks[`+a+`]" value="`+bval+`" />
+                            </div>
+                        </li>`;
+					$(".huixiang_ear").append(_tpl)
+				 }
+				
+			})
+		</script>
+
+	</body>
+
+</html>

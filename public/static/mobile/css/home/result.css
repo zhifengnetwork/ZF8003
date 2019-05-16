@@ -1,0 +1,31 @@
+.biaogege{
+	
+	
+	width: 88%;
+	margin: 1.5rem auto 0 auto;
+	border: .01rem solid #37afe6;
+	
+
+}
+.biaogege2{
+	
+	width: 88%;
+	margin: .3rem auto;
+	border: .01rem solid #37afe6;
+	
+}
+tr{
+	
+	height: .7rem;
+	line-height: .7rem;
+	font-size: .25rem;
+	text-align: center;
+	
+	
+}
+tr td{
+
+   width:25%;
+	
+	
+}

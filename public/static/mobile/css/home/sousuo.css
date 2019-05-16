@@ -102,18 +102,17 @@
 	display: none;
 	
 }
-.gene_chaxun{
+.gene_fengxi{
 	
 	width: 4.3rem;
 	height: .8rem;
 	line-height: .8rem;
 	text-align: center;
-	margin: auto;
 	background: #30ADE5;
-	margin-top: 1rem;
 	color: white;
 	font-size: .3rem;
 	border-radius: .2rem;
+	margin: 1rem auto;
 	
 	
 	
@@ -130,8 +129,6 @@
 	color: white;
 	font-size: .3rem;
 	border-radius: .2rem;
-	
-	
 	
 }
 

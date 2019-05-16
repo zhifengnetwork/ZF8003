@@ -78,6 +78,118 @@ class User extends Base
         return $this->fetch();
     }
 
+    # 基因座筛选匹配
+    public function gene_matching(){
+
+
+
+        $this->assign('gene_list', Standard_Gene());
+        return $this->fetch();
+    }
+
+    # 基因座筛选匹配结果
+    public function gene_matching_result(){
+
+        $keyworks = isset($_GET['keyworks']) ? $_GET['keyworks'] : '';
+        if(!$keyworks){
+            layer_error('参数错误！');
+        }
+        $w = '';
+        foreach($keyworks as $k => $v){
+            if(Standard_Gene($k)){
+                $v = (double)$v;
+                $min = $v*100-200 > 0 ? $v*100-200 : 0;
+                $max = $v*100+200;
+                $w[strtolower($k)] = ['between',"$min,$max"];
+            }
+        }
+        if(!$w){
+            layer_error('参数错误！');
+        }
+        $list = Db::name('gene')->field('id,name')->where($w)->order('utime desc')->select();
+        
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+
+    # 基因检测结果
+    public function gene_result(){
+        $ids = isset($_GET['ids']) ? explode(',', $_GET['ids']) : '';
+        if(!$ids){
+            layer_error('参数错误！');
+        }
+        $calculation = Db::name('config')->where(['value'=>['>', 0], 'type'=>['=', 'gene_config_calculation']])->field('name')->select();
+        if(!$calculation){
+            layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
+        }
+        foreach($calculation as $v){
+            $mutation[] = $v['name'];
+        }
+
+        $mutation = implode(",", $mutation);
+        $config_mutation = Db::name('config')->where(['type'=>['=', 'gene_config_mutation'], 'name'=>['in',"$mutation"]])->field('name,value')->select();
+        foreach($config_mutation as $v){
+            if($v['value'] == 0){
+                layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
+            }
+            $config[$v['name']] = $v['value'];
+        }
+
+        foreach($ids as $v){
+            $i = Db::name('gene')->where( 'id', $v)->find();
+            if(!$i){
+                layer_error('非法访问无权限的资源！',true);
+            }
+            $list[] = $i;
+        }
+        $data = array();
+        $count = count($list);
+        foreach($list as $k=>$v){
+            if($k < $count - 1){
+                foreach($list as $ke=>$va){
+                    if($ke > $k){
+                        $r['id1'] = $v['id'];
+                        $r['id2'] = $va['id'];
+                        $r['name1'] = $v['name'] ? $v['name'] : '--';
+                        $r['name2'] = $va['name'] ? $va['name'] : '--';
+                        $r['nation1'] = $v['nation'] ? $v['nation'] : '--';
+                        $r['nation2'] = $va['nation'] ? $va['nation'] : '--';
+                        $r['region1'] = $v['region'] ? $v['region'] : '--';
+                        $r['region2'] = $va['region'] ? $va['region'] : '--';
+
+                        # 实际突变 | 基因座
+                        $diff = $locus = array();
+                        # 平均传递值 | 共祖年
+                        $pass = $cay = 0;
+
+                        foreach($config as $key=>$val){
+                            $d = math_diff($v[$key],$va[$key]);
+                            if($d > 0){
+                                $d = $d * 0.01;
+                            }
+                            $diff[$key] = $d;
+                            $loc = $d > 0 && $val > 0 ? $d/$val : 0;
+                            $locus[$key] = $loc;
+                            $pass = $pass + $loc;
+                        }
+                        
+                        $pass = $pass/count($locus);
+                        $cay = $pass * 25 / 2;
+
+                        $r['diff'] = $diff;
+                        $r['locus'] = $locus;
+                        $r['pass'] = $pass;
+                        $r['cay'] = intval($cay*100)/100;
+                        $data[] = $r;
+                    }
+                }
+            }
+        }
+        $this->assign('data', $data);
+        return $this->fetch();
+
+    }
+
     # 基因查询报告
     public function gene_analysis(){
         $q = isset($_GET['q']) ? explode(',',$_GET['q']) : '';
@@ -150,57 +262,6 @@ class User extends Base
 
         $this->assign('data', $data);
         return $this->fetch();
-        exit;
-
-        // $q1 = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$q[0]])->find();
-        // $q2 = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$q[1]])->find();
-
-        // if(!$q1 || !$q2){
-        //     layer_error('非法访问，无效的请求参数！',true);
-        // }
-
-        // $calculation = Db::name('config')->where(['value'=>['>', 0], 'type'=>['=', 'gene_config_calculation']])->field('name')->select();
-        // if(!$calculation){
-        //     layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
-        // }
-
-        // foreach($calculation as $v){
-        //     $mutation[] = $v['name'];
-        // }
-
-        // $mutation = implode(",", $mutation);
-        // $config_mutation = Db::name('config')->where(['type'=>['=', 'gene_config_mutation'], 'name'=>['in',"$mutation"]])->field('name,value')->select();
-        // foreach($config_mutation as $v){
-        //     if($v['value'] == 0){
-        //         layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
-        //     }
-        //     $config[$v['name']] = $v['value'];
-        // }
-
-        // # 实际突变 | 基因座
-        // $diff = $locus = array();
-        // # 平均传递值 | 共祖年
-        // $pass = $cay = 0;
-        
-        // foreach($config as $k=>$v){
-        //     $d = math_diff($q1[$k],$q2[$k]);
-        //     if($d > 0){
-        //         $d = $d * 0.01;
-        //     }
-        //     $diff[$k] = $d;
-        //     $loc = $d > 0 && $v > 0 ? $d/$v : 0;
-        //     $locus[$k] = $loc;
-        //     $pass = $pass + $loc;
-        // }
-        
-        // $pass = $pass/count($locus);
-        // $cay = $pass * 25 / 2;
-
-        // dump([$diff,$locus,$pass,$cay]);exit;
-        // $this->assign('locus', $locus);
-        // $this->assign('pass', $pass);
-        // $this->assign('cay', $cay);
-        // return $this->fetch();
     }
 
 
