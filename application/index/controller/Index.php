@@ -61,16 +61,15 @@ class Index extends Base
                 $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');
                 $excel_array = $obj_PHPExcel->getsheet(0)->toArray(); //转换为数组格式
 
-                if($excel_array[0][0] == '结果报告' && $excel_array[2][0] == '29Y-STR基因座分型结果'){
+                if($excel_array[0][0] == '结果报告' && $excel_array[3][0] == '29Y-STR基因座分型结果'){
                     $e['user_id'] = $this->user_id ? $this->user_id : 0;
                     $e['name'] = $name;
                     $e['desc'] = isset($excel_array[1][0]) ? trim($excel_array[1][0]) : '';
+                    $e['nation'] = isset($excel_array[1][1]) ? trim($excel_array[1][1]) : '';
                     $e['addtime'] = $e['utime'] = time();
                     $completion = '';
-                    // dump($excel_array);exit;
                     foreach($excel_array as $k=>$v){
-                        if($k > 3){
-                            
+                        if($k > 4){
                             if($v && isset($v[0]) && isset($v[1])){
                                 
                                 if(Standard_Gene($v[0])){
