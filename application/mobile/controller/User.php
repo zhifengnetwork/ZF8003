@@ -264,6 +264,93 @@ class User extends Base
         return $this->fetch();
     }
 
+    # 基因检测报告 - 列表
+    public function gene_analysis_list(){
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        if(!$id){
+            layer_error('请选择进行匹对的基因数据');
+        }
+        $calculation = Db::name('config')->where(['value'=>['>', 0], 'type'=>['=', 'gene_config_calculation']])->field('name')->select();
+        if(!$calculation){
+            layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
+        }
+
+        foreach($calculation as $v){
+            $mutation[] = $v['name'];
+        }
+
+        $mutation = implode(",", $mutation);
+        $config_mutation = Db::name('config')->where(['type'=>['=', 'gene_config_mutation'], 'name'=>['in',"$mutation"]])->field('name,value')->select();
+        foreach($config_mutation as $v){
+            if($v['value'] == 0){
+                layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
+            }
+            $config[$v['name']] = $v['value'];
+        }
+
+        $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        if(!$i){
+            layer_error('非法访问，无权限的资源数据！');
+        }
+        $w['id'] = ['<>', $id];
+        foreach($config as $k => $v){
+            $val = (double)$i[$k];
+            $min = $val-200 > 0 ? $val-200 : 0;
+            $max = $val+200;
+            $w[strtolower($k)] = ['between',"$min,$max"];
+        }
+        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->select();
+        if(!$list){
+            layer_error('抱歉！数据库没有匹配到相应的基因信息');
+        }
+        
+        $data = array();
+        $count = count($list);
+        foreach($list as $v){
+            $r['id1'] = $i['id'];
+            $r['id2'] = $v['id'];
+            $r['name1'] = $i['name'] ? $i['name'] : '--';
+            $r['name2'] = $v['name'] ? $v['name'] : '--';
+            $r['nation1'] = $i['nation'] ? $i['nation'] : '--';
+            $r['nation2'] = $v['nation'] ? $v['nation'] : '--';
+            $r['region1'] = $i['region'] ? $i['region'] : '--';
+            $r['region2'] = $v['region'] ? $v['region'] : '--';
+
+            # 实际突变 | 基因座
+            $diff = $locus = array();
+            # 平均传递值 | 共祖年
+            $pass = $cay = 0;
+
+            foreach($config as $key=>$val){
+                $d = math_diff($i[$key],$v[$key]);
+                if($d > 0){
+                    $d = $d * 0.01;
+                }
+                $diff[$key] = $d;
+                $loc = $d > 0 && $val > 0 ? $d/$val : 0;
+                $locus[$key] = $loc;
+                $pass = $pass + $loc;
+            }
+            
+            $pass = $pass/count($locus);
+            $cay = $pass * 25 / 2;
+
+            // $r['diff'] = $diff;
+            // $r['locus'] = $locus;
+            // $r['pass'] = $pass;
+            $r['cay'] = intval($cay*100)/100;
+            $data[] = $r;
+            
+        }
+        
+        $last_names = array_column($data,'cay');
+        array_multisort($last_names,SORT_ASC,$data);
+        // dump($data);exit;
+
+        $this->assign('data', $data);
+        return $this->fetch();
+    }
+
 
     # 删除基因数据
     public function del_my_gene(){

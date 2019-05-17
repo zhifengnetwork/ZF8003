@@ -46,8 +46,8 @@
 			
 			
 			
-			<div class="gene_chaxun" onclick="window.location.href='/mobile/user/gene_query'">基因查询</div>
-			<div class="shaixuan" onclick="window.location.href='/mobile/user/gene_matching'">基因筛选</div>
+			<!-- <div class="gene_chaxun" onclick="window.location.href='/mobile/user/gene_query'">基因查询</div>
+			<div class="shaixuan" onclick="window.location.href='/mobile/user/gene_matching'">基因筛选</div> -->
 
 		</div>
 		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
@@ -139,7 +139,8 @@
 				var id = $(this).attr('item');
 				if($(".span_right").css('display')=="none"){
 					
-					$(location).attr('href',"/mobile/user/gene_info?id="+id);
+					// $(location).attr('href',"/mobile/user/gene_info?id="+id);
+					$(location).attr('href',"/mobile/user/gene_analysis_list?id="+id);
 	
 				}
 			
