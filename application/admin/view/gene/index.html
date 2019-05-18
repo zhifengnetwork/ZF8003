@@ -45,9 +45,11 @@
 				</tr>
 				<tr class="text-c">
                     <th width="30">ID</th>
-                    <th width="250">标题名称</th>
-                    <th width="250">备注描述</th>
+                    <th width="200">标题名称</th>
                     <th width="100">所属会员</th>
+                    <th width="100">民族</th>
+                    <th width="100">地域</th>
+                    <th width="250">备注描述</th>
 					<th width="100">添加时间</th>
 					<th width="100">更新时间</th>
 					<th width="60">详情</th>
@@ -58,9 +60,11 @@
                 {volist name="list" id="vo"}
                 <tr class="text-c">
                     <td>{$vo.id}</td>
-                    <td>{$vo.name}</td>
-                    <td>{$vo.desc}</td>
+					<td>{$vo.name}</td>
                     <td>{$user_name[$vo.user_id]}</td>
+					<td>{$vo.nation}</td>
+					<td>{$vo.region}</td>
+                    <td>{$vo.desc}</td>
                     <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
 					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
                     <td class="td-manage" data-id="{$vo.id}">

@@ -29,7 +29,7 @@ class Gene extends Base{
             $where['addtime'] = ['<=', strtotime($search['datemax'])];
         }
         
-        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->paginate(15);
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime,nation,region')->where($where)->order('utime desc')->paginate(15);
         
         $count = Db::name('gene')->where($where)->count();
         
@@ -150,7 +150,7 @@ class Gene extends Base{
             }
             $where = $w;
         }
-        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->select();
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime,nation,region')->where($where)->order('utime desc')->select();
         $count = Db::name('gene')->where($where)->count();
         
         $user_name = [0 => '--'];
@@ -202,7 +202,7 @@ class Gene extends Base{
             $where['id'] = ['neq',$id];
         }
         
-        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime')->where($where)->order('utime desc')->select();
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime,nation,region')->where($where)->order('utime desc')->select();
         $count = Db::name('gene')->where($where)->count();
         
         $user_name = [0 => '--'];
@@ -241,6 +241,9 @@ class Gene extends Base{
             $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+            $haplogroup = isset($_POST['haplogroup']) ? trim($_POST['haplogroup']) : '';
+            $nation = isset($_POST['nation']) ? trim($_POST['nation']) : '';
+            $region = isset($_POST['region']) ? trim($_POST['region']) : '';
             $desc = isset($_POST['desc']) ? addslashes($_POST['desc']) : '';
             $standard = $_POST['standard'];
             $comp = $_POST['comp'];
@@ -264,6 +267,9 @@ class Gene extends Base{
             $data = $standard;
             $data['user_id'] = $user_id;
             $data['name'] = $name;
+            $data['haplogroup'] = $haplogroup;
+            $data['nation'] = $nation;
+            $data['region'] = $region;
             $data['desc'] = $desc;
             $data['completion'] = $completion;
             $data['utime'] = $time;

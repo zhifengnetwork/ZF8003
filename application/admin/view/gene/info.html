@@ -27,6 +27,24 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">单倍群：</label>
+            <div class="formControls col-xs-8 col-sm-8">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.haplogroup}{/if}" placeholder="单倍群：" name="haplogroup" id="haplogroup">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">民族：</label>
+            <div class="formControls col-xs-8 col-sm-8">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.nation}{/if}" placeholder="民族" name="nation" id="nation">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">地域：</label>
+            <div class="formControls col-xs-8 col-sm-8">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.region}{/if}" placeholder="地域" name="region" id="region">
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">备注描述：</label>
             <div class="formControls col-xs-8 col-sm-8">
                 <textarea name="desc" cols="" rows="" class="textarea"  placeholder="备注描述：..." >{if condition="isset($info)"}{$info.desc}{/if}</textarea>
