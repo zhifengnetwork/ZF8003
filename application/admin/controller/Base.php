@@ -60,11 +60,8 @@ class Base extends Controller
 
     # 获取菜单
     public function get_menu(){
-
         $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc";
-        if($this->ip !== '119.131.61.72'){
-            $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 and id != 32 order by `sort` desc,`id` asc";
-        }
+       
         $global_menu_list = Db::query($sql);
         if($global_menu_list){
             foreach($global_menu_list as $k => $v){

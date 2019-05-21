@@ -53,6 +53,8 @@ class Aatest{
             'gata_h4' => 'gata-h4',
         ];
 
+        $dar = array();
+
         foreach($vals as $k=>$v){
             $completion = '';
             foreach($v as $k1 => $v1){
@@ -76,12 +78,23 @@ class Aatest{
             }else{
                 $d['completion'] = '';
             }
-
-            Db::name('gene')->insert($d);
+            $d['user_id'] = 31;
+            $d['name'] = $d['nation'];
+            $d['desc'] = $d['region'];
+            if($d['dys19']){
+                $dd[] = $d;
+                // Db::name('gene1')->insert($d);
+            }
+            // $dd[] = $d;
+            
             $d = '';
+            $completion = '';
+        }
+        foreach($dd as $v){
+            Db::name('gene')->insert($v);
         }
 
-        
+        dump($dd);exit;
     }
 
 

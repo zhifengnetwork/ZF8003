@@ -39,17 +39,16 @@
                             <label class="form-label col-xs-4 col-sm-2">菜单内容：</label>
                             <div class="formControls col-xs-8 col-sm-6 skin-minimal">
                                 <div class="radio-box">
-                                    <input name="menu_type" type="radio" id="menu_type-1" checked>
-                                    <label for="menu_type-1">发送消息</label>
+                                    <input class="menu_type" name="menu_type" type="radio" id="menu_type_1" value="1" checked>
+                                    <label for="menu_type_1">跳转链接</label>
                                 </div>
                                 <div class="radio-box">
-                                    <input type="radio" id="menu_type-2" name="menu_type">
-                                    <label for="menu_type-2">跳转链接</label>
+                                    <input class="menu_type" type="radio" id="menu_type_2" name="menu_type" value="2" >
+                                    <label for="menu_type_2"">发送消息</label>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="conf_url_content">
+                        </div> 
+                        <div class="conf_url_content menut-1">
                             <p class="conf_url_title">订阅者点击该子菜单会跳到以下链接</p>
                             <div class="row cl">
                                 <label class="form-label col-xs-4 col-sm-2">页面地址：</label>
@@ -58,18 +57,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="conf_source_content menut-2">
+                            
+                        </div>
                     </form>
                     
                 </article>
                 
             </div>
     </div>
-
-
-
-
-
 
 
 {include file='layout/footer' /}

@@ -73,7 +73,8 @@
     padding:20px 10px;
     width: 600px;
     height: 170px;
-    background-color: #f0f0f0;
+    /* background-color: #f0f0f0; */
+    background-color: #000;
 }
 
 .conf_url_title{
@@ -81,3 +82,11 @@
     border-bottom: 1px solid #fff;
     color:#a58282;
 }
+
+/* .conf_source_content{
+    margin:20px 0 20px 40px;
+    padding:20px 10px;
+    width: 600px;
+    height: 170px;
+    background-color: #f0f0f0;
+} */
