@@ -38,7 +38,8 @@ class User extends Base
     public function my_gene(){
        
         $list = Db::name('gene')->where('user_id',$this->user_id)->field('id,`name`')->select();
-        
+
+
         $this->assign('list',$list);
         return $this->fetch();
     }
