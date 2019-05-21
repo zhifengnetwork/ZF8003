@@ -76,54 +76,103 @@ class Gene extends Base{
         $gene_list = Standard_Gene_Up();
 
         if($_POST){
-            
             $standard = isset($_POST['standard']) ? $_POST['standard'] : array();
             $check = isset($_POST['check']) ? $_POST['check'] : array();
+            $timeline = isset($_POST['timeline']) ? $_POST['timeline'] : array();
+
+            # 时间线设置
+            if($timeline){
+                $ctimeline = $in_ctimeline = '';
+                foreach($timeline['min'] as $k=>$v){
+                    $tmin = intval($v);
+                    $tmax = intval($timeline['max'][$k]);
+                    $tname = trim($timeline['name'][$k]);
+                    if( ($tmin || ($k == 0 && $tmin == 0)) && $tmax && $tname ){
+                        $in_ctimeline[] = $tmin.'_'.$tmax;
+                        if( Db::name('config')->where(['name'=>$tmin.'_'.$tmax, 'type'=>'gene_config_timeline'])->value('id') ){
+                            Db::name('config')->where(['name'=>$tmin.'_'.$tmax, 'type'=>'gene_config_timeline'])->update(['value'=>$tname]);
+                        }else{
+                            Db::name('config')->insert(['name'=>$tmin.'_'.$tmax, 'value'=>$tname, 'type'=>'gene_config_timeline']);
+                        }
+                    }
+                }
+
+                if($in_ctimeline){
+                    $in_ctimeline = implode("','", $in_ctimeline);
+                    Db::execute("delete from `zf_config` where `type` = 'gene_config_timeline' and `name` not in ('$in_ctimeline')");
+                }
+                
+            }
 
             # 基因突变率
-            foreach($standard as $k=>$v){
-                if(Db::name('config')->where(['name'=>$k,'type'=>'gene_config_mutation'])->find()){
-                    Db::name('config')->where(['name'=>$k,'type'=>'gene_config_mutation'])->update(['value'=>$v]);
-                }else{
-                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>'gene_config_mutation']);
+            if($standard){
+                foreach($standard as $k=>$v){
+                    if(Db::name('config')->where(['name'=>$k,'type'=>'gene_config_mutation'])->find()){
+                        Db::name('config')->where(['name'=>$k,'type'=>'gene_config_mutation'])->update(['value'=>$v]);
+                    }else{
+                        Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>'gene_config_mutation']);
+                    }
                 }
             }
+            
 
-            # 用户计算的基因座
-            foreach($gene_list as $v){
-                $value = 0;
-                if(in_array($v,$check)){
-                    $value = 1;
-                }
-                $name = strtolower(str_replace('-','_',$v));
-                if(Db::name('config')->where(['type'=>'gene_config_calculation','name'=>$name])->find()){
-                    Db::name('config')->where(['type'=>'gene_config_calculation','name'=>$name])->update(['value'=>$value]);
-                }else{
-                    Db::name('config')->insert(['name'=>$name,'value'=>$value,'type'=>'gene_config_calculation']);
+            # 用于计算的基因座
+            if($check){
+                
+                foreach($gene_list as $v){
+                    $value = 0;
+                    if(in_array($v,$check)){
+                        $value = 1;
+                        $dd[] = $v;
+                    }
+                    
+                    $name = strtolower(str_replace('-','_',$v));
+                    if(Db::name('config')->where(['type'=>'gene_config_calculation','name'=>$name])->find()){
+                        Db::name('config')->where(['type'=>'gene_config_calculation','name'=>$name])->update(['value'=>$value]);
+                    }else{
+                        Db::name('config')->insert(['name'=>$name,'value'=>$value,'type'=>'gene_config_calculation']);
+                    }
                 }
             }
+            
 
             echo "<script>parent.layermsg('操作成功！正在刷新...')</script>";
             exit;
         }
 
-        $mutation_confg = Db::name('config')->field('name,value')->where('type', 'gene_config_mutation')->select();
-        $calculation_confg = Db::name('config')->field('name,value')->where('type', 'gene_config_calculation')->select();
+
+        $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+        $mutation_config = Db::name('config')->field('name,value')->where('type', 'gene_config_mutation')->select();
+        $calculation_config = Db::name('config')->field('name,value')->where('type', 'gene_config_calculation')->select();
         
-        $check = $mutation = array();
-        if($mutation_confg){
-            foreach($mutation_confg as $v){
+
+        $timeline = $check = $mutation = array();
+        if($timeline_config){
+            foreach($timeline_config as $k => $v){
+                $key = explode('_', $v['name']);
+                $timeline[] = [
+                    'min' => $key[0],
+                    'max' => $key[1],
+                    'name' => $v['value'],
+                ];
+            }
+        }
+
+        if($mutation_config){
+            foreach($mutation_config as $v){
                 $mutation[$v['name']] = $v['value'];
             }
         }
-        if($calculation_confg){
-            foreach($calculation_confg as $v){
+        if($calculation_config){
+            foreach($calculation_config as $v){
                 if($v['value']){
-                    $check[] = strtoupper(str_replace('_0','-',$v['name']));
+                    $check[] = strtoupper(str_replace('_','-',$v['name']));
                 }
             }
         }
         
+
+        $this->assign('timeline', $timeline);
         $this->assign('mutation', $mutation);
         $this->assign('gene_list', $gene_list);
         $this->assign('check', $check);

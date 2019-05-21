@@ -9,7 +9,7 @@ class Aatest{
 
     public function index(){
 
-        echo 123;exit;
+        echo 1234;exit;
 
         ini_set('memory_limit', '2048M');
         set_time_limit(0);
@@ -85,16 +85,17 @@ class Aatest{
                 $dd[] = $d;
                 // Db::name('gene1')->insert($d);
             }
+            // Db::name('gene1')->insert($d);
             // $dd[] = $d;
             
             $d = '';
             $completion = '';
         }
-        foreach($dd as $v){
-            Db::name('gene')->insert($v);
-        }
+        // foreach($dd as $v){
+        //     // Db::name('gene')->insert($v);
+        // }
 
-        dump($dd);exit;
+        // dump($dd);exit;
     }
 
 

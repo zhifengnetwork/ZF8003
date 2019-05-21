@@ -284,9 +284,10 @@ function httpRequest($url, $method="GET", $postfields = null, $headers = array()
  */
 function layer_error($msg, $re = true, $url = ''){
     header("Content-type: text/html; charset=utf-8"); 
-    echo '<script type="text/javascript" src="/public/static/public/jquery.min.js"></script>';
-    echo '<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>';
-    echo "<script>layer.msg('$msg',{icon:5,time:3000});</script>";
+    // echo '<script type="text/javascript" src="/public/static/public/jquery.min.js"></script>';
+    // echo '<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>';
+    // echo "<script>layer.msg('$msg',{icon:5,time:3000});</script>";
+    echo "<h1 style='margin-top:30%; text-align:center;color:red;'>$msg</h1>";
     if($re){
         if($url){
             echo "<script>setTimeout(function(){window.location.href='$url';},3000);</script>";

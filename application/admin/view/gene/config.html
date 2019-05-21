@@ -1,9 +1,5 @@
 {include file="layout/head"}
 <style>
-    .table thead th{
-        color:red;
-    }
-    
     #query-list{
         min-height: 60px;
         border:1px solid #6b6868;
@@ -24,6 +20,58 @@
 </style>
 <article class="page-container">
     <form class="form form-horizontal" target="ajaxR" method="POST" action="">    
+       
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">共祖时间线设置：</label>
+            <div class="formControls col-xs-8 col-sm-8"> 
+                    <table class="table table-border table-bordered table-bg" >
+                        <thead>
+                            <tr class="text-c">
+                                <th width="200">时间线 （时间区间 整数）</th>
+                                <th width="200">历史名称（如：近代）</th>
+                                <th width="60">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="other-temp">
+                            {if condition="$timeline"}
+                            {foreach name="$timeline" id="vo" key="k"}
+                            <tr class="text-c">
+                                <td>
+                                    <input type="text" class="input-text" style="text-align: center;width:40%;" name="timeline[min][]" value="{$vo.min}" />
+                                    &nbsp;&nbsp;至&nbsp;&nbsp;
+                                    <input type="text" class="input-text" style="text-align: center;width:40%;" name="timeline[max][]" value="{$vo.max}" />
+                                </td>
+                                <td>
+                                    <input type="text" class="input-text" style="text-align: center;" name="timeline[name][]" value="{$vo.name}" />
+                                </td>
+                                <td>
+                                    <a style="color:blue;" onclick="add_timeline(this);">增加一行</a>
+                                    {if condition="$k > 0"}
+                                    <a style="color:red;" onclick="del_obj(this);">删除</a>
+                                    {/if}
+                                </td>
+                            </tr>
+                            {/foreach}
+                            {else /}
+                            <tr class="text-c">
+                                <td>
+                                    <input type="text" class="input-text" style="text-align: center;width:40%;" name="timeline[min][]" value="" />
+                                    &nbsp;&nbsp;至&nbsp;&nbsp;
+                                    <input type="text" class="input-text" style="text-align: center;width:40%;" name="timeline[max][]" value="" />
+                                </td>
+                                <td>
+                                    <input type="text" class="input-text" style="text-align: center;" name="timeline[name][]" value="" />
+                                </td>
+                                <td>
+                                    <a style="color:blue;" onclick="add_timeline(this);">增加一行</a>
+                                </td>
+                            </tr>
+                            {/if}
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">基因座突变率设置：</label>
             <div class="formControls col-xs-8 col-sm-8"> 
@@ -253,5 +301,31 @@
             window.location.replace(location.href);
         },2000);
         
+    }
+
+    function add_timeline(obj){
+        let _tpl = `
+                <tr class="text-c">
+                    <td>
+                        <input type="text" class="input-text" style="text-align: center;width:40%;" name="timeline[min][]" value="" />
+                        &nbsp;&nbsp;至&nbsp;&nbsp;
+                        <input type="text" class="input-text" style="text-align: center;width:40%;" name="timeline[max][]" value="" />
+                    </td>
+                    <td>
+                        <input type="text" class="input-text" style="text-align: center;" name="timeline[name][]" value="" />
+                    </td>
+                    <td>
+                        <a style="color:blue;" onclick="add_timeline(this);">增加一行</a>
+                        &nbsp;&nbsp;&nbsp;
+                        <a style="color:red;" onclick="del_obj(this);">删除</a>
+                    </td>
+                </tr>
+            `;
+
+        $(obj).parents('tr').after(_tpl);
+    }
+
+    function del_obj(obj){
+        $(obj).parents('tr').remove();
     }
 </script>

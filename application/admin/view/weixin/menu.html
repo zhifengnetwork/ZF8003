@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 {include file='layout/head' /}
-<link rel="stylesheet" type="text/css" href="/__STATIC__/weixin/weixin_web_viwe.css" />
+<!-- <link rel="stylesheet" type="text/css" href="/__STATIC__/weixin/weixin_web_viwe.css" /> -->
 <style>
 
 </style>
@@ -14,9 +14,18 @@
 
                 <div class="bottom">
                     <ul class="web_defalut_menu">
-                        <li>菜单1</li>
-                        <li>菜单2</li>
-                        <li>菜单3</li>
+                        <li>
+                            <img class="add_menu_ico" src="/__STATIC__/weixin/add.png" />
+                            菜单1
+                        </li>
+                        <li>
+                            <img class="add_menu_ico" src="/__STATIC__/weixin/add.png" />
+                            菜单2
+                        </li>
+                        <li>
+                            <img class="add_menu_ico" src="/__STATIC__/weixin/add.png" />
+                            菜单3
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -48,7 +57,7 @@
                                 </div>
                             </div>
                         </div> 
-                        <div class="conf_url_content menut-1">
+                        <div class="conf_url_content">
                             <p class="conf_url_title">订阅者点击该子菜单会跳到以下链接</p>
                             <div class="row cl">
                                 <label class="form-label col-xs-4 col-sm-2">页面地址：</label>
@@ -57,9 +66,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="conf_source_content menut-2">
-                            
+                        <div class="conf_source_content">
+                            <p class="conf_source_title">请在素材库选择要发送的信息</p>
+                            <div class="conf_sourc_mincontent">
+
+                            </div>
                         </div>
+
+                        <div class="conf_btn">
+                            <a class="btn btn-success">保存菜单</a>
+                            <a class="btn btn-default ml-5">取消编辑</a>
+                        </div>
+                        
                     </form>
                     
                 </article>
@@ -70,12 +88,10 @@
 
 {include file='layout/footer' /}
 <!--请在下方写此页面业务相关的脚本-->
-<script type="text/javascript" src="/__STATIC__/weixin/weixin_web_viwe.js"></script> 
+<!-- <script type="text/javascript" src="/__STATIC__/weixin/weixin_web_viwe.js"></script>  -->
 <script type="text/javascript">
-    function open_closeAll(){
-        layer.closeAll();
-        window.location.replace(location.href);
-    }
+    document.write("<link rel='stylesheet' type='text/css' href='/__STATIC__/weixin/weixin_web_viwe.css?t=" + Math.random() + "' />");
+    document.write("<script type='text/javascript' src='/__STATIC__/weixin/weixin_web_viwe.js?t="+Math.random()+"'></s"+"cript>");
 
 </script>
 </body>
