@@ -21,9 +21,15 @@
 .webviwe .bottom{
     position:relative;
     top:465px;
-    width:100%;
+    width:101%;
     height:60px;
     line-height: 60px;
+}
+.webviwe .bottom li:hover{
+    border:1px solid blue;
+}
+.add_menu_ico{
+    width:25px;
 }
 
 .web_defalut_menu{
@@ -80,4 +86,26 @@
     padding-left:10px;
     border-bottom: 1px solid #fff;
     color:#a58282;
+}
+
+.conf_source_content{
+    display:none;
+    margin:20px 0 20px 40px;
+    padding:20px 10px;
+    width: 600px;
+    height: 170px;
+    background-color: #f0f0f0;
+}
+.conf_source_title{
+    padding-left:10px;
+    border-bottom: 1px solid #fff;
+    color:#a58282;
+}
+.conf_sourc_mincontent{
+    width:100%;
+    height:130px;
+    background-color:#fff;
+}
+.conf_btn{
+    margin:10% 0 0 30%;
 }

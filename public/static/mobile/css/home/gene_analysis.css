@@ -1,133 +1,84 @@
-.zuidadiv{
-	
-	padding-bottom: .5rem;
-	box-sizing: border-box;
-	
+.biaogege{
+	width: 88%;
+	margin: 1.5rem auto 0 auto;
+	border: .01rem solid #37afe6;
 }
-
-.biaogege,.biaogege2{
-	
+.biaogege2{
 	
 	width: 88%;
-	margin: 0 auto;
-	border: 1px solid #CCCCCC;
-
+	margin: .3rem auto;
+	border: .01rem solid #37afe6;
 }
+
 tr{
 	
 	height: .7rem;
 	line-height: .7rem;
-	font-size: .3rem;
+	font-size: .25rem;
 	text-align: center;
-	
 }
 tr td{
-	
-	width: 33%;
-	
-	
+   width:16.6666%;
 }
-.biaogege2{
-	
-	margin-top: 1rem;
-	
-	
+.niandai{
+	line-height: .3rem;
 }
-.table_header{
-	
+.muqian{
 	
 	text-align: center;
-	font-size: .28rem;
-	height: 1rem;
-	line-height: 1rem;
+	width: 88%;
+	height: .6rem;
+	line-height: .6rem;
+	margin: 0 auto;
+	line-height: ;
+	background:#37afe6;
+	color: white;
+}
+.table_ear1 table{
+	
+	margin:1.5rem auto 0 auto;
+	color: black;
+	
+}
+.table_ear table:nth-child(2){
+	color: black;	
+}
+.wu{
+	
+	display: block;
+	margin: 0 auto;
+	background:#37afe6;
+	color: white;
+}
+.kong_ear{
+	position: relative;
+}
+.kong_pic{
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 1.3rem;
+	margin: 0 auto;	
+}
+.wu_pipei{
+	
+	display: block;
+	
+}
+.wu_pipei p{
+	width: 88%;
+	margin: 0 auto;
+	padding-top: 1.5rem;
+	
+}
+.wu_pipei span{
+	
+	display: inline-block;
+	width: 88%;
+	color:gray;
+	text-align: center;
+	padding-top: .25rem;
 	
 	
 }
-.swiper-slide{
-	
-	/*border: 1px solid red;*/
-	height: 8rem!important;
-	overflow: auto;
-	
-	
-}
-.l3h5 {
-			width: 87.5%;
-			border: 1px solid #D8D8D8;
-			border-bottom: none;
-			margin: 0 auto;
-			text-align: center;
-			margin-top: 1rem;
-			
-			
-		}
-		
-		.l3h5 ul {
-			width: 100%;
-			display: block;
-			overflow: hidden;
-			border-bottom: 1px solid #D8D8D8;
-			clear: both;
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			height: 30px
-		}
-		
-		.l3h5 ul li {
-			width: 33%;
-			height: 30px;
-			line-height: 30px;
-			float: left;
-			border-right: 1px solid #D8D8D8;
-			box-sizing: border-box;
-			
-		}
-		
-		.l3h5 .l3h5_lastLi,
-		.l3h5 .l3h5_lastUl {
-			width: 33%;
-			border: none;
-			
-		}
-		.l3h5 ul li:last-child{
-			
-			border-right: none;
-			
-			
-		}
-		.xiala_text{
-			
-			display: none;
-			background: #CCCCCC;
-			text-indent: .3rem;
-			
-			
-		}
-		.first,.second{
-			
-			
-			display: inline-block;
-			width: .6rem;
-			/*border: 1px solid green;*/
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis
-			
-			
-			
-			
-			
-			
-		}
-		.he{
-			
-			display: inline-block;
-			width: .3rem;
-			/*border: 1px solid green;*/
-			overflow: hidden;
-			
-			
-		}
-
-

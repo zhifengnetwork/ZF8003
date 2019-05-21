@@ -267,6 +267,10 @@ class User extends Base
 
     # 基因检测报告 - 列表
     public function gene_analysis_list(){
+        ini_set('memory_limit','2048M');
+        set_time_limit(0);
+
+        $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if(!$id){
             layer_error('请选择进行匹对的基因数据');
@@ -293,6 +297,7 @@ class User extends Base
         if(!$i){
             layer_error('非法访问，无权限的资源数据！');
         }
+
         $w['id'] = ['<>', $id];
         foreach($config as $k => $v){
             $val = (double)$i[$k];
@@ -300,11 +305,19 @@ class User extends Base
             $max = $val+200;
             $w[strtolower($k)] = ['between',"$min,$max"];
         }
+        $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
+        if($list_count > 100 && !$re){
+            $this->assign('loading', 1);
+            $this->assign('id', $id);
+            return $this->fetch();
+            exit;
+        }
         $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->select();
         if(!$list){
             layer_error('抱歉！数据库没有匹配到相应的基因信息');
         }
-        
+
+        $lately = 1;
         $data = array();
         $count = count($list);
         foreach($list as $v){
@@ -335,23 +348,50 @@ class User extends Base
             
             $pass = $pass/count($locus);
             $cay = $pass * 25 / 2;
-
+            if($cay < 1401){
+                $lately = 0;
+            }
+            $generation = intval($cay / 25);
+            
             // $r['diff'] = $diff;
             // $r['locus'] = $locus;
             // $r['pass'] = $pass;
             $r['cay'] = intval($cay*100)/100;
+            if($generation > 2){
+                $r['generation'] = intval($generation - 2) . ' - ' . intval($generation + 2);
+            }else{
+                $r['generation'] = '0 - 3';
+            }
+            $r['line'] = $this->check_timeline($r['cay']);
             $data[] = $r;
             
         }
+        if($data){
+            $last_names = array_column($data,'cay');
+            array_multisort($last_names,SORT_ASC,$data);
+        }
         
-        $last_names = array_column($data,'cay');
-        array_multisort($last_names,SORT_ASC,$data);
-        // dump($data);exit;
-
+        $this->assign('lately', $lately);
         $this->assign('data', $data);
         return $this->fetch();
     }
 
+
+    # 匹配时间线
+    function check_timeline($time){
+        # 时间线
+        $time = intval($time);
+        $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+        if($timeline_config){
+            foreach($timeline_config as $k => $v){
+                $key = explode('_', $v['name']);
+                if($time >= $key[0] && $time <= $key[1]){
+                    return $v['value'];
+                }
+            }
+        }
+        return '';
+    }
 
     # 删除基因数据
     public function del_my_gene(){
