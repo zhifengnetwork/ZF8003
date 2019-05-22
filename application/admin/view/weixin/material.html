@@ -28,14 +28,10 @@
 		</form>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l">
-                 <a href="javascript:;" onclick="gene_info('添加基因数据')" class="btn btn-primary radius">
+                 <a href="javascript:;" onclick="add_material('添加素材')" class="btn btn-primary radius">
                     <i class="Hui-iconfont">&#xe600;</i> 
-                    添加基因数据
+                    添加图文素材
 				</a>
-				<a href="javascript:;" onclick="gene_homologous('同位点查询')" class="btn btn-primary radius">
-                    <i class="Hui-iconfont">&#xe709;</i> 
-                    同位点查询
-                </a>
 			</span> 
             <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
 		<table class="table table-border table-bordered table-bg">
@@ -94,6 +90,15 @@
 			window.location.replace(location.href);
 		}
 
+		function add_material(){
+			layer.open({
+				title:'添加素材',
+				type:2,
+				content:'/admin/weixin/edit_material',
+				area:['90%','90%'],
+
+			});
+		}
 	</script>
 </body>
 

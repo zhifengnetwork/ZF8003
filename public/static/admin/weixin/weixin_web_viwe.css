@@ -25,9 +25,7 @@
     height:60px;
     line-height: 60px;
 }
-.webviwe .bottom li:hover{
-    border:1px solid blue;
-}
+
 .add_menu_ico{
     width:25px;
 }
@@ -41,12 +39,63 @@
 .web_defalut_menu li{
     float:left;
     height:60px;
-    width:112px;;
+    width:113px;;
     margin:0 0.5px;
+}
+
+.menu{
+    color:#716767;
     text-align:center;
     background-color: #ece9e9;
     border:1px solid #d7d7d7;
+    cursor:pointer;
 }
+.menu:hover{
+    color:#000;
+}
+.selected_menu{
+    border:1px solid green !important;
+    color:green;
+}
+
+/* -- 二级菜单 --*/
+.web_two_menu{
+    display:block;
+    width:346px;
+    padding:1px;
+    z-index:999;
+    position:relative;
+    bottom: -198px;
+}
+.two_menu{
+    display:inline-block;
+    width:32.5%
+}
+.two_menu li{
+    height:50px;
+    width:100%;
+    float:left;
+    line-height: 50px;
+    text-align:center;
+}
+.two_menu_sub{
+    display:block;
+}
+.add_two_menu{
+    display:none;
+    background-color: #fbfbfb;
+    border:1px solid #d7d7d7;
+    font-size:24px;
+    color:#d7d7d7;
+}
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+    <article class="page-container">
+        <form class="form form-horizontal">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">文章标题：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">摘要：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <textarea name="" cols="" rows="" class="textarea"  placeholder="" datatype="*10-100" dragonfly="true"></textarea>
+                    <p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">作者</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">原文地址</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="" placeholder="" id="" name="">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">显示封面：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <div class="radio-box">
+                        <input name="pic" type="radio" id="pic-1" vlaue="1" checked>
+                        <label for="pic-1">是</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="pic-2" name="pic"  vlaue="0>
+                        <label for="pic-2">否</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">评论：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <div class="radio-box">
+                        <input name="comment" type="radio" id="comment-1" vlaue="1" checked>
+                        <label for="comment-1">开启</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="comment-2" name="comment"  vlaue="0>
+                        <label for="comment-2">关闭</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">评论权限：</label>
+                <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                    <div class="radio-box">
+                        <input name="fans" type="radio" id="fans-1" vlaue="1">
+                        <label for="pic-1">粉丝</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="fans-2" name="fans"  vlaue="0" checked>
+                        <label for="fans-2">所有人</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">文章内容：</label>
+                <div class="formControls col-xs-8 col-sm-9"> 
+                    <script id="editor" type="text/plain" style="width:100%;height:400px;"></script> 
+                </div>
+            </div>
+
+
+        </form>
+
+    </article>
+    {include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/ueditor.config.js"></script> 
+    <script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/ueditor.all.min.js"> </script> 
+    <script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript">
+    var ue = UE.getEditor('editor');
+    </script>
+    
+</body>

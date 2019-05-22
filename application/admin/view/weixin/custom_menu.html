@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信公众系统 <span
+			class="c-gray en">&gt;</span> 自定义菜单 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<span class="l">
+                 <a href="javascript:;" onclick="edit_custom_menu('添加菜单')" class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 
+                    添加菜单
+				</a>
+				<a href="javascript:;" onclick="menu_push('发布菜单')" class="btn btn-success radius">
+                    <i class="Hui-iconfont">&#xe603;</i> 
+                    发布菜单
+                </a>
+			</span> 
+            <span class="r">共有数据：<strong></strong> 条</span> </div>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+					<th scope="col" colspan="9">基因数据列表</th>
+				</tr>
+				<tr class="text-c">
+                    <th width="30">ID</th>
+                    <th width="150">菜单名称</th>
+                    <th width="100">菜单地址</th>
+					<th width="60">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+				{if condition="isset($list) && $list"}
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+					<td style="text-align:left; padding-left:5%;">{$vo.level == '1' ? $vo.name : ' &nbsp;&nbsp;&nbsp;|-- '.$vo.name}</td>
+                    <td>{$vo.value}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+						<a title="查看详情" href="javascript:;" onclick="edit_custom_menu('查看或编辑菜单','{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe695;</i>
+						</a>
+						<a title="删除" href="javascript:;" onclick="del_gene('{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe6e2;</i>
+                        </a>
+                    </td> 
+                </tr>
+				{/volist}
+				{/if}
+			</tbody>
+		</table>
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript">
+        function open_closeAll(){
+			layer.closeAll();
+			window.location.replace(location.href);
+		}
+
+		/*-删除-*/
+		function del_custom_menu(id){
+			layer.confirm('您正在执行删除操作！', {icon: 3, title:'敏感操作提醒'}, function(index){
+				//do something
+				$.post('/admin/gene/del_gene',{id:id},function(res){
+					if(res.status == 1){
+						layer.msg('操作成功！', {icon:6});
+						setTimeout(function(){
+							window.location.replace(location.href);
+						},1500);
+					}else{
+						layer.msg('操作失败，请重试！', {icon:5});
+					}
+				});
+				layer.close(index);
+			});
+
+
+		}
+		
+		/*基因-详情*/
+		function edit_custom_menu(title,id=0) {
+			layer.open({
+                title: title,
+                type: 2,
+                content: '/admin/weixin/edit_custom_menu?id='+id,
+                btn:false,
+                area:['60%','70%'],
+            });
+		}
+	</script>
+</body>
+
+</html>

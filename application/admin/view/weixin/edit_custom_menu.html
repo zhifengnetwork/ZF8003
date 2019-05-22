@@ -1,0 +1,92 @@
+{include file="layout/head"}
+<article class="page-container">
+    <form class="form form-horizontal">
+        
+        <input type="hidden" id="id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">父级菜单：</label>
+            <div class="formControls col-xs-8 col-sm-9"> 
+                <span class="select-box" style="width:150px;">
+                    <select class="select" id="pid" name="pid" size="1">
+                        <option value="0">顶级菜单</option>
+                        {volist name="cate" id="vo"}
+                        <option value="{$vo.id}" {if condition="isset($info) && $info.pid eq $vo.id"} selected {/if}>{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </span> 
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.name}{/if}" placeholder="请输入菜单名称：" name="name" id="name">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>菜单链接：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.value}{/if}" placeholder="请输入菜单链接，如：http://www.baidu.com" name="url" id="url">
+                <p style="color:#cf7777;">添加二级菜单后，一级菜单的链接和类型自动变更</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">排序：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{if condition="isset($info)"}{$info.sort}{else /}0{/if}" placeholder="排序方式：从大到小" name="sort" id="sort">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <a class="btn btn-primary radius" onclick="submit();" type="button">提交</a>
+            </div>
+        </div>
+    </form>
+</article>
+{include file="layout/footer"}
+<script>
+    var sub = 0;
+    function submit(){
+        if(sub > 0){
+            return false;
+        }
+        let id = $('#id').val();
+        let pid = $('#pid').val();
+        let name = $('#name').val();
+        let url = $('#url').val();
+        let reg = /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/;
+        if(!name){
+            layer.msg('请填写菜单名称',{icon:2});
+            return false;
+        }
+        if(pid > 0 && !reg.test(url)){
+            layer.msg('请填写正确菜单链接,如：http://www.baidu.com',{icon:2});
+            return false;
+        }
+        if(url && !reg.test(url)){
+            layer.msg('请填写正确菜单链接,如：http://www.baidu.com',{icon:2});
+            return false;
+        }
+        sub = 1;
+        $.post("/admin/weixin/edit_custom_menu",{id:id,pid:pid,name:name,url:url},function(res){
+
+            if(res){
+                if(res.status == 1){
+                    layer.open({
+                        content:res.msg,
+                        end:function(){
+                            parent.location.reload(); 
+                            parent.layer.closeAll();
+                            
+                        }
+                    });
+                }else{
+                    layer.open({
+                        content:res.msg,
+                    });
+                }
+            }
+        });
+        sub = 0;
+    }
+</script>
