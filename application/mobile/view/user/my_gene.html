@@ -28,7 +28,7 @@
 				<ul>
 					{volist name="list" id="vo" empty="<p style='text-align: center;line-height: 75px;height:75px;'>暂无数据！</p>"}
 					<li id="li_{$vo.id}" item="{$vo.id}">
-						<span class="span_left" >{$vo.name}</span>
+						<span class="span_left" >{$vo.name ? $vo.name : '编号：'.$vo.id}</span>
 						<p class="fist">
 							<span  class="span_right"></span>
 							<span class="span_right22"><img src="__STATIC__/img/example/youjian@2x.png"/></span>
