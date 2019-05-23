@@ -41,11 +41,6 @@ class Weixin extends Base
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
             $url = isset($_POST['url']) ? trim($_POST['url']) : '';
 
-            $level = 1;
-            if($pid){
-                $level++;
-            }
-
             if(!$name){
                 return json(['status'=>0,'msg'=>'请输入菜单名']);
             }
@@ -53,11 +48,20 @@ class Weixin extends Base
                 return json(['status'=>0,'msg'=>'请输入菜单链接']);
             }
 
-            if($pid && $id){
-                $last = Db::name('wx_menu')->where('pid',$id)->count();
-                if($last){
-                    return json(['status'=>0,'msg'=>'菜单下拥有子菜单，不允许变更菜单级别']);
+            $level = 1;
+            if($pid){
+                $pinfo = Db::name('wx_menu')->find($pid);
+                if(!$pinfo){
+                    return json(['status'=>0,'msg'=>'非法参数，上级菜单不存在！']);
                 }
+                if($id){
+                    $last = Db::name('wx_menu')->where('pid',$id)->count();
+                    if($last){
+                        return json(['status'=>0,'msg'=>'菜单下拥有子菜单，不允许变更菜单级别']);
+                    }
+                }
+
+                $level++;
             }
             
             $pcount = Db::name('wx_menu')->where('pid', $pid)->count();
@@ -87,6 +91,25 @@ class Weixin extends Base
         $this->assign('info', $info);
         $this->assign('cate', $cate);
         return $this->fetch();
+    }
+
+    # 删除自定义菜单
+    public function del_custom_menu(){
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        if($id){
+            $info = Db::name('wx_menu')->field('id')->find($id);
+            if($info){
+                $last = Db::name('wx_menu')->where('pid', $id)->count();
+                if($last){
+                    return json(['status'=>0,'msg'=>'菜单下拥有子菜单，请先删除子菜单！']);
+                }
+                $res = Db::name('wx_menu')->where('id', $id)->delete();
+                if($res){
+                    return json(['status'=>1,'msg'=>'操作成功！']);
+                }
+            }
+        }
+        return json(['status'=>0,'msg'=>'操作失败，请重试！']);
     }
 
 
