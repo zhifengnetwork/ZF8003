@@ -28,6 +28,8 @@ class Weixin extends Base
             }
         }
 
+        $count = count($list);
+        $this->assign('count', $count);
         $this->assign('list', $list);
         return $this->fetch();
     }
@@ -110,6 +112,63 @@ class Weixin extends Base
             }
         }
         return json(['status'=>0,'msg'=>'操作失败，请重试！']);
+    }
+
+    # 发布自定义菜单
+    public function push_custom_menu(){
+        
+        $onc = Db::name('wx_menu')->limit(3)->where('pid',0)->order('sort desc')->select();
+        if(!$onc){
+            return json(['status'=>0, 'msg'=>'请先添加自定义菜单']);
+        }
+
+        # 删除 - 线上微信公众平台自定义菜单
+        $this->delete_weixin_menu();
+
+        foreach($onc as $k => $v){
+            $last = Db::name('wx_menu')->limit(5)->where('pid', $v['id'])->order('sort desc')->select();
+            $but = [
+                'type' => $v['type'],
+                'name' => $v['name'],
+                'key' => $v['id'],
+            ];
+            if($v['type'] == 'view'){
+                $but['url'] = $v['value'];
+            }
+            if($last){
+                foreach($last as $key => $val){
+                    $but['sub_button'][$key] = [
+                        'type' => $val['type'],
+                        'name' => $val['name'],
+                        'key' => $val['id'],
+                    ];
+                    if($val['type'] == 'view'){
+                        $but['sub_button'][$key]['url'] = $val['value'];
+                    }
+                }
+            }
+
+            $button[$k] = $but;
+        }
+        $create = json_encode(['button' => $button],JSON_UNESCAPED_UNICODE);
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$this->weixin_config['weixin_access_token'];
+        $res = httpRequest($url,'POST',$create);
+        $res = json_decode($res,true);
+        if($res['errcode'] == '0'){
+            echo "<h1 style='text-align:center;color:green;margin-top:50px;'>自定义菜单更新成功！</h1>";
+            exit;
+        }else{
+            echo "<h1 style='text-align:center;color:red;margin-top:50px;'>自定义菜单更新失败！</h1>";
+            echo "<p style='text-align:center;color:red;'>错误代码：".$res['errcode'] .' : '. $res['errmsg']."</p>";
+            exit;
+        }
+    }
+
+    # 删除 - 线上微信公众平台自定义菜单
+    public function delete_weixin_menu(){
+        $this->get_weixin_global_token();
+        $url = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$this->weixin_config['weixin_access_token'];
+        $res = httpRequest($url,'GET');
     }
 
 

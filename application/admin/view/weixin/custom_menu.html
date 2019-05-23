@@ -6,7 +6,13 @@
 			class="c-gray en">&gt;</span> 自定义菜单 <a class="btn btn-success radius r replace"
 			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
+			
 	<div class="page-container">
+		<div style="padding:0 0 0 30px;color:blue;">
+			<p>先添加或编辑菜单，然后再点击发布更新菜单按钮，更新到线上</p>
+			<p>重新接入微信后，需要重新发布更新自定义菜单</p>
+			<P>自定义菜单更新后，微信公众号的菜单会在10分钟之内变更，您也可以取消关注后在重新关注刷新菜单</P>
+		</div>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l">
                  <a href="javascript:;" onclick="edit_custom_menu('添加菜单')" class="btn btn-primary radius">
@@ -14,12 +20,12 @@
                     添加菜单
 				</a>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="javascript:;" onclick="menu_push('发布菜单')" class="btn btn-success radius">
+				<a href="javascript:;" onclick="push_custom_menu();" class="btn btn-success radius">
                     <i class="Hui-iconfont">&#xe603;</i> 
                     发布更新菜单
                 </a>
 			</span> 
-            <span class="r">共有数据：<strong></strong> 条</span> </div>
+            <span class="r">共有数据：<strong></strong>{$count} 条</span> </div>
 		<table class="table table-border table-bordered table-bg">
 			<thead>
 				<tr>
@@ -83,11 +89,9 @@
 				});
 				layer.close(index);
 			});
-
-
 		}
 		
-		/*基因-详情*/
+		/*-查看或编辑-*/
 		function edit_custom_menu(title,id=0) {
 			layer.open({
                 title: title,
@@ -96,6 +100,17 @@
                 btn:false,
                 area:['60%','70%'],
             });
+		}
+
+		
+		function push_custom_menu(){
+			layer.open({
+				title:false,
+				type: 2,
+                content: '/admin/weixin/push_custom_menu',
+                btn:false,
+                area:['500px','150px'],
+			});
 		}
 	</script>
 </body>
