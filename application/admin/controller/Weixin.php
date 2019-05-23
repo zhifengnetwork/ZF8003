@@ -8,6 +8,18 @@ use think\Session;
 class Weixin extends Base
 {
 
+    public function _initialize()
+    {
+        parent::_initialize();
+        $wait_access = Db::name('config')->where(['type' => 'weixin_config', 'name' => 'wait_access'])->value('value');
+        if(!$wait_access){
+            echo "<h1 style='text-align:center;margin-top:10%;'>微信未正确配置，请先配置好微信并成功接入微信后重新尝试！</h1>";
+            echo "<p style='text-align:center;margin-top:20px;'>微信配置：（左边菜单栏）系统设置->网站设置->微信设置</p>";
+            exit;
+        }
+        
+    }
+
     # 自定义菜单
     public function custom_menu(){
 
@@ -33,6 +45,7 @@ class Weixin extends Base
         $this->assign('list', $list);
         return $this->fetch();
     }
+
     # 新增或编辑自定义菜单
     public function edit_custom_menu(){
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -173,67 +186,108 @@ class Weixin extends Base
 
 
 
-    # 自定义菜单
+    # 自定义菜单 * 待用
     public function menu()
     {
-        
-        
-
-
-
         return $this->fetch();
-    }
-
-    # 自定义菜单查询
-    public function menu_query(){
-        $this->get_weixin_global_token();
-        $url ="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=".$this->weixin_config['weixin_access_token'];
-        $res = httpRequest($url,'GET');
-        $res = json_decode($res,true);
-        dump($res);exit;
-    }
-
-    # 创建自定义菜单
-    public function create_menu()
-    {
-        exit;
-        $create = [
-            'button' => [
-                [
-                    'type' => 'view',
-                    'name' => '再来一个',
-                    'url' => 'http://zf8003.zhifengwangluo.c3w.cc/index',
-                ],
-            ],
-        ];
-
-        $this->get_weixin_global_token();
-        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$this->weixin_config['weixin_access_token'];
-        $res = httpRequest($url,'POST',json_encode($create, JSON_UNESCAPED_UNICODE));
-        $res = json_decode($res,true);
-        dump($res);exit;
     }
 
     # 自动回复
     public function automatic()
     {
 
+        $where['id'] = ['>', 0];
+        $list = Db::name('wx_automatic')->where($where)->order('id desc')->paginate(15);
+        $count = Db::name('wx_automatic')->where($where)->count();
+
+        $type_name = [
+            9 => '关注公众号',
+            1 => '自动回复（文本）',
+        ];
         
-        
+        $this->assign('type_name', $type_name);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
         return $this->fetch();
     }
+
+    # 添加或编辑自动回复
+    public function edit_automatic(){
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        if($_POST){
+            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+            $type = isset($_POST['type']) ? intval($_POST['type']) : 0;
+            $keywords = isset($_POST['keywords']) ? trim($_POST['keywords']) : '';
+            $text = isset($_POST['text']) ? trim($_POST['text']) : '';
+            $time = time();
+
+            if(!$type){
+                echo "<script>parent.error('请选择回复类型');</script>";
+                exit;
+            }
+
+
+            $res = false;
+            switch($type){
+                # 自动回复（文本）
+                case '1':
+                    if(!$keywords || !$text){
+                        echo "<script>parent.error('关键字和回复内容都不能为空！');</script>";
+                        exit;
+                    }
+                    if($id){
+                        $res = Db::name('wx_automatic')->where('id', $id)->update(['keywords'=>$keywords,'text'=>$text,'addtime'=>$time]);
+                    }else{
+                        $res = Db::name('wx_automatic')->insert(['type'=>1,'keywords'=>$keywords,'text'=>$text,'addtime'=>$time]);
+                    }
+
+                break;
+                # 关注公众号回复
+                case '9':
+                    if(!$text){
+                        echo "<script>parent.error('回复内容不能为空！');</script>";
+                        exit;
+                    }
+                    $i = Db::name('wx_automatic')->where('type',9)->value('id');
+                    if($i){
+                        $res = Db::name('wx_automatic')->where('id', $i)->update(['text'=>$text,'addtime'=>$time]);
+                    }else{
+                        $res = Db::name('wx_automatic')->insert(['type'=>9,'text'=>$text,'addtime'=>$time]);
+                    }
+                break;
+            }
+            
+
+            if($res){
+                echo "<script>parent.success('操作成功，正在跳转...');</script>";
+                exit;
+            }
+            echo "<script>parent.error('操作失败，请重试！');</script>";
+            exit;
+        }
+
+
+        $info = Db::name('wx_automatic')->find($id);
+        $type_name = [
+            9 => '关注公众号',
+            1 => '自动回复（文本）',
+        ];
+        $this->assign('info', $info);
+        $this->assign('type', $type_name);
+        return $this->fetch();
+    }
+
 
 
     # 素材管理
     public function material(){
 
 
-
         $where['id'] = ['>', 0];
 
-        $list = Db::name('wx_material')->field('id,type,title,author,show_cover_pic,content_source_url,need_open_comment,only_fans_can_comment,addtime,utime')->where($where)->order('utime desc')->paginate(15);
+        $list = Db::name('wx_material')->where($where)->order('addtime desc')->paginate(15);
         $count = Db::name('wx_material')->where($where)->count();
-
 
         $this->assign('count', $count);
         $this->assign('list', $list);

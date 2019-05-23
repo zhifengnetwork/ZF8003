@@ -10,50 +10,40 @@
 		
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
 			<span class="l">
-                 <a href="javascript:;" onclick="gene_info('添加基因数据')" class="btn btn-primary radius">
+                 <a href="javascript:;" onclick="automatic_info('添加自动回复')" class="btn btn-primary radius">
                     <i class="Hui-iconfont">&#xe600;</i> 
-                    添加基因数据
+                    添加自动回复
 				</a>
-				<a href="javascript:;" onclick="gene_homologous('同位点查询')" class="btn btn-primary radius">
-                    <i class="Hui-iconfont">&#xe709;</i> 
-                    同位点查询
-                </a>
 			</span> 
             <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
 		<table class="table table-border table-bordered table-bg">
 			<thead>
 				<tr>
-					<th scope="col" colspan="9">基因数据列表</th>
+					<th scope="col" colspan="9">自动回复列表</th>
 				</tr>
 				<tr class="text-c">
                     <th width="30">ID</th>
-                    <th width="250">关键字</th>
-                    <th width="250">回复类型</th>
-                    <th width="100">回复内容</th>
-					<th width="100">添加时间</th>
-					<th width="100">更新时间</th>
-					<th width="60">操作</th>
+                    <th width="100">关键字</th>
+                    <th width="60">回复类型</th>
+                    <th width="150">回复内容</th>
+					<th width="80">更新时间</th>
+					<th width="30">操作</th>
                 </tr>
 			</thead>
 			<tbody>
                 {volist name="list" id="vo"}
                 <tr class="text-c">
-                    <td>{$vo.id}</td>
-                    <td>{$vo.name}</td>
-                    <td>{$vo.desc}</td>
-                    <td>{$user_name[$vo.user_id]}</td>
-                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
-					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.id}</td>
+					<td>{$vo.type == 9 ? '关注回复' :$vo.keywords}</td>
+					<td>{$type_name[$vo.type]}</td>
+					<td>{$vo.text}</td>
+					<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                     <td class="td-manage" data-id="{$vo.id}">
-						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
+						<a title="查看详情" href="javascript:;" onclick="automatic_info('查看或编辑自动回复','{$vo.id}')" class="ml-5"
                             style="text-decoration:none">
                             <i class="Hui-iconfont">&#xe695;</i>
 						</a>
-						<a title="我的基因同位点查询" href="javascript:;" onclick="my_gene_homologous('{$vo.id}')" class="ml-5"
-                            style="text-decoration:none">
-                            <i class="Hui-iconfont">&#xe709;</i>
-						</a>
-						<a title="删除" href="javascript:;" onclick="del_gene('{$vo.id}')" class="ml-5"
+						<a title="删除" href="javascript:;" onclick="del_automatic('{$vo.id}')" class="ml-5"
                             style="text-decoration:none">
                             <i class="Hui-iconfont">&#xe6e2;</i>
                         </a>
@@ -76,6 +66,15 @@
 			window.location.replace(location.href);
 		}
 
+		function automatic_info(title='自动回复',id=0){
+			layer.open({
+				title:title,
+				type:2,
+				content:'/admin/weixin/edit_automatic?id='+id,
+				area:['70%','80%'],
+				
+			});
+		}
 	</script>
 </body>
 

@@ -43,8 +43,6 @@ class Base extends Controller
         $this->admin = Session::get('admin');
 
 
-
-        // dump($this->admin);exit;
         $global_menu_list = $this->get_menu();
         $this->assign('global_menu_list', $global_menu_list);
     }
