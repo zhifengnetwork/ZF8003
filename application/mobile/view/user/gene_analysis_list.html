@@ -16,7 +16,8 @@
 			<!--public head-->
 			<div class="lb_headWrap">
 				<p class="lb_headWrap_return" data-num="1">
-					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" onclick="javascript:location.href='/mobile/user/my_gene'" />
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" onclick="returnFun()" />
+
 				</p>
 				<span>基因分析结果</span>
 				<!--<p class="lb_headWrap_text lb_header_righticon">编辑</p>-->
@@ -24,18 +25,18 @@
 			</div>
 			<!--表格-->
 			<div class="table_ear1">
-				<table frame="void" rules="all" class="biaogege">
-					<tr style="height:.9rem">
+				<table frame="void" class="biaogege">
+					<tr style="height:.4rem">
 						<td style="text-align: center;">编号</td>
 						<td>姓名</td>
 						<td>民族</td>
 						<td style="text-align: center;">地域</td>
-						<td>共同祖代</td>
-						<td>朝代</td>
+						<td hidden>共同祖代</td>
+						<td class="chaodai">朝代</td>
 					</tr>
 				</table>
-            </div>
-            {if condition="isset($loading)"}
+			</div>
+			{if condition="isset($loading)"}
                 <img style="height:75px;margin:30% 0 5% 40%;" src='/public/static/mobile/img/home/loading.gif' />
                 <p style="text-align:center;">正在分析结果，请稍等...</p>
                 <script>
@@ -43,68 +44,95 @@
                         window.location.href="/mobile/user/gene_analysis_list?id={$id}&re=1";
                     },500);
                 </script>
-            {else /}
-                <div class="table_ear2">
-                    {if condition="$lately"}
-                    <table frame="void" rules="all" class="biaogege2 wu">
-                        <tr style="height:.2rem">
-                            <td style="text-align: center;">目前尚无亲缘关系较为接近的样本</td>
-                        </tr>
-                    </table>
-                    {/if}
-                    {volist name="data" id="vo"}
-                    <table frame="void" rules="all" class="biaogege2">
-                        <tbody>
-                            <tr>
-                                <td>{$vo.id1}</td>
-                                <td>{$vo.name1}</td>
-                                <td>{$vo.nation1}</td>
-                                <td>{$vo.region1}</td>
-                                <td rowspan='2' class="niandai"><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
-                                <td rowspan='2'>{$vo.line}</td>
-                            </tr>
-                            <tr>
-                                <td>{$vo.id2}</td>
-                                <td>{$vo.name2}</td>
-                                <td>{$vo.nation2}</td>
-                                <td>{$vo.region2}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    {/volist}
-                </div>
-                {if condition="empty($data)"}
-                <div class="wu_pipei">
-                    <div class="kong_ear">
-                        <img src="__STATIC__/img/home/kong.png" class="kong_pic"/>
-                    </div>
-                    <p>非常遗憾，暂未匹配到与您相关的共祖信息，“族内”数据库持续更新中，我们会继续增加更多基因数据为您匹配，请持续关注，敬请期待！</p>
-                    <span>水始——源千派别 木初同本万枝分(暂无匹配)</span>
-                </div>
-			    {/if}
-            {/if}
+			{else /}
+			
+			<div class="table_ear2">
+				{if condition="$lately"}
+				<table frame="void" class="wu">
+					<tr style="height:.3rem;line-height: .3rem;">
+						<td style="text-align: center;">目前尚无亲缘关系较为接近的样本</td>
+					</tr>
+				</table>
+				{/if}
+				{volist name="data" id="vo"}
+				<table frame="void" class="biaogege2">
+					<tbody>
+						<tr>
+							<td class="dddddd">{$vo.id1}</td>
+							<td>{$vo.name1}</td>
+							<td>{$vo.nation1}</td>
+							<td>{$vo.region1}</td>
+							<td rowspan='2' class="niandai" hidden><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
+							<td rowspan='2' class="chaodai">
+								<img src="__STATIC__/img/home/jiantou5.png" class="jiantoudd" />
+								<img src="/public/gene/image/{$vo.line.img}" class="jiantou_hou" />
+								<span class="dynasty">{$vo.line.name}</span>
+							</td>
+						</tr>
+						<tr>
+							<td>{$vo.id2}</td>
+							<td>{$vo.name2}</td>
+							<td>{$vo.nation2}</td>
+							<td>{$vo.region2}</td>
+						</tr>
+					</tbody>
+				</table>
+				{/volist}
+			</div>
+			{if condition="empty($data)"}
+			<div class="wu_pipei">
+				<div class="kong_ear">
+					<img src="__STATIC__/img/home/kong.png" class="kong_pic" />
+				</div>
+				<p>非常遗憾，暂未匹配到与您相关的共祖信息，“族内”数据库持续更新中，我们会继续增加更多基因数据为您匹配，请持续关注，敬请期待！</p>
+				<span>水始——源千派别 木初同本万枝分(暂无匹配)</span>
+			</div>
+			{/if}
+
+		{/if}
 		</div>
 		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
 		<script>
-			// var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
-			// console.log(tt)
-			// if(tt >= 1500) {
-			// 	$(".table_ear2 table:nth-child(1)").show()
-			// }
-			// if($(".table_ear2").find("table").length==0){
-			// 	$(".wu_pipei").show()
-			// }else{
-			// 	$(".wu_pipei").hide()
-			// }
-			// var length=$(".table_ear2").find("table").length
-			// console.log(length)
-			// for(var i=2;i<=length;i++){
-			// 	var chaodai=$(".table_ear2 table:nth-child("+i+") tbody tr:nth-child(1) td:last-child").html();
-		    //     if(chaodai=="民朝"||chaodai=="清朝"||chaodai=="民国"||chaodai=="现今"){
-		    //     	$(".table_ear2 table:nth-child("+i+") tbody tr:nth-child(1) td:last-child").css({color:"#37afe6"})
-		    //     }
-			// }
+// 			var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
+// 			console.log(tt)
+// 			if(tt >= 1500) {
+// 				$(".table_ear2 table:nth-child(1)").show()
+// 			}
+// 			if($(".table_ear2").find("table").length == 0) {
+// 				$(".wu_pipei").show()
+// 			} else {
+// 				$(".wu_pipei").hide()
+// 			}
+// 			var length = $(".table_ear2").find("table").length
+// 			console.log(length)
+// 			for(var i = 2; i <= length; i++) {
+// 				var chaodai = $(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .dynasty").html();
+				
+// //				if(chaodai == "民朝" || chaodai == "清朝" || chaodai == "民国" || chaodai == "现今") {
+// //					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child").addClass("font_color")
+// //				}
+// 				if(chaodai == "明朝") {
+// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l9.png")
+// 				}
+// 				if(chaodai == "民国") {
+// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l11.png")
+// 				}
+// 				if(chaodai == "现代") {
+// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l6.png")
+// 				}
+// 				if(chaodai == "清朝") {
+// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l8.png")
+// 				}
+// 				if(chaodai == "古代") {
+// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l7.png")
+// 				}
+
+// 			}
+
+			//奇偶性设置背景颜色
+			$('.biaogege2:even').css('background', '#EFF3F6');
+			$('.biaogege2:odd').css('background', '#E8E8E8');
 		</script>
 
 	</body>

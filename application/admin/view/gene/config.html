@@ -58,6 +58,7 @@
                                 <td>
                                     <a style="color:blue;" onclick="add_timeline(this);">增加一行</a>
                                     {if condition="$k > 0"}
+                                    &nbsp;&nbsp;&nbsp;
                                     <a style="color:red;" onclick="del_obj(this);">删除</a>
                                     {/if}
                                 </td>
@@ -302,7 +303,7 @@
         </div>
     </form>
 </article>
-<iframe name="ajaxR" style="display: block;width:100%;height:500px;"></iframe>
+<iframe name="ajaxR" style="display: none;width:100%;height:500px;"></iframe>
 {include file="layout/footer"}
 <script>
     function layermsg(msg,icon=6){
@@ -350,6 +351,9 @@
                     </td>
                     <td>
                         <input type="text" class="input-text" style="text-align: center;" name="timeline[name][]" value="" />
+                    </td>
+                    <td>
+                        <a style="color:blue;" onclick="select_timeline_img(this);">请选择</a>
                     </td>
                     <td>
                         <a style="color:blue;" onclick="add_timeline(this);">增加一行</a>

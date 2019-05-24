@@ -297,7 +297,6 @@ class User extends Base
         if(!$i){
             layer_error('非法访问，无权限的资源数据！');
         }
-
         $w['id'] = ['<>', $id];
         foreach($config as $k => $v){
             $val = (double)$i[$k];
@@ -329,6 +328,22 @@ class User extends Base
             $r['nation2'] = $v['nation'] ? $v['nation'] : '--';
             $r['region1'] = $i['region'] ? $i['region'] : '--';
             $r['region2'] = $v['region'] ? $v['region'] : '--';
+
+            if(mb_strlen( $r['nation1'] ) > 10){
+                $r['nation1'] = substr( $r['nation1'], 10 ) . '...';
+            }
+            if(mb_strlen( $r['nation2'] ) > 10){
+                $r['nation2'] = substr( $r['nation1'], 10 ) . '...';
+            }
+
+            if(mb_strlen( $r['region1'] ) > 10){
+                $r['region1'] = substr( $r['nation1'], 10 ) . '...';
+            }
+
+            if(mb_strlen( $r['region2'] ) > 10){
+                $r['region2'] = substr( $r['nation1'], 10 ) . '...';
+            }
+
 
             # 实际突变 | 基因座
             $diff = $locus = array();
@@ -366,11 +381,12 @@ class User extends Base
             $data[] = $r;
             
         }
+        
         if($data){
             $last_names = array_column($data,'cay');
             array_multisort($last_names,SORT_ASC,$data);
         }
-        
+        // dump($data);exit;
         $this->assign('lately', $lately);
         $this->assign('data', $data);
         return $this->fetch();
@@ -386,7 +402,7 @@ class User extends Base
             foreach($timeline_config as $k => $v){
                 $key = explode('_', $v['name']);
                 if($time >= $key[0] && $time <= $key[1]){
-                    return $v['value'];
+                    return json_decode($v['value'], true);
                 }
             }
         }
