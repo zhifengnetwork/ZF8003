@@ -87,9 +87,12 @@ class Gene extends Base{
                     $tmin = intval($v);
                     $tmax = intval($timeline['max'][$k]);
                     $tname = trim($timeline['name'][$k]);
+                    $timg = isset($timeline['img'][$k]) && $timeline['img'][$k] ? trim($timeline['img'][$k]) : '';
                     if( ($tmin || ($k == 0 && $tmin == 0)) && $tmax && $tname ){
                         $in_ctimeline[] = $tmin.'_'.$tmax;
+                        $tname = json_encode(['name'=>$tname,'img'=>$timg]);
                         if( Db::name('config')->where(['name'=>$tmin.'_'.$tmax, 'type'=>'gene_config_timeline'])->value('id') ){
+
                             Db::name('config')->where(['name'=>$tmin.'_'.$tmax, 'type'=>'gene_config_timeline'])->update(['value'=>$tname]);
                         }else{
                             Db::name('config')->insert(['name'=>$tmin.'_'.$tmax, 'value'=>$tname, 'type'=>'gene_config_timeline']);
@@ -142,6 +145,7 @@ class Gene extends Base{
 
 
         $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+        // dump($timeline_config);exit;
         $mutation_config = Db::name('config')->field('name,value')->where('type', 'gene_config_mutation')->select();
         $calculation_config = Db::name('config')->field('name,value')->where('type', 'gene_config_calculation')->select();
         
@@ -150,10 +154,12 @@ class Gene extends Base{
         if($timeline_config){
             foreach($timeline_config as $k => $v){
                 $key = explode('_', $v['name']);
+                $value = json_decode($v['value'],true);
                 $timeline[] = [
                     'min' => $key[0],
                     'max' => $key[1],
-                    'name' => $v['value'],
+                    'name' => $value['name'],
+                    'img' => $value['img'],
                 ];
             }
         }
@@ -170,13 +176,33 @@ class Gene extends Base{
                 }
             }
         }
-        
 
         $this->assign('timeline', $timeline);
         $this->assign('mutation', $mutation);
         $this->assign('gene_list', $gene_list);
         $this->assign('check', $check);
         return $this->fetch();
+    }
+
+    # 基因库配置 时间线颜色文件
+    public function config_timeline_image(){
+
+        $files = array();
+        if($head = opendir(ROOT_PATH.'/public/gene/image/')){
+            while(($file = readdir($head)) !== false){
+                if($file != ".." && $file!="."){
+                    if(is_dir($file)){
+                        $files[$file]=bianli1($dir.'/'.$file);
+                    }else{
+                        $files[]=$file;
+                    }
+                }
+            }
+            closedir($head);
+        }
+
+        $this->assign('files', $files);
+        return $this->fetch();;
     }
 
 

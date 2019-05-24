@@ -28,7 +28,8 @@
                         <thead>
                             <tr class="text-c">
                                 <th width="200">时间线 （时间区间 整数）</th>
-                                <th width="200">历史名称（如：近代）</th>
+                                <th width="170">历史名称（如：近代）</th>
+                                <th width="50">时间线图片</th>
                                 <th width="60">操作</th>
                             </tr>
                         </thead>
@@ -43,6 +44,16 @@
                                 </td>
                                 <td>
                                     <input type="text" class="input-text" style="text-align: center;" name="timeline[name][]" value="{$vo.name}" />
+                                </td>
+                                <td>
+                                    {if condition="isset($vo.img) && $vo.img"}
+                                    <a style="color:blue;" onclick="select_timeline_img(this);">
+                                        <img style="width:5px;height:50px" src="/public/gene/image/{$vo.img}" />
+                                        <input type="hidden" name="timeline[img][]" value="{$vo.img}">
+                                    </a>
+                                    {else /}
+                                    <a style="color:blue;" onclick="select_timeline_img(this);">请选择</a>
+                                    {/if}
                                 </td>
                                 <td>
                                     <a style="color:blue;" onclick="add_timeline(this);">增加一行</a>
@@ -291,7 +302,7 @@
         </div>
     </form>
 </article>
-<iframe name="ajaxR" style="display: none;width:100%;height:500px;"></iframe>
+<iframe name="ajaxR" style="display: block;width:100%;height:500px;"></iframe>
 {include file="layout/footer"}
 <script>
     function layermsg(msg,icon=6){
@@ -301,6 +312,32 @@
             window.location.replace(location.href);
         },2000);
         
+    }
+
+    var select_img_obj;
+    function select_timeline_img(obj){
+        select_img_obj = $(obj);
+        layer.open({
+            title:'选择时间线展示图片',
+            type:2,
+            content:'/admin/gene/config_timeline_image',
+            area:['850px','400px'],
+            btn:false,
+        });
+    }
+    function select_timeline_img_callback(img){
+        let src = '/public/gene/image/'+img;
+
+        let _tpl = `
+            <a style="color:blue;" onclick="select_timeline_img(this);">
+                <img style="width:5px;height:50px" src="`+src+`" />
+                <input type="hidden" name="timeline[img][]" value="`+img+`">
+            </a>
+            `;
+        select_img_obj.after(_tpl);
+        select_img_obj.remove();
+        layer.closeAll();
+        // $(select_img_obj).after();
     }
 
     function add_timeline(obj){

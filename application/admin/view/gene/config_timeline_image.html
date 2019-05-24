@@ -1,0 +1,55 @@
+{include file="layout/head"}
+<style>
+.content{
+    display:block;
+    height:222px;
+    width:95%;
+    margin: 0px auto;
+    border: 1px solid #aea4a4;
+    padding:10px;
+}
+.timeline_img{
+    display:inline-block;
+    width:20px;
+    height:100px;
+    padding:5px 20px;
+}
+.timeline_img img{
+    display: block;
+    width:100%;
+    height:100%;
+}
+.select_img{
+    border: 1px solid blue;
+}
+.btn-success{
+    margin:20px 43%;
+}
+</style>
+<article class="page-container">
+    <div class="row cl">
+        <div class="content">
+        {volist name="$files" id="vo" empty="<p>暂无图片，请先添加时间线图片到指定位置</p>"}
+            <a class="timeline_img" onclick="selected(this);" item="{$vo}"><img src="/public/gene/image/{$vo}" /></a>
+        {/volist}
+        </div>
+        <a class="btn btn-success" onclick="submit();">确定选择</a>
+    </div>
+</article>
+{include file="layout/footer"}
+<script>
+    var item = '';
+    function selected(obj){
+        item = $(obj).attr('item');
+        $('.timeline_img').removeClass('select_img');
+        $(obj).addClass('select_img');
+    }
+
+    function submit(){
+        if(!item){
+            layer.msg('请选择图片',{icon:7});
+            return false;
+        }
+        parent.select_timeline_img_callback(item);
+    }
+</script>
