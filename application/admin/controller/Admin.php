@@ -221,10 +221,136 @@ class Admin extends Base
         }
     }
  
-    public function permission(){
+
+    # 管理员组 | 角色管理
+    public function admin_group(){
+
+        $where['id'] = ['>', 0];
+
+        $list = Db::name('admin_group')->field('id,name,addtime,utime')->where($where)->order('utime desc,id desc')->paginate(20);
+        $count = Db::name('admin_group')->where($where)->count();
+        if($list){
+            foreach($list as $v){
+                $gcount[$v['id']] = Db::name('admin')->where('group_id', $v['id'])->count();
+            }
+        }
+
+        $this->assign('gcount', $gcount ? $gcount : []);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
         return $this->fetch();
     }
 
+    # 添加或编辑角色
+    public function edit_admin_group(){
+        if($_POST){
+            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $jur = isset($_POST['jur']) ? $_POST['jur'] : '';
+            $time = time();
+
+            if(!$name){
+                layer_error_msg('角色名称不能为空');
+            }
+            if(!$id){
+                $ex = Db::name('admin_group')->where('name',$name)->count();
+                if($ex){
+                    layer_error_msg('角色名已存在，不建议重复！');
+                }
+
+            }
+            
+            if($jur){
+                foreach($jur as $k=>$v){
+                    foreach($v as $key=>$val){
+                        if($val){
+                            $wrd = implode('',$val);
+                            $d_jur[$k][$key] = $wrd;
+                        }
+                    }
+                }
+                
+                $jur = json_encode($d_jur);
+            }
+            
+            if($id){
+                $res = Db::name('admin_group')->where('id', $id)->update(['name'=>$name,'jurisdiction'=>$jur,'utime'=>$time]);
+            }else{
+                $res = Db::name('admin_group')->insert(['name'=>$name,'jurisdiction'=>$jur,'addtime'=>$time,'utime'=>$time]);
+            }
+            if($res){
+                layer_success_msg('操作成功，正在跳转...',true);
+            }
+            layer_error_msg('操作失败，请重试！');
+            exit;
+        }
+
+
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
+        $menu = Db::name('menu')->field('id,name,parent_id')->order('level asc,sort desc,id asc')->select();
+        if(!$menu){
+            error_h1('系统暂无可配置的菜单，请先添加系统菜单！','系统未正确配置！');
+        }
+        foreach($menu as $k=>$v){
+            if($v['parent_id'] == 0){
+                $menu_list[$v['id']] = [
+                    'id' => $v['id'],
+                    'name' => $v['name'],
+                ];
+                unset($menu[$k]);
+                foreach($menu as $k2=>$v2){
+                    if($v2['parent_id'] == $v['id']){
+                        $menu_list[$v['id']]['last'][$v2['id']] = ['id'=>$v2['id'],'name'=>$v2['name']];
+                        unset($menu[$k2]);
+                    }
+                }
+            }
+        }
+
+        $info = Db::name('admin_group')->find($id);
+        if($info){
+            $info['jurisdiction'] =  $info['jurisdiction'] ? json_decode($info['jurisdiction'], true) : '';
+            // dump($info);exit;
+        }
+
+        $this->assign('info', $info);
+        $this->assign('menu_list', $menu_list);
+        return $this->fetch();
+    }
+
+    # 删除角色
+    public function del_admin_group(){
+
+        $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+
+        if($id){
+            $count = 1;
+            return json(['status'=>2, 'msg'=>'存在下级人数：'.$count]);
+            exit;
+            $count = Db::name('admin_group')->where('pid', $id)->count();
+            if($count){
+                return json(['status'=>2, 'msg'=>'存在下级人数：'.$count]);
+            }
+
+            $res = Db::name('admin_group')->delete($id);
+            if($res){
+                return json(['status'=>1,'msg'=>'操作成功，正在刷新...']);
+            }
+        }
+        
+        return json(['status'=>0,'msg'=>'操作失败，请重试！']);
+    }
+
+
+
+
+
+
+
+
+
+    # 退出登录
     public function logout()
     {
         Session::clear();

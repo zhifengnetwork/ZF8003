@@ -28,7 +28,6 @@ class Base extends Controller
     {
         $this->Verification_Client();
         $this->base_web_config();
-
         $admin_name = session('admin_name');
         
         if ($this->controller != 'Login' && !Session::has('admin')){
@@ -43,7 +42,7 @@ class Base extends Controller
         $this->admin = Session::get('admin');
 
 
-        $global_menu_list = $this->get_menu();
+        $global_menu_list = $this->admin ? $this->get_menu() : '';
         $this->assign('global_menu_list', $global_menu_list);
     }
 
@@ -58,12 +57,22 @@ class Base extends Controller
 
     # 获取菜单
     public function get_menu(){
-        $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc";
-       
+        $jurisdiction = $this->admin['jurisdiction'] ? $this->admin['jurisdiction'] : '';
+        if($this->admin && $this->admin['is_super']){
+            $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc";
+        }else{
+            $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 and `id` in (".$jurisdiction.") order by `sort` desc,`id` asc";
+        }
+        
         $global_menu_list = Db::query($sql);
         if($global_menu_list){
             foreach($global_menu_list as $k => $v){
-                $global_menu_list[$k]['last'] = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'  order by `sort` desc,`id` asc");
+                if($this->admin['is_super']){
+                    $last = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'  order by `sort` desc,`id` asc");
+                }else{
+                    $last = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]' and `id` in (".$jurisdiction.") order by `sort` desc,`id` asc");
+                }
+                $global_menu_list[$k]['last'] = $last;
             }
         }
         return $global_menu_list;

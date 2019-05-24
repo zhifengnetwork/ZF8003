@@ -6,6 +6,20 @@
 
  use think\Db;
 
+
+# JS调用 layer.msg 成功信息提示样板
+function layer_success_msg($msg,$re=false){
+    echo "<script>parent.layer_success_msg('$msg',$re)</script>";
+    exit;
+}
+
+# JS调用 layer.msg 错误信息提示样板
+function layer_error_msg($msg){
+    echo "<script>parent.layer_error_msg('$msg')</script>";
+    exit;
+}
+
+
  //分组名称
 function group_name($group_id){
     $group_name = Db::name('user_group')->where('id',$group_id)->value('name');

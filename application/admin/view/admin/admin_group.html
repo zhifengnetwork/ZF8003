@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统设置 <span
+			class="c-gray en">&gt;</span> 角色管理 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+			<span class="l">
+                 <a href="javascript:;" onclick="edit_group('添加角色',0)" class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 
+                    添加角色
+				</a>
+			</span> 
+            <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+					<th scope="col" colspan="9">基因数据列表</th>
+				</tr>
+				<tr class="text-c">
+                    <th width="30">ID</th>
+                    <th width="100">角色</th>
+                    <th width="100">角色人数</th>
+					<th width="100">添加时间</th>
+					<th width="100">更新时间</th>
+					<th width="60">操作</th>
+                </tr>
+			</thead>
+			<tbody>
+				{if condition="isset($list) && $list"}
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td><a style="color:blue;" onclick="admin_list({$vo.id})">{$gcount[$vo.id] ? $gcount[$vo.id] : 0}</a></td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
+                    <td class="td-manage" data-id="{$vo.id}">
+						<a title="查看详情" href="javascript:;" onclick="edit_group('查看或更新角色','{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe695;</i>
+						</a>
+						<a title="删除" href="javascript:;" onclick="del_group('{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe6e2;</i>
+                        </a>
+                    </td>
+                </tr>
+				{/volist}
+				{/if}
+			</tbody>
+		</table>
+		<div class="pages">{$list->render()}</div>
+		{if condition="!isset($list) or !$list"}
+		<p class="no-data">暂无数据</p>
+		{/if}
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript">
+        function open_closeAll(){
+			layer.closeAll();
+			window.location.replace(location.href);
+		}
+
+		/*-删除-*/
+		function del_group(id){
+			layer.confirm('您正在执行删除操作！', {icon: 3, title:'敏感操作提醒'}, function(index){
+				//do something
+				$.post('/admin/admin/del_admin_group',{id:id},function(res){
+					if(res.status == 1){
+						layer.msg('操作成功！', {icon:6});
+						setTimeout(function(){
+							window.location.replace(location.href);
+						},1500);
+					}else if(res.status == 2){
+						let _tpl = `
+							<p style='text-align:center;'>`+res.msg+`</p>
+							<p style='text-align:center;'>请选择操作项！</p>
+						`;
+						layer.open({
+							title:'敏感操作提示！',
+							content:"",
+							btn:['转移到其他角色组','一键删除','取消'],
+							btnAlign:'c',
+							area:['350px','200px'],
+						});
+					}else{
+						layer.msg('操作失败，请重试！', {icon:5});
+					}
+				});
+				layer.close(index);
+			});
+
+
+		}
+		
+		/*详情| 更新*/
+		function edit_group(title,id=0) {
+			layer.open({
+                title: title,
+                type: 2,
+                content: '/admin/admin/edit_admin_group?id='+id,
+                btn:false,
+                area:['80%','90%'],
+            });
+		}
+	</script>
+</body>
+
+</html>

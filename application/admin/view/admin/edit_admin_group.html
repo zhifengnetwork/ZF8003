@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+    <article class="page-container">
+        <form action="" method="post" class="form form-horizontal" target="ajaxR">
+            <input type="hidden" name="id" value="{$info.id ? $info.id : 0}" />
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>角色名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="{$info.name ? $info.name : ''}" id="name" name="name">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">网站角色：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    {volist name="$menu_list" id="vo"}
+                    <dl class="permission-list">
+                        <dt>
+                            <label>
+                                <input type="checkbox" value="1" name="jur[{$vo.id}]" id="jur[{$vo.id}]" {if condition="isset($info['jurisdiction'][$vo.id])"} checked="checked" {/if}>
+                                {$vo.name}</label>
+                        </dt>
+                        {volist name="$vo.last" id="voo"}
+                        <dd>
+                            <dl class="cl permission-list2">
+                                <dt style="width:300px;">
+                                    <label class="">
+                                        <input type="checkbox" value="1" name="jur[{$vo.id}][{$voo.id}]" id="jur[{$vo.id}][{$voo.id}]" {if condition="isset($info['jurisdiction'][$vo.id][$voo.id])"} checked="checked" {/if} >
+                                        {$voo.name}</label>
+                                </dt>
+                                <dd>
+                                    <label class="" style="color:blue;">
+                                        <input type="checkbox" value="r" name="jur[{$vo.id}][{$voo.id}][r]" id="jur[{$vo.id}][{$voo.id}][r]" {if condition="isset($info['jurisdiction'][$vo.id][$voo.id]) && strstr($info['jurisdiction'][$vo.id][$voo.id], 'r')"} checked="checked" {/if} >
+                                        查看</label>
+                                    <label class="" style="color:green;;">
+                                        <input type="checkbox" value="w" name="jur[{$vo.id}][{$voo.id}][w]" id="jur[{$vo.id}][{$voo.id}][w]" {if condition="isset($info['jurisdiction'][$vo.id][$voo.id]) && strstr($info['jurisdiction'][$vo.id][$voo.id], 'w')"} checked="checked" {/if} >
+                                        编辑</label>
+                                    <label class="" style="color:red;">
+                                        <input type="checkbox" value="d" name="jur[{$vo.id}][{$voo.id}][d]" id="jur[{$vo.id}][{$voo.id}][d]" {if condition="isset($info['jurisdiction'][$vo.id][$voo.id]) && strstr($info['jurisdiction'][$vo.id][$voo.id], 'd')"} checked="checked" {/if} >
+                                        删除</label>
+                                </dd>
+                            </dl>
+                        </dd>
+                        {/volist}
+                    </dl>
+                    {/volist}
+                </div>
+            </div>
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                    <button type="submit" class="btn btn-success radius"><i class="icon-ok"></i> 确定</button>
+                </div>
+            </div>
+        </form>
+    </article>
+    <iframe name="ajaxR" style="height:300px;width:100%;display:none;"></iframe>
+{include file='layout/footer' /}
+<script type="text/javascript">
+    $(function(){
+        $(".permission-list dt input:checkbox").click(function(){
+            $(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+        });
+        $(".permission-list2 dd input:checkbox").click(function(){
+            var l =$(this).parent().parent().find("input:checked").length;
+            var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+            if($(this).prop("checked")){
+                $(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+                $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+            }
+            else{
+                if(l==0){
+                    $(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+                }
+                if(l2==0){
+                    $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+                }
+            }
+        });
+        
+    });
+
+</script>
+</body>
+</html>

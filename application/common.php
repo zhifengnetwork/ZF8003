@@ -11,6 +11,16 @@
 
 // 应用公共文件
 
+# H1错误提示样板
+function error_h1($msg='出错了！',$msg2=''){
+
+    echo '<h1 style="text-align:center;margin-top:10%;color:red;">'.$msg.'</h1>';
+    if($msg2){
+        echo "<p style='text-align:center;margin-top:20px;color:#bb7777;'>".$msg2."</p>";
+    }
+    exit;
+}
+
 # 求两数字的差值
 function math_diff($str1 = 0.00, $str2 = 0.00){
 
