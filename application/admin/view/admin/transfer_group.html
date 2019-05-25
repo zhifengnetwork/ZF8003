@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+    <article class="page-container">
+        <form action="" method="post" class="form form-horizontal" target="ajaxR">
+            <input type="hidden" name="id" value="{$id}" />
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>角色名称：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <input type="text" class="input-text" value="{$iname}">
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-2">转移到：</label>
+                <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
+                        <select class="select" name="group_id" size="1">
+                            <option value="">请选择角色</option>
+                            {volist name="other_group" id="vo"}
+                            <option value="{$vo.id}">{$vo.name}</option>
+                            {/volist}
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <button style="margin:20px 30%;" type="submit" class="btn btn-success radius"><i class="icon-ok"></i> 确定</button>
+        </form>
+    </article>
+    <iframe name="ajaxR" style="display:none;width:100%;height:200px;"></iframe>
+    {include file='layout/footer' /}
+    <script type="text/javascript">
+    
+    </script>
+</body>

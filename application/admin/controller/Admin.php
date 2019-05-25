@@ -319,18 +319,22 @@ class Admin extends Base
         return $this->fetch();
     }
 
-    # 删除角色
+    # 删除角色 | 一键删除
     public function del_admin_group(){
 
         $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $one = isset($_POST['one']) ? intval($_POST['one']) : 0;
 
         if($id){
-            $count = 1;
-            return json(['status'=>2, 'msg'=>'存在下级人数：'.$count]);
-            exit;
-            $count = Db::name('admin_group')->where('pid', $id)->count();
-            if($count){
-                return json(['status'=>2, 'msg'=>'存在下级人数：'.$count]);
+            if(!$one){
+                $count = Db::name('admin')->where('group_id', $id)->count();
+                if($count){
+                    return json(['status'=>2, 'msg'=>'存在下级人数：'.$count]);
+                }
+            }
+            
+            if($one){
+                Db::name('admin')->where('group_id', $id)->delete();
             }
 
             $res = Db::name('admin_group')->delete($id);
@@ -340,6 +344,45 @@ class Admin extends Base
         }
         
         return json(['status'=>0,'msg'=>'操作失败，请重试！']);
+    }
+
+    # 转移角色下的管理员并删除
+    public function transfer_group(){
+
+        if($_POST){
+            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+            $group_id = isset($_POST['group_id']) ? intval($_POST['group_id']) : 0;
+            if(!$id || !$group_id){
+                layer_error_msg('请选择转入的角色');
+            }
+            
+            $ur = Db::name('admin')->where('group_id',$id)->update(['group_id'=>$group_id]);
+            if(!$ur){
+                layer_error_msg('管理员角色变更失败，请重试！');
+            }
+            $dr = Db::name('admin_group')->delete($id);
+            if(!$dr){
+                layer_success_msg('管理员角色转移成功，转出角色删除失败');
+                
+            }
+            layer_success_msg('操作成功，请刷新页面查看');
+        }
+
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $iname = Db::name('admin_group')->where('id', $id)->value('name');
+        if(!$iname){
+            error_h1('参数错误！','没有找到该角色');
+        }
+        $other_group = Db::name('admin_group')->where('id','<>',$id)->field('id,name')->select();
+        if(!$other_group){
+            error_h1('没有找到其他角色','请选择其他操作项');
+        }
+
+
+        $this->assign('id', $id);
+        $this->assign('iname', $iname);
+        $this->assign('other_group', $other_group);
+        return $this->fetch();
     }
 
 

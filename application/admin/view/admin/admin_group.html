@@ -82,15 +82,19 @@
 						},1500);
 					}else if(res.status == 2){
 						let _tpl = `
-							<p style='text-align:center;'>`+res.msg+`</p>
-							<p style='text-align:center;'>请选择操作项！</p>
+							<h3 style='text-align:center;'>`+res.msg+`</h3>
+							<p style='text-align:center;color:#04eb;'>请选择操作项！</p>
+							<p style="margin-top:20px;">
+								<a class="btn btn-success" style="margin-left:15px;" onclick="transfer_group(`+id+`)">转移到其他角色</a>
+								<a class="btn btn-danger" style="margin-left:15px;" onclick="onc_key_delete(`+id+`)">一键删除</a>
+								<a class="btn btn-default" style="margin-left:15px;" onclick="close_del();">取消操作</a>
+							</p>
 						`;
 						layer.open({
 							title:'敏感操作提示！',
-							content:"",
-							btn:['转移到其他角色组','一键删除','取消'],
-							btnAlign:'c',
-							area:['350px','200px'],
+							content:_tpl,
+							btn:false,
+							area:['400px','250px'],
 						});
 					}else{
 						layer.msg('操作失败，请重试！', {icon:5});
@@ -98,10 +102,42 @@
 				});
 				layer.close(index);
 			});
-
-
 		}
-		
+
+		/*转移角色下的管理员并删除*/
+		function transfer_group(id){
+			layer.open({
+				title:'转移角色下的管理员并删除角色',
+				type:2,
+				btn:false,
+				content:'/admin/admin/transfer_group?id='+id,
+				area:['50%', '50%'],
+				end:function(){
+					window.location.replace(location.href);
+				}
+			});
+		}
+
+		/*一键删除角色及管理员*/
+		function onc_key_delete(id){
+			$.post('/admin/admin/del_admin_group',{id:id,one:1},function(res){
+				if(res.status == 1){
+					layer.msg('操作成功！', {icon:6});
+					setTimeout(function(){
+						window.location.replace(location.href);
+					},1500);
+				}else{
+					layer.msg('操作失败，请重试！', {icon:5});
+				}
+			})
+		}
+
+		/*取消删除操作*/
+		function close_del(){
+			layer.closeAll();
+		}
+
+
 		/*详情| 更新*/
 		function edit_group(title,id=0) {
 			layer.open({
