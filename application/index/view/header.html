@@ -1,6 +1,6 @@
 <div class="inner-wrap">
     <div class="logo">
-        <a href="/index/index/index"><img  src="{$web_setting.web_logo}"></a>
+        <a href="/index/index/index"><img  src="{$web_setting.web_logo}" class="header_nav_logo_images"></a>
     </div>
     <div class="nav">
         <ul>
@@ -16,7 +16,7 @@
         <div class="login-in">
             {if condition="$user"}
                 <span class="fl" onclick="javascript:location.href='/index/user/index'">
-                    <img src="{$user.avatar}"">
+                    <img src="{$user.avatar}"" class="touxiang">
                 </span>
                 <a class="outBtn fl" href="/index/login/logout">退出</a>
             {else /}

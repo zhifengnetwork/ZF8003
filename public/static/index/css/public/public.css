@@ -53,19 +53,17 @@ body{
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);/*兼容IE8的rgba透明度*/
 }
 .header .inner-wrap .logo{
-	width: 190px;
+	width: 108px;
 	height: 90px;
 	float: left;
 	/* background-color:#37afe6; */
 	margin-right: 65px;
-	position: relative;
 }
-.header .inner-wrap .logo img{
-	width: 190px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+.header_nav_logo_images{
+ 
+	width: 100%;
+	height: 100%;
+
 }
 
 /* 导航 */
@@ -119,9 +117,7 @@ body{
 	display: inline-block;
 	border-radius: 50%;
 }
-.header .inner-wrap .login-in span img{
-	width: 100%;
-}
+
 .header .inner-wrap .login-in a{
 	display: inline-block;
 	line-height: 50px;
@@ -192,6 +188,11 @@ body{
 .fl{
 	float: left;
 }
+.touxiang{
+	width:100%;
+	height: 100%
+}
+
 .fr{
 	float: right;
 }
@@ -230,6 +231,7 @@ body{
 	z-index: 1;
 	transform: translate(-50%,-50%);
 }
+
 
 
 
