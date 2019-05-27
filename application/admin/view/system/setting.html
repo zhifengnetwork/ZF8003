@@ -52,8 +52,8 @@
 								<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
 							</a>
 						{else/}
-							<a>
-								<img src="{$config.web_logo}" alt="上传图片"/>
+							<a id="add-goods-image-1">
+								<img src="{$config.web_logo}?t=123" onclick="upload_image(1);" alt="上传图片"/>
 								<input type="hidden" id="website-web_logo" name="web_logo" value="{$config.web_logo}" class="input-text">
                     			<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,1,'{$config.web_logo}')">&#xe6e2;</i>
 							</a>
@@ -86,8 +86,8 @@
 								<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
 							</a>
 						{else/}
-							<a>
-								<img src="{$config.title_logo}" alt="上传图片"/>
+							<a id="add-goods-image-2">
+								<img src="{$config.title_logo}?t=123" onclick="upload_image(2);" alt="上传图片"/>
 								<input type="hidden" id="website-title_logo" name="title_logo" value="{$config.title_logo}" class="input-text">
                     			<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,2,'{$config.title_logo}')">&#xe6e2;</i>
 							</a>
@@ -104,8 +104,8 @@
 								<img src="/public/default_upload_images_add.jpg" alt="上传图片" />
 							</a>
 						{else/}
-							<a>
-								<img src="{$config.weixin_qrcode}" alt="上传图片"/>
+							<a id="add-goods-image-3">
+								<img src="{$config.weixin_qrcode}?t=123" onclick="upload_image(3);" alt="上传图片"/>
 								<input type="hidden" id="website-weixin_qrcode" name="weixin_qrcode" value="{$config.weixin_qrcode}" class="input-text">
 								<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,3,'{$config.weixin_qrcode}')">&#xe6e2;</i>
 							</a>
@@ -288,7 +288,7 @@
 	}
 
 	function iframe_images_callback(status,src='',image=''){
-
+		let timestamp = (new Date()).valueOf();
         if(status == 1){
 			var flag = $('#logo-flag').val();
 			var name = 'web_logo';
@@ -300,20 +300,17 @@
 			}
 
             var _html = ''+
-                '<a>'+
-                    '<img class="ex-image" src="'+src+'" />'+
+                '<a id="add-goods-image-'+flag+'">'+
+                    '<img class="ex-image"  onclick="upload_image('+flag+');" src="'+src+'?t='+timestamp+'" />'+
                     '<input type="hidden" id="website-' + name + '" name="' + name + '" value="'+image+'" class="input-text">'+
                     '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this,' + flag + ',' + image + ')">&#xe6e2;</i>'+
                 '</a>';
-
 			var str1 = '#add-goods-image-' + flag;
-			var str2 = '#logo-image-' + flag + ' > a';
-			$(str1).before(_html);
+			var str2 = '#logo-image-' + flag;
+
+			$(str1).remove();
+			$(str2).append(_html);
          
-			size = $(str2).size();
-            if(size > 1){
-                $(str1).remove();
-            }
         }else{
             layer.msg('图片上传失败！');
         }
