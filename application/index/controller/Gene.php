@@ -50,6 +50,7 @@ class Gene extends Base
     public function analysis(){
         ini_set('memory_limit','2048M');
         set_time_limit(0);
+
         $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if(!$id){
@@ -84,7 +85,6 @@ class Gene extends Base
             $max = $val+200;
             $w[strtolower($k)] = ['between',"$min,$max"];
         }
-        
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
         if($list_count > 100 && !$re){
             $this->assign('loading', 1);
