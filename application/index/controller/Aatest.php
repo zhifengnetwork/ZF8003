@@ -9,6 +9,29 @@ class Aatest{
 
     public function index(){
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
         echo 1234;exit;
 
         ini_set('memory_limit', '2048M');
