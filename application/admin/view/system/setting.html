@@ -245,16 +245,15 @@
 				name = 'weixin_qrcode';
 			}
             if(size > 0){
-                if($(str3).length == 0) {
+                if($(str3).length > 0) {
 					$.ajax({
 						type: "post",
-						url: "del_img",
+						url: "/admin/system/del_img",
 						data: {'img':img,'type':type,'name':name},
 						success: function(data){
 							if (data.code == 1) {
 								layer.msg('删除成功！', {icon: 1, time: 1000},function(){
 									window.location.href = "/admin/system/setting";
-									
 								});
 							} else {
 								layer.msg('删除失败！', {icon: 2, time: 1000});
