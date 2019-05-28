@@ -10,8 +10,77 @@ class Aatest{
     public function index(){
 
 
+        ini_set('memory_limit', '2048M');
+        set_time_limit(0);
+        $file_name = ROOT_PATH.'xxl.xlsx';
+        vendor ('PHPExcel.PHPExcel');
+        $objPHPExcel = new \PHPExcel();
+        $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+        $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');
+        $excel_array = $obj_PHPExcel->getsheet(0)->toArray();
+        
+        $n_arr = [
+            1 => 'name',
+            2 => 'nation',
+            3 => 'on_addr',
+            4 => 'addr_log',
+            5 => 'mobile',
+            6 => 'haplogroup',
+            7 => 'variation',
+            8 => 'nomutation',
+            9 => 'desc',
+        ];
+        
+        if($excel_array){
+            foreach($excel_array as $k=>$v){
+                if($k > 0 && $k != 10){
+                    foreach($v as $key=>$val){
+                        $kk = isset($n_arr[$k]) ? $n_arr[$k] : $v[0];
+                        if($v[0]){
+                            $d[$key][$kk] = $val ? $val : '';   
+                        }
+                    }
+                }
+            }
+            array_shift($d);
 
+            $res_success = 0;
+            $res_error = 0;
+            foreach($d as $k => $v){
+                if($v['name']){
+                    $inar['user_id'] = 0;
+                    $inar['name'] = $inar['surname'] = $v['name'];
+                    $inar['variation'] = $v['variation'];
+                    $inar['nomutation'] = $v['nomutation'];
+                    $inar['desc'] = '现居：'.$v['on_addr'].'，故居：'.$v['addr_log'].'，联系电话：'.$v['mobile'] .'，'. $v['desc'];
+                    $inar['haplogroup'] = $v['haplogroup'];
+                    $inar['nation'] = $v['nation'];
+                    $inar['region'] = $v['on_addr'];
+                    unset($v['name'],$v['variation'],$v['nomutation'],$v['on_addr'],$v['addr_log'],$v['mobile'],$v['desc'],$v['haplogroup'],$v['nation']);
 
+                    $inar['addtime'] = $inar['utime'] = time();
+                    foreach($v as $k1=>$v1){
+                        if(Standard_Gene($k1)){
+                            $k1 = str_replace('-','_',$k1);
+                            $inar[strtolower($k1)] = $v1 ? (double)$v1 * 100 : 0;
+                        }else{
+                            $inar['completion'][strtolower($k1)] = $v1 ? (double)$v1 * 100 : 0;
+                        }
+                    }
+                    $inar['completion'] = isset($inar['completion']) ? json_encode($inar['completion']) : '';
+                    
+                    $res = Db::name('gene')->insert($inar);
+                    if($res){
+                        $res_success += 1;
+                    }else{
+                        $res_error += l;
+                    }
+                    $inar = null;
+                    unset($d[$k]);
+                }
+            }
+        }
+        dump([$res_success + $res_error, $res_success, $res_error]);exit;
 
 
 
