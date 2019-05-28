@@ -113,7 +113,7 @@ class Index extends Base
                     $res_error = 0;
                     foreach($d as $k => $v){
                         if($v['name']){
-                            $inar['user_id'] = 0;
+                            $inar['user_id'] = $this->user_id ? $this->user_id : 0;
                             $inar['name'] = $inar['surname'] = $v['name'];
                             $inar['variation'] = $v['variation'];
                             $inar['nomutation'] = $v['nomutation'];
