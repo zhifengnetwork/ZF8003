@@ -33,7 +33,6 @@ function layer_success_msg(msg,re){
 
 	layer.msg(msg,{icon:6});
 	if(re){
-		
 		setTimeout(function(){
 			parent.layer_open_closeAll();
 		},2000);
@@ -43,5 +42,13 @@ function layer_success_msg(msg,re){
 function layer_open_closeAll(){
 	layer.closeAll();
 	window.location.replace(location.href);
+}
+
+function open_msg(msg='???'){
+	layer.open({
+		title:false,
+		content:msg,
+		btn:false,
+	});
 }
 </script> 

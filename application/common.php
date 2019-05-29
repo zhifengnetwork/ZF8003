@@ -11,6 +11,26 @@
 
 // 应用公共文件
 
+/**
+ * 保留文件夹，删除路径下的文件
+ */
+function delFileUnderDir( $dirName = '') 
+{ 
+    if ($handle = opendir("$dirName")){ 
+        while (false !== ( $item = readdir($handle))){
+        if ($item != "." && $item != ".."){
+            if (is_dir("$dirName/$item")){ 
+                delFileUnderDir("$dirName/$item"); 
+            } else {
+                unlink("$dirName/$item");
+            } 
+        } 
+    } 
+    closedir($handle);
+    } 
+}
+
+
 # H1错误提示样板
 function error_h1($msg='出错了！',$msg2=''){
 

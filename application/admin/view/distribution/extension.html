@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 分销管理 <span
+			class="c-gray en">&gt;</span> 推广记录 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<div class="page-container">
+		<form method="GET" action="">
+			<div class="text-c"> 
+				会员名称：
+				<input type="text" class="input-text" style="width:250px" placeholder="输入会员名称" value="{$search['nickname'] ? $search['nickname'] : ''}" name="search[nickname]">
+				邮箱或账号：
+				<input type="text" class="input-text" style="width:250px" placeholder="输入邮箱或账号" value="{$search['email'] ? $search['email'] : ''}" name="search[email]">
+				注册时间：
+				<input type="text" {literal}
+					onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" {/literal}
+					value="{$search['datemin'] ? $search['datemin'] : ''}" id="datemin" name="search[datemin]" class="input-text Wdate" style="width:180px;">
+				-
+				<input type="text" {literal} onfocus="WdatePicker({ dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'#F{$dp.$D(\'datemin\')}' })"
+					{/literal} value="{$search['datemax'] ? $search['datemax']: ''}" id="datemax" name="search[datemax]" class="input-text Wdate"
+					style="width:180px;">
+				<button type="submit" class="btn btn-success" id="" name="">
+					<i class="Hui-iconfont">&#xe665;</i>
+					搜索</button>
+			</div>
+		</form>
+		<div class="cl pd-5 bg-1 bk-gray mt-20">
+            <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+		<table class="table table-border table-bordered table-bg">
+			<thead>
+				<tr>
+					<th scope="col" colspan="10">推广记录</th>
+				</tr>
+				<tr class="text-c">
+                    <th width="30">ID</th>
+                    <th width="100">推广会员</th>
+                    <th width="100">推广会员账号</th>
+                    <th width="100">新会员</th>
+                    <th width="100">新会员账号</th>
+                    <th width="100">注册时间</th>
+					<th width="70">邀请方式</th>
+					<!-- <th width="40">操作</th> -->
+                </tr>
+			</thead>
+			<tbody>
+				{if condition="isset($list) && $list"}
+                {volist name="list" id="vo"}
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td>
+						{if condition="$user_info[$vo.user_id]['avatar']"}
+						<img style="width:25px;height:25px;" src="{$user_info[$vo.user_id]['avatar']}" />
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						{/if}
+						{$user_info[$vo.user_id]['nickname'] ?? ''}
+					</td>
+                    <td>{$user_info[$vo.user_id]['email'] ?? ''}</td>
+                    <td>
+						{if condition="$user_info[$vo.add_user_id]['avatar']"}
+						<img style="width:25px;height:25px;" src="{$user_info[$vo.add_user_id]['avatar']}" />
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						{/if}
+						{$user_info[$vo.add_user_id]['nickname'] ?? ''}
+					</td>
+                    <td>{$user_info[$vo.add_user_id]['email'] ?? ''}</td>
+                    <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+                    <td>{$type_name[$vo.type] ?? '--'}</td>
+                    <!-- <td class="td-manage" data-id="{$vo.id}">
+						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
+                            style="text-decoration:none">
+                            <i class="Hui-iconfont">&#xe695;</i>
+						</a>
+                    </td> -->
+                </tr>
+				{/volist}
+				{/if}
+			</tbody>
+		</table>
+		<div class="pages">{$list->render()}</div>
+		{if condition="!isset($list) or !$list"}
+		<p class="no-data">暂无数据</p>
+		{/if}
+	</div>
+	<!--_footer 作为公共模版分离出去-->
+	{include file='layout/footer' /}
+
+	<!--请在下方写此页面业务相关的脚本-->
+	<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    <script type="text/javascript" src="/__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+    <script type="text/javascript">
+        function open_closeAll(){
+			layer.closeAll();
+			window.location.replace(location.href);
+		}
+
+	</script>
+</body>
+
+</html>

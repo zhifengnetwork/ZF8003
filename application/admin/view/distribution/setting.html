@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+{include file='layout/head' /}
+<body>
+	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 分销管理 <span
+			class="c-gray en">&gt;</span> 分销设置 <a class="btn btn-success radius r replace"
+			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
+				class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<form class="form form-horizontal" method="POST" target="ajaxR">
+		<div id="tab-system" class="HuiTab">
+			<div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">分销系统：</label>
+					<div class="formControls col-xs-8 col-sm-9"> 
+						<span class="select-box" style="width:150px;">
+							<select class="select" id="status" name="status" size="1">
+								<option value="0" {if condition="$info.status == 0 || !isset($info.status)"}selected{/if}>关闭</option>
+								<option value="1" {if condition="$info.status == 1 && isset($info.status)"}selected{/if}>开启</option>
+							</select>
+						</span>
+						<p style="color:cf5656;font-size:12px;">只有当分销系统处于“开启”状态时，下面的设置才会起作用</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">分销时机：</label>
+					<div class="formControls col-xs-8 col-sm-9"> 
+						<span class="select-box" style="width:150px;">
+							<select class="select" id="distr_time" name="distr_time" size="1">
+								<option value="0" {if condition="$info.distr_time == 0 || !isset($info.distr_time)"}selected{/if}>支付完成后</option>
+								<option value="1" {if condition="$info.distr_time == 1 && isset($info.distr_time)"}selected{/if}>确认收货后</option>
+							</select>
+						</span>
+						<p style="color:cf5656;font-size:12px;">开启分销系统后，请勿随意修改订单状态，避免不必要的错误！</p>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">佣金设置：</label>
+					<div class="formControls col-xs-8 col-sm-8"> 
+						<table class="table table-border table-bordered table-bg" >
+							<thead>
+								<tr class="text-c">
+									<th width="100"></th>
+									<th width="100">佣金比例（消费金额 %）<i class="Hui-iconfont" onclick="open_msg('单笔消费金额的百分比，请填写大于0的整数或两位小数，0 表示不设置；如：填写比例 1，单笔消费1000元，用户获得的佣金为 10元，当分佣金额小于0.01元时不进行分佣，请合理设置分佣比例！')">&#xe633;</i> </th>
+									<th width="100">最低佣金额度（元）<i class="Hui-iconfont" onclick="open_msg('单笔分佣金额最低额度，请填写大于0的整数或两位小数，0 表示不设置；如：最低佣金额度设置为 5元，用户获得的佣金小于该值时，实际获得的佣金为 5元')">&#xe633;</i> </th>
+									<th width="100">最高佣金额度（元）<i class="Hui-iconfont" onclick="open_msg('单笔分佣金额最高额度，请填写大于0的整数或两位小数，0 表示不设置；如：最低佣金额度设置为 10元，用户获得的佣金大于该值时，实际获得的佣金为 10元')">&#xe633;</i> </th>
+								</tr>
+							</thead>
+							<tbody class="other-temp">
+								<tr class="text-c">
+									<td>一级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户')">&#xe633;</i></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="one_quota" value="{$info.one_quota ? $info.one_quota : 0}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="one_quota_min" value="{$info.one_quota_min ? $info.one_quota_min : 0}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="one_quota_max" value="{$info.one_quota_max ? $info.one_quota_max : 0}" /></td>
+								</tr>
+								<tr class="text-c">
+									<td>二级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="two_quota" value="{$info.two_quota ? $info.two_quota : 0}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="two_quota_min" value="{$info.two_quota_min ? $info.two_quota_min : 0}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="two_quota_max" value="{$info.two_quota_max ? $info.two_quota_max : 0}" /></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+	<iframe name="ajaxR" style="display:none;width:100%;height:300px;"></iframe>
+</div>
+{include file='layout/footer' /}
+<script>
+	function layermsg(msg,icon=6){
+        layer.msg(msg,{icon:icon});
+        setTimeout(function(){
+            // parent.layer.closeAll();
+            window.location.replace(location.href);
+        },2000);
+        
+    }
+</script>
