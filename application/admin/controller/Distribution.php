@@ -43,13 +43,14 @@ class Distribution extends Base
 
 
         $config = Db::name('config')->where('type','distribution_setting')->field('name,value')->select();
+        $info = [];
         if($config){
             foreach($config as $v){
                 $info[$v['name']] = $v['value'];
             }
         }
         
-        $this->assign('info', $info or []);
+        $this->assign('info', $info);
         return $this->fetch();
     }
 
@@ -102,12 +103,13 @@ class Distribution extends Base
         }
 
         $conf = Db::name('config')->where(['type' => 'distribution_shareposter', 'name' => 'shareposter'])->find();
+        $config = [];
         if($conf){
             $config = json_decode($conf['value'],true);
         }
 
         $this->assign('poster_path', $poster_path);
-        $this->assign('config',$config or []);
+        $this->assign('config',$config);
         return $this->fetch();
     }
 

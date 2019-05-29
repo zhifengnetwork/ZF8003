@@ -15,8 +15,8 @@
 					<div class="formControls col-xs-8 col-sm-9"> 
 						<span class="select-box" style="width:150px;">
 							<select class="select" id="status" name="status" size="1">
-								<option value="0" {if condition="$info.status == 0 || !isset($info.status)"}selected{/if}>关闭</option>
-								<option value="1" {if condition="$info.status == 1 && isset($info.status)"}selected{/if}>开启</option>
+								<option value="0" {if condition="!isset($info.status) || (isset($info.status) && $info.status == 0)"}selected{/if}>关闭</option>
+								<option value="1" {if condition="isset($info.status) && $info.status == 1"}selected{/if}>开启</option>
 							</select>
 						</span>
 						<p style="color:cf5656;font-size:12px;">只有当分销系统处于“开启”状态时，下面的设置才会起作用</p>
@@ -27,8 +27,8 @@
 					<div class="formControls col-xs-8 col-sm-9"> 
 						<span class="select-box" style="width:150px;">
 							<select class="select" id="distr_time" name="distr_time" size="1">
-								<option value="0" {if condition="$info.distr_time == 0 || !isset($info.distr_time)"}selected{/if}>支付完成后</option>
-								<option value="1" {if condition="$info.distr_time == 1 && isset($info.distr_time)"}selected{/if}>确认收货后</option>
+								<option value="0" {if condition="!isset($info.distr_time) || (isset($info.distr_time) && $info.distr_time == 0) "}selected{/if}>支付完成后</option>
+								<option value="1" {if condition="isset($info.distr_time) && $info.distr_time == 1"}selected{/if}>确认收货后</option>
 							</select>
 						</span>
 						<p style="color:cf5656;font-size:12px;">开启分销系统后，请勿随意修改订单状态，避免不必要的错误！</p>

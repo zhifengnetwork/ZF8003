@@ -16,6 +16,9 @@
  */
 function delFileUnderDir( $dirName = '') 
 { 
+    if(!file_exists($dirName)){
+        return false;
+    }
     if ($handle = opendir("$dirName")){ 
         while (false !== ( $item = readdir($handle))){
         if ($item != "." && $item != ".."){
