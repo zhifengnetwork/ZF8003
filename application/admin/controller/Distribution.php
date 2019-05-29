@@ -28,6 +28,9 @@ class Distribution extends Base
 
             $d['two_quota_max'] = isset($_POST['two_quota_max']) && Digital_Verification($_POST['two_quota_max']) ? Digital_Verification($_POST['two_quota_max']) : 0;
 
+            if($d['status'] == 1){
+                $d['status'] = time();
+            }
 
             foreach($d as $k=>$v){
                 if(Db::name('config')->where(['type'=>'distribution_setting', 'name'=>$k])->count()){

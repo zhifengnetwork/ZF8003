@@ -1035,53 +1035,11 @@ class User extends Base
     {
         
         $user = $this->user;
-        if(!$user['ticket'] || $user['ticket_expire_seconds'] < time()){
-            $openid = $user['openid'];
-            if(!$openid){
-                if(!is_weixin()){
-                    layer_error('您还没有绑定微信账号！请在微信浏览器上进行操作！');
-                    exit;
-                }
-                $this->user_wxinfo_completion();
-                $user = $this->user;
-                $openid = $user['openid'];
-            }
-            $this->get_weixin_global_token();
-            $token = $this->weixin_config['weixin_access_token'];
-            $param = [
-				'expire_seconds' => 2592000,
-				'action_name' => 'QR_STR_SCENE',
-				'action_info' => [
-						'scene' => [
-                            'scene_str' => 'openid:'.$user['openid'],
-						],
-				],
-            ];
-			$url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=$token";
-			$res = httpRequest($url,'POST',json_encode($param));
-            $res = json_decode($res,true);
-            
-            if(isset($res['ticket'])){
-                $ticket_data = [
-                    'ticket' => $res['ticket'],
-                    'ticket_expire_seconds' => time() + $res['expire_seconds'] - 200,
-                    'ticket_url' => $res['url'],
-                ];
-                Db::name('users')->where('id', $user['id'])->update($ticket_data);
-                $user['ticket'] = $ticket_data['ticket'];
-                $user['ticket_expire_seconds'] = $ticket_data['ticket_expire_seconds'];
-                $user['ticket_url'] = $ticket_data['ticket_url'];
-                $this->user = $user;
-                Session::set('user', $user);
-                $this->redirect('qr_code');
-            }
-            layer_error('出错了！！！');
-            exit;
-        }
+        
         
 
 
-        $src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=".UrlEncode($user['ticket']);
+        $src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
         $this->assign('src',$src);
         return $this->fetch();
     }

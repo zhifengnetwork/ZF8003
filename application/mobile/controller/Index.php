@@ -278,8 +278,14 @@ class Index extends Base
                 return json(['status'=>0,'msg'=>'邮箱格式错误！']);
             }
 
-            $code_info = Db::name('mail_code')->where(['type'=>'edit_pass', 'sn'=>$pass_id, 'code'=>$code])->find();
+            $code_info = Db::name('mail_code')->where(['type'=>'edit_pass', 'sn'=>$pass_id])->find();
             if(!$code_info){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            }
+            if($code_info['email'] != $email){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            }
+            if($code_info['code'] != $code){
                 return json(['status'=>0,'msg'=>'验证码错误！']);
             }
             if(!$password){
@@ -306,7 +312,7 @@ class Index extends Base
         }
 
 
-
+        $this->assign('email', $this->user['email'] ? $this->user['email'] : '');
         $this->assign('pass_id', md5(time().rand(1000,9999).rand(1000,9999)));
         return $this->fetch();
     }
@@ -329,8 +335,14 @@ class Index extends Base
                 return json(['status'=>0,'msg'=>'邮箱格式错误！']);
             }
 
-            $code_info = Db::name('mail_code')->where(['type'=>'edit_paypass', 'sn'=>$pass_id, 'code'=>$code])->find();
+            $code_info = Db::name('mail_code')->where(['type'=>'edit_paypass', 'sn'=>$pass_id])->find();
             if(!$code_info){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            }
+            if($code_info['email'] != $email){
+                return json(['status'=>0,'msg'=>'验证码错误！']);
+            }
+            if($code_info['code'] != $code){
                 return json(['status'=>0,'msg'=>'验证码错误！']);
             }
             if(!$password){
@@ -360,7 +372,7 @@ class Index extends Base
         }
 
 
-        
+        $this->assign('email', $this->user['email'] ? $this->user['email'] : '');
         $this->assign('pass_id', md5(time().rand(1000,9999).rand(1000,9999)));
         return $this->fetch();
     }
