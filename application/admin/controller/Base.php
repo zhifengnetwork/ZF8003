@@ -13,6 +13,7 @@ use think\Controller;
 use think\Db;
 use think\Session;
 use think\Request;
+use think\Cache;
 
 class Base extends Controller
 {
@@ -23,6 +24,8 @@ class Base extends Controller
     public $ip;
     public $client;
     public $weixin_config;
+    public $jurisdiction_str;
+    public $jurisdiction;
 
     public function _initialize()
     {
@@ -41,7 +44,6 @@ class Base extends Controller
         
         $this->admin = Session::get('admin');
 
-
         $global_menu_list = $this->admin ? $this->get_menu() : '';
         $this->assign('global_menu_list', $global_menu_list);
     }
@@ -57,25 +59,87 @@ class Base extends Controller
 
     # 获取菜单
     public function get_menu(){
-        $jurisdiction = $this->admin['jurisdiction'] ? $this->admin['jurisdiction'] : '';
-        if($this->admin && $this->admin['is_super']){
+        
+        if($this->admin['is_super']){
             $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 order by `sort` desc,`id` asc";
         }else{
-            $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 and `id` in (".$jurisdiction.") order by `sort` desc,`id` asc";
+            if(!Session::has('jurisdiction')){
+                $jurisdiction = $this->admin['jurisdiction'] ? json_decode($this->admin['jurisdiction'],true) : '';
+                if($jurisdiction){
+                    foreach($jurisdiction as $k => $v){
+                        $jur_k[$k] = $k;
+                        if($v){
+                            foreach($v as $key => $val){
+                                $jur_k[$key] = $key;
+                                $jur_v[$key] = $val;
+                            }
+                        }
+                    }
+                    $this->jurisdiction_str = implode(',', $jur_k);
+                    $this->jurisdiction = $jur_v;
+
+                    Session::set('jurisdiction_str', $this->jurisdiction_str);
+                    Session::set('jurisdiction', $this->jurisdiction);
+                }
+            }else{
+                $jurisdiction = Session::get('jurisdiction');
+                $jurisdiction_str = Session::get('jurisdiction_str');
+
+                $this->jurisdiction = $jurisdiction;
+                $this->jurisdiction_str = $jurisdiction_str;
+            }
+            
+            $sql = "select `id`,`name`,`icon` from `zf_menu` where `is_lock` =  0 and `parent_id` = 0 and `id` in (".$this->jurisdiction_str.") order by `sort` desc,`id` asc";
         }
-        
         $global_menu_list = Db::query($sql);
         if($global_menu_list){
             foreach($global_menu_list as $k => $v){
                 if($this->admin['is_super']){
                     $last = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]'  order by `sort` desc,`id` asc");
                 }else{
-                    $last = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]' and `id` in (".$jurisdiction.") order by `sort` desc,`id` asc");
+                    $last = Db::query("select `id`,`name`,`url` from `zf_menu` where `is_lock` = 0 and `parent_id` = '$v[id]' and `id` in (".$this->jurisdiction_str.") order by `sort` desc,`id` asc");
                 }
                 $global_menu_list[$k]['last'] = $last;
             }
         }
         return $global_menu_list;
+    }
+
+    # 管理员操作权限验证
+    public function check_jurisdiction_ok($action,$onaction=''){
+        if($this->admin['is_super']){
+            return true;
+        }
+        
+        $menu = Cache::get('global_menu');
+        if(!$menu){
+            $menu = Db::name('menu')->where('level',2)->field('id,url')->select();
+            Cache::set('global_menu',$menu,3600);
+        }
+
+        if(!$onaction){
+            $onaction = strtolower($this->controller.'/'.$this->action);
+        }
+        dump($menu);exit;
+        $mid = 0;
+        foreach($menu as $v){
+            $url = strtolower($v['url']);
+            if(strstr($url,$onaction) !== false){
+                $mid = $v['id'];
+                goto CHECK;
+            }
+
+        }
+        
+        CHECK:
+        $jurisdiction = $this->jurisdiction;
+        dump($mid);exit;
+        if($mid > 0 && isset($jurisdiction[$mid])){
+            if(strstr($jurisdiction[$mid],$action) != false){
+                return true;
+            }
+        }
+        return false;
     }
 
     # 网站基本信息设置

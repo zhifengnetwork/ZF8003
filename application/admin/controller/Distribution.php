@@ -130,8 +130,10 @@ class Distribution extends Base
         $poster_path = $temp_dir.'poster_image.png';
 
         if($_POST){
+            
             $t = input('post.t');
             if($t == 'temp_image'){
+                
                 $file = request()->file('image');
                 if($file){
                     $info = $file->validate(['ext'=>'jpg,png,jpeg'])->move($temp_dir,'qr_backgroup.png');
@@ -141,7 +143,7 @@ class Distribution extends Base
                 }
                 exit;
             }
-
+            
             if($t == 'preview'){
                 $data = input('post.');
 

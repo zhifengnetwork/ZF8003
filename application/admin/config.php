@@ -24,5 +24,11 @@ return [
         'auto_start'     => true,
     ],
 
+    'cache'  => [
+        'type'   => 'File',
+        'path'   => CACHE_PATH,
+        'prefix' => 'admin_',
+        'expire' => 0,
+    ],
 
 ];
