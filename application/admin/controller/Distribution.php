@@ -70,7 +70,7 @@ class Distribution extends Base
         # 默认底部图片地址
         $image_path =  $temp_dir.'qr_backgroup.png';
         # 默认海报地址
-        $poster_path = '/public/shareposter/temp/poster_image.png';
+        $poster_path = '/public/shareposter/temp/poster_image.png?t='.time();
 
         if($_POST){
             $data = input('post.');
