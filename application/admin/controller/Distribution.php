@@ -49,7 +49,7 @@ class Distribution extends Base
             }
         }
         
-        $this->assign('info', $info ? $info : []);
+        $this->assign('info', $info or []);
         return $this->fetch();
     }
 
@@ -107,7 +107,7 @@ class Distribution extends Base
         }
 
         $this->assign('poster_path', $poster_path);
-        $this->assign('config',$config ? $config : []);
+        $this->assign('config',$config or []);
         return $this->fetch();
     }
 
