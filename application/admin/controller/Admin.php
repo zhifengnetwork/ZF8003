@@ -229,13 +229,14 @@ class Admin extends Base
 
         $list = Db::name('admin_group')->field('id,name,addtime,utime')->where($where)->order('utime desc,id desc')->paginate(20);
         $count = Db::name('admin_group')->where($where)->count();
+        $gcount = [];
         if($list){
             foreach($list as $v){
                 $gcount[$v['id']] = Db::name('admin')->where('group_id', $v['id'])->count();
             }
         }
 
-        $this->assign('gcount', $gcount ? $gcount : []);
+        $this->assign('gcount', $gcount);
         $this->assign('list', $list);
         $this->assign('count', $count);
         return $this->fetch();
