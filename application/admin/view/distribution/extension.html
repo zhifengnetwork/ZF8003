@@ -54,19 +54,19 @@
 						<img style="width:25px;height:25px;" src="{$user_info[$vo.user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}
-						{$user_info[$vo.user_id]['nickname'] ?? ''}
+						{$user_info[$vo.user_id]['nickname'] ? $user_info[$vo.user_id]['nickname'] : ''}
 					</td>
-                    <td>{$user_info[$vo.user_id]['email'] ?? ''}</td>
+                    <td>{$user_info[$vo.user_id]['email'] ? $user_info[$vo.user_id]['email'] : ''}</td>
                     <td>
 						{if condition="$user_info[$vo.add_user_id]['avatar']"}
 						<img style="width:25px;height:25px;" src="{$user_info[$vo.add_user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}
-						{$user_info[$vo.add_user_id]['nickname'] ?? ''}
+						{$user_info[$vo.add_user_id]['nickname'] ? $user_info[$vo.add_user_id]['nickname'] : ''}
 					</td>
-                    <td>{$user_info[$vo.add_user_id]['email'] ?? ''}</td>
+                    <td>{$user_info[$vo.add_user_id]['email'] ? $user_info[$vo.add_user_id]['email'] : ''}</td>
                     <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
-                    <td>{$type_name[$vo.type] ?? '--'}</td>
+                    <td>{$type_name[$vo.type] ? $type_name[$vo.type] : '--'}</td>
                     <!-- <td class="td-manage" data-id="{$vo.id}">
 						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
                             style="text-decoration:none">

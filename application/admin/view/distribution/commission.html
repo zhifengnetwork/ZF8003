@@ -56,8 +56,8 @@
 						<img style="width:25px;height:25px;" src="{$user_info[$vo.user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}
-                        {$user_info[$vo.user_id]['nickname'] ?? ''}
-                        <p>{$user_info[$vo.user_id]['email'] ?? ''}</p>
+                        {$user_info[$vo.user_id]['nickname'] ? $user_info[$vo.user_id]['nickname'] : ''}
+                        <p>{$user_info[$vo.user_id]['email'] ? $user_info[$vo.user_id]['email'] : ''}</p>
                     </td>
                     <td>{$vo.user_money}</td>
                     <td>{$vo.commission}</td>
@@ -67,10 +67,10 @@
 						<img style="width:25px;height:25px;" src="{$user_info[$vo.add_user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}
-                        {$user_info[$vo.source_user_id]['nickname'] ?? ''}
-                        <p>{$user_info[$vo.source_user_id]['email'] ?? ''}</p>
+                        {$user_info[$vo.source_user_id]['nickname'] ? $user_info[$vo.source_user_id]['nickname'] : ''}
+                        <p>{$user_info[$vo.source_user_id]['email'] ? $user_info[$vo.source_user_id]['email'] : ''}</p>
 					</td>
-                    <td>{$source_name[$vo.source] ?? '--'}</td>
+                    <td>{$source_name[$vo.source] ? $source_name[$vo.source] : '--'}</td>
                     <td>{$vo.money}</td>
                     <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                     <!-- <td class="td-manage" data-id="{$vo.id}">
