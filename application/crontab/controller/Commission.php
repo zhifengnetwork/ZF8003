@@ -29,6 +29,7 @@
              }
              $this->config = $config;
          }
+         
          set_time_limit(50);
          if(!Session::has('crontab_commission')){
              Session::set('crontab_commission', 40, 'crontab');

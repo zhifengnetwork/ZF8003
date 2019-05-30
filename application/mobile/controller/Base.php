@@ -32,6 +32,7 @@ class Base extends Controller
     {
         
         $this->Verification_Client();
+        $this->ShareUpHandle();
 
         # 如果访问的不是 手机端 跳转到手机端
         if($this->client != 'mobile'){
@@ -40,6 +41,33 @@ class Base extends Controller
         }
 
     }
+
+    # 上级关系处理
+    public function ShareUpHandle(){
+        $shareUp = isset($_GET['shareUp']) ? intval($_GET['shareUp']) : 0;
+        if($shareUp){
+            $shareInfo = Db::name('users')->where('id', $shareUp)->count();
+            if($shareInfo){
+                Session::set('shareUp', $shareUp);
+            }
+        }
+
+        if(Session::has('shareUp') && $this->user_id){
+            $shareUp = Session::pull('shareUp');
+            $first = Db::name('users')->where('id', $this->user_id)->value('first_leader');
+            if(!$first && $shareUp != $this->user_id){
+                Db::name('users')->where('id',$this->user_id)->update(['first_leader' => $shareUp]);
+                $insarr = [
+                    'user_id' => $shareUp,
+                    'add_user_id' => $this->user_id,
+                    'addtime' => time(),
+                    'type' => 'share',
+                ];
+                Db::name('extension_log')->insert($insarr);
+            }
+        }
+    }
+
 
     # 请求验证
     public function Verification_Client(){
