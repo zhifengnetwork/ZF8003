@@ -33,7 +33,7 @@ class Base extends Controller
         
         $this->Verification_Client();
         $this->ShareUpHandle();
-
+        // dump(Session::get());exit;
         # 如果访问的不是 手机端 跳转到手机端
         if($this->client != 'mobile'){
             $this->redirect('/index/index/index');
@@ -45,6 +45,7 @@ class Base extends Controller
     # 上级关系处理
     public function ShareUpHandle(){
         $shareUp = isset($_GET['shareUp']) ? intval($_GET['shareUp']) : 0;
+        // dump($_GET);exit; 
         if($shareUp){
             $shareInfo = Db::name('users')->where('id', $shareUp)->count();
             if($shareInfo){

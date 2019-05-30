@@ -1081,7 +1081,7 @@ class User extends Base
             # 生成二维码
             if(!file_exists($qr_code_file)){
                 vendor('phpqrcode.phpqrcode');
-                $url = $this->host.'/index.php?shareUp='.$this->user_id;
+                $url = $this->host.'/mobile/index/index?shareUp='.$this->user_id;
                 \QRcode::png($url, $qr_code_file, QR_ECLEVEL_M,1.8,2);
             }
 
