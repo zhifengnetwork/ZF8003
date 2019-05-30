@@ -77,10 +77,21 @@ class Distribution extends Base
 
         if($_POST){
             $data = input('post.');
-            $val['w'] = $data['w'] ? $data['w'] : 75;
-            $val['h'] = $data['h'] ? $data['h'] : 75;
-            $val['x'] = $data['code_x'] ? $data['code_x'] : 0;
-            $val['y'] = $data['code_y'] ? $data['code_y'] : 0;
+            $val['w'] = intval($data['w']) ? intval($data['w']) : 75;
+            $val['h'] = intval($data['h']) ? intval($data['h']) : 75;
+            $val['x'] = intval($data['code_x']) ? intval($data['code_x']) : 0;
+            $val['y'] = intval($data['code_y']) ? intval($data['code_y']) : 0;
+
+            $val['name_x'] = intval($data['name_x']) ? intval($data['name_x']) : 0;
+            $val['name_y']= intval($data['name_y']) ? intval($data['name_y']) : 0;
+            $val['name_font_size'] = intval($data['name_font_size']) ? intval($data['name_font_size']) : 20;
+            $val['name_font_color'] = $data['name_font_color'] ? $data['name_font_color'] : '#fff';
+
+            $val['title'] = $data['title'] ? $data['title'] : '';
+            $val['title_x'] = intval($data['title_x']) ? intval($data['title_x']) : 0;
+            $val['title_y'] = intval($data['title_y']) ? intval($data['title_y']) : 0;
+            $val['title_font_size'] = intval($data['title_font_size']) ? intval($data['title_font_size']) : 20;
+            $val['title_font_color'] = $data['title_font_color'] ? $data['title_font_color'] : '#fff';
             
             $value = json_encode($val);
 
@@ -131,6 +142,8 @@ class Distribution extends Base
         $image_path =  $temp_dir.'qr_backgroup.png';
         # 默认海报地址
         $poster_path = $temp_dir.'poster_image.png';
+        # 默认字体
+        $ttc = ROOT_PATH.'public/simsun.ttc';
 
         if($_POST){
             
@@ -149,11 +162,22 @@ class Distribution extends Base
             
             if($t == 'preview'){
                 $data = input('post.');
+                $image_w = intval($data['w']) ? intval($data['w']) : 75;
+                $image_h = intval($data['h']) ? intval($data['h']) : 75;
+                $image_x = intval($data['x']) ? intval($data['x']) : 0;
+                $image_y = intval($data['y']) ? intval($data['y']) : 0;
 
-                $image_w = $data['w'] ? $data['w'] : 75;
-                $image_h = $data['h'] ? $data['h'] : 75;
-                $image_x = $data['x'] ? $data['x'] : 0;
-                $image_y = $data['y'] ? $data['y'] : 0;
+                $name = '我是：MyRoot';
+                $name_x = intval($data['name_x']) ? intval($data['name_x']) : 0;
+                $name_y = intval($data['name_y']) ? intval($data['name_y']) : 0;
+                $name_font_size = intval($data['name_font_size']) ? intval($data['name_font_size']) : 20;
+                $name_font_color = $data['name_font_color'] ? $data['name_font_color'] : '#fff';
+
+                $title = $data['title'] ? $data['title'] : '';
+                $title_x = intval($data['title_x']) ? intval($data['title_x']) : 0;
+                $title_y = intval($data['title_y']) ? intval($data['title_y']) : 0;
+                $title_font_size = intval($data['title_font_size']) ? intval($data['title_font_size']) : 20;
+                $title_font_color = $data['title_font_color'] ? $data['title_font_color'] : '#fff';
                 
 
                 
@@ -178,6 +202,29 @@ class Distribution extends Base
                 # 图片合成
                 $image = \think\Image::open($image_path);
                 $image->water($qrcode_temp_path, $water)->save($poster_path);
+
+                # 名字 字体合成
+                if($name_x > 0 || $name_y > 0){
+                    $name_water = [$name_x, $name_y];
+                }else{
+                    $name_water = 5;
+                }
+                $image = \think\Image::open($poster_path);
+                $image->text($name,$ttc,$name_font_size,$name_font_color,$name_water)->save($poster_path);
+
+
+                # 标语 字体合成
+                if($title){
+                    if($title_x > 0 || $title_y > 0){
+                        $title_water = [$title_x, $title_y];
+                    }else{
+                        $title_water = 5;
+                    }
+                    $image = \think\Image::open($poster_path);
+                    $image->text($title,$ttc,$title_font_size,$title_font_color,$title_water)->save($poster_path);
+                }
+
+
 
                 return json(['status' => 1, 'msg' => '操作成功', 'time' => time()]);
             }

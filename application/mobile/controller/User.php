@@ -9,6 +9,7 @@ namespace app\mobile\controller;
 use app\mobile\model\Area;
 use think\Session;
 use think\Db;
+use think\Image;
 
 class User extends Base
 {
@@ -1034,13 +1035,86 @@ class User extends Base
     public function qr_code()
     {
         
-        $user = $this->user;
-        
-        
+        # 缓存文件夹
+        $temp_dir = ROOT_PATH.'public/shareposter/temp/';
+        # 配置文件夹
+        $load_dir = ROOT_PATH.'public/shareposter/load/';
+        # 会员文件夹
+        $user_dir = ROOT_PATH.'public/shareposter/user/';
+        # 二维码
+        $qr_code_file = $user_dir.$this->user_id.'/qr_code.png';
+        # 背景图
+        $qr_backgroup = $load_dir.'qr_backgroup.png';
+        # 我的分享海报
+        $share_image = $user_dir.$this->user_id.'/share_image.png';
+        # 默认字体
+        $ttc = ROOT_PATH.'public/simsun.ttc';
 
 
-        $src = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=";
-        $this->assign('src',$src);
+        if(!file_exists($share_image)){
+            $conf = Db::name('config')->where(['type' => 'distribution_shareposter', 'name' => 'shareposter'])->find();
+            $config = [];
+            if($conf){
+                $config = json_decode($conf['value'],true);
+            }else{
+                layer_error('功能暂无法使用，请联系管理员');
+            }
+
+            if(!file_exists($qr_backgroup)){
+                layer_error('功能暂无法使用，请联系管理员');
+            }
+
+            ## 二维码
+            # 会员目录
+            if(!file_exists($user_dir.$this->user_id)){
+                @mkdir($user_dir.$this->user_id,0777,true);
+            }
+
+            # 生成二维码
+            if(!file_exists($qr_code_file)){
+                vendor('phpqrcode.phpqrcode');
+                $url = $this->host.'/index.php?shareUp='.$this->user_id;
+                \QRcode::png($url, $qr_code_file, QR_ECLEVEL_M,1.8,2);
+            }
+
+            # 根据设置的尺寸，重置二维码
+            $qr_image = \think\Image::open($qr_code_file);
+            $qr_image->thumb($config['w'],$config['h'],\think\Image::THUMB_SOUTHEAST)->save($qr_code_file);
+
+            # 二维码 背景图合成
+            if($config['x'] > 0 || $config['y'] > 0){
+                $water = [$config['x'], $config['y']];
+            }else{
+                $water = 5;
+            }
+            
+            $image = \think\Image::open($qr_backgroup);
+            $image->water($qr_code_file, $water)->save($share_image);
+
+            # 添加用户名称
+            $user_name = '我是 '.($this->user['nickname'] ? $this->user['nickname'] : $this->user['email']);
+
+            if($config['name_x'] > 0 || $config['name_y'] > 0){
+                $name_water = [$config['name_x'], $config['name_y']];
+            }else{
+                $name_water = 5;
+            }
+            $image = \think\Image::open($share_image);
+            $image->text($user_name,$ttc,$config['name_font_size'],$config['name_font_color'],$name_water)->save($share_image);
+
+            # 标语
+            if($config['title']){
+                if($config['title_x'] > 0 || $config['title_y'] > 0){
+                    $title_water = [$config['title_x'], $config['title_y']];
+                }else{
+                    $title_water = 5;
+                }
+                $image = \think\Image::open($share_image);
+                $image->text($config['title'],$ttc,$config['title_font_size'],$config['title_font_color'],$title_water)->save($share_image);
+            }
+        }
+        
+        $this->assign('src','/public/shareposter/user/'.$this->user_id.'/share_image.png?t='.time());
         return $this->fetch();
     }
 

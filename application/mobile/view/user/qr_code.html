@@ -12,27 +12,11 @@
 		<style>
 			.qr-code{
 				width: 100%;
+				padding: 0 1px;
 			}
-			.qr-code .urlText{
-				display: block;
-				margin: 0 auto;
-				visibility: hidden;
-			}
-			.qr-code-img{
-				width: 6rem;
-				height: 6rem;
-				background-color: #fff;
-				border-radius: .3rem;
-				margin: .5rem auto 0;
-				position: relative;
-			}
-			.qr-code-img img{
-				width:5.3rem;
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				z-index: 3;
-				transform: translate(-50%,-50%);
+			.qr-code img{
+				width:100%;
+				height:auto;
 			}
 		</style>
 	</head>
@@ -44,13 +28,10 @@
 				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
 				</p>
-				<span>二维码</span>
+				<span>我的分享二维码</span>
 			</div>
 			<div class="qr-code">
-				<input type="text" class="urlText" id="urlText" value="http://jindo.dev.naver.com/collie" style="width:80%">
-				<div class="qr-code-img" id="qrcode">
-					<img src="{$src}" alt="我的二维码" />
-				</div>
+				<img src="{$src}" />
 			</div>
 		</div>
 		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>

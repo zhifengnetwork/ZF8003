@@ -19,7 +19,7 @@
     border: 1px solid rgb(245, 223, 223);
     position: absolute;
     left: 50%;
-    top: 70px;
+    top: 150px;
     z-index: 999;
     background: rgba(245, 242, 242, 0.521);
 }
@@ -39,6 +39,7 @@
 			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
+    <p style="color:red;margin-left:10%;">下面设置栏“宽”“高”“X”“Y”“字体大小”等请填写整数</p>
 	<form class="form form-horizontal" method="POST" target="ajaxR">
 		<div id="tab-system" class="HuiTab">
 			<div>
@@ -73,6 +74,61 @@
                         <input type="text" class="input-text" name="code_y" id="code_y" value="{$config.y ? $config.y : 0}">
                     </div>
                 </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">用户名称 * X：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="name_x" id="name_x" value="{$config.name_x ? $config.name_x : 0}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">用户名称 * Y：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="name_y" id="name_y" value="{$config.name_y ? $config.name_y : 0}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">用户名称字体大小：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="name_font_size" id="name_font_size" value="{$config.name_font_size ? $config.name_font_size : 20}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">用户名称字体颜色：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="color" class="input-text" name="name_font_color" id="name_font_color" value="{$config.name_font_color ? $config.name_font_color : ''}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">标语：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="title" id="title" value="{$config.title ? $config.title : '一起来赚钱！'}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">标语 * X：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="title_x" id="title_x" value="{$config.title_x ? $config.title_x : 0}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">标语 * Y：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="title_y" id="title_y" value="{$config.title_y ? $config.title_y : 0}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">标语字体大小：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="text" class="input-text" name="title_font_size" id="title_font_size" value="{$config.title_font_size ? $config.title_font_size : 20}">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">标语字体颜色：</label>
+                    <div class="formControls col-xs-8 col-sm-3"> 
+                        <input type="color" class="input-text" name="title_font_color" id="title_font_color" value="{$config.title_font_color ? $config.title_font_color : ''}">
+                    </div>
+                </div>
+
                 <div class="row cl" style="margin-top:100px;">
                     <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
                         <button onClick="submit_preview()" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe709;</i> 预览</button>
@@ -111,9 +167,18 @@ function submit_preview(){
     var h = $('#code_height').val();
     var x = $('#code_x').val();
     var y = $('#code_y').val();
+    var name_x = $('#name_x').val();
+    var name_y = $('#name_y').val();
+    var name_font_size = $('#name_font_size').val();
+    var name_font_color = $('#name_font_color').val();
+    var title = $('#title').val();
+    var title_x = $('#title_x').val();
+    var title_y = $('#title_y').val();
+    var title_font_size = $('#title_font_size').val();
+    var title_font_color = $('#title_font_color').val();
     var src = "{$poster_path}";
 
-    $.post("/admin/distribution/silence_image",{t:'preview',w:w, h:h, x:x, y:y},function(res){
+    $.post("/admin/distribution/silence_image",{t:'preview',w:w, h:h, x:x, y:y,name_x:name_x,name_y:name_y,name_font_size:name_font_size,name_font_color:name_font_color,title:title,title_x:title_x,title_y:title_y,title_font_size:title_font_size,title_font_color:title_font_color},function(res){
         
         if(res.status == 1){
             $('.preview_default').css('display','none');

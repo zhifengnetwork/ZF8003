@@ -26,9 +26,11 @@ class Base extends Controller
     public $action;
     public $ip;
     public $client;
+    public $host;
 
     public function _initialize()
     {
+        
         $this->Verification_Client();
 
         # 如果访问的不是 手机端 跳转到手机端
@@ -46,6 +48,7 @@ class Base extends Controller
         $this->controller = $request->controller();
         $this->action = $request->action();
         $this->ip = $request->ip();
+        $this->host = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'];
 
         $is_mobile = $request->isMobile();
         if($is_mobile){
