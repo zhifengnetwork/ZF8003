@@ -8,8 +8,10 @@
  namespace app\crontab\controller;
 
  use think\Db;
+ use think\Controller;
+ use think\Session;
 
- class Commission
+ class Commission extends Controller
  {
 
     private  $config = ['status' => 0];
@@ -26,6 +28,10 @@
                  exit('分销功能未开启，请联系管理员！');
              }
              $this->config = $config;
+         }
+
+         if(!Session::has('crontab_commission')){
+             Session::set('crontab_commission', 40, 'crontab');
          }
      }
 
@@ -48,6 +54,15 @@
                 }
             }
             Db::name('order')->where('id',$info['id'])->update(['is_distribut' => 1]);
+            unset($res);
+        }
+        unset($info);
+        $crontab_commission = Session::get('crontab_commission', 'crontab');
+        if($crontab_commission){
+            Session::set('crontab_commission', $crontab_commission-1, 'crontab');
+            $this->index();
+        }else{
+            Session::pull('crontab_commission', 'crontab');
         }
     }
 
