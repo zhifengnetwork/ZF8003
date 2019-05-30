@@ -33,7 +33,11 @@ class Base extends Controller
         
         $this->Verification_Client();
         $this->ShareUpHandle();
-        // dump(Session::get());exit;
+
+        // $user = Db::name('users')->find($this->user_id);
+        // Session::set('user', $user);
+        // dump($this->user_id);exit;
+        
         # 如果访问的不是 手机端 跳转到手机端
         if($this->client != 'mobile'){
             $this->redirect('/index/index/index');

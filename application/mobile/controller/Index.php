@@ -263,6 +263,10 @@ class Index extends Base
 
     # 忘记 | 重置 | 修改密码
     public function edit_password(){
+        if($this->user_id && !$this->user['email']){
+            layer_error('请先设置登录邮箱！',true,'/mobile/user/edit_email');
+        }
+
         if($_POST){
             $pass_id = isset($_POST['pass_id']) ? trim($_POST['pass_id']) : '';
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -320,6 +324,10 @@ class Index extends Base
 
     # 设置| 修改支付密码
     public function edit_paypass(){
+        if($this->user_id && !$this->user['email']){
+            layer_error('请先设置登录邮箱！',true,'/mobile/user/edit_email');
+        }
+        
         if($_POST){
             $pass_id = isset($_POST['pass_id']) ? trim($_POST['pass_id']) : '';
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
