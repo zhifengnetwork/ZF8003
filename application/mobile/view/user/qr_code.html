@@ -18,6 +18,14 @@
 				width:100%;
 				height:auto;
 			}
+			.Update_image{
+				display:inline-block;
+				color:#fff;
+				font-size:14px;
+				position: relative;
+				right: -105px;
+				z-index:999;
+			}
 		</style>
 	</head>
 
@@ -25,10 +33,11 @@
 		<div class="wrap_frame">
 			 <!-- 头部 -->
 			 <div class="lb_headWrap">
-				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/index'">
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
 				</p>
 				<span>我的分享二维码</span>
+				<a class="Update_image" onclick="javascript:location.href='/mobile/user/qr_code?u=1'">更新</a>
 			</div>
 			<div class="qr-code">
 				<img src="{$src}" />

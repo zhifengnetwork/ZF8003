@@ -1050,6 +1050,14 @@ class User extends Base
         # 默认字体
         $ttc = ROOT_PATH.'public/simsun.ttc';
 
+        $u = input('u',0);
+        if($u){
+            if(file_exists($user_dir.$this->user_id)){
+                # 删除会员文件夹下的文件
+                delFileUnderDir($user_dir.$this->user_id);
+            }
+        }
+
 
         if(!file_exists($share_image)){
             $conf = Db::name('config')->where(['type' => 'distribution_shareposter', 'name' => 'shareposter'])->find();
