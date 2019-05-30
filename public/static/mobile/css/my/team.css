@@ -1,0 +1,91 @@
+.top{
+	
+	width:6.4rem;
+	height: .5rem;
+	text-align: center;
+	margin: .3rem auto;
+	
+	
+}
+
+.guodu{
+	
+	display: inline-block;
+	text-align: center;
+	width:.3rem;
+	height:.5rem;
+	line-height: .5rem;
+	margin: 0 auto;
+	float: left;
+	
+}
+.list,.list1{
+	display: inline-block;
+}
+.list{
+	float:left
+}
+.list1{
+	float:left
+}
+#select_0,#select_1{
+	outline: none;
+	width: 2.3rem;
+	height: .4rem;
+}
+.find{
+	
+	
+	display: inline-block;
+	width:1rem;
+	background: #37afe6;
+	text-align: center;
+	height: .5rem;
+	line-height: .5rem;
+	color:white;
+	border-radius: .06rem;
+	float:right;
+	margin:-.02rem
+
+}
+.person_num{
+	
+	float: right;
+	margin-right:.6rem
+	
+}
+
+.user{
+	
+	width: 90%;
+	height: 1.3rem;
+	margin: 0 auto;	
+	margin-top: .3rem;
+}
+.user:first-child{
+	
+	margin-top: 1rem;
+}
+.touxiang{
+	
+	width: 1.3rem;
+	height: 1.3rem;
+	border-radius: 50%;
+}
+.user_message{
+	
+	position: relative;
+	top:-1.09rem;
+	left:1.6rem
+	
+}
+.bianhao{
+	
+	position: absolute;
+	right: 2.4rem;
+}
+.time{
+	
+	padding-top:.1rem
+}
+

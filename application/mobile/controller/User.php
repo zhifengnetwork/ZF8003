@@ -546,42 +546,44 @@ class User extends Base
 	
 
     /**
-     * 我的分销
+     * 我的分销 团队
      */
     public function distribution()
     {
-        layer_msg('功能未开放...');
-        exit;
-        return $this->fetch();
-    }
+        $where['first_leader'] = ['=', $this->user_id];
 
-    /**
-     * 我的团队
-     */
-    public function team_list()
-    {
-        layer_msg('功能未开放...');
-        exit;
-        return $this->fetch();
-    }
+        $min = input('get.min','');
+        $max = input('get.max','');
 
-    /**
-     * 佣金记录
-     */
-    public function commission()
-    {
-        layer_msg('功能未开放...');
-        exit;
-        return $this->fetch();
-    }
+        if($min){
+            $lwhere['addtime'] = ['>=', strtotime($min)];
+        }
+        if($max){
+            $lwhere['addtime'] = ['<=', strtotime($max)];
+        }
+        if(isset($lwhere)){
+            $lwhere['user_id'] = ['=', $this->user_id];
+            $l = Db::name('extension_log')->where($lwhere)->field('add_user_id')->select();
+            if($l){
+                $where['user_id'] = ['in', "'".implode(',', $l)."'"];
+            }else{
+                $where['id'] = ['=', 0];
+            }
+        }
+        
+        $count = Db::name('users')->where($where)->count();
+        $list = Db::name('users')->where($where)->field('id,nickname,avatar,register_time')->select();
+		if($list){
+			foreach($list as $k => $v){
+                $addtime = Db::name('extension_log')->where('add_user_id', $v['id'])->value('addtime');
+				$list[$k]['addtime'] = $addtime ? date('Y-m-d H:i:s', $addtime) : '';
+			}
+		}
 
-    /**
-     * 业绩明细
-     */
-    public function performance()
-    {
-        layer_msg('功能未开放...');
-        exit;
+        $this->assign('min', $min);
+        $this->assign('max', $max);
+        $this->assign('count', $count);
+		$this->assign('list', $list);
         return $this->fetch();
     }
 
