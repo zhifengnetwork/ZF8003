@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>基因关系</title>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/relation.css" />
+	</head>
+
+	<body>
+        <form method="POST" target="ajaxR" id="form">
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/bottom_nav/back@2x.png" />
+				</p>
+				<span>上传数据</span>
+			</div>
+			<!--表格-->
+                <p class="tip">
+                	填写说明:请认真填写并且检查数据信息。当一个基因座有两个数值时在基因座后加a，b区分
+                </p>
+                
+                <!--填写信息-->
+                <p class="person_message">
+                	<label>姓名:</label>
+                	<span><input type="text" name="gene[name]" /></span>
+                </p>
+                <p class="person_message">
+                	<label>民族:</label>
+                	<span><input type="text" name="gene[nation]" /></span>
+                </p>
+                <p class="person_message">
+                	<label>现今地址:</label>
+                	<span><input type="text" name="gene[region]" /></span>
+                </p>
+                <p class="person_message">
+                	<label>所属单倍群:</label>
+                	<span><input type="text" name="gene[haplogroup]" /></span>
+                </p>
+                <p class="person_message">
+                	<label>SNP:</label>
+                	<span><input type="text" name="gene[variation]" /></span>
+                </p>
+                <p class="person_message">
+                	<label>SNP excepted:</label>
+                	<span><input type="text" name="gene[nomutation]" /></span>
+                </p>
+                <p class="person_message">
+                	<label>联系方式:</label>
+                	<span><input type="text" name="mobile" /></span>
+                </p>
+                <p class="person_message">
+                	<label>迁移记录:</label>
+                	<span><input type="text" name="migration" /></span>
+                </p>
+                <p class="person_message">
+                	<label>其他说明:</label>
+                	<span><input type="text" name="desc"/></span>
+                </p>
+              
+                <div class="l3h51" >
+					<div class="l3h5d1" >
+						<ul class="xiala" style="margin-bottom:0rem">
+							
+							<li>基因座/样本号</li>
+							<li>基因座/样本号</li>
+							<li>基因座/样本号</li>
+							
+						</ul>
+				    </div>
+				</div>  			
+                 <div class="l3h51" style="margin-top: -.1rem;">
+					<div class="l3h5d1">
+						<ul class="xiala">
+							<li>DYS19</li>
+							<li>DYS389I</li>
+							<li>DYS389b</li>
+						</ul>
+						<ul class="xiala">
+							<li><input type="text" name="gene[dys19]" value=""/></li>
+							<li><input type="text" name="gene[dys389i]" value="" /></li>
+							<li><input type="text" name="gene[dys389b]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+							<li>DYS390</li>
+							<li>DYS391</li>
+							<li>DYS392</li>
+						</ul>
+						<ul class="xiala">
+							<li><input type="text" name="gene[dys390]" value="" /></li>
+							<li><input type="text" name="gene[dys391]" value="" /></li>
+							<li><input type="text" name="gene[dys392]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS393</li>
+                            <li>DYS437</li>
+                            <li>DYS438</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys393]" value="" /></li>
+                            <li><input type="text" name="gene[dys437]" value="" /></li>
+                            <li><input type="text" name="gene[dys438]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS439</li>
+                            <li>DYS448</li>
+                            <li>DYS456</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys439]" value="" /></li>
+                            <li><input type="text" name="gene[dys448]" value="" /></li>
+                            <li><input type="text" name="gene[dys456]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS458</li>
+                            <li>DYS635</li>
+                            <li>GATA-H4</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys458]" value="" /></li>
+                            <li><input type="text" name="gene[dys635]" value="" /></li>
+                            <li><input type="text" name="gene[gata_h4]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS385a</li>
+                            <li>DYS385b</li>
+                            <li>DYS449</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys385a]" value="" /></li>
+                            <li><input type="text" name="gene[dys385b]" value="" /></li>
+                            <li><input type="text" name="gene[dys449]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS460</li>
+                            <li>DYS481</li>
+                            <li>DYS518</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys460]" value="" /></li>
+                            <li><input type="text" name="gene[dys481]" value="" /></li>
+                            <li><input type="text" name="gene[dys518]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS533</li>
+                            <li>DYS570</li>
+                            <li>DYS576</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys533]" value="" /></li>
+                            <li><input type="text" name="gene[dys570]" value="" /></li>
+                            <li><input type="text" name="gene[dys576]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS627</li>
+                            <li>DYS387S1a</li>
+                            <li>DYS387S1b</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys627]" value="" /></li>
+                            <li><input type="text" name="gene[dys387s1a]" value="" /></li>
+                            <li><input type="text" name="gene[dys387s1b]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS388</li>
+                            <li>DYS444</li>
+                            <li>DYS549</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys388]" value="" /></li>
+                            <li><input type="text" name="gene[dys444]" value="" /></li>
+                            <li><input type="text" name="gene[dys549]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS643</li>
+                            <li>DYS722</li>
+                            <li>DYS404S1a</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys643]" value="" /></li>
+                            <li><input type="text" name="gene[dys722]" value="" /></li>
+                            <li><input type="text" name="gene[dys404s1a]" value="" /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS404S1b</li>
+                            <li>DYS527a</li>
+                            <li>DYS527b</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[dys404s1b]" value="" /></li>
+                            <li><input type="text" name="gene[dys527a]" value="" /></li>
+                            <li><input type="text" name="gene[dys527b]" value="" /></li>
+                        </ul>
+					</div>
+		       </div>
+          </div> 
+          <button class="save" type="submit" style="margin-left:35%;">提交保存</button>
+          </form>
+		<iframe name="ajaxR" style="display:block;width:100%;height:500px;"></iframe>
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+        <script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		<script>
+		
+    	function error_msg(msg){
+            layer.msg(msg,{icon:5});
+        }
+        
+        function success_msg(msg){
+            layer.msg(msg,{icon:6});
+            setTimeout(function(){
+                window.location.href='/mobile/user/my_gene';
+            },1000);
+        }
+			
+		</script>
+	</body>
+
+</html>

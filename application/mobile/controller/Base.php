@@ -30,7 +30,7 @@ class Base extends Controller
 
     public function _initialize()
     {
-        
+       
         $this->Verification_Client();
         $this->ShareUpHandle();
 

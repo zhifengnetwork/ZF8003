@@ -45,6 +45,57 @@ class User extends Base
         return $this->fetch();
     }
 
+    # 在线填写基因数据
+    public function import_online(){
+
+        if($_POST){
+            $gene = isset($_POST['gene']) ? $_POST['gene'] : '';
+            $mobile = isset($_POST['mobile']) ? trim($_POST['mobile']) : '';
+            $migration = isset($_POST['migration']) ? trim($_POST['migration']) : '';
+            $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
+            $gene['desc'] = '';
+
+
+            if(!$gene['name']){
+                echo "<script>parent.error_msg('请输入姓名！');</script>";
+                exit;
+            }
+            if(!$gene['nation']){
+                echo "<script>parent.error_msg('请输入民族！');</script>";
+                exit;
+            }
+            if(!$gene['region']){
+                echo "<script>parent.error_msg('请输入地址！');</script>";
+                exit;
+            }
+
+            if($mobile){
+                $gene['desc'] .= '联系方式：'.$mobile;
+            }
+            if($migration){
+                $gene['desc'] .= $migration;
+            }
+            if($desc){
+                $gene['desc'] .= $desc;
+            }
+
+            $gene['user_id'] = $this->user_id;
+            $res = Db::name('gene')->insert($gene);
+            if($res){
+                echo "<script>parent.success_msg('保存成功！正在跳转...');</script>";
+                exit;
+            }
+
+            echo "<script>parent.error_msg('保存失败，请重试！');</script>";
+            
+            exit;
+        }
+
+
+
+        return $this->fetch();
+    }
+
     # 基因数据报告详情
     public function gene_info(){
 

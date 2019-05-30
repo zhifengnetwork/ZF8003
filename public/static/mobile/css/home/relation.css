@@ -2,11 +2,9 @@
 	width: 100%;
 	height: auto;
 }
-
 .inner .ckg img {
 	width: 100%;
 }
-
 .inner .smallicon {
 	padding: 0 0 0 .2rem;
 	margin: .64rem 0 0;
@@ -30,3 +28,171 @@
 	font-size: .24rem;
 	line-height: .4rem;
 }
+
+
+.l3h51 {
+	width: 88%;
+	border: 1px solid #D8D8D8;
+	border-bottom: none;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: .4rem;
+}
+
+.l3h51 ul {
+	width: 100%;
+	display: block;
+	overflow: hidden;
+	border-bottom: 1px solid #D8D8D8;
+	clear: both;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	height: 30px
+}
+
+.l3h5d1 ul:nth-child(even) {
+	height: 25px;
+	
+}
+.l3h5d1 ul:nth-child(even) li {
+	height: 100%;
+	line-height: 25px;
+	
+	
+}
+.l3h5d1 ul:nth-child(odd){
+	
+	height: 25px;
+
+}
+.l3h5d1 ul:nth-child(odd) li{
+	
+	height: 100%;
+	line-height: 25px;
+	background: #ccc;
+}
+
+.l3h51 ul li {
+	width: 33.3333%;
+	height: 30px;
+	line-height: 30px;
+	float: left;
+	border-right: 1px solid #D8D8D8;
+	box-sizing: border-box;
+	text-align: center;
+	
+}
+
+.l3h51 ul li input {
+	width: 100%;
+	height:100%;
+	text-align: center;
+	border: none;
+	outline: none;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.l3h51 .l3h5_lastLi,
+.l3h51 .l3h5_lastUl {
+	width: 33%;
+	border: none;
+}
+
+.l3h51 ul li:last-child {
+	border-right: none;
+}
+
+.xiala_text {
+	display: none;
+	background: #CCCCCC;
+	text-indent: .3rem;
+}
+
+.first,
+.second {
+	display: inline-block;
+	width: .6rem;
+	/*border: 1px solid green;*/
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis
+}
+
+.he {
+	display: inline-block;
+	width: .3rem;
+	/*border: 1px solid green;*/
+	overflow: hidden;
+}
+.add{
+	
+	float: right;
+	margin-top: 2%;
+	margin-right: 6%;
+	color: red;
+	margin-bottom: 2%;
+}
+.tip{
+	color:red;
+	width:84%;
+	margin-left: 6%;
+	font-size:.3rem;
+	background: #EACACA;
+	border-radius: .06rem;
+	padding:2% 2%;
+	margin-top:6%
+}
+.xiala_text {
+	display: none;
+	background: #CCCCCC;
+	text-indent: .3rem;
+	}
+.person_message{
+	
+	margin:.5rem 0 0 6%;
+	height:.4rem	
+}
+.person_message label{
+	display: inline-block;
+	width: 2rem;
+}
+.person_message span{
+	
+	display: inline-block;
+	width:64%;
+	border-bottom:1px solid #ccc
+}
+.person_message span input {
+	
+	border: none;
+	width:100%;
+	background: #F5F5F5;
+	outline: none;
+	
+}
+.l3h5d1 ul:last-child{
+	
+	margin-bottom: 1rem;
+
+}
+.save{
+	
+	width: 2rem;
+	height:.6rem;
+	line-height: .6rem;
+	margin: -.4rem auto .3rem auto;
+	border-radius: .06rem;
+	background: #37afe6;
+	text-align: center;
+	color: white;
+	
+	
+}	
+
+	
+	
+	
+	
