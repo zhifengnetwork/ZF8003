@@ -21,31 +21,22 @@
 	<div class="wrap_frame">
 			<!--public head-->
 			<div class="lb_headWrap lb_headWrap_bacColor topBox_backgroundColor ">
-				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/index'">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/distribution'">
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
 				</p>
 				<span>我的团队</span>
 				<!--<p class="lb_headWrap_text">领取产品</p>-->
-			</div>
-		<div class="top">
-			<form>
-				<div class="list">
-					<input type="text" name="min" value="{$min}" id="select_0" readonly placeholder="请先选择起始日期"/>
-				</div>
-				<div class="guodu">--</div>
-				<div class="list1">
-					<input type="text" name="max" value="{$max}" id="select_1" readonly placeholder="请先选择结束日期"/>
-				</div>
-				<button class="find" type="submit">查询</button>
-			</form>
-			
-		</div>
-		
-		<p class="person_num">人数：{$count}</p>
+            </div>
+            <div style="width:100%;height:0.5rem;background:#fff;padding:0.2rem;position: fixed;top: 0.88rem;">
+                <img style="display:inline-block;height:0.5rem;width:0.5rem;float:left;border-radius: 50%;" src="{$last.avatar}" onerror="this.src='/public/static/mobile/img/my/team.png'" />
+                <div style="margin-left:1.1rem;line-height: 0.5rem;">
+                    <span>昵称：{$last.nickname}</span>
+                    <span style="display:inline-block;float:right;padding-right:0.6rem;">下线：{$count} 人</span>
+                </div>
+            </div>
 	<div>
-		<!-- <p style="width:100%;height:2px;background:#fff;"></p> -->
 		{volist name="$list" id="vo"}
-		<div onclick="javascript:location.href='/mobile/user/distribution?last_id={$vo.id}'" class="user" style="background:#fff;padding: 5px 2px;">
+		<div class="user" style="background:#fff;padding: 5px 2px;">
 			<img src="{$vo.avatar}" onerror="this.src='/public/static/mobile/img/my/team.png'" class="touxiang"/>
 			<div class="user_message">
 				<p><span>昵称:{$vo.nickname}</span><span class="bianhao">ID：{$vo.id}</span></p>

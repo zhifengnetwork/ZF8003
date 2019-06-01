@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>余额明细</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/yuer_detail2.css" />
+
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap  ">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/my_walet'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
+				</p>
+				<span>账户明细</span>
+				
+			</div>
+			
+			<!--tab切换-->
+			<div id="wrap">
+		        <div id="tit">
+		            <span {if condition="$t == 1"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=1'">充值</span>
+		            <span {if condition="$t == 2"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=2'">提现</span>
+		            <span {if condition="$t == 3"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=3'">赚取</span>
+		            <span {if condition="$t == 4"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=4'">消费</span>
+		        </div>
+	        <ul id="con">
+                {if condition="$t == 1"}
+                <!--充值记录-->
+	            <li>
+                    <div>
+                        {volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+                        <div class="show_text">
+                            <p><span>充值方式：</span><span>{$pname[$vo['platform']]}</span></p>
+                            <p><span>充值时间：{$vo['addtime']|date="Y-m-d H:i:s",###}</span></p>
+                            <p><span>充值金额：{$vo['money']} 元</span></p>
+                            <p><span>充值状态：</span><span>{$sname[$vo['status']]}</span></p>
+                        </div>
+                        {/volist}
+                    </div>	
+                </li>
+                {/if}
+
+                {if condition="$t == 2"}
+	            <!--内容2-->
+	            <li>
+	            	<div>
+                        {volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+                        <div class="show_text">
+                            <p><span>提现金额：</span><span>{$vo.money} 元</span></p>
+                            <p><span>申请时间：{$vo['addtime']|date="Y-m-d H:i:s",###}</span></p>
+                            <p><span>扣手续费：{$vo['fee']} 元</span></p>
+                            <p><span>提现状态：</span><span>{$sname[$vo['status']]}</span></p>
+                        </div>
+                        {/volist}
+	            	</div>	
+                </li>
+                {/if}
+                {if condition="$t == 3"}
+	            <!--内容3-->
+	            <li>
+	            	<div>
+                        {volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+                        <div class="show_text">
+                            <p><span>分佣金额：</span><span>{$vo.commission} 元</span></p>
+                            <p><span>分佣时间：{$vo['addtime']|date="Y-m-d H:i:s",###}</span></p>
+                            <p><span>分佣会员：{$uname[$vo.source_user_id]}</span></p>
+                            <p><span>分佣类型：</span><span>{$source[$vo['source']]}</span></p>
+                        </div>
+                        {/volist}
+	            	</div>	
+                </li>
+                {/if}
+                {if condition="$t == 4"}
+	            <!--内容4-->
+	            <li>
+	            	<div>
+                        {volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+                        <div class="show_text">
+                            <p><span>消费类型：{$tname[$vo.type]}</span></p>
+                            <p><span>订单编号：</span><span>{$vo['sn']}</span></p>
+                            <p><span>消费金额：</span><span>{$vo.money} 元</span></p>
+                            <p><span>消费时间：{$vo['init_time']|date="Y-m-d H:i:s",###}</span></p>
+                        </div>
+                        {/volist}
+	            	</div>	
+                </li>
+                {/if}
+	        </ul>
+    </div>
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<!--公共底部导航栏-->
+		 <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+		 <script>
+
+		 </script>
+		 
+		 
+
+	</body>
+
+</html>

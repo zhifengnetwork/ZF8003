@@ -550,25 +550,41 @@ class User extends Base
      */
     public function distribution()
     {
-        $where['first_leader'] = ['=', $this->user_id];
 
-        $min = input('get.min','');
-        $max = input('get.max','');
-
-        if($min){
-            $lwhere['addtime'] = ['>=', strtotime($min)];
-        }
-        if($max){
-            $lwhere['addtime'] = ['<=', strtotime($max)];
-        }
-        if(isset($lwhere)){
-            $lwhere['user_id'] = ['=', $this->user_id];
-            $l = Db::name('extension_log')->where($lwhere)->field('add_user_id')->select();
-            if($l){
-                $where['user_id'] = ['in', "'".implode(',', $l)."'"];
-            }else{
-                $where['id'] = ['=', 0];
+        $last_id = isset($_GET['last_id']) ? intval($_GET['last_id']) : 0;
+        if($last_id){
+            $last = Db::name('users')->field('id,nickname,avatar,first_leader')->find($last_id);
+            if(!$last || $last['first_leader'] != $this->user_id){
+                error_msg('查询信息不存在！');
             }
+            
+            $this->assign('last', $last);
+            $where['first_leader'] = ['=', $last_id];
+        }else{
+
+            $where['first_leader'] = ['=', $this->user_id];
+            $min = input('get.min','');
+            $max = input('get.max','');
+
+            if($min){
+                $lwhere['addtime'] = ['>=', strtotime($min)];
+            }
+
+            if($max){
+                $lwhere['addtime'] = ['<=', strtotime($max)];
+            }
+
+            if(isset($lwhere)){
+                $lwhere['user_id'] = ['=', $this->user_id];
+                $l = Db::name('extension_log')->where($lwhere)->field('add_user_id')->select();
+                if($l){
+                    $where['user_id'] = ['in', "'".implode(',', $l)."'"];
+                }else{
+                    $where['id'] = ['=', 0];
+                }
+            }
+            $this->assign('min', $min);
+            $this->assign('max', $max);
         }
         
         $count = Db::name('users')->where($where)->count();
@@ -580,11 +596,14 @@ class User extends Base
 			}
 		}
 
-        $this->assign('min', $min);
-        $this->assign('max', $max);
+        
         $this->assign('count', $count);
-		$this->assign('list', $list);
-        return $this->fetch();
+        $this->assign('list', $list);
+        if($last_id){
+            return $this->fetch('distribution2');
+        }else{
+            return $this->fetch();
+        }
     }
 
     /**
@@ -823,6 +842,53 @@ class User extends Base
         return $this->fetch();
     }
 
+
+    # （new）账单明细
+    public function bill(){
+        $t = isset($_GET['t']) && in_array(intval($_GET['t']),[1,2,3,4]) ? intval($_GET['t']) : 1;
+
+        switch($t){
+            case '1':
+                $lists = Db::name('recharge')->field('`id`,`platform`,`addtime`,`money`,`status`')->where('user_id',$this->user_id)->order('init_time desc')->limit(50)->cache(600)->select();
+                $pname = ['weixin'=>'微信','alipay'=>'支付宝'];
+                $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
+        
+                $this->assign('pname', $pname);
+                $this->assign('sname', $sname);
+                break;
+
+            case '2':
+                $lists = Db::name('withdrawal')->field('`type`,`addtime`,`money`,`fee`,`status`')->where('user_id',$this->user_id)->order('id desc')->limit(50)->cache(600)->select();
+                $sname = [0=>'待审核', 1=>'成功', 2=>'失败'];
+        
+                $this->assign('sname', $sname);
+                break;
+
+            case '3':
+                $lists = Db::name('commission_log')->field('source_user_id,addtime,commission,source')->where('user_id',$this->user_id)->order('id desc')->cache(600)->limit(50)->select();
+                if($lists){
+                    foreach($lists as $v){
+                        $uids[$v['source_user_id']] = $v['source_user_id'];
+                    }
+                    $uids = implode(',', $uids);
+                    $ulist = Db::name('users')->field('id,nickname,email')->where(['id' => ['in', $uids]])->select();
+                    foreach($ulist as $v){
+                        $uname[$v['id']] = $v['nickname'] ? $v['nickname'] : $v['email']; 
+                    }
+                    $this->assign('uname', $uname);
+                    $this->assign('source', ['buy'=>'购买商品']);
+                }
+                break;
+            case '4':
+                $lists = Db::name('transaction_log')->field('type,sn,money,init_time')->where(['user_id'=>['=', $this->user_id], 'type' => ['=', 'order']])->order('id desc')->cache(1800)->limit(50)->select();
+                $this->assign('tname', ['order'=>'购买商品']);
+                break;
+
+        }
+        $this->assign('lists', $lists);
+        $this->assign('t',$t);
+        return $this->fetch();
+    }
 
     /**
      * 账单明细
