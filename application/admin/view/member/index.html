@@ -37,8 +37,6 @@
                         <th width="150">邮箱</th>
                         <th width="110">分组</th>
                         <th width="120">余额</th>
-                        <th width="60">分销商</th>
-                        <th width="70">分销等级</th>
                         <th width="110">注册时间</th>
                         <th width="70">状态</th>
                         <th width="100">操作</th>
@@ -55,8 +53,6 @@
                             <td>{$vo.email}</td>
                             <td>{$vo.group_id|group_name}</td>
                             <td>{$vo.money}</td>
-                            <td>{if condition="$vo.is_distributor == 1"}是{else/}否{/if}</td>
-                            <td>{$vo.distributor_level}</td>
                             <td>{$vo.register_time|date="Y-m-d",###}</td>
                             <td class="td-status">
                                 {if condition="$vo.status == 1"}

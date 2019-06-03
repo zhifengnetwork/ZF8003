@@ -6,7 +6,10 @@ use think\Db;
 class Article extends Base{
 
     public function index(){
-
+        $jur = $this->check_jurisdiction_ok('r','article/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
         $where['id'] = ['>', '0'];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if($keywords){
@@ -44,6 +47,11 @@ class Article extends Base{
         $save_path = ROOT_PATH . 'public/images/article/';
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','article/add_article');
+            if(!$jur){
+                echo "<script>parent.error('访问权限受控，您无权操作此项！至少拥有‘操作’的权限')</script>";
+                exit;
+            }
             $article_id  = isset($_POST['article_id']) ? intval($_POST['article_id']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $title   = isset($_POST['title']) ? trim($_POST['title']) : '';
@@ -103,7 +111,10 @@ class Article extends Base{
             exit;
         }
 
-
+        $jur = $this->check_jurisdiction_ok('w','article/add_article');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘操作’的权限');
+        }
         $article_id = isset($_GET['article_id']) ? intval($_GET['article_id']) : 0;
         if($article_id){
             $info = Db::query("select a.*,b.name as catename from `zf_article` as a left join `zf_category` as b on a.cate_id = b.id where a.id = '$article_id'");
@@ -118,6 +129,10 @@ class Article extends Base{
 
     # 修改文章类型显示
     public function edit_type_article(){
+        $jur = $this->check_jurisdiction_ok('w','article/add_article');
+        if(!$jur){
+            return json(['status' => 0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘操作’的权限']);
+        }
         $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1]) ? intval($_POST['status']) : 99;
         $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
         if($id && $status < 2){
@@ -134,6 +149,10 @@ class Article extends Base{
      * 删除文章
      */
     function del_article(){
+        $jur = $this->check_jurisdiction_ok('d','article/add_article');
+        if(!$jur){
+            return json(['status' => 0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘删除’的权限']);
+        }
         if($_POST){
             $article_id = isset($_POST['article_id']) ? intval($_POST['article_id']) : 0;
             if($article_id){
@@ -152,7 +171,10 @@ class Article extends Base{
 
     # 文章分类
     public function category(){
-
+        $jur = $this->check_jurisdiction_ok('r','article/category');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
         $where['type'] = ['=', 'article'];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if($keywords){
@@ -189,6 +211,10 @@ class Article extends Base{
         $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/category/';
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','article/category');
+            if(!$jur){
+                return json(['status'=> 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘操作’的权限']);
+            }
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -247,7 +273,11 @@ class Article extends Base{
             exit;
         }
 
-       
+        $jur = $this->check_jurisdiction_ok('w','article/category');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘操作’的权限');
+        }
+
         $where['parent_id'] = ['=', 0];
         $where['is_lock'] = ['=', 0];
         $where['type'] = ['=', 'article'];
@@ -287,6 +317,10 @@ class Article extends Base{
 
     # 修改分类状态
     public function edit_status_category(){
+        $jur = $this->check_jurisdiction_ok('w','article/category');
+        if(!$jur){
+            return json(['status'=> 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘操作’的权限']);
+        }
         $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1]) ? intval($_POST['status']) : 99;
         $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
         if($category_id && $status < 2){
@@ -301,6 +335,10 @@ class Article extends Base{
 
     # 修改分类前端显示
     public function edit_view_category(){
+        $jur = $this->check_jurisdiction_ok('w','article/category');
+        if(!$jur){
+            return json(['status'=> 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘操作’的权限']);
+        }
         $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1]) ? intval($_POST['status']) : 99;
         $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
         if($category_id && $status < 2){
@@ -318,6 +356,10 @@ class Article extends Base{
      * 删除文章分类
      */
     function del_category(){
+        $jur = $this->check_jurisdiction_ok('d','article/category');
+        if(!$jur){
+            return json(['status'=> 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘操作’的权限']);
+        }
         if($_POST){
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             if($category_id){
@@ -354,6 +396,10 @@ class Article extends Base{
     # 评论审核
     public function audit()
     {
+        $jur = $this->check_jurisdiction_ok('r','article/audit');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
         $list = Db::name('comment')->where(['type'=>1])->order('status','asc')->paginate(15,false)->each(function($item, $key){
             $id = $item['user_id'];
             $result = Db::name('users')->where(['id'=>$id])->field('nickname,mobile')->find();
@@ -373,6 +419,10 @@ class Article extends Base{
     # 评论审核结果
     public function audit_result()
     {
+        $jur = $this->check_jurisdiction_ok('w','article/audit');
+        if(!$jur){
+            return json(['code'=>0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+        }
         $id = input('id/d');
         $status = input('status/d');
         $user_id = session('admin_id');

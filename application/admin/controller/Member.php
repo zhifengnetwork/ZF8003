@@ -11,7 +11,6 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Loader;
-use app\common\model\Users;
 
 class Member extends Base
 {
@@ -20,6 +19,10 @@ class Member extends Base
      */
     public function index()
     {
+        $jur = $this->check_jurisdiction_ok('r', 'member/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
         $where['id'] = ['>', 0];
         $datemin = '';
         $datemax = '';
@@ -45,9 +48,7 @@ class Member extends Base
             }
         }
         
-        $user = new Users;
-
-        $list = $user->where($where)->paginate($page);
+        $list = Db::name('users')->where($where)->paginate($page);
         $this->assign('seach',$seach);
         $this->assign('list',$list);
         return $this->fetch();
@@ -58,11 +59,17 @@ class Member extends Base
      */
     public function group()
     {
-         $list = Db::name('user_group')->order('addtime desc')->paginate(15);
-         $num  = count($list);
-         $this->assign('num', $num);
-         $this->assign('list',$list);
-         return $this->fetch();
+        $jur = $this->check_jurisdiction_ok('r');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
+
+
+        $list = Db::name('user_group')->order('addtime desc')->paginate(15);
+        $num  = count($list);
+        $this->assign('num', $num);
+        $this->assign('list',$list);
+        return $this->fetch();
     }
     /**
      * 添加分组
@@ -70,13 +77,17 @@ class Member extends Base
     public function groupAdd(){
         $data = input();
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w', 'member/group');
+            if(!$jur){
+                return json(['status'=>0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+            }
             $member = Loader::validate('Member');
             if(!$member->scene('groupAdd')->check($data)){
                 $baocuo=$member->getError();
                 return json(['status'=>-1,'msg'=> $baocuo]);
             }
 
-            if($data['id']){   
+            if($data['id']){  
                 $data1 = [
                     'name' => $data['name'],
                     'desc' => $data['desc'],
@@ -109,6 +120,11 @@ class Member extends Base
                 return json(['status'=>0,'msg'=>'添加失败！']);
             }            
         }
+
+        $jur = $this->check_jurisdiction_ok('w', 'member/group');
+        if(!$jur){
+            error_hmsg(3,'访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
         if(isset($data['id'])){
             $info = Db::name('user_group')->where('id',$data['id'])->find();
             $this->assign('info',$info); 
@@ -120,24 +136,19 @@ class Member extends Base
      */
     public function del(){
         $data = input('post.');
-        // dump($data);exit;
+        $jur = $this->check_jurisdiction_ok('d', 'member/group');
+        if(!$jur){
+            return json(['status'=>0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘删除’的权限']);
+        }
         if($_POST){
             if($data['act'] == 'batchdel'){
-                    $id = json_decode($data['id'], true);
-                    $where['id'] = array('in', $id);
-                    $res = Db::name('user_group')->where($where)->delete();
+                $id = json_decode($data['id'], true);
+                $where['id'] = array('in', $id);
+                $res = Db::name('user_group')->where($where)->delete();
             }else{
-                    // $is_super = Db::name('admin')->where('id',$data['id'])->value('is_super');
-                    // if ($is_super == 1) {
-                    //     return json(['status' => -1, 'msg' => '超级管理员不能删除！']);
-                    // }else{
-                        $res = Db::name('user_group')->where('id', $data['id'])->delete();
-                    
-                    // } 
+                $res = Db::name('user_group')->where('id', $data['id'])->delete();
             }
             // 日志
-
-
             if($res){
                 $action = 'del_group';
                 $desc   = '删除分组';
@@ -157,6 +168,10 @@ class Member extends Base
      */
     public function add()
     {
+        $jur = $this->check_jurisdiction_ok('w', 'member/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
         $act = "add";
         $group = Db::name('user_group')->select();
         
@@ -170,6 +185,10 @@ class Member extends Base
      */
     public function edit()
     {
+        $jur = $this->check_jurisdiction_ok('w', 'member/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         
         if (!$id) {
@@ -191,6 +210,10 @@ class Member extends Base
      */
     public function change_password()
     {
+        $jur = $this->check_jurisdiction_ok('w', 'member/index');
+        if(!$jur){
+            error_hmsg(3,'访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if (!$id) {
             echo "<script>alert('该用户不存在')</script>";
@@ -209,6 +232,10 @@ class Member extends Base
      */
     public function handle()
     {
+        $jur = $this->check_jurisdiction_ok('w', 'member/index');
+        if(!$jur){
+            return json(['code'=>0, 'msg'=>'访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+        }
         $data = input('post.');
         $member = Loader::validate('Member');
         $user = new Users;
@@ -219,13 +246,11 @@ class Member extends Base
             if (!$member->scene('add')->check($data)) {
                 $return = array('status' => 0, 'msg' => $member->getError());
             } else {
-                $is_distribut = ($data['is_distribut'] == 1) ? $data['is_distribut'] : 0;
                 $result = array(
                     'nickname'       => $data['nickname'],
                     'mobile'         => $data['mobile'],
                     'email'          => $data['email'],
                     'group_id'       => $data['group_id'],
-                    'is_distributor' => $is_distribut,
                     'register_time'  => time()
                 );
 
@@ -247,7 +272,6 @@ class Member extends Base
             if (!$member->scene('edit')->check($data)) {
                 $return = array('status' => 0, 'msg' => $member->getError());
             } else {
-                $is_distribut = (intval($data['is_distribut']) == 1) ? intval($data['is_distribut']) : 0;
                 $status = (intval($data['status']) == 1) ? intval($data['status']) : 0;
                 $money = floatval($data['money']);
 
@@ -256,7 +280,6 @@ class Member extends Base
                     'mobile'         => $data['mobile'],
                     'email'          => $data['email'],
                     'group_id'       => $data['group_id'],
-                    'is_distributor' => $is_distribut,
                     'status'         => $status,
                 );
 
@@ -337,6 +360,10 @@ class Member extends Base
      */
     public function show()
     {
+        $jur = $this->check_jurisdiction_ok('r', 'member/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         if (!$id) {
             echo "<script>alert('该用户不存在')</script>";

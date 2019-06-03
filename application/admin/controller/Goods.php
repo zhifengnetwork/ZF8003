@@ -9,6 +9,10 @@ class Goods extends Base{
     # 商品列表
     public function index(){
 
+        $jur = $this->check_jurisdiction_ok('r','goods/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
         $where['is_del'] = ['=', 0];
 
         $field = '`id`,`name`,`cate_id`,`price`,`self_price`,`promotion_price`,`promotion_to`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
@@ -78,6 +82,11 @@ class Goods extends Base{
         $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/goods/';
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','goods/index');
+            if(!$jur){
+                echo "<script>parent.error('访问权限受控，您无权操作此项！至少拥有‘编辑’的权限')</script>";
+                exit;
+            }
             $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -163,6 +172,11 @@ class Goods extends Base{
             exit;
         }
 
+        $jur = $this->check_jurisdiction_ok('w','goods/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
+
         $goods_id = isset($_GET['goods_id']) ? intval($_GET['goods_id']) : 0;
 
         if($goods_id){
@@ -193,6 +207,10 @@ class Goods extends Base{
 
     # 修改商品状态
     public function edit_status_goods(){
+        $jur = $this->check_jurisdiction_ok('w','goods/index');
+        if(!$jur){
+            return json(['status' => 0,'msg' => '访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+        }
         $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0,1,2]) ? intval($_POST['status']) : 99;
         $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
         if($goods_id && $status < 3){
@@ -207,6 +225,10 @@ class Goods extends Base{
 
     # 删除商品（伪）
     public function del_goods(){
+        $jur = $this->check_jurisdiction_ok('w','goods/index');
+        if(!$jur){
+            return json(['status' => 0,'msg' => '访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+        }
         $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
         if($goods_id){
             $time = time();
@@ -225,6 +247,10 @@ class Goods extends Base{
     # 商品分类
     public function category(){
 
+        $jur = $this->check_jurisdiction_ok('r','goods/category');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
         $where['type'] = ['=', 'goods'];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if($keywords){
@@ -260,6 +286,10 @@ class Goods extends Base{
     public function add_category(){
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','goods/category');
+            if(!$jur){
+                return json(['status'=> 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+            }
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             $parent_id = isset($_POST['parent_id']) ? intval($_POST['parent_id']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -306,7 +336,10 @@ class Goods extends Base{
             exit;
         }
 
-       
+        $jur = $this->check_jurisdiction_ok('w','goods/category');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
         $where['parent_id'] = ['=', 0];
         $where['is_lock'] = ['=', 0];
         $where['type'] = ['=', 'goods'];
@@ -347,6 +380,10 @@ class Goods extends Base{
      * 删除商品分类
      */
     function del_category(){
+        $jur = $this->check_jurisdiction_ok('d','goods/category');
+        if(!$jur){
+            return json(['status'=> 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘删除’的权限']);
+        }
         if($_POST){
             $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
             if($category_id){
@@ -382,7 +419,10 @@ class Goods extends Base{
 
     # 运费模板
     public function freight(){
-
+        $jur = $this->check_jurisdiction_ok('r','goods/freight');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
         $where['id'] = ['>', 0];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if($keywords){
@@ -404,6 +444,10 @@ class Goods extends Base{
     public function add_freight(){
         
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','goods/freight');
+            if(!$jur){
+                iframe_echo('访问权限受控，您无权操作此项！至少拥有‘编辑’的权限','layermsg');
+            }
             $freight_id = isset($_POST['freight_id']) ? intval($_POST['freight_id']) : 0;
             $is_see = isset($_POST['is_see']) ? intval($_POST['is_see']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
@@ -453,6 +497,10 @@ class Goods extends Base{
         }
 
 
+        $jur = $this->check_jurisdiction_ok('w','goods/freight');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘编辑’的权限');
+        }
         $freight_id = isset($_GET['freight_id']) ? intval($_GET['freight_id']) : 0;
         $is_see = isset($_GET['is_see']) ? intval($_GET['is_see']) : 0;
           
@@ -496,6 +544,10 @@ class Goods extends Base{
      * 删除运费模板
      */
     function del_freight(){
+        $jur = $this->check_jurisdiction_ok('d','goods/freight');
+        if(!$jur){
+            return json(['status' => 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+        }
         if($_POST){
             $freight_id = isset($_POST['freight_id']) ? intval($_POST['freight_id']) : 0;
             if($freight_id){
@@ -515,6 +567,10 @@ class Goods extends Base{
      * 优惠券列表
      */
     public function goods_coupon(){
+        $jur = $this->check_jurisdiction_ok('r','goods/goods_coupon');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
         $where['id'] = ['>', 0];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if ($keywords) {
@@ -550,6 +606,11 @@ class Goods extends Base{
         $data1 = input('post.');
        
         if ($_POST) {
+            $jur = $this->check_jurisdiction_ok('w','goods/goods_coupon');
+            if(!$jur){
+                echo "<script>parent.error('访问权限受控，您无权操作此项！至少拥有‘编辑’的权限')</script>";
+                exit;
+            }
             // 数据验证
             $goodsValidate = Loader::Validate('Goods');
             if (!$goodsValidate->check($data1)) {
@@ -634,6 +695,11 @@ class Goods extends Base{
                 echo "<script>parent.ajax_from_callback(0,'操作失败，正在跳转...')</script>"; 
             }
         }
+
+        $jur = $this->check_jurisdiction_ok('w','goods/goods_coupon');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘编辑’的权限');
+        }
         $coupon_id = isset($_GET['coupon_id']) ? intval($_GET['coupon_id']) : 0;
         // 编辑
         if($coupon_id){
@@ -677,6 +743,10 @@ class Goods extends Base{
     // 修改优惠券状态
     public function edit_status_coupon()
     {
+        $jur = $this->check_jurisdiction_ok('w','goods/goods_coupon');
+        if(!$jur){
+            return json(['status' => 0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘编辑’的权限']);
+        }
         $status = isset($_POST['status']) && in_array(intval($_POST['status']), [0, 1]) ? intval($_POST['status']) : 99;
         $coupon_id = isset($_POST['coupon_id']) ? intval($_POST['coupon_id']) : 0;
         if ($coupon_id && $status < 2) {
@@ -693,6 +763,10 @@ class Goods extends Base{
      * 删除和批量删除优惠券
      */
     function del_coupon(){
+        $jur = $this->check_jurisdiction_ok('d','goods/goods_coupon');
+        if(!$jur){
+            return json(['status' => 0,'msg'=>'访问权限受控，您无权操作此项！至少拥有‘删除’的权限']);
+        }
         $data = input('post.');
         if($_POST){
             Db::startTrans();
@@ -744,7 +818,10 @@ class Goods extends Base{
 
     # 订单列表
     public function order(){
-
+        $jur = $this->check_jurisdiction_ok('r','goods/order');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
         $where['id'] = ['>', 0];
 
         $time = isset($_GET['time']) ? trim($_GET['time']) : 'add_time';
@@ -817,6 +894,10 @@ class Goods extends Base{
 
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','goods/order');
+            if(!$jur){
+                echo "<script>parent.error('访问权限受控，您无权操作此项！至少拥有‘操作’的权限');</script>";exit;
+            }
             if($_POST['submit'] == '发货'){
                 
                 $id = intval($_POST['id']);
@@ -835,7 +916,11 @@ class Goods extends Base{
 
             exit;
         }
-
+        
+        $jur = $this->check_jurisdiction_ok('w','goods/order');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘操作’的权限');
+        }
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
