@@ -14,7 +14,6 @@ class Index extends Base
         # 删除过时的邮件记录
         Db::name('mail_code')->where(['addtime'=>['<', time() - 1800]])->delete();
 
-
         if($this->user_id && in_array($this->action,['login','wx_sign','register'])){
             $this->redirect('user/index');
         }
@@ -70,7 +69,6 @@ class Index extends Base
     public function wx_sign(){
         $time = time();
         $data = $this->GetOpenid();
-        
         if(isset($data['openid'])){
             $user = Db::name('users')->where('openid',$data['openid'])->find();
             if($user){
@@ -99,7 +97,8 @@ class Index extends Base
                 if(!$user_id){
                     layer_error('系统错误！请重试！');
                 }
-
+                $user = Db::name('users')->find($user_id);
+                Session::set('user', $user);
             }
 
             $log_data = [
