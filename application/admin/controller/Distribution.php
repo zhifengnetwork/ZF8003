@@ -11,6 +11,11 @@ class Distribution extends Base
 
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','distribution/setting');
+            if(!$jur){
+                echo "<script>parent.layermsg('访问权限受控，您无权操作此项！至少拥有‘操作’的权限',5)</script>";
+                exit;
+            }
 
             $d['status'] = isset($_POST['status']) ? intval($_POST['status']) : 0;
 
@@ -44,6 +49,10 @@ class Distribution extends Base
             exit;
         }
 
+        $jur = $this->check_jurisdiction_ok('r','distribution/setting');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
 
         $config = Db::name('config')->where('type','distribution_setting')->field('name,value')->select();
         $info = [];
@@ -76,6 +85,11 @@ class Distribution extends Base
         $poster_path = '/public/shareposter/temp/poster_image.png?t='.time();
 
         if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','distribution/shareposter');
+            if(!$jur){
+                echo "<script>parent.layer_error_msg('访问权限受控，您无权操作此项！至少拥有‘操作’的权限')</script>";
+                exit;
+            }
             $data = input('post.');
             $val['w'] = intval($data['w']) ? intval($data['w']) : 75;
             $val['h'] = intval($data['h']) ? intval($data['h']) : 75;
@@ -116,6 +130,11 @@ class Distribution extends Base
             exit;
         }
 
+        $jur = $this->check_jurisdiction_ok('r','distribution/shareposter');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
+
         $conf = Db::name('config')->where(['type' => 'distribution_shareposter', 'name' => 'shareposter'])->find();
         $config = [];
         if($conf){
@@ -149,7 +168,11 @@ class Distribution extends Base
             
             $t = input('post.t');
             if($t == 'temp_image'){
-                
+                $jur = $this->check_jurisdiction_ok('w','distribution/shareposter');
+                if(!$jur){
+                    echo '<script>window.parent.temp_msg("访问权限受控，您无权操作此项！至少拥有‘操作’的权限")</script>';
+                    exit;
+                }
                 $file = request()->file('image');
                 if($file){
                     $info = $file->validate(['ext'=>'jpg,png,jpeg'])->move($temp_dir,'qr_backgroup.png');
@@ -161,6 +184,10 @@ class Distribution extends Base
             }
             
             if($t == 'preview'){
+                $jur = $this->check_jurisdiction_ok('w','distribution/shareposter');
+                if(!$jur){
+                    return json(['status' => 0, 'msg' => '访问权限受控，您无权操作此项！至少拥有‘操作’的权限']);
+                }
                 $data = input('post.');
                 $image_w = intval($data['w']) ? intval($data['w']) : 75;
                 $image_h = intval($data['h']) ? intval($data['h']) : 75;
@@ -234,6 +261,10 @@ class Distribution extends Base
 
     # 推广记录
     public function extension(){
+        $jur = $this->check_jurisdiction_ok('r','distribution/extension');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
 
         $search = isset($_GET['search']) ? $_GET['search'] : '';
 
@@ -304,9 +335,10 @@ class Distribution extends Base
 
     # 佣金记录
     public function commission(){
-
-
-
+        $jur = $this->check_jurisdiction_ok('r','distribution/commission');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
         $search = isset($_GET['search']) ? $_GET['search'] : '';
 
         $where['id'] = ['>', 0];

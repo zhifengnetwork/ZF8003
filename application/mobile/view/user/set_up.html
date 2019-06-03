@@ -36,7 +36,7 @@
 			<div class="avatar">
 				<div class="fl"><span>头像</span></div>
 				<div class="fr">
-					<img class="avatarPic_icon" id="avatarPic" src="{$user.avatar}" onerror="this.src='/public/mobile-default-user-icon.png'"  /> 
+					<img class="avatarPic_icon" id="avatarPic" src="{$user.avatar}?t=10086" onerror="this.src='/public/mobile-default-user-icon.png'"  /> 
 					<form method="POST" id="hidden-form" action="/mobile/user/set_icon" enctype="multipart/form-data" target="image-ajaxR" style="display:none;">
 						<input type="file" accept="image/*" name="icon" id="hidden-icon" />
 					</form>

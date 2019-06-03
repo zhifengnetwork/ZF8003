@@ -102,12 +102,12 @@
 			layer.confirm('确认要删除吗？', function (index) {
 				$.post('/admin/goods/del_category',{category_id:id},function(res){
 					if(res.status == 1){
-						layer.msg('操作成功', { icon: 6, time: 1000 },function(){
+						layer.msg('操作成功', { icon: 6},function(){
 							window.location.replace(location.href);
 						});
 						
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg :'操作失败，请重试！', { icon: 5});
 					}
 				});
 			});

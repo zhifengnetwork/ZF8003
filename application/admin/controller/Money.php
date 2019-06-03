@@ -20,6 +20,11 @@ class Money extends Base
      */
     public function index()
     {
+        $jur = $this->check_jurisdiction_ok('r','money/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
+
         $where['id'] = ['>', '0'];
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
         if($keywords){

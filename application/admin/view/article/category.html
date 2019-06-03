@@ -141,7 +141,7 @@
 						layer.msg('操作成功', { icon: 6, time: 1000 });
 						window.location.replace(location.href);
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 			});
@@ -166,7 +166,7 @@
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 				
@@ -179,7 +179,7 @@
 			layer.confirm('确认要修改分类状态吗？', function (index) {
 				//此处请求后台程序，下方是成功后的前台处理……
 				$.post('/admin/article/edit_status_category',{status:0,category_id:id},function(res){
-					// var res = JSON.parse(res);
+					
 					if(res.status == 1){
 						$(obj).parents("tr").find(".td-manage").prepend('<a onClick="category_stop(this)" href="javascript:;" title="修改分类状态" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
 						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">正常</span>');
@@ -187,7 +187,7 @@
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 			});
@@ -207,7 +207,7 @@
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 				
@@ -228,7 +228,7 @@
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 			});

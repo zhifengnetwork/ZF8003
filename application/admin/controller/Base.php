@@ -120,7 +120,7 @@ class Base extends Controller
         if(!$onaction){
             $onaction = strtolower($this->controller.'/'.$this->action);
         }
-        dump($menu);exit;
+        
         $mid = 0;
         foreach($menu as $v){
             $url = strtolower($v['url']);
@@ -128,12 +128,10 @@ class Base extends Controller
                 $mid = $v['id'];
                 goto CHECK;
             }
-
         }
         
         CHECK:
         $jurisdiction = $this->jurisdiction;
-        dump($mid);exit;
         if($mid > 0 && isset($jurisdiction[$mid])){
             if(strstr($jurisdiction[$mid],$action) != false){
                 return true;

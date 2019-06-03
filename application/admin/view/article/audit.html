@@ -96,7 +96,7 @@
                                 open_closeAll();
                             });
                         }else{
-                            layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
+                            layer.msg(data.msg ? data.msg : '审核失败！', {icon: 2, anim: 6, time: 1000});
                         }
                     });
                 },
@@ -109,7 +109,7 @@
                                 open_closeAll();
                             });
                         }else{
-                            layer.msg('审核失败！', {icon: 2, anim: 6, time: 1000});
+                            layer.msg(data.msg ? data.msg : '审核失败！', {icon: 2, anim: 6, time: 1000});
                         }
                     });
                 },

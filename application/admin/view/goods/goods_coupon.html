@@ -134,7 +134,7 @@
                         });
 
                     } else {
-                        layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+                        layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
                     }
                 });
             });
@@ -159,7 +159,7 @@
                         $(obj).remove();
                         layer.msg('操作成功!', { icon: 6, time: 1000 });
                     } else {
-                        layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+                        layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
                     }
                 });
 
@@ -180,7 +180,7 @@
                         $(obj).remove();
                         layer.msg('操作成功!', { icon: 6, time: 1000 });
                     } else {
-                        layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+                        layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
                     }
                 });
             });

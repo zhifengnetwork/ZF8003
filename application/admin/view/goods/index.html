@@ -17,8 +17,8 @@
 		</div>
 		</form>
 		<div class="cl pd-5 bg-1 bk-gray mt-20">
-			<span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i
-						class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;"
+			<span class="l">
+				 <a href="javascript:;"
 					onclick="goods_add('添加商品','{:url('admin/goods/add_goods')}','1360','800')"
 					class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加商品</a></span> <span
 				class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
@@ -28,7 +28,6 @@
 					<th scope="col" colspan="13">商品列表</th>
 				</tr>
 				<tr class="text-c">
-					<th width="25"><input type="checkbox" name="" value=""></th>
 					<th width="40">ID</th>
 					<th width="200">名称</th>
 					<th width="100">分类</th>
@@ -47,7 +46,6 @@
 				{if condition="isset($list) && $list"}
                 {volist name="list" id="vo"}
                 <tr class="text-c">
-                    <td><input type="checkbox" value="{$vo.id}" name=""></td>
                     <td>{$vo.id}</td>
                     <td>{$vo.name}</td>
 					<td>{if condition="isset($cname[$vo.cate_id])"}{$cname[$vo.cate_id]}{else /}{$vo.cate_id}{/if}</td>
@@ -172,7 +170,7 @@
 						layer.msg('操作成功', { icon: 6, time: 1000 });
 						window.location.replace(location.href);
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 2000 });
 					}
 				});
 			});
@@ -185,7 +183,7 @@
 		/*商品-停用*/
 		function goods_stop(obj) {
 			var id = $(obj).parents('.td-manage').data('id');
-			layer.confirm('确认要下架优惠券吗？', function (index) {
+			layer.confirm('确认要下架商品吗？', function (index) {
 				//此处请求后台程序，下方是成功后的前台处理……
 				$.post('/admin/goods/edit_status_goods',{status:2,goods_id:id},function(res){
 					// var res = JSON.parse(res);
@@ -196,7 +194,7 @@
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 				
@@ -206,7 +204,7 @@
 		/*商品-启用*/
 		function goods_start(obj) {
 			var id = $(obj).parents('.td-manage').data('id');
-			layer.confirm('确认要启用优惠券吗？', function (index) {
+			layer.confirm('确认要下架吗？', function (index) {
 				//此处请求后台程序，下方是成功后的前台处理……
 				$.post('/admin/goods/edit_status_goods',{status:1,goods_id:id},function(res){
 					// var res = JSON.parse(res);
@@ -217,7 +215,7 @@
 						$(obj).remove();
 						layer.msg('操作成功!', { icon: 6, time: 1000 });
 					}else{
-						layer.msg('操作失败，请重试！', { icon: 5, time: 1000 });
+						layer.msg(res.msg ? res.msg : '操作失败，请重试！', { icon: 5, time: 1000 });
 					}
 				});
 			});

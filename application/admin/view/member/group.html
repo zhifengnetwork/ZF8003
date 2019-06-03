@@ -77,15 +77,20 @@
 		}
 		/*管理员-角色-删除*/
 		function admin_role_del(obj, id) {
-			layer.confirm('角色删除须谨慎，确认要删除吗？', function (index) {
+			layer.confirm('确认要删除吗？', function (index) {
 				$.ajax({
 					type: 'POST',
 					url: "{:url('admin/member/del')}",
 					dataType: 'json',
 					data:{'id':id,'act':'del'},
 					success: function (data) {
-						$(obj).parents("tr").remove();
-						layer.msg('已删除!', { icon: 1, time: 1000 });
+						if(data.status == 1){
+							$(obj).parents("tr").remove();
+							layer.msg('已删除!', { icon: 1, time: 1000 });
+						}else{
+							layer.msg(data.msg,{icon:2});
+						}
+						
 					},
 					error: function (data) {
 						console.log(data.msg);
@@ -102,9 +107,9 @@
 						check_val.push(id[k].value);
 					}
 				}
-				console.log(check_val);
 				if (check_val.length == 0) {
 					layer.alert("你还没有选择!");
+					return false;
 				} else {
 					check_val = JSON.stringify(check_val);
 					layer.confirm('确认要删除吗？', function (index) {
