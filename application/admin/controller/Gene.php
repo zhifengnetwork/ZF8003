@@ -50,7 +50,7 @@ class Gene extends Base{
                 }
             }
         }
-		
+        // dump($user_name);die;
         $this->assign('user_name', $user_name);
         $this->assign('list', $list);
         $this->assign('search', $search);

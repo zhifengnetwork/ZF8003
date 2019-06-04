@@ -54,7 +54,7 @@
                 <tr class="text-c">
                     <td>{$vo.id}</td>
                     <td>{$vo.name}</td>
-                    <td>{$user_name[$vo.user_id]}</td>
+                    <td>{$user_name[$vo.user_id]|default='未知'}</td>
                     <td>{$sex_name[$vo.sex]}</td>
                     <td>{$vo.year}年{$vo.month}月{$vo.day}日</td>
 					<td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
