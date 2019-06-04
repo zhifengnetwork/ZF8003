@@ -11,6 +11,7 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Loader;
+use app\common\model\Users;
 
 class Member extends Base
 {
@@ -238,7 +239,7 @@ class Member extends Base
         }
         $data = input('post.');
         $member = Loader::validate('Member');
-        $user = new Users;
+        $user = new Users();
         $return = ['status' => 0, 'msg' => '参数错误'];//初始化返回信息
 
         //添加
