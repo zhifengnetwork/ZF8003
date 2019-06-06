@@ -1324,7 +1324,8 @@ class User extends Base
             }
 
             
-            $sql = "update `zf_users` set `email` = '$email', `email_verification` = '`' where `id` = '$user_id'";
+            // $sql = "update `zf_users` set `email` = '$email', `email_verification` = '`' where `id` = '$user_id'";
+            $sql = "update `zf_users` set `email` = '$email' where `id` = '$user_id'";
             $res = Db::execute($sql);
 
             if($res){
