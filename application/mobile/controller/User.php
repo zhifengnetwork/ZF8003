@@ -80,6 +80,7 @@ class User extends Base
             }
 
             $gene['user_id'] = $this->user_id;
+            $gene['addtime'] = time();
             $res = Db::name('gene')->insert($gene);
             if($res){
                 echo "<script>parent.success_msg('保存成功！正在跳转...');</script>";
