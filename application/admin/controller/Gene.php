@@ -334,9 +334,9 @@ class Gene extends Base{
             }
             $completion = $data2 ? json_encode($data2) : '';
 
-            foreach($standard as $k => $v){
-                $standard[$k] = $v *100;
-            }
+            // foreach($standard as $k => $v){
+            //     $standard[$k] = $v *100;
+            // }
 
             $time = time();
             $data = $standard;
