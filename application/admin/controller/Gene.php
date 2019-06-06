@@ -9,7 +9,7 @@ class Gene extends Base{
     public function index(){
 
         $search = isset($_GET['search']) ? $_GET['search'] : array();
-        $where = ['id'=>['>',0]];
+        $where = [];
 
         if(isset($search['name']) && $search['name']){
             $where['name'] = ['like', "%$search[name]%"];
@@ -29,8 +29,7 @@ class Gene extends Base{
             $where['addtime'] = ['<=', strtotime($search['datemax'])];
         }
         
-        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime,nation,region')->where($where)->order('utime desc')->paginate(15);
-        
+        $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime,nation,region')->where($where)->order('id DESC,utime DESC')->paginate(15);
         $count = Db::name('gene')->where($where)->count();
         
         $user_name = [0 => '--'];
