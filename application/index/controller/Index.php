@@ -189,6 +189,7 @@ class Index extends Base
                 foreach($key as $k=>$v){
                     if($v){
                         if(Standard_Gene($v)){
+                            $v = preg_replace("/-/",  '_' ,  $v);
                             $data[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
                         }else{
                             $completion[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;

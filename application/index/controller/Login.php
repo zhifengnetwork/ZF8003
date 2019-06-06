@@ -132,7 +132,7 @@ class Login extends Base
                 'login_time'    => $time,
             ];
             
-            $user_id = Db::name('users')->insertGetId($inser_date);
+            $user_id = Db::name('users')->strict(false)->insertGetId($inser_date);
 
             if($user_id){
                 Db::name('mail_code')->where(['type'=>'register', 'sn'=>$register_id, 'code'=>$code])->delete();
