@@ -11,6 +11,16 @@
 
 // 应用公共文件
 
+function pre($data){
+    echo '<pre>';
+    print_r($data);
+}
+
+function pred($data){
+    echo '<pre>';
+    print_r($data);die;
+}
+
 /**
  * 保留文件夹，删除路径下的文件
  */
