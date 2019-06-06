@@ -50,7 +50,7 @@
                 <tr class="text-c">
                     <td>{$vo.id}</td>
                     <td>
-						{if condition="$user_info[$vo.user_id]['avatar']"}
+						{if condition="isset($user_info[$vo.user_id]['avatar'])"}
 						<img style="width:25px;height:25px;" src="{$user_info[$vo.user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}
@@ -58,7 +58,7 @@
 					</td>
                     <td>{$user_info[$vo.user_id]['email'] ? $user_info[$vo.user_id]['email'] : ''}</td>
                     <td>
-						{if condition="$user_info[$vo.add_user_id]['avatar']"}
+						{if condition="isset($user_info[$vo.add_user_id]['avatar'])"}
 						<img style="width:25px;height:25px;" src="{$user_info[$vo.add_user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}

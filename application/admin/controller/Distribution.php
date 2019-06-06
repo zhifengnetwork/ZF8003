@@ -306,9 +306,9 @@ class Distribution extends Base
         $user_info = '';
         if($list){
             $ids = [0];
-            foreach($list as $v){
-                $ids[$v['user_id']] = $v['user_id'];
-                $ids[$v['add_user_id']] = $v['add_user_id'];
+            foreach($list as $v1){
+                $ids[$v1['user_id']] = $v1['user_id'];
+                $ids[$v1['add_user_id']] = $v1['add_user_id'];
             }
             $ids = implode(',',$ids);
             $user_arr = Db::name('users')->field('id,nickname,avatar,email')->where(['id'=>['in',$ids]])->select();
@@ -324,7 +324,9 @@ class Distribution extends Base
             'share' => '分享海报',
         ];
 
-
+        // dump($list);
+        // dump($user_info);
+        // die;
         $this->assign('search', $search);
         $this->assign('user_info', $user_info);
         $this->assign('type_name', $type_name);

@@ -180,6 +180,8 @@ class Login extends Base
                 echo "<script>parent.wx_ifr_error('登录失败！未知的来源');</script>";
             }
             $data = $this->getOpenidFromMp($code);//获取网页授权access_token和用户openid
+            // dump($data);
+            // die;
             $data2 = $this->GetUserInfo($data['access_token'],$data['openid']);//获取微信用户信息
             $data['nickname'] = empty($data2['nickname']) ? '微信用户' : trim($data2['nickname']);
             $data['sex'] = $data2['sex'];
@@ -331,6 +333,7 @@ class Login extends Base
         $this->wx_config();
         $urlObj["appid"] = $this->weixin_config['open_appid'];
         $urlObj["secret"] = $this->weixin_config['open_appsecret'];
+        // dump($urlObj);die;
         $urlObj["code"] = $code;
         $urlObj["grant_type"] = "authorization_code";
         $bizString = $this->ToUrlParams($urlObj);

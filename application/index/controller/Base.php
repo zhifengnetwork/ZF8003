@@ -36,15 +36,15 @@ class Base extends Controller
 
     # 微信配置
     public function wx_config(){
-        $config = Session::has('wx_config') ? Session::get('wx_config') : '';
-        if(!$config){
+        //$config = Session::has('wx_config') ? Session::get('wx_config') : '';
+       // if(!$config){
             $config = Db::name('config')->where('type','weixin_config')->select();
             foreach($config as $v){
                 $conf[$v['name']] = $v['value'];
             }
             Session::set('wx_config',$conf);
             $config = $conf;
-        }
+       // }
         
         if(!$config){
 
