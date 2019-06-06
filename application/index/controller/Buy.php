@@ -70,6 +70,12 @@ class Buy extends Base
                 $default_address['city_name'] = Db::name('area')->field('name')->where('id', $default_address['city'])->find()['name'];
                 $default_address['district_name'] = Db::name('area')->field('name')->where('id', $default_address['district'])->find()['name'];
             }
+        }else{
+            $default_address = Db::name('user_address')->order('id DESC')->find();
+            if($default_address){
+                $default_address['city_name'] = Db::name('area')->field('name')->where('id', $default_address['city'])->find()['name'];
+                $default_address['district_name'] = Db::name('area')->field('name')->where('id', $default_address['district'])->find()['name'];
+            }
         }
 
         
