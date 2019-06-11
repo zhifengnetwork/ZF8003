@@ -83,6 +83,10 @@
 <iframe name="ajaxR" style="display: none;"></iframe>
 {include file="layout/footer"}
 <script>
+    function other_temp_del(obj){
+        console.log( $(obj) )
+        $(obj).parents('tr').remove();
+    }
     function layermsg(msg,close){
         layer.msg(msg);
         if(close > 0){
@@ -135,4 +139,5 @@
         $('#area-id').val(areaid);
     }
 
+    
 </script>
