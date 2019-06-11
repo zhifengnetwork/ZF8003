@@ -127,6 +127,8 @@ class Index extends Base
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
             $password = isset($_POST['password']) ? trim($_POST['password']) : '';
             $captcha = isset($_POST['captcha']) ? trim($_POST['captcha']) : '';
+            $email = base64_decode($email);
+            $password = base64_decode($password);
 
             if(!check_email($email)){
                 return json(['status'=>0,'msg'=>'邮箱格式错误！']);

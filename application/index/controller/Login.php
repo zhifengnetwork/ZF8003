@@ -28,6 +28,8 @@ class Login extends Base
         if($_POST){
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
             $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+            $email = base64_decode($email);
+            $password = base64_decode($password);
 
             if(!check_email($email)){
                 return json(['status'=>0,'msg'=>'邮箱格式错误！']);

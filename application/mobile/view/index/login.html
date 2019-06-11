@@ -95,7 +95,8 @@
         
         <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
         <script src="__STATIC__/js/public/public.js"></script>
-        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		<script src="__PUBLIC__/public/jquery.base64.js"></script>
 		<script>
 		
 
@@ -120,6 +121,8 @@
 					return false;
 				}
 
+				email = $.base64.encode(email);
+				password = $.base64.encode(password);
 				$.post('/mobile/index/login',{email:email,password:password,captcha:captcha},function(res){
 
 					if(res.status == 1){

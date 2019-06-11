@@ -67,6 +67,7 @@
 	<script src="__STATIC__/js/public/footer.js"></script>
 	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 	<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+	<script src="__PUBLIC__/public/jquery.base64.js"></script>
 	 <script>
 		 $(function(){
 			var obj = new WxLogin({
@@ -127,6 +128,9 @@
 				layer.msg('密码错误！',{icon:5});
 				return false;
 			}
+			email = $.base64.encode(email);
+			password = $.base64.encode(password);
+
 			$.post('/index/login/login',{email:email,password:password},function(res){
 
 				if(res.status == 1){
@@ -147,6 +151,12 @@
 			$('#img-captcha').attr('src',url);
 		}       
         
+
+
+
+
+
+		
     </script>	
 		
 	</body>
