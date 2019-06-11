@@ -186,15 +186,15 @@ class Index extends Base
             $value = isset($_POST['value']) ? $_POST['value'] : array();
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 
-            // if(!$name){
-            //     echo "<script>parent.error('请输入您的姓名');</script>";
-            //     exit;
-            // }
+            if(!$name){
+                echo "<script>parent.error('请输入您的姓名');</script>";
+                exit;
+            }
 
-            // if( !preg_match("/^\W+$/",$name) ){
-            //     echo "<script>parent.error('请输入正确的姓名！');</script>";
-            //     exit;
-            // }
+            if( !preg_match("/^\W+$/",$name) ){
+                echo "<script>parent.error('请输入正确的姓名！');</script>";
+                exit;
+            }
 
             if($key){
                 $completion = '';
