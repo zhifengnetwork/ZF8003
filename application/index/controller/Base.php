@@ -64,6 +64,7 @@ class Base extends Controller
             
             // $this->avatar  = Session::get('user.avatar');
         }else{
+            $this->redirect( url('Login/login') );
             layer_error('请先登录！', false);
             $this->redirect('Login/login');
         }

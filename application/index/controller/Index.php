@@ -34,6 +34,13 @@ class Index extends Base
                 echo "<script>parent.layer.msg('请输入姓名！',{icon:5});</script>";
                 exit;
             }
+
+            if( !preg_match("/^\W+$/",$name) ){
+                echo "<script>parent.layer.msg('请输入正确的姓名！',{icon:5});</script>";
+                exit;
+            }
+
+            die;
             if(!$day){
                 echo "<script>parent.layer.msg('请选择出生日期',{icon:5});</script>";
                 exit;
@@ -184,6 +191,12 @@ class Index extends Base
                 echo "<script>parent.error('请输入您的姓名');</script>";
                 exit;
             }
+
+            if( !preg_match("/^\W+$/",$name) ){
+                echo "<script>parent.error('请输入正确的姓名！');</script>";
+                exit;
+            }
+
             if($key){
                 $completion = '';
                 foreach($key as $k=>$v){

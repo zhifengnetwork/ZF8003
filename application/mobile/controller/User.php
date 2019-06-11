@@ -1432,6 +1432,7 @@ class User extends Base
         }
 
         if(!$this->user_id){
+            $this->redirect( url('index/login') );
             layer_error('请先登录！');
             exit;
         }
