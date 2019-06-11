@@ -26,7 +26,8 @@ class Gene extends Base{
             $where['addtime'] = ['>=', strtotime($search['datemin'])];
         }
 		if(isset($search['datemax']) && $search['datemax']){
-            $where['addtime'] = ['<=', strtotime($search['datemax'])];
+            // $where['addtime'] = ['<=', strtotime($search['datemax'])];
+            $where['addtime'] = array(array('gt', strtotime($search['datemin']) ),array('lt', strtotime($search['datemax'])+(60*60*24)-1 ));
         }
         
         $list = Db::name('gene')->field('id,user_id,name,desc,addtime,utime,nation,region')->where($where)->order('id DESC,utime DESC')->paginate(15);
