@@ -55,9 +55,23 @@ class User extends Base
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
             $gene['desc'] = '';
 
+            foreach($gene as $key=>$value){
+                if( preg_match("/dys/",$key) ){
+                    if( $value ){
+                        if( !preg_match("/^[0-9]+$/",$value) ){
+                            echo "<script>parent.error_msg('请输入正确的频度！只能是数字！');</script>";
+                            exit;
+                        }
+                    }
+                }
+            }
 
             if(!$gene['name']){
                 echo "<script>parent.error_msg('请输入姓名！');</script>";
+                exit;
+            }
+            if( !preg_match("/^\W+$/",$gene['name']) ){
+                echo "<script>parent.error_msg('请输入正确的姓名！');</script>";
                 exit;
             }
             if(!$gene['nation']){

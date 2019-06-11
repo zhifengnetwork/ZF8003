@@ -40,7 +40,6 @@ class Index extends Base
                 exit;
             }
 
-            die;
             if(!$day){
                 echo "<script>parent.layer.msg('请选择出生日期',{icon:5});</script>";
                 exit;
@@ -187,20 +186,26 @@ class Index extends Base
             $value = isset($_POST['value']) ? $_POST['value'] : array();
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 
-            if(!$name){
-                echo "<script>parent.error('请输入您的姓名');</script>";
-                exit;
-            }
+            // if(!$name){
+            //     echo "<script>parent.error('请输入您的姓名');</script>";
+            //     exit;
+            // }
 
-            if( !preg_match("/^\W+$/",$name) ){
-                echo "<script>parent.error('请输入正确的姓名！');</script>";
-                exit;
-            }
+            // if( !preg_match("/^\W+$/",$name) ){
+            //     echo "<script>parent.error('请输入正确的姓名！');</script>";
+            //     exit;
+            // }
 
             if($key){
                 $completion = '';
                 foreach($key as $k=>$v){
                     if($v){
+                        if( $value[$k] ){
+                            if( !preg_match("/^[0-9]+$/",$value[$k]) ){
+                                echo "<script>parent.error('请输入正确的频度！只能是数字！');</script>";
+                                exit;
+                            }
+                        }
                         if(Standard_Gene($v)){
                             $v = preg_replace("/-/",  '_' ,  $v);
                             $data[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
@@ -209,7 +214,7 @@ class Index extends Base
                         }
                     }
                 }
-
+                
                 $user_id = $this->user_id ? $this->user_id : 0;
                 $data['name'] = $name;
                 $data['user_id'] = $user_id;
