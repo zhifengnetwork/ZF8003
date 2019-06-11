@@ -451,6 +451,10 @@ class Goods extends Base{
             $freight_id = isset($_POST['freight_id']) ? intval($_POST['freight_id']) : 0;
             $is_see = isset($_POST['is_see']) ? intval($_POST['is_see']) : 0;
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $other = $_POST['other'];
+            if($other == ''){
+                iframe_echo('默认运费必须填写','layermsg');
+            }
             $other = isset($_POST['other']) && Digital_Verification($_POST['other']) ? $_POST['other'] : 0;
             $areaid = isset($_POST['areaid']) ? $_POST['areaid'] : array();
             $area_money = isset($_POST['area_money']) ? $_POST['area_money'] : array();
@@ -463,6 +467,16 @@ class Goods extends Base{
             if(!$name){
                 iframe_echo('请输入运费模板名称','layermsg');
             }
+
+            $where['name'] = $name;
+            if($freight_id){
+                $where['id'] = ['<>',$freight_id];
+            }
+            $res = Db::name('freight_temp')->where($where)->find();
+            if($res){
+                iframe_echo('运费模板名称不能重复','layermsg');
+            }
+
             $temp['freight'] = $other;
             if($areaid){
                 foreach($areaid as $k => $v){
