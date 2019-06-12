@@ -20,20 +20,20 @@
 					<th class="text-r">手机：</th>
 					<td>{$info.mobile}</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th class="text-r">手机验证：</th>
-					<td>{eq name="$info.mobile_verification" value="1"} <span style="color:blue;">已验证</span> {else/} 未验证
+					<td>{ eq name="$info.mobile_verification" value="1"} <span style="color:blue;">已验证</span> { else/} 未验证
 						{/eq}</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th class="text-r">邮箱：</th>
 					<td>{$info.email}</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th class="text-r">邮箱验证：</th>
-					<td>{eq name="$info.email_verification" value="1"}<span style="color:blue;">已验证</span> {else/}
+					<td>{ eq name="$info.email_verification" value="1"}<span style="color:blue;">已验证</span> { else/}
 						未验证{/eq}</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th class="text-r">余额：</th>
 					<td>{$info.money}</td>
@@ -51,10 +51,10 @@
 					<td>{$info.group_id|group_name}</td>
 				</tr>
 				
-				<tr>
+				<!-- <tr>
 					<th class="text-r">分销等级：</th>
-					<td>{$info.distributor_level}</td>
-				</tr>
+					<td>{ $info.distributor_level}</td>
+				</tr> -->
 				<tr>
 					<th class="text-r">上级：</th>
 					<td>{$info.id|first_leader}</td>
