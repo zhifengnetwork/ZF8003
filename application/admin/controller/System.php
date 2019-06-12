@@ -410,14 +410,15 @@ class System extends Base
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
 
         $where['id'] = ['>',0];
+        $where = [];
         if($keywords){
             $where['name'] = ['like', "%$keywords%"];
         }
         
         $list = Db::name('menu')->where( $where )->order('sort desc,id asc')->select();
         
+        $result = array();
         if($list){
-            $result = array();
             foreach($list as $k1 => $v1){
                 if ($v1['parent_id'] == 0) {
                     array_push($result,$list[$k1]);
@@ -433,8 +434,12 @@ class System extends Base
                 }
             }
             
-            $this->assign('list', $result);
         }
+        if(!$result){
+            $result = $list;
+        }
+        
+        $this->assign('list', $result);
 
         $count = Db::name('menu')->where( $where )->count();
         $this->assign('count', $count);
