@@ -480,7 +480,7 @@ class User extends Base
     public function del_my_gene(){
         
         $ids = isset($_POST['ids']) ? $_POST['ids'] : '';
-        $sql = "delete from `zf_gene` where `user_id` = '$this->user_id' and `id` in ('$ids')";
+        $sql = "delete from `zf_gene` where `user_id` = '$this->user_id' and `id` in ($ids)";
         $res = Db::execute($sql);
         if($res){
             return json(['status'=>1]);
