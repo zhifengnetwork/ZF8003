@@ -98,6 +98,7 @@ class User extends Base
             $gene['addtime'] = time();
             $res = Db::name('gene')->insert($gene);
             if($res){
+                Session::clear('mobile');
                 echo "<script>parent.success_msg('保存成功！正在跳转...');</script>";
                 exit;
             }
@@ -1467,4 +1468,18 @@ class User extends Base
         return $this->fetch();
     }
 
+
+    public function set_user_upload_data_cache(){
+
+        $user = $this->user;
+
+        if(!$user){
+            return json(['status'=>0,'msg'=>'非法访问！']);
+        }
+        
+        $name = input('name');
+        $value = input('value');
+        Session::set($name,$value,"mobile");
+        return json(['status'=>1,'msg'=>Session::get($name,"mobile")]);
+    }
 }
