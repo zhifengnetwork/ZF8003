@@ -93,7 +93,7 @@ class User extends Base
             if($desc){
                 $gene['desc'] .= $desc;
             }
-            pred($gene);
+            
             $gene['user_id'] = $this->user_id;
             $gene['addtime'] = time();
             $res = Db::name('gene')->insert($gene);
