@@ -77,8 +77,10 @@
 							<td rowspan='2' class="niandai" hidden><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
 							<td rowspan='2' class="chaodai">
 								<img src="__STATIC__/img/home/jiantou5.png" class="jiantoudd" />
+								{if condition="$vo.line"}
 								<img src="/public/gene/image/{$vo.line.img}" style="height:36px;" class="jiantou_hou" />
 								<span class="dynasty">{$vo.line.name}</span>
+								{/if}
 							</td>
 						</tr>
 					</tbody>
