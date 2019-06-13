@@ -55,13 +55,14 @@ class User extends Base
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
             $gene['desc'] = '';
 
-            foreach($gene as $key=>$value){
+            foreach($gene as $key=>&$value){
                 if( preg_match("/dys/",$key) ){
                     if( $value ){
                         if( !preg_match("/^[0-9]+$/",$value) ){
                             echo "<script>parent.error_msg('请输入正确的频度！只能是数字！');</script>";
                             exit;
                         }
+                        $value = $value * 100;
                     }
                 }
             }
@@ -92,7 +93,7 @@ class User extends Base
             if($desc){
                 $gene['desc'] .= $desc;
             }
-
+            pred($gene);
             $gene['user_id'] = $this->user_id;
             $gene['addtime'] = time();
             $res = Db::name('gene')->insert($gene);
