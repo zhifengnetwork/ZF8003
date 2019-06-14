@@ -75,14 +75,19 @@ class User extends Base
                 echo "<script>parent.error_msg('请输入正确的姓名！');</script>";
                 exit;
             }
-            if(!$gene['nation']){
-                echo "<script>parent.error_msg('请输入民族！');</script>";
+            if(!$gene['mobile']){
+                echo "<script>parent.error_msg('请输入联系方式！');</script>";
                 exit;
             }
-            if(!$gene['region']){
-                echo "<script>parent.error_msg('请输入地址！');</script>";
-                exit;
-            }
+            
+            // if(!$gene['nation']){
+            //     echo "<script>parent.error_msg('请输入民族！');</script>";
+            //     exit;
+            // }
+            // if(!$gene['region']){
+            //     echo "<script>parent.error_msg('请输入地址！');</script>";
+            //     exit;
+            // }
 
             if($mobile){
                 $gene['desc'] .= '联系方式：'.$mobile;

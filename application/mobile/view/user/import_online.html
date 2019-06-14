@@ -23,13 +23,17 @@
 			</div>
 			<!--表格-->
                 <p class="tip">
-                	填写说明:请认真填写并且检查数据信息。当一个基因座有两个数值时在基因座后加a，b区分
+                	填写说明:请认真填写并且检查数据信息。姓名和联系方式必填。没有的信息可不填。
                 </p>
                 
                 <!--填写信息-->
                 <p class="person_message">
-                	<label>姓名:</label>
+                	<label><span style="color:red;width:unset;border:0px;">*</span>姓名:</label>
                 	<span><input type="text" name="gene[name]" value='{:session("gene[name]","","mobile")}' /></span>
+                </p>
+                <p class="person_message">
+                	<label><span style="color:red;width:unset;border:0px;">*</span>联系方式:</label>
+                	<span><input type="text" name="mobile" /></span>
                 </p>
                 <p class="person_message">
                 	<label>民族:</label>
@@ -38,22 +42,6 @@
                 <p class="person_message">
                 	<label>现今地址:</label>
                 	<span><input type="text" name="gene[region]" value='{:session("gene[region]","","mobile")}' /></span>
-                </p>
-                <p class="person_message">
-                	<label>所属单倍群:</label>
-                	<span><input type="text" name="gene[haplogroup]" value='{:session("gene[haplogroup]","","mobile")}' /></span>
-                </p>
-                <p class="person_message">
-                	<label>SNP:</label>
-                	<span><input type="text" name="gene[variation]" value='{:session("gene[variation]","","mobile")}' /></span>
-                </p>
-                <p class="person_message">
-                	<label>SNP excepted:</label>
-                	<span><input type="text" name="gene[nomutation]" value='{:session("gene[nomutation]","","mobile")}' /></span>
-                </p>
-                <p class="person_message">
-                	<label>联系方式:</label>
-                	<span><input type="text" name="mobile" /></span>
                 </p>
                 <p class="person_message">
                 	<label>迁移记录:</label>
@@ -74,110 +62,110 @@
 							
 						</ul>
 				    </div>
-				</div>  			
+				</div>
                  <div class="l3h51" style="margin-top: -.1rem;">
 					<div class="l3h5d1">
 						<ul class="xiala">
+							<li>DYF387Sa</li>
+							<li>DYF387Sb</li>
 							<li>DYS19</li>
-							<li>DYS389I</li>
-							<li>DYS389b</li>
 						</ul>
 						<ul class="xiala">
-							<li><input type="text" name="gene[dys19]" value='{:session("gene[dys19]","","mobile")}'li>
-							<li><input type="text" name="gene[dys389i]" value='{:session("gene[dys389i]","","mobile")}' /></li>
-							<li><input type="text" name="gene[dys389b]" value='{:session("gene[dys389b]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYF387Sa]" value='{:session("gene[DYF387Sa]","","mobile")}'li>
+							<li><input type="text" name="gene[DYF387Sb]" value='{:session("gene[DYF387Sb]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS19]" value='{:session("gene[DYS19]","","mobile")}' /></li>
                         </ul>
                         <ul class="xiala">
-							<li>DYS390</li>
-							<li>DYS391</li>
-							<li>DYS392</li>
+							<li>DYS449</li>
+							<li>DYS456</li>
+							<li>DYS389a</li>
 						</ul>
 						<ul class="xiala">
-							<li><input type="text" name="gene[dys390]" value='{:session("gene[dys390]","","mobile")}' /></li>
-							<li><input type="text" name="gene[dys391]" value='{:session("gene[dys391]","","mobile")}' /></li>
-							<li><input type="text" name="gene[dys392]" value='{:session("gene[dys392]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS449]" value='{:session("gene[DYS385a]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS456]" value='{:session("gene[DYS456]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS389a]" value='{:session("gene[DYS389a]","","mobile")}' /></li>
                         </ul>
                         <ul class="xiala">
+                            <li>DYS389b</li>
+                            <li>DYS390</li>
+                            <li>DYS391</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS389b]" value='{:session("gene[DYS389b]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS390]" value='{:session("gene[DYS390]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS391]" value='{:session("gene[DYS391]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS392</li>
                             <li>DYS393</li>
                             <li>DYS437</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS392]" value='{:session("gene[DYS392]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS393]" value='{:session("gene[DYS393]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS437]" value='{:session("gene[DYS437]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
                             <li>DYS438</li>
-                        </ul>
-                        <ul class="xiala">
-                            <li><input type="text" name="gene[dys393]" value='{:session("gene[dys393]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys437]" value='{:session("gene[dys437]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys438]" value='{:session("gene[dys438]","","mobile")}' /></li>
-                        </ul>
-                        <ul class="xiala">
                             <li>DYS439</li>
                             <li>DYS448</li>
-                            <li>DYS456</li>
                         </ul>
                         <ul class="xiala">
-                            <li><input type="text" name="gene[dys439]" value='{:session("gene[dys439]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys448]" value='{:session("gene[dys448]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys456]" value='{:session("gene[dys456]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS438]" value='{:session("gene[DYS438]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS439]" value='{:session("gene[DYS439]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS448]" value='{:session("gene[DYS448]","","mobile")}' /></li>
                         </ul>
                         <ul class="xiala">
-                            <li>DYS458</li>
-                            <li>DYS635</li>
-                            <li>GATA-H4</li>
-                        </ul>
-                        <ul class="xiala">
-                            <li><input type="text" name="gene[dys458]" value='{:session("gene[dys458]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys635]" value='{:session("gene[dys635]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[gata_h4]" value='{:session("gene[gata_h4]","","mobile")}' /></li>
-                        </ul>
-                        <ul class="xiala">
-                            <li>DYS385a</li>
-                            <li>DYS385b</li>
                             <li>DYS449</li>
+                            <li>DYS456</li>
+                            <li>DYS458</li>
                         </ul>
                         <ul class="xiala">
-                            <li><input type="text" name="gene[dys385a]" value='{:session("gene[dys385a]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys385b]" value='{:session("gene[dys385b]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys449]" value='{:session("gene[dys449]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS449]" value='{:session("gene[DYS449]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS456]" value='{:session("gene[DYS456]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS458]" value='{:session("gene[DYS458]","","mobile")}' /></li>
                         </ul>
                         <ul class="xiala">
                             <li>DYS460</li>
-                            <li>DYS481</li>
+                            <li>DYS481a</li>
+                            <li>DYS481b</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS460]" value='{:session("gene[DYS460]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS481a]" value='{:session("gene[DYS481a]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS481b]" value='{:session("gene[DYS481b]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
                             <li>DYS518</li>
-                        </ul>
-                        <ul class="xiala">
-                            <li><input type="text" name="gene[dys460]" value='{:session("gene[dys460]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys481]" value='{:session("gene[dys481]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys518]" value='{:session("gene[dys518]","","mobile")}' /></li>
-                        </ul>
-                        <ul class="xiala">
+                            <li>DYS527</li>
                             <li>DYS533</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS518]" value='{:session("gene[DYS518]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS527]" value='{:session("gene[DYS527]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS533]" value='{:session("gene[DYS533]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
                             <li>DYS570</li>
                             <li>DYS576</li>
-                        </ul>
-                        <ul class="xiala">
-                            <li><input type="text" name="gene[dys533]" value='{:session("gene[dys533]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys570]" value='{:session("gene[dys570]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys576]" value='{:session("gene[dys576]","","mobile")}' /></li>
-                        </ul>
-                        <ul class="xiala">
                             <li>DYS627</li>
-                            <li>DYS387S1a</li>
-                            <li>DYS387S1b</li>
                         </ul>
                         <ul class="xiala">
-                            <li><input type="text" name="gene[dys627]" value='{:session("gene[dys627]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys387s1a]" value='{:session("gene[dys387s1a]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys387s1b]" value='{:session("gene[dys387s1b]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS570]" value='{:session("gene[DYS570]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS576]" value='{:session("gene[DYS576]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS627]" value='{:session("gene[DYS627]","","mobile")}' /></li>
                         </ul>
                         <ul class="xiala">
-                            <li>DYS388</li>
-                            <li>DYS444</li>
-                            <li>DYS549</li>
+                            <li>DYS635a</li>
+                            <li>DYS635b</li>
+                            <li>GATA_H4</li>
                         </ul>
                         <ul class="xiala">
-                            <li><input type="text" name="gene[dys388]" value='{:session("gene[dys388]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys444]" value='{:session("gene[dys444]","","mobile")}' /></li>
-                            <li><input type="text" name="gene[dys549]" value='{:session("gene[dys549]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS635a]" value='{:session("gene[DYS635a]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS635b]" value='{:session("gene[DYS635b]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[GATA_H4]" value='{:session("gene[GATA_H4]","","mobile")}' /></li>
                         </ul>
-                        <ul class="xiala">
+                        <!-- <ul class="xiala">
                             <li>DYS643</li>
                             <li>DYS722</li>
                             <li>DYS404S1a</li>
@@ -196,7 +184,7 @@
                             <li><input type="text" name="gene[dys404s1b]" value='{:session("gene[dys404s1b]","","mobile")}' /></li>
                             <li><input type="text" name="gene[dys527a]" value='{:session("gene[dys527a]","","mobile")}' /></li>
                             <li><input type="text" name="gene[dys527b]" value='{:session("gene[dys527b]","","mobile")}' /></li>
-                        </ul>
+                        </ul> -->
 					</div>
 		       </div>
           </div> 
