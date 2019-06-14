@@ -21,44 +21,47 @@ class Index extends Base
     public function import_data()
     {
         
-        if($_POST){
+        if(request()->isPost()){
             
-            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-            $sex = isset($_POST['sex']) ? intval($_POST['sex']) : 0;
-            $year = isset($_POST['year']) ? intval($_POST['year']) : 0;
-            $month = isset($_POST['month']) ? intval($_POST['month']) : 0;
-            $day = isset($_POST['day']) ? intval($_POST['day']) : 0;
+            // $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            // $sex = isset($_POST['sex']) ? intval($_POST['sex']) : 0;
+            // $year = isset($_POST['year']) ? intval($_POST['year']) : 0;
+            // $month = isset($_POST['month']) ? intval($_POST['month']) : 0;
+            // $day = isset($_POST['day']) ? intval($_POST['day']) : 0;
             $user_id = $this->user_id ? $this->user_id : 0;
-
-            if(!$name){
-                echo "<script>parent.layer.msg('请输入姓名！',{icon:5});</script>";
-                exit;
+            if(!$user_id){
+                echo "<script>parent.layer.msg('请先登录！',{icon:5});</script>";die;
             }
-
-            if( !preg_match("/^\W+$/",$name) ){
-                echo "<script>parent.layer.msg('请输入正确的姓名！',{icon:5});</script>";
-                exit;
-            }
-
-            if(!$day){
-                echo "<script>parent.layer.msg('请选择出生日期',{icon:5});</script>";
-                exit;
-            }
-
+            // if(!$name){
+            //     echo "<script>parent.layer.msg('请输入姓名！',{icon:5});</script>";
+            //     exit;
+            // }
+            // if( !preg_match("/^\W+$/",$name) ){
+            //     echo "<script>parent.layer.msg('请输入正确的姓名！',{icon:5});</script>";
+            //     exit;
+            // }
+            // if(!$day){
+            //     echo "<script>parent.layer.msg('请选择出生日期',{icon:5});</script>";
+            //     exit;
+            // }
             $file = $file = request()->file('myfile');
             if(!$file){
                 echo "<script>parent.layer.msg('请选择您要上传的检测报告',{icon:5});</script>";
                 exit;
             }
 
-            $filename = md5(date('YmdHis',time()).'-'.$year.$month.$day);
+            $filename = date('YmdHis',time()) .'_'. $user_id ;
             $dirpath = ROOT_PATH . 'public' . DS . 'gene' . DS . 'import';
             $info = $file->validate(['ext'=>'zip,rar,xls,xlsx'])->move($dirpath,$filename,false);
             if(!$info){
                 echo "<script>parent.layer.msg('文件上传失败，请重试！',{icon:5});</script>";
                 exit;
             }
+
+
+
             $savename = $info->getSaveName();
+            
             if(strpos($savename, 'xls') || strpos($savename, 'xlsx')){
                 $file_name = ROOT_PATH.'public/gene/import/'.$savename;
                 vendor ('PHPExcel.PHPExcel');
@@ -66,6 +69,37 @@ class Index extends Base
                 $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
                 $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');
                 $excel_array = $obj_PHPExcel->getsheet(0)->toArray(); //转换为数组格式
+
+                $arr_name = [];
+                $arr = [];
+                foreach($excel_array as $key=>$value){
+                    if($key==2){
+                        foreach($value as $k=>$v){
+                            if($k<1){continue;}
+                            if($v){$arr_name[$k] = $v;}
+                        }
+                    }
+                    if($key>2){
+                        foreach($arr_name as $k=>$v){
+                            $arr[$k]['name'] = $arr_name[$k];
+                            $arr[$k][$value[0]] = $value[$k];
+                        }
+                    }
+                }
+                if(!$arr){
+                    // $arr = array_values($arr);
+                    echo "<script>parent.layer.msg('姓名不能为空！',{icon:5});</script>";die;
+                }
+
+                $res = Db::name('users')->update(['id'=>$user_id,'gene_file'=>$savename]);
+                if($res){
+                    echo "<script>parent.success();</script>";exit;
+                }else{
+                    echo "<script>parent.layer.msg('文件上传失败，请重试！',{icon:5});</script>";
+                    exit;
+                }
+
+                
 
                 // if($excel_array[0][0] == '结果报告' && $excel_array[3][0] == '29Y-STR基因座分型结果'){
                 //     $e['user_id'] = $this->user_id ? $this->user_id : 0;
@@ -178,6 +212,122 @@ class Index extends Base
         return $this->fetch();
     }
 
+    public function import_data1(){
+        // if(request()->isPost()){
+
+            $mobile = input('mobile');
+            $nation = input('nation');
+            $on_addr = input('on_addr');
+            $addr_log = input('addr_log');
+            $migration = input('migration');
+            $pai = input('pai');
+            $is_family_tree = input('is_family_tree');
+            $desc1 = input('desc');
+            $sex = input('sex');
+            if(strstr($sex,'男')){
+                $sex = 1;
+            }else{
+                $sex = 0;
+            }
+
+            $desc = '';
+            if($on_addr){
+                $desc .= '现居：'.$on_addr;
+            }
+            if($addr_log){
+                $desc .= '，故居：'.$addr_log;
+            }
+            if($mobile){
+                $desc .= '，联系电话：'.$mobile;
+            }
+            if($migration){
+                $desc .= '，迁移记录：'.$migration.'，';
+            }
+            $desc = $desc . $desc1;
+
+
+            $user_id = $this->user_id ? $this->user_id : 0;
+            if(!$user_id){
+                echo "<script>parent.layer.msg('请先登录！',{icon:5});</script>";die;
+            }
+
+            $savename = Db::name('users')->where('id',$user_id)->value('gene_file');
+            if(!$savename){
+                echo "<script>parent.layer.msg('请选择您要上传的检测报告',{icon:5});</script>";die;
+            }
+            
+            $file_name = ROOT_PATH.'public/gene/import/'.$savename;
+            vendor ('PHPExcel.PHPExcel');
+            $objPHPExcel = new \PHPExcel();
+            $objReader = \PHPExcel_IOFactory::createReader('Excel2007');
+            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');
+            $excel_array = $obj_PHPExcel->getsheet(0)->toArray(); //转换为数组格式
+
+            $arr_name = [];
+            $arr = [];
+            $time = time();
+            foreach($excel_array as $key=>$value){
+                if($key==2){
+                    foreach($value as $k=>$v){
+                        if($k<1){continue;}
+                        if($v){$arr_name[$k] = $v;}
+                    }
+                }
+                if($key>2){
+                    foreach($arr_name as $k=>$v){
+                        $arr[$k]['name'] = $arr_name[$k];
+                        $arr[$k][$value[0]] = $value[$k];
+                    }
+                }
+            }
+            $arr = array_values($arr);
+            
+            foreach($arr as $key=>&$value){
+                $completion = [];
+                foreach($value as $k=>$v){
+                    if($k=='name'){continue;}
+
+                    if(Standard_Gene($k)){
+                        $value[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
+                    }else{
+                        $completion[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
+                    }
+                }
+                if($completion){
+                    $value['completion'] = json_encode($completion);
+                }
+
+                $value['user_id'] = $user_id;
+                $value['desc'] = $desc;
+                $value['nation'] = $nation;
+                $value['pai'] = $pai;
+                $value['is_family_tree'] = $is_family_tree;
+                $value['addtime'] = $time;
+            }
+
+            Db::name('gene')->strict(false)->insertAll($arr);
+            Db::name('users')->update(['id'=>$user_id,'gene_file'=>'']);
+
+            $res = Db::name('import_gene')->insert([
+                'user_id' => $user_id,
+                'name' => $arr[0]['name'],
+                'sex' => $sex,
+                'year' => date('Y',$time),
+                'month' => date('m',$time),
+                'day' => date('d',$time),
+                'filepath' => $savename,
+                'addtime' => time(),
+            ]);
+
+            if($res){
+                echo "<script>parent.success();</script>";exit;
+            }else{
+                @unlink(ROOT_PATH . 'public' . DS . 'gene/'.$filename);
+                echo "<script>parent.layer.msg('上传数据失败，请重试！',{icon:5});</script>";exit;
+            }
+        // }
+    }
+
     # 在线填写报告
     public function online_import_data(){
         
@@ -186,15 +336,15 @@ class Index extends Base
             $value = isset($_POST['value']) ? $_POST['value'] : array();
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 
-            if(!$name){
-                echo "<script>parent.error('请输入您的姓名');</script>";
-                exit;
-            }
+            // if(!$name){
+            //     echo "<script>parent.error('请输入您的姓名');</script>";
+            //     exit;
+            // }
 
-            if( !preg_match("/^\W+$/",$name) ){
-                echo "<script>parent.error('请输入正确的姓名！');</script>";
-                exit;
-            }
+            // if( !preg_match("/^\W+$/",$name) ){
+            //     echo "<script>parent.error('请输入正确的姓名！');</script>";
+            //     exit;
+            // }
 
             if($key){
                 $completion = '';

@@ -129,6 +129,7 @@ function Standard_Gene($key = ''){
         "dys458",
         "dys635",
         "gata-h4",
+        "gata_h4",
         "dys385a",
         "dys385b",
         "dys449",
