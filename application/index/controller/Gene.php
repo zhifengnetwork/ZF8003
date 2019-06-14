@@ -170,6 +170,7 @@ class Gene extends Base
         // dump($data);exit;
         $this->assign('lately', $lately);
         $this->assign('data', $data);
+        $this->assign('info', json_decode($i['info'],true));
         return $this->fetch();
     }
 
