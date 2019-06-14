@@ -428,10 +428,11 @@ class Article extends Base{
         $user_id = session('admin_id');
         $result['code'] = 0;
         if ($id && $user_id) {
+            $art_id = Db::name('comment')->where('id',$id)->value('to');
             Db::startTrans();
             $bool = Db::name('comment')->where('id',$id)->update(['status'=>$status,'utime'=>time(),'admin'=>$user_id]);
             if ($bool) {
-                $is_update = Db::name('article')->where(['id'=>$id])->setInc('comment');
+                $is_update = Db::name('article')->where(['id'=>$art_id])->setInc('comment');
                 if ($is_update) {
                     $result['code'] = 1;
                     Db::commit();
