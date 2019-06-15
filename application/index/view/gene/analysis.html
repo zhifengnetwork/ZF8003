@@ -60,7 +60,7 @@
 					{/if}
 					{volist name="data" id="vo"}
 					<table frame="void" class="biaogege2">
-						<tbody>
+						<tbody class="zuijia">
 							<!-- <tr>
 							<td class="dddddd">{$vo.id1}</td>
 							<td>{$vo.name1}</td>
@@ -116,11 +116,11 @@
 
 			</div>
 		</div>
-		<div class="dianji">dddddddd</div>
+		
 		<!-- 底部 -->
-		<div class="footer">
-			{include file="footer"}
-		</div>
+		<!-- <div class="footer">
+			
+		</div> -->
 	</div>
 
 	<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
@@ -141,8 +141,8 @@
 
 
 		//奇偶性设置背景颜色
-		$('.biaogege2:even').css('background', '#EFF3F6');
-		$('.biaogege2:odd').css('background', '#E8E8E8');
+		// $('.biaogege2:even').css('background', '#EFF3F6');
+		// $('.biaogege2:odd').css('background', '#E8E8E8');
 		
 		// 获取导航栏中的id的值
 		var urlid='';	
@@ -168,20 +168,62 @@
 			$.ajax({
 				type: "get",
 				url: "http://jiying.com/index/gene/analysis?id=" + urlid+"&page="+page,
+				dataType:"json",
 				success: function (data) {
-					if (data) {
-						// $("#J_ItemList>ul").append(data);
-						console.log("ccc"+res)
-						before_request = 1;
-					} else {
-						// $('.get_more').hide();
+					console.log(data)
+					console.log("data的长度："+data.data.length)
+					if(data){
+						for(var i = 0; i<data.data.length; i++){
+						
+						let str = '<table frame="void" class="biaogege2">'+
+								  '<tbody class="zuijia">'+
+								  '<tr>'+
+									'<td>'+
+										'<a is_open="1" onclick="check_open(this)" _href="/index/gene/analysis?id=9729">'+data.data[i].id2+'</a>'+
+									'</td>'+
+									'<td>'+data.data[i].name1+'</td>'+
+									'<td>'+data.data[i].name2+'</td>'+
+									'<td>'+data.data[i].nation1+'</td>'+
+									'<td rowspan="2" class="niandai" hidden=""><span class="nian"><span>'+data.data[i].line.name+'</span><span>年</span></span><br><span>('+data.data[i].id2+')代</span></td>'+
+									'<td rowspan="2" class="chaodai">'+
+										'<img src="/public/static/index/images/home/jiantou5.png" class="jiantoudd">'+
+										'<img src="/public/gene/image/'+data.data[i].line.img+'" style="height:36px;" class="jiantou_hou">'+
+										'<span class="dynasty">'+data.data[i].line.name+'</span>'+
+									'</td>'+
+								  '</tr>'+
+								  '</tbody>'+
+								'</table>'
+						$(".table_ear2").append(str);
+						$('.biaogege2:even').css('background', '#EFF3F6');
+						$('.biaogege2:odd').css('background', '#E8E8E8');
+						
+						}
 					}
+
 				}
 			});
+			// $.get("{:url('gene/analysis')}",{'id':urlid,'page':page},function(data){
+			// 	if(data.status==1){
+			// 		before_request = 1;
+			// 	}
+			// },'json');
+
 		}
-		$(".dianji").click(function(){
-			ajax_sourch_submit()	
-		})
+
+		// 滚动条滚动到底部<50px的时候
+		$(window).scroll(function () {
+        //$(window).scrollTop()这个方法是当前滚动条滚动的距离
+        //$(window).height()获取当前窗体的高度
+        //$(document).height()获取当前文档的高度
+        var bot = 200; //bot是底部距离的高度
+        if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+		//当底部基本距离+滚动的高度〉=文档的高度-窗体的高度时；
+		//我们需要去异步加载数据了
+		// $.getJSON("url", { page: "2" }, function (str) { alert(str); });
+			ajax_sourch_submit()
+        }
+    	});
+		
 
 
 
@@ -204,7 +246,7 @@
 			console.log(length)
 			
 
-			//奇偶性设置背景颜色
+			// //奇偶性设置背景颜色
 			$('.biaogege2:even').css('background', '#EFF3F6');
 			$('.biaogege2:odd').css('background', '#E8E8E8');
 			

@@ -141,13 +141,14 @@ body{
 }
 .footer .bottomNav ul{
 	height: 104px;
-	display: flex;
+	/* display: flex;
 	align-items: center;
 	justify-content: space-between;
-	flex-wrap: wrap;
+	flex-wrap: wrap; */
 }
 .footer .bottomNav ul li{
 	width:25%;
+	float:left;
 	height:40px;
 	line-height: 40px;
 	
