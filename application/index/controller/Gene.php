@@ -97,7 +97,8 @@ class Gene extends Base
             $config[$v['name']] = $v['value'];
         }
 
-        $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        // $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        $i = Db::name('gene')->where(['id'=>$id])->find();
         if(!$i){
             layer_error('非法访问，无权限的资源数据！');
         }
@@ -111,6 +112,7 @@ class Gene extends Base
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
+<<<<<<< HEAD
         // if($list_count > 100 && !$re){
         //     $this->assign('loading', 1);
         //     $this->assign('id', $id);
@@ -118,6 +120,15 @@ class Gene extends Base
         //     exit;
         // }
         $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->paginate(10,false,$pageParam);
+=======
+        if($list_count > 100 && !$re){
+            $this->assign('loading', 1);
+            $this->assign('id', $id);
+            return $this->fetch();
+            exit;
+        }
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
+>>>>>>> 8f5ea5ed1cf7e2afcd159e81358dbc34a782c372
         $list = $list->all();
         
         // $pindex = max(1, intval($page));
@@ -135,6 +146,8 @@ class Gene extends Base
         $data = array();
         $count = count($list);
         foreach($list as $v){
+            $r['is_open'] = $v['is_open'];
+            
             $r['id1'] = $i['id'];
             $r['id2'] = $v['id'];
             $r['name1'] = $i['name'] ? $i['name'] : '--';
