@@ -338,6 +338,7 @@ class Index extends Base
             ]);
 
             if($res){
+                echo json_encode(['code'=>1,'msg'=>'上传成功！','data'=>url('gene/index')]);die;
                 echo "<script>parent.success();</script>";exit;
             }else{
                 @unlink(ROOT_PATH . 'public' . DS . 'gene/'.$filename);

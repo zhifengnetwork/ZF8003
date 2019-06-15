@@ -22,7 +22,7 @@
                 <p class="liebiao_ear_title">我的基因数据</p>
                 <ul>
                     {volist name="$list" id="vo"}
-                    <li onclick="window.location.href='/index/gene/my_information'">
+                    <li onclick="window.location.href='/index/gene/my_information?id={$vo.id}'">
                 <!-- <li onclick="window.location.href='/index/gene/analysis?id={$vo.id}'"></li> -->
                         <span class="span_left">{$vo.name}</span>
                         <span class="span_right"><img src="__STATIC__/images/home/youjian@2x.png"/></span>

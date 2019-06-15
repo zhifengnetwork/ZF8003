@@ -16,12 +16,29 @@ class Gene extends Base
     public function my_information()
     {
 
-        return $this->fetch();
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $info = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->field('id,info')->find();
+        if(!$info){
+            layer_error('查询信息不存在！');die;
+        }
+        
+        $info = $info['info'] ? $info['info'] : '';
+        $info = json_decode($info,true);
+        
+        return $this->fetch('',[
+            'info'  =>  $info,
+        ]);
     }
 
     # 我的基因数据
     public function index()
     {
+
+        $gene_file = Db::name('users')->where('id',$this->user_id)->value('gene_file');
+        if($gene_file){
+            $url = url('index/information');
+            header("Location: $url");die;
+        }
 
         $list = Db::name('gene')->field('id,name')->where('user_id',$this->user_id)->select();
 

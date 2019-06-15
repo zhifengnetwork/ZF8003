@@ -387,6 +387,33 @@ class Member extends Base
         return $this->fetch();
     }
 
+    /**
+     * 注册邀请送积分
+     */
+    public function reg_jien(){
+
+        $info = Db::name('jifen_set')->find();
+
+        if(request()->isPost()){
+            $data = input('post.');
+
+            if($data['id']){
+                $res = Db::name('jifen_set')->update($data);
+            }else{
+                $res = Db::name('jifen_set')->insert($data);
+            }
+            
+            if($res !== false){
+                $this->success('修改成功！');
+            }else{
+                $this->error('修改失败！');
+            }
+        }
+
+        return $this->fetch('',[
+            'info'  =>  $info,
+        ]);
+    }
 
 }
 
