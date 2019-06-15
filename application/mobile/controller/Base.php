@@ -401,5 +401,9 @@ class Base extends Controller
         }
 
     }
+
+    public function jifen_log($data){
+        return Db::name('jifen_log')->insert($data);
+    }
     
 }

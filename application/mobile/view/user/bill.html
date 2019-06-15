@@ -33,6 +33,7 @@
 		            <span {if condition="$t == 2"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=2'">提现</span>
 		            <span {if condition="$t == 3"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=3'">赚取</span>
 		            <span {if condition="$t == 4"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=4'">消费</span>
+		            <span {if condition="$t == 5"} class="select" {/if} onclick="javascript:location.href='/mobile/user/bill?t=5'">积分</span>
 		        </div>
 	        <ul id="con">
                 {if condition="$t == 1"}
@@ -91,6 +92,26 @@
                             <p><span>订单编号：</span><span>{$vo['sn']}</span></p>
                             <p><span>消费金额：</span><span>{$vo.money} 元</span></p>
                             <p><span>消费时间：{$vo['init_time']|date="Y-m-d H:i:s",###}</span></p>
+                        </div>
+                        {/volist}
+	            	</div>	
+                </li>
+				{/if}
+				{if condition="$t == 5"}
+	            <!--内容4-->
+	            <li>
+	            	<div>
+                        {volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+                        <div class="show_text">
+							<p><span>积分类型：{$type[$vo.type]}</span></p>
+							{if condition="$vo.type eq 1"}
+							<p><span>被邀请用户：</span><span>{$vo['son_email']}</span></p>
+							{else /}
+							<p><span>订单编号：</span><span>{$vo['order_sn']}</span></p>
+							{/if}
+                            
+                            <p><span>积分变动：</span><span>{$vo.jifen} </span></p>
+                            <p><span>记录时间：{$vo['add_time']|date="Y-m-d H:i:s",###}</span></p>
                         </div>
                         {/volist}
 	            	</div>	

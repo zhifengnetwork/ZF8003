@@ -634,7 +634,7 @@ class User extends Base
     public function my_walet()
     {
         $user_id = $this->user_id;
-        $user = Db::name('users')->where('id',$user_id)->field('money')->find();
+        $user = Db::name('users')->where('id',$user_id)->field('money,integral')->find();
         $this->assign('info',$user);
         return $this->fetch();
     }
@@ -867,7 +867,7 @@ class User extends Base
 
     # （new）账单明细
     public function bill(){
-        $t = isset($_GET['t']) && in_array(intval($_GET['t']),[1,2,3,4]) ? intval($_GET['t']) : 1;
+        $t = isset($_GET['t']) && in_array(intval($_GET['t']),[1,2,3,4,5]) ? intval($_GET['t']) : 1;
 
         switch($t){
             case '1':
@@ -904,6 +904,18 @@ class User extends Base
             case '4':
                 $lists = Db::name('transaction_log')->field('type,sn,money,init_time')->where(['user_id'=>['=', $this->user_id], 'type' => ['=', 'order']])->order('id desc')->cache(1800)->limit(50)->select();
                 $this->assign('tname', ['order'=>'购买商品']);
+                break;
+            case '5':
+                $lists = Db::name('jifen_log')->where(['user_id'=>['=', $this->user_id]])->order('id desc')->cache(1800)->limit(50)->select();
+                if($lists){
+                    foreach($lists as $key=>&$value){
+                        if($value['type']==1){
+                            $value['son_email'] = Db::name('users')->where('id',$value['son_user_id'])->value('email');
+                        }
+                    }
+                }
+                $type = [1=>'邀请送积分', 2=>'积分兑换商品'];
+                $this->assign('type', $type);
                 break;
 
         }
