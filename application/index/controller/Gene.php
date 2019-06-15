@@ -58,6 +58,7 @@ class Gene extends Base
 
         $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $page = input('page');
         if(!$id){
             layer_error('请选择进行匹对的基因数据');
         }
@@ -84,11 +85,13 @@ class Gene extends Base
             layer_error('非法访问，无权限的资源数据！');
         }
         $w['id'] = ['<>', $id];
+        $pageParam = ['query' => []];
         foreach($config as $k => $v){
             $val = (double)$i[$k];
             $min = $val-200 > 0 ? $val-200 : 0;
             $max = $val+200;
             $w[strtolower($k)] = ['between',"$min,$max"];
+            $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
         if($list_count > 100 && !$re){
@@ -97,11 +100,20 @@ class Gene extends Base
             return $this->fetch();
             exit;
         }
-        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->select();
+        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
+        $list = $list->all();
+
+        // $pindex = max(1, intval($page));
+		// $psize = 10;
+		// $pageCount = ceil(count($list_count) / $psize);
+		// $offset = ($pindex - 1) * $psize;
+        // $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->limit($offset,$psize)->select();
+
+
+
         if(!$list){
             layer_error('抱歉！数据库没有匹配到相应的基因信息');
         }
-
         $lately = 1;
         $data = array();
         $count = count($list);
@@ -172,6 +184,11 @@ class Gene extends Base
             $last_names = array_column($data,'cay');
             array_multisort($last_names,SORT_ASC,$data);
         }
+
+        if($page>1){
+            echo json_encode(['status'=>1,'msg'=>'获取成功！','data'=>$data]);die;
+        }
+
         // dump($data);exit;
         $this->assign('lately', $lately);
         $this->assign('data', $data);
