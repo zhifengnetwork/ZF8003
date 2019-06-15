@@ -227,6 +227,7 @@ class Index extends Base
             $migration = input('migration');
             $pai = input('pai');
             $is_family_tree = input('is_family_tree');
+            $is_open = input('is_open');
             $desc1 = input('desc');
             $sex = input('sex');
             if(strstr($sex,'男')){
@@ -313,6 +314,7 @@ class Index extends Base
                     $value['completion'] = json_encode($completion);
                 }
 
+                $value['is_open'] = $is_open;
                 $value['user_id'] = $user_id;
                 $value['desc'] = $desc;
                 $value['nation'] = $nation;
