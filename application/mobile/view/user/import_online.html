@@ -23,7 +23,7 @@
 			</div>
 			<!--表格-->
                 <p class="tip">
-                	填写说明:请认真填写并且检查数据信息。姓名和联系方式必填。没有的信息可不填。
+                	填写说明：请认真填写并且检查数据信息。姓名和联系方式必填。没有的信息可不填。
                 </p>
                 
                 <!--填写信息-->
@@ -40,8 +40,20 @@
                 	<span><input type="text" name="gene[nation]" value='{:session("gene[nation]","","mobile")}' /></span>
                 </p>
                 <p class="person_message">
-                	<label>现今地址:</label>
+                	<label>现居地:</label>
                 	<span><input type="text" name="gene[region]" value='{:session("gene[region]","","mobile")}' /></span>
+                </p>
+                 <p class="person_message">
+                	<label>祖籍地:</label>
+                	<span><input type="text" name="gene[region]" value='' /></span>
+                </p>
+                 <p class="person_message">
+                	<label>派字:</label>
+                	<span><input type="text" name="gene[region]" value='' /></span>
+                </p>
+                 <p class="person_message">
+                	<label>是否拥有家谱:</label>
+                	<span><input type="text" name="gene[region]" value='' /></span>
                 </p>
                 <p class="person_message">
                 	<label>迁移记录:</label>
@@ -190,7 +202,7 @@
           </div> 
           <button class="save" type="submit" style="margin-left:35%;">提交保存</button>
           </form>
-		<iframe name="ajaxR" style="display:block;width:100%;height:500px;"></iframe>
+		<!--<iframe name="ajaxR" style="display:block;width:100%;height:500px;"></iframe>-->
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js"></script>
         <script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
         <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
