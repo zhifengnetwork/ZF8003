@@ -121,7 +121,7 @@ class Index extends Base
                     $jf_log_data['type'] = 1;
                     $jf_log_data['jifen'] = $jifen;
                     $jf_log_data['add_time'] = time();
-                    jifen_log($jf_log_data);
+                    $this->jifen_log($jf_log_data);
                 }
 
                 $user = Db::name('users')->find($user_id);
@@ -271,7 +271,7 @@ class Index extends Base
                     $jf_log_data['type'] = 1;
                     $jf_log_data['jifen'] = $jifen;
                     $jf_log_data['add_time'] = time();
-                    jifen_log($jf_log_data);
+                    $this->jifen_log($jf_log_data);
                 }
 
                 $user = Db::name('users')->find($user_id);
