@@ -50,8 +50,8 @@ function useJson($data, $message = 'ok', $code = 1)
     header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
     header('Access-Control-Allow-Methods: GET, POST, PUT');
     $result = array();
-    $result['code'] = $code;
-    $result['message'] = $message;
+    $result['status'] = $code;
+    $result['msg'] = $message;
     $result['data'] = $data;
     $json = json_encode($result,JSON_UNESCAPED_UNICODE);
     exit($json);
