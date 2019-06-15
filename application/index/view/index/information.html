@@ -148,13 +148,25 @@
 						},
 					dataType:"json",
 					success:function(res){	
-						console.log(res)
+						if(res.code==1){
+							alert(res.msg)
+							window.location.replace(res.data);
+						}
+
 					}
 				})
 				
 
 
 			})
+
+			function success(msg){
+				layer.msg(msg,{icon:6});
+				setTimeout(function(){
+					window.location.replace(location.href);
+				},1500);
+				sub = 1;
+        	}
 		
 		</script>
 	</body>

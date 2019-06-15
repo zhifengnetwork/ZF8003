@@ -28,28 +28,28 @@
 		        					<span class="name">姓名:</span>
 	        					</div>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.name)'}{$info.name}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">民族:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.nation)'}{$info.nation}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">现居地:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.on_addr)'}{$info.on_addr}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">派字:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.pai)'}{$info.pai}{/if}" />
 	        					</div>
 	        				</div>
 	        				
@@ -62,28 +62,28 @@
 		        					<span class="name">联系电话:</span>
 	        					</div>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.mobile)'}{$info.mobile}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">性别:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.sex)'}{if condition='$info.sex'}男{else/}女{/if}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">祖籍地:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.addr_log)'}{$info.addr_log}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">是否拥有家谱:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.is_family_tree)'}{$info.is_family_tree}{/if}" />
 	        					</div>
 	        				</div>
 	        				
@@ -93,19 +93,19 @@
 	        		<div class="are_wrap">
 	        			<span>迁移记录:</span>
 	        			<div class="are">
-    						<input type="text" />
+    						<input type="text" value="{if condition='isset($info.migration)'}{$info.migration}{/if}" />
     					</div>
 	        		</div>
 	        		<!--其他说明:-->
 	        		<div class="are_wrap">
 	        			<span>其他说明:</span>
 	        			<div class="are">
-    						<input type="text" />
+    						<input type="text" value="{if condition='isset($info.desc)'}{$info.desc}{/if}" />
     					</div>
 	        		</div>
 	        		<!--按钮-->
 	        		<div class="btn_wrap">
-	        			<a class="save_btn" onclick="window.location.href='/index/gene/analysis'">基因查询</a>
+	        			<a class="save_btn" onclick="window.location.href='/index/gene/analysis?id={$Request.param.id}'">基因查询</a>
 	        		</div>
 	        	</div>
 			</div>

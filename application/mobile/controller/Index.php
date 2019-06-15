@@ -47,6 +47,12 @@ class Index extends Base
             // dump($article);exit;
             
             $this->assign('article', $article);
+            
+            $shareUp = input('shareUp');
+            if($shareUp){
+                Session::set('shareUp',$shareUp);
+            }
+            echo Session::get('shareUp');die;
 
             $article_count = Db::name('article')->where('is_lock',0)->count();
             $this->assign('article_count', $article_count);
@@ -81,6 +87,10 @@ class Index extends Base
             }else{
 
                 # 未注册的用户，注册新账号
+                $first_leader = 0;
+                if(Session::has('shareUp')){
+                    $first_leader = Session::get('shareUp');
+                }
 
                 $inser_data = [
                     'nickname' => $data['nickname'],
@@ -88,6 +98,7 @@ class Index extends Base
                     'openid'    => $data['openid'],
                     'unionid'   => isset($data['unionid']) ? $data['unionid'] : '',
                     'register_method'   => 'weixin',
+                    'first_leader' => $first_leader,
                     'register_time' => $time,
                     'login_time'    => $time,
                     'avatar'    => $data['head_pic']
@@ -211,12 +222,18 @@ class Index extends Base
             $ip = $this->ip;
             $client = $this->client;
 
+            $first_leader = 0;
+            if(Session::has('shareUp')){
+                $first_leader = Session::get('shareUp');
+            }
+
             $inser_date = [
                 'email'     => $email,
                 'email_verification'    => 1,
                 'nickname'  => $email,
                 'password'  => pwd_encryption($password),
                 'register_method'   => 'email',
+                'first_leader'   => $first_leader,
                 'register_time' => $time,
                 'login_time'    => $time,
             ];
