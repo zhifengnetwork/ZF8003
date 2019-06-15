@@ -13,6 +13,11 @@ class Gene extends Base
         Session::set('re_url',"/index/$this->controller/$this->action");
         $this->Verification_User();
     }
+    public function my_information()
+    {
+
+        return $this->fetch();
+    }
 
     # 我的基因数据
     public function index()

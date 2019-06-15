@@ -22,13 +22,14 @@
                 <p class="liebiao_ear_title">我的基因数据</p>
                 <ul>
                     {volist name="$list" id="vo"}
-                    <li onclick="window.location.href='/index/gene/analysis?id={$vo.id}'">
+                    <li onclick="window.location.href='/index/gene/my_information'">
+                <!-- <li onclick="window.location.href='/index/gene/analysis?id={$vo.id}'"></li> -->
                         <span class="span_left">{$vo.name}</span>
                         <span class="span_right"><img src="__STATIC__/images/home/youjian@2x.png"/></span>
                     </li>
                     {/volist}
                 </ul>
-                <div style="width: 150px;border: 1px solid green;text-align: center;margin: 0 auto;margin-top: 40px;height: 50px;line-height: 50px; border-radius: 10px;border: 1px solid black;cursor: pointer;" onclick="javascript:location.href='/index/index/import_data'">导入数据</div>
+                <div style="width: 150px;border: 1px solid green;text-align: center;margin: 0 auto;margin-top: 40px;height: 50px;line-height: 50px; border-radius: 10px;border: 1px solid black;cursor: pointer;" onclick="javascript:location.href='/index/index/import_data'" hidden>导入数据</div>
             </div>
                 
         </div> 		
