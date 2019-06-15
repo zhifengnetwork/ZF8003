@@ -42,6 +42,7 @@ body{
 	width: 1200px;
 	margin: 0 auto;
 	overflow: hidden;
+	height:100%
 }
 
 /* 公共头部 */
@@ -126,7 +127,7 @@ body{
 /* 公共底部 */
 .footer{
 	width: 100%;
-	height: 210px;
+	height: 300px;
 	color: #fff;
 	background-color: #002449;
 }
@@ -135,6 +136,7 @@ body{
 }
 .footer .bottomNav{
 	width: 940px;
+	height:220px;
 	border-bottom: 1px solid #56c8fa;
 }
 .footer .bottomNav ul{
@@ -142,6 +144,13 @@ body{
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.footer .bottomNav ul li{
+	width:25%;
+	height:40px;
+	line-height: 40px;
+	
 }
 .footer .bottomNav ul li a{
 	color: #fff;
@@ -149,8 +158,6 @@ body{
 }
 .footer .copyright{
 	height: 105px;
-	line-height: 105px;
-	text-align: center;
 	font-size: 16px;
 }
 .footer .copyright span{
@@ -166,6 +173,26 @@ body{
 .footer .code p{
 	text-align: center;
 	line-height: 40px;
+}
+.copyright span{
+	display: inline-block;
+	width: 100%;
+	height:80px;
+	line-height:80px;
+	text-align: center;
+	display: flex;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	justify-content: center;
+	align-items: center
+	
+}
+.copyright span img{
+	width:30px;
+	height:30px;
+	margin-left: 10px
 }
 
 /*清除浮动*/	
