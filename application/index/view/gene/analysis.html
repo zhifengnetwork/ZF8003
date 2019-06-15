@@ -76,7 +76,7 @@
 						</tr> -->
 						<tr>
                             <td>
-                            	<a href="#">{$vo.id2}</a>
+                            	<a is_open="{$vo.is_open}" onclick="check_open(this)" _href="{:url('gene/analysis','',false)}?id={$vo.id2}">{$vo.id2}</a>
                             </td>
                             <td>{$vo.name2}</td>
                             <td>{$vo.nation2}</td>
@@ -135,6 +135,17 @@
 			$('.biaogege2:even').css('background', '#EFF3F6');
 			$('.biaogege2:odd').css('background', '#E8E8E8');
 			
+
+			function check_open(obj){
+				var is_open = $(obj).attr('is_open');
+				var _href = $(obj).attr('_href');
+				
+				if(is_open==0){
+					alert('该用户信息不公开！');
+					return;
+				}
+				window.location.replace(_href);
+			}
 		</script>
 	</body>
 
