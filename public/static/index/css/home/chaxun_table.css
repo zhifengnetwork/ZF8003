@@ -18,14 +18,17 @@ border-spacing:0;
 }
 
 tr{
-	
 	height: 36px;
 	line-height: 26px;
 	font-size: 12px;
 	text-align: center;
 }
-tr td{
-   width:16.66666%;
+tr td {
+	width:16.66666%;
+}
+tr td a {
+   display: block;
+   color: #007AFF;
 }
 .niandai{
 	line-height: .3rem;
