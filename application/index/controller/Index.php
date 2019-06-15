@@ -218,7 +218,7 @@ class Index extends Base
     }
 
     public function import_data1(){
-        // if(request()->isPost()){
+        if(request()->isPost()){
 
             $mobile = input('mobile');
             $nation = input('nation');
@@ -234,6 +234,16 @@ class Index extends Base
             }else{
                 $sex = 0;
             }
+            
+            $info['mobile'] = $mobile;
+            $info['nation'] = $nation;
+            $info['on_addr'] = $on_addr;
+            $info['addr_log'] = $addr_log;
+            $info['migration'] = $migration;
+            $info['pai'] = $pai;
+            $info['is_family_tree'] = $is_family_tree;
+            $info['sex'] = $sex;
+            $info['desc'] = $desc1;
 
             $desc = '';
             if($on_addr){
@@ -282,6 +292,7 @@ class Index extends Base
                     foreach($arr_name as $k=>$v){
                         $arr[$k]['name'] = $arr_name[$k];
                         $arr[$k][$value[0]] = $value[$k];
+                        $info['name'] = $arr_name[$k];
                     }
                 }
             }
@@ -308,8 +319,9 @@ class Index extends Base
                 $value['pai'] = $pai;
                 $value['is_family_tree'] = $is_family_tree;
                 $value['addtime'] = $time;
+                $value['info'] = json_encode($info);
             }
-
+            
             Db::name('gene')->strict(false)->insertAll($arr);
             Db::name('users')->update(['id'=>$user_id,'gene_file'=>'']);
 
@@ -330,7 +342,7 @@ class Index extends Base
                 @unlink(ROOT_PATH . 'public' . DS . 'gene/'.$filename);
                 echo "<script>parent.layer.msg('上传数据失败，请重试！',{icon:5});</script>";exit;
             }
-        // }
+        }
     }
 
     # 在线填写报告
