@@ -112,23 +112,13 @@ class Gene extends Base
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
-<<<<<<< HEAD
         // if($list_count > 100 && !$re){
         //     $this->assign('loading', 1);
         //     $this->assign('id', $id);
         //     return $this->fetch();
         //     exit;
         // }
-        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->paginate(10,false,$pageParam);
-=======
-        if($list_count > 100 && !$re){
-            $this->assign('loading', 1);
-            $this->assign('id', $id);
-            return $this->fetch();
-            exit;
-        }
-        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
->>>>>>> 8f5ea5ed1cf7e2afcd159e81358dbc34a782c372
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(10,false,$pageParam);
         $list = $list->all();
         
         // $pindex = max(1, intval($page));
@@ -216,6 +206,7 @@ class Gene extends Base
         }
         
         if($page>1){
+            useJson($data);
             echo json_encode(['status'=>1,'msg'=>'获取成功！','data'=>$data],JSON_UNESCAPED_UNICODE);die;
         }
         // echo 111;die;
