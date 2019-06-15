@@ -19,7 +19,6 @@ class Index extends Base
 
         return $this->fetch();
     }
-
     /**
      * 导入数据
      */

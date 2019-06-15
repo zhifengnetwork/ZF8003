@@ -84,7 +84,7 @@
                     <a style="float: left;" href="/index/index/online_import_data">在线填写数据</a>
                     <a href="__STATIC__/上传数据标准模板.xlsx" download="上传数据标准模板.xlsx" class="downloadss">下载:上传数据标准模板.xlsx</a>
                     <div class="btn">
-                        <button type="submit">确认</button>
+                        <button type="submit" class="sursubmit">确认</button>
                     </div>
                 </form>
             </div>
@@ -147,6 +147,12 @@
                 $(".cuo_pic").hide()
                 $(".dui_pic").show()
                 var filevalue = myfile.value;
+                $('.sursubmit').click(function(){
+
+                    window.location.replace('/index/index/information');
+
+                })
+               
            }
           
         }

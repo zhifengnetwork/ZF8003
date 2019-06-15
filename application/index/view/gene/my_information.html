@@ -3,23 +3,22 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	    <title>填写个人基本信息</title>
+	    <title>我的基本信息</title>
 	    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
-	    <link rel="stylesheet" type="text/css" href="__STATIC__/css/home/information.css"/>
+	    <link rel="stylesheet" type="text/css" href="__STATIC__/css/home/my_information.css"/>
 	</head>
 	<body>
 		<div class="wrapper">
 	        <!-- 头部 -->
 	        <div class="header">
-					{include file="header"}
+				{include file="header"}
 			</div>
 	         
 	        <!-- 内容 -->
 	        <div class="content">
 	        	<div class="inner-wrap">
 	        		<!--标题-->
-					<h2>请填写个人基本信息</h2>
-				<form >		
+	        		<h2>我的基本信息</h2>
 	        		<div class="inp_wrap">
 	        			<div class="fill_wrap">
 	        				
@@ -103,46 +102,21 @@
 	        			<div class="are">
     						<input type="text" />
     					</div>
-					</div>
-		</form>			
-					<div class="personal_message_ear">
-						<input type="checkbox" checked/><span class="personal_message">是否公开个人信息</span>
-						<br/>
-						基于寻根溯源的需要，族内鼓励选择公开，除非有特殊情况。选择不公开，则别人匹配出结果后将不能查看您的基本信息
-					</div>
+	        		</div>
 	        		<!--按钮-->
 	        		<div class="btn_wrap">
-							<!-- href="/index/gene/index" -->
-						<a class="save_btn">保存</a>	
+	        			<a class="save_btn" onclick="window.location.href='/index/gene/analysis'">基因查询</a>
 	        		</div>
 	        	</div>
 			</div>
-			<!-- 底部 -->
+	
+	        <!-- 底部 -->
 			<div class="footer">
-					{include file="footer"}
+				{include file="footer"}
 			</div>
 	        
 	    </div>  
 		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>  
-	    <!-- <script src="../../js/public/header.js"></script>  
-		<script src="../../js/public/footer.js"></script> -->
-		<script>
-			$('.save_btn').click(function(){
-
-				$.ajax({
-					type:"POST",
-					url:"{:url('index/online_import_data1')}",
-					data:{},
-					dataType:"json",
-					success:function(res){
-						console.log(res)
-					}
-				})
-				
-
-
-			})
-		
-		</script>
+	   
 	</body>
 </html>

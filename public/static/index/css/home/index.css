@@ -9,11 +9,13 @@
     position: relative;
 }
 .swiper-container{
-    height:750px
+    height:600px;
+   
 }
 .banner-wrap img{
     width: 100%;
     display: block;
+    margin-top:90px
 }
 .banner-wrap .swiper-pagination span{
     background-color: #fff;
