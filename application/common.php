@@ -43,6 +43,19 @@ function delFileUnderDir( $dirName = '')
     } 
 }
 
+function useJson($data, $message = 'ok', $code = 1)
+{
+    header("Content-Type:text/html; charset=utf-8");
+    header('Access-Control-Allow-Origin: *');
+    header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+    header('Access-Control-Allow-Methods: GET, POST, PUT');
+    $result = array();
+    $result['code'] = $code;
+    $result['message'] = $message;
+    $result['data'] = $data;
+    $json = json_encode($result,JSON_UNESCAPED_UNICODE);
+    exit($json);
+}
 
 # H1错误提示样板
 function error_h1($msg='出错了！',$msg2=''){
