@@ -52,7 +52,7 @@ class Index extends Base
             if($shareUp){
                 Session::set('shareUp',$shareUp);
             }
-            echo Session::get('shareUp');die;
+            
 
             $article_count = Db::name('article')->where('is_lock',0)->count();
             $this->assign('article_count', $article_count);
