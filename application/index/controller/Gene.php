@@ -97,7 +97,8 @@ class Gene extends Base
             $config[$v['name']] = $v['value'];
         }
 
-        $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        // $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        $i = Db::name('gene')->where(['id'=>$id])->find();
         if(!$i){
             layer_error('非法访问，无权限的资源数据！');
         }
