@@ -1,66 +1,67 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title class="pageTopTitle" page-id="1">基因分析{$web_setting.web_name ? ' '.$web_setting.web_name : ''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
-        <meta name="keywords" content="{$web_setting.key_words}" />
-        <meta name="description" content="{$web_setting.copyright}" />
-        <link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
-		<link rel="stylesheet" href="__STATIC__/css/public/public.css">
-		<link rel="stylesheet" href="__STATIC__/css/home/chaxun_table.css">
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<title class="pageTopTitle" page-id="1">基因分析{$web_setting.web_name ? ' '.$web_setting.web_name :
+		''}{$web_setting.web_title ? ' '.$web_setting.web_title : ''}</title>
+	<meta name="keywords" content="{$web_setting.key_words}" />
+	<meta name="description" content="{$web_setting.copyright}" />
+	<link rel="shortcut icon" href="{$web_setting.title_logo}" type="image/*" />
+	<link rel="stylesheet" href="__STATIC__/css/public/public.css">
+	<link rel="stylesheet" href="__STATIC__/css/home/chaxun_table.css">
+</head>
 
-	<body>
-		<div>
-			<!-- 头部 -->
-			<div class="header">
-                    {include file="header"}
-            </div>
-			<!--内容区-->
-			<div class="zuixiaogaodu">
+<body>
+	<div>
+		<!-- 头部 -->
+		<div class="header">
+			{include file="header"}
+		</div>
+		<!--内容区-->
+		<div class="zuixiaogaodu" style="min-height: 570px">
 
-				<div class="liebiao_ear inner-wrap">
-                  
-                       <!--表格-->
-			<div class="table_ear1">
-				<table frame="void" class="biaogege">
-					<tr style="height:.4rem">
-						<td style="text-align: center;">编号/查看详情</td>
-						<td>姓名</td>
-						<td>民族</td>
-						<td style="text-align: center;">地域</td>
-						<td hidden>共同祖代</td>
-						<td class="chaodai">朝代</td>
-					</tr>
-				</table>
-            </div>
-            
-            {if condition="isset($loading)"}
-             <div class="loading_ear">
-                <img style="height:75px;" src='/public/static/mobile/img/home/loading.gif' />
-                <br/>
-                <p style="text-align:center;">正在分析结果，请稍等...</p>
-                <script>
-                    setTimeout(function(){
-                        window.location.href="/index/gene/analysis?id={$id}&re=1";
-                    },500);
-                </script>
-             </div>   
-            {else /}
-            
-            <div class="table_ear2">
-                {if condition="$lately"}
-				<table frame="void" class="wu">
-					<tr style="height:20px;line-height: 20px;">
-						<td style="text-align: center;">目前尚无亲缘关系较为接近的样本</td>
-					</tr>
-                </table>
-                {/if}
-                {volist name="data" id="vo"}
-				<table frame="void" class="biaogege2">
-					<tbody>
-						<!-- <tr>
+			<div class="liebiao_ear inner-wrap">
+
+				<!--表格-->
+				<div class="table_ear1">
+					<table frame="void" class="biaogege">
+						<tr style="height:.4rem">
+							<td style="text-align: center;">编号/查看详情</td>
+							<td>姓名</td>
+							<td>民族</td>
+							<td style="text-align: center;">地域</td>
+							<td hidden>共同祖代</td>
+							<td class="chaodai">朝代</td>
+						</tr>
+					</table>
+				</div>
+
+				{if condition="isset($loading)"}
+				<div class="loading_ear">
+					<img style="height:75px;" src='/public/static/mobile/img/home/loading.gif' />
+					<br />
+					<p style="text-align:center;">正在分析结果，请稍等...</p>
+					<script>
+						setTimeout(function () {
+							window.location.href = "/index/gene/analysis?id={$id}&re=1";
+						}, 500);
+					</script>
+				</div>
+				{else /}
+
+				<div class="table_ear2">
+					{if condition="$lately"}
+					<table frame="void" class="wu">
+						<tr style="height:20px;line-height: 20px;">
+							<td style="text-align: center;">目前尚无亲缘关系较为接近的样本</td>
+						</tr>
+					</table>
+					{/if}
+					{volist name="data" id="vo"}
+					<table frame="void" class="biaogege2">
+						<tbody>
+							<!-- <tr>
 							<td class="dddddd">{$vo.id1}</td>
 							<td>{$vo.name1}</td>
 							<td>{$vo.nation1}</td>
@@ -74,68 +75,113 @@
 								{/if}
 							</td>
 						</tr> -->
-						<tr>
-                            <td>
-                            	<a href="#">{$vo.id2}</a>
-                            </td>
-                            <td>{$vo.name2}</td>
-                            <td>{$vo.nation2}</td>
-							<td>{$vo.region2}</td>
-							<td rowspan='2' class="niandai" hidden><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
-							<td rowspan='2' class="chaodai">
-								<img src="__STATIC__/images/home/jiantou5.png" class="jiantoudd" />
-								{if condition="$vo.line"}
-								<img src="/public/gene/image/{$vo.line.img}" style="height:36px;" class="jiantou_hou" />
-								<span class="dynasty">{$vo.line.name}</span>
-								{/if}
-							</td>
-						</tr>
-					</tbody>
-                </table>
-                {/volist}
-			</div>
-
-            {/if}
-			{if condition="empty($data) && !$loading"}
-			<div class="wu_pipei">
-				<div class="kong_ear">
-					<img src="__STATIC__/img/home/kong.png" class="kong_pic" />
+							<tr>
+								<td>
+									<a href="#">{$vo.id2}</a>
+								</td>
+								<td>{$vo.name2}</td>
+								<td>{$vo.nation2}</td>
+								<td>{$vo.region2}</td>
+								<td rowspan='2' class="niandai" hidden><span
+										class="nian"><span>{$vo.cay}</span><span>年</span></span><br /><span>({$vo.generation})代</span>
+								</td>
+								<td rowspan='2' class="chaodai">
+									<img src="__STATIC__/images/home/jiantou5.png" class="jiantoudd" />
+									{if condition="$vo.line"}
+									<img src="/public/gene/image/{$vo.line.img}" style="height:36px;"
+										class="jiantou_hou" />
+									<span class="dynasty">{$vo.line.name}</span>
+									{/if}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					{/volist}
 				</div>
-				<p>非常遗憾，暂未匹配到与您相关的共祖信息，“族内”数据库持续更新中，我们会继续增加更多基因数据为您匹配，请持续关注，敬请期待！</p>
-				<span>水始——源千派别 木初同本万枝分(暂无匹配)</span>
-            </div>
-            {/if}
 
+				{/if}
+				{if condition="empty($data) && !$loading"}
+				<div class="wu_pipei">
+					<div class="kong_ear">
+						<img src="__STATIC__/img/home/kong.png" class="kong_pic" />
+					</div>
+					<p>非常遗憾，暂未匹配到与您相关的共祖信息，“族内”数据库持续更新中，我们会继续增加更多基因数据为您匹配，请持续关注，敬请期待！</p>
+					<span>水始——源千派别 木初同本万枝分(暂无匹配)</span>
 				</div>
-			</div>
-			<!-- 底部 -->
-			<div class="footer">
-				{include file="footer"}
+				{/if}
+
 			</div>
 		</div>
+		<div class="dianji">dddddddd</div>
+		<!-- 底部 -->
+		<div class="footer">
+			{include file="footer"}
+		</div>
+	</div>
 
-		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
-		<script>
-			
-			var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
-			console.log(tt)
-			if(tt >= 1500) {
-				$(".table_ear2 table:nth-child(1)").show()
-			}
-			if($(".table_ear2").find("table").length == 0) {
-				$(".wu_pipei").show()
-			} else {
-				$(".wu_pipei").hide()
-			}
-			var length = $(".table_ear2").find("table").length
-			console.log(length)
-			
+	<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
+	<script>
 
-			//奇偶性设置背景颜色
-			$('.biaogege2:even').css('background', '#EFF3F6');
-			$('.biaogege2:odd').css('background', '#E8E8E8');
-			
-		</script>
-	</body>
+		var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
+		console.log(tt)
+		if (tt >= 1500) {
+			$(".table_ear2 table:nth-child(1)").show()
+		}
+		if ($(".table_ear2").find("table").length == 0) {
+			$(".wu_pipei").show()
+		} else {
+			$(".wu_pipei").hide()
+		}
+		var length = $(".table_ear2").find("table").length
+		console.log(length)
+
+
+		//奇偶性设置背景颜色
+		$('.biaogege2:even').css('background', '#EFF3F6');
+		$('.biaogege2:odd').css('background', '#E8E8E8');
+		
+		// 获取导航栏中的id的值
+		var urlid='';	
+		function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+		urlid=unescape(r[2]);
+        if (r != null) return unescape(r[2]); return null;
+        }
+		getQueryString('id') // 这里我需要获取url里面的id的值
+		console.log("本页面的id为"+urlid);
+
+		/**
+		* 继续加载猜您喜欢
+		* */
+		var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+		var page = 1;
+		function ajax_sourch_submit() {
+			if (before_request == 0)// 上一次请求没回来 不进行下一次请求
+				return false;
+			before_request = 0;
+			page++;
+			$.ajax({
+				type: "get",
+				url: "http://jiying.com/index/gene/analysis?id=" + urlid+"&page="+page,
+				success: function (data) {
+					if (data) {
+						// $("#J_ItemList>ul").append(data);
+						console.log("ccc"+res)
+						before_request = 1;
+					} else {
+						// $('.get_more').hide();
+					}
+				}
+			});
+		}
+		$(".dianji").click(function(){
+			ajax_sourch_submit()	
+		})
+
+
+
+	</script>
+</body>
 
 </html>
