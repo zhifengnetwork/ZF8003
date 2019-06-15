@@ -7,7 +7,7 @@
 			style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i
 				class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<form class="form form-horizontal" method="POST" target="ajaxR">
+	<form class="form form-horizontal" method="POST" action="">
 		<div id="tab-system" class="HuiTab">
 			<div>
 				<div class="row cl">
@@ -37,6 +37,7 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">佣金设置：</label>
 					<div class="formControls col-xs-8 col-sm-8"> 
+						{empty name="$user_level"}
 						<table class="table table-border table-bordered table-bg" >
 							<thead>
 								<tr class="text-c">
@@ -48,17 +49,71 @@
 							</thead>
 							<tbody class="other-temp">
 								<tr class="text-c">
+									<input type="hidden" name="id[1]" />
 									<td>一级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户')">&#xe633;</i></td>
-									<td><input type="text" class="input-text" style="text-align:center;" name="one_quota" value="{$info.one_quota ? $info.one_quota : 0}" /></td>
-									<td><input type="text" class="input-text" style="text-align:center;" name="one_quota_min" value="{$info.one_quota_min ? $info.one_quota_min : 0}" /></td>
-									<td><input type="text" class="input-text" style="text-align:center;" name="one_quota_max" value="{$info.one_quota_max ? $info.one_quota_max : 0}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota[1]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_min[1]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_max[1]" /></td>
 								</tr>
 								<tr class="text-c">
+									<input type="hidden" name="id[2]" />
 									<td>二级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>
-									<td><input type="text" class="input-text" style="text-align:center;" name="two_quota" value="{$info.two_quota ? $info.two_quota : 0}" /></td>
-									<td><input type="text" class="input-text" style="text-align:center;" name="two_quota_min" value="{$info.two_quota_min ? $info.two_quota_min : 0}" /></td>
-									<td><input type="text" class="input-text" style="text-align:center;" name="two_quota_max" value="{$info.two_quota_max ? $info.two_quota_max : 0}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota[2]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_min[2]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_max[2]" /></td>
 								</tr>
+								<tr class="text-c">
+									<input type="hidden" name="id[3]" />
+									<td>三级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota[3]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_min[3]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_max[3]" /></td>
+								</tr>
+								<tr class="text-c">
+									<input type="hidden" name="id[4]" />
+									<td>四级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota[4]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_min[4]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_max[4]" /></td>
+								</tr>
+								<tr class="text-c">
+									<input type="hidden" name="id[5]" />
+									<td>五级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota[5]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_min[5]" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_max[5]" /></td>
+								</tr>
+							</tbody>
+						</table>
+						{/empty}
+						<table class="table table-border table-bordered table-bg" >
+							<thead>
+								<tr class="text-c">
+									<th width="100"></th>
+									<th width="100">佣金比例（消费金额 %）<i class="Hui-iconfont" onclick="open_msg('单笔消费金额的百分比，请填写大于0的整数或两位小数，0 表示不设置；如：填写比例 1，单笔消费1000元，用户获得的佣金为 10元，当分佣金额小于0.01元时不进行分佣，请合理设置分佣比例！')">&#xe633;</i> </th>
+									<th width="100">最低佣金额度（元）<i class="Hui-iconfont" onclick="open_msg('单笔分佣金额最低额度，请填写大于0的整数或两位小数，0 表示不设置；如：最低佣金额度设置为 5元，用户获得的佣金小于该值时，实际获得的佣金为 5元')">&#xe633;</i> </th>
+									<th width="100">最高佣金额度（元）<i class="Hui-iconfont" onclick="open_msg('单笔分佣金额最高额度，请填写大于0的整数或两位小数，0 表示不设置；如：最低佣金额度设置为 10元，用户获得的佣金大于该值时，实际获得的佣金为 10元')">&#xe633;</i> </th>
+								</tr>
+							</thead>
+							<tbody class="other-temp">
+									{notempty name="$user_level"}
+									{volist name="$user_level" id="vo"}
+								<tr class="text-c">
+									<input type="hidden" name="id[{$vo.id}]" value="{$vo.id}" />
+									{switch $vo.id}
+										{case 1}<td>一级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户')">&#xe633;</i></td>{/case}
+										{case 2}<td>二级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>{/case}
+										{case 3}<td>三级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>{/case}
+										{case 4}<td>四级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>{/case}
+										{case 5}<td>五级分销 <i class="Hui-iconfont" onclick="open_msg('进行消费的用户的直推上级用户的直推上级用户')">&#xe633;</i></td>{/case}
+									{/switch}
+									
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota[{$vo.id}]" value="{$vo.quota}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_min[{$vo.id}]" value="{$vo.quota_min}" /></td>
+									<td><input type="text" class="input-text" style="text-align:center;" name="quota_max[{$vo.id}]" value="{$vo.quota_max}" /></td>
+								</tr>
+								{/volist}
+								{/notempty}
 							</tbody>
 						</table>
 					</div>

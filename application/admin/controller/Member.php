@@ -56,6 +56,47 @@ class Member extends Base
     }
 
     /**
+     * 4级以上会员列表
+     */
+    public function f_index()
+    {
+        $jur = $this->check_jurisdiction_ok('r', 'member/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
+        $where['id'] = ['>', 0];
+        $where['level'] = ['>', 3];
+        $datemin = '';
+        $datemax = '';
+        $seach = isset($_GET['seach']) ? $_GET['seach'] : '';
+        $page = 10;
+        
+        //搜索条件
+        if($seach){
+            $page = 0;
+            $time = " 23:59:59";
+            if($seach['m_conditions']){
+                $m_conditions = str_replace(' ', '', $seach['m_conditions']);
+                $where['nickname|mobile|email'] = ['like',"%$m_conditions%"];
+            }
+            if ($seach['datemin'] && $seach['datemax']) {
+                $datemin = strtotime($seach['datemin']);
+                $datemax = strtotime($seach['datemax'].$time);
+                $where['register_time'] = [['>= time',$datemin],['<= time',$datemax],'and'];
+            } elseif ($seach['datemin']) {
+                $where['register_time'] = ['>= time',strtotime($seach['datemin'])];
+            } elseif ($seach['datemax']) {
+                $where['register_time'] = ['<= time',strtotime($seach['datemax'].$time)];
+            }
+        }
+        
+        $list = Db::name('users')->where($where)->paginate($page);
+        $this->assign('seach',$seach);
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
+
+    /**
      * 分组
      */
     public function group()

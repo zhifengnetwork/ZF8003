@@ -48,9 +48,9 @@ class Index extends Base
             
             $this->assign('article', $article);
             
-            $shareUp = input('shareUp');
-            if($shareUp){
-                Session::set('shareUp',$shareUp);
+            $shareUp1 = input('shareUp');
+            if($shareUp1){
+                Session::set('shareUp1',$shareUp1);
             }
             
 
@@ -88,8 +88,8 @@ class Index extends Base
 
                 # 未注册的用户，注册新账号
                 $first_leader = 0;
-                if(Session::has('shareUp')){
-                    $first_leader = Session::get('shareUp');
+                if(Session::has('shareUp1')){
+                    $first_leader = Session::get('shareUp1');
                 }
 
                 $inser_data = [
@@ -108,6 +108,22 @@ class Index extends Base
                 if(!$user_id){
                     layer_error('系统错误！请重试！');
                 }
+
+                if($first_leader){
+                    //注册邀请送积分
+                    $jifen = Db::name('jifen_set')->find();
+                    $jifen = isset($jifen['jifen']) ? $jifen['jifen'] : 0;
+                    $yjf = Db::name('users')->where('id',$first_leader)->setInc('integral',$jifen);
+                    
+                    //积分记录
+                    $jf_log_data['user_id'] = $first_leader;
+                    $jf_log_data['son_user_id'] = $user_id;
+                    $jf_log_data['type'] = 1;
+                    $jf_log_data['jifen'] = $jifen;
+                    $jf_log_data['add_time'] = time();
+                    $this->jifen_log($jf_log_data);
+                }
+
                 $user = Db::name('users')->find($user_id);
                 Session::set('user', $user);
             }
@@ -223,13 +239,13 @@ class Index extends Base
             $client = $this->client;
 
             $first_leader = 0;
-            if(Session::has('shareUp')){
-                $first_leader = Session::get('shareUp');
+            if(Session::has('shareUp1')){
+                $first_leader = Session::get('shareUp1');
             }
 
             $inser_date = [
                 'email'     => $email,
-                'email_verification'    => 1,
+                // 'email_verification'    => 1,
                 'nickname'  => $email,
                 'password'  => pwd_encryption($password),
                 'register_method'   => 'email',
@@ -242,6 +258,21 @@ class Index extends Base
 
             if($user_id){
                 Db::name('mail_code')->where(['type'=>'register', 'sn'=>$register_id, 'code'=>$code])->delete();
+
+                if($first_leader){
+                    //注册邀请送积分
+                    $jifen = Db::name('jifen_set')->find();
+                    $jifen = isset($jifen['jifen']) ? $jifen['jifen'] : 0;
+                    $yjf = Db::name('users')->where('id',$first_leader)->setInc('integral',$jifen);
+                    
+                    //积分记录
+                    $jf_log_data['user_id'] = $first_leader;
+                    $jf_log_data['son_user_id'] = $user_id;
+                    $jf_log_data['type'] = 1;
+                    $jf_log_data['jifen'] = $jifen;
+                    $jf_log_data['add_time'] = time();
+                    $this->jifen_log($jf_log_data);
+                }
 
                 $user = Db::name('users')->find($user_id);
                 Session::set('user', $user);

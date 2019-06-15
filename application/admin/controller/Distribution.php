@@ -6,8 +6,65 @@ use think\Db;
 class Distribution extends Base
 {
 
-    # 分享设置
+    #分销设置
     public function setting(){
+        
+        if(request()->isPost()){
+            $jur = $this->check_jurisdiction_ok('w','distribution/setting');
+            if(!$jur){
+                echo "<script>parent.layermsg('访问权限受控，您无权操作此项！至少拥有‘操作’的权限',5)</script>";
+                exit;
+            }
+
+            $data = input('post.');
+            $arr = [];
+            foreach($data['id'] as $key=>$value){
+                if($value){
+                    Db::name('user_level')->where('id',$key)->update(['quota'=>$data['quota'][$key],'quota_min'=>$data['quota_min'][$key],'quota_max'=>$data['quota_max'][$key]]);
+                }else{
+                    Db::name('user_level')->insert(['id'=>$key,'quota'=>$data['quota'][$key],'quota_min'=>$data['quota_min'][$key],'quota_max'=>$data['quota_max'][$key]]);
+                }
+            }
+
+            $d['status'] = isset($_POST['status']) ? intval($_POST['status']) : 0;
+            $d['distr_time'] = isset($_POST['distr_time']) ? intval($_POST['distr_time']) : 0;
+
+            foreach($d as $k=>$v){
+                if(Db::name('config')->where(['type'=>'distribution_setting', 'name'=>$k])->count()){
+                    Db::name('config')->where(['type'=>'distribution_setting', 'name'=>$k])->update(['value' => $v]);
+                }else{
+                    Db::name('config')->insert(['name'=>$k,'value'=>$v,'type'=>'distribution_setting']);
+                }
+            }
+
+            $this->success('修改成功！');
+        }
+
+        
+        $jur = $this->check_jurisdiction_ok('r','distribution/setting');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！','至少拥有‘查看’的权限');
+        }
+
+        $config = Db::name('config')->where('type','distribution_setting')->field('name,value')->select();
+        $info = [];
+        if($config){
+            foreach($config as $v){
+                $info[$v['name']] = $v['value'];
+            }
+        }
+
+        $user_level = Db::name('user_level')->order('id ASC')->select();
+
+        return $this->fetch('',[
+            'info'  =>  $info,
+            'user_level'    =>  $user_level,
+        ]);
+
+    }
+
+    # 分享设置
+    public function setting1(){
 
 
         if($_POST){
