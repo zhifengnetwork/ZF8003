@@ -882,7 +882,7 @@ class User extends Base
 
         switch($t){
             case '1':
-                $lists = Db::name('recharge')->field('`id`,`platform`,`addtime`,`money`,`status`')->where('user_id',$this->user_id)->order('init_time desc')->limit(50)->cache(600)->select();
+                $lists = Db::name('recharge')->field('`id`,`platform`,`addtime`,`money`,`status`')->where('user_id',$this->user_id)->order('init_time desc')->limit(50)->cache(60)->select();
                 $pname = ['weixin'=>'微信','alipay'=>'支付宝'];
                 $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
         
@@ -891,14 +891,14 @@ class User extends Base
                 break;
 
             case '2':
-                $lists = Db::name('withdrawal')->field('`type`,`addtime`,`money`,`fee`,`status`')->where('user_id',$this->user_id)->order('id desc')->limit(50)->cache(600)->select();
+                $lists = Db::name('withdrawal')->field('`type`,`addtime`,`money`,`fee`,`status`')->where('user_id',$this->user_id)->order('id desc')->limit(50)->cache(60)->select();
                 $sname = [0=>'待审核', 1=>'成功', 2=>'失败'];
         
                 $this->assign('sname', $sname);
                 break;
 
             case '3':
-                $lists = Db::name('commission_log')->field('source_user_id,addtime,commission,source')->where('user_id',$this->user_id)->order('id desc')->cache(600)->limit(50)->select();
+                $lists = Db::name('commission_log')->field('source_user_id,addtime,commission,source')->where('user_id',$this->user_id)->order('id desc')->cache(60)->limit(50)->select();
                 if($lists){
                     foreach($lists as $v){
                         $uids[$v['source_user_id']] = $v['source_user_id'];
@@ -913,11 +913,11 @@ class User extends Base
                 }
                 break;
             case '4':
-                $lists = Db::name('transaction_log')->field('type,sn,money,init_time')->where(['user_id'=>['=', $this->user_id], 'type' => ['=', 'order']])->order('id desc')->cache(1800)->limit(50)->select();
+                $lists = Db::name('transaction_log')->field('type,sn,money,init_time')->where(['user_id'=>['=', $this->user_id], 'type' => ['=', 'order']])->order('id desc')->cache(30)->limit(50)->select();
                 $this->assign('tname', ['order'=>'购买商品']);
                 break;
             case '5':
-                $lists = Db::name('jifen_log')->where(['user_id'=>['=', $this->user_id]])->order('id desc')->cache(1800)->limit(50)->select();
+                $lists = Db::name('jifen_log')->where(['user_id'=>['=', $this->user_id]])->order('id desc')->cache(30)->limit(50)->select();
                 if($lists){
                     foreach($lists as $key=>&$value){
                         if($value['type']==1){
