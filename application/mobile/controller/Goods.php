@@ -410,6 +410,20 @@ class Goods extends Base
                     ];
                     Db::name('transaction_log')->insert($t_log);
                     Db::name('users')->where('id', $this->user_id)->setDec('money', $user_money);
+
+                    $user_res = Db::name('users')->where('id',$this->user_id)->field('first_leader,level')->find();
+                    if($user_res['level'] == 1){
+                        Db::name('users')->where('id',$this->user_id)->setInc('level');
+                    }
+                    
+                    if($user_res['first_leader']){
+                        //佣金分成
+                        commission($this->user_id ,$user_res['first_leader'] ,$o_res ,$user_money);
+
+                        //升级
+                        upgrade_level($this->user_id);
+                    }
+
                 }
 
                 # 增加购买数量
