@@ -339,6 +339,19 @@ class Buy extends Base
                         Db::name('transaction_log')->insert($transaction);
                         Db::name('wxpay_cache')->where('sn', $sn)->delete();
 
+                        $user_res = Db::name('users')->where('id',$info['user_id'])->field('first_leader,level')->find();
+                        if($user_res['level'] == 1){
+                            Db::name('users')->where('id',$info['user_id'])->setInc('level');
+                        }
+                        
+                        if($user_res['first_leader']){
+                            //佣金分成
+                            commission($info['user_id'] ,$user_res['first_leader'] ,$info['order_id'] ,$info['money']);
+
+                            //升级
+                            upgrade_level($info['user_id']);
+                        }
+
                         return json(['status'=>1]);
                     }
 

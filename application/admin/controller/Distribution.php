@@ -20,9 +20,9 @@ class Distribution extends Base
             $arr = [];
             foreach($data['id'] as $key=>$value){
                 if($value){
-                    Db::name('user_level')->where('id',$key)->update(['quota'=>$data['quota'][$key],'quota_min'=>$data['quota_min'][$key],'quota_max'=>$data['quota_max'][$key]]);
+                    Db::name('user_level')->where('id',$key)->update(['upgrade'=>$data['upgrade'][$key],'quota'=>$data['quota'][$key],'quota_min'=>$data['quota_min'][$key],'quota_max'=>$data['quota_max'][$key]]);
                 }else{
-                    Db::name('user_level')->insert(['id'=>$key,'quota'=>$data['quota'][$key],'quota_min'=>$data['quota_min'][$key],'quota_max'=>$data['quota_max'][$key]]);
+                    Db::name('user_level')->insert(['id'=>$key,'upgrade'=>$data['upgrade'][$key],'quota'=>$data['quota'][$key],'quota_min'=>$data['quota_min'][$key],'quota_max'=>$data['quota_max'][$key]]);
                 }
             }
 

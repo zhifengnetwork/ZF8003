@@ -118,7 +118,7 @@ class Gene extends Base
         //     return $this->fetch();
         //     exit;
         // }
-        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(25,false,$pageParam);
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
         $list = $list->all();
         
         // $pindex = max(1, intval($page));

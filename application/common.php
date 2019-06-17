@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: 流年 <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
+use think\Db;
 // 应用公共文件
 
 function pre($data){
@@ -19,6 +19,50 @@ function pre($data){
 function pred($data){
     echo '<pre>';
     print_r($data);die;
+}
+
+//佣金分成
+function commission($user_id,$pid,$order_id,$money){
+    $p_res = Db::name('users')->where('id',$pid)->field('level')->find();
+    $level = Db::name('user_level')->find($p_res['level']);
+    $bfb = $level['quota'] / 100;
+    $yj = sprintf("%.2f",$money * $bfb);
+    $yj_res = Db::name('users')->where('id',$pid)->setInc('money',$yj);
+    if($yj_res){
+        Db::name('order')->where('id',$order_id)->update(['is_distribut'=>1]);
+        
+        $inar['commission'] = $yj;
+        $inar['user_id'] = $pid;
+        $inar['source_user_id'] = $user_id;
+        $inar['source'] = 'buy';
+        $inar['source_id'] = $order_id;
+        $inar['source_user_level'] = 1;
+        $inar['addtime'] = time();
+        Db::name('commission_log')->insert($inar);
+    }
+}
+
+//升级
+function upgrade_level($user_id){
+    $info = Db::name('users')->where('id',$user_id)->field('first_leader,level')->find();
+    if($info['level'] >= 5 || $info['first_leader'] == 0 ) return;
+    
+    $p_res = Db::name('users')->where('id',$info['first_leader'])->field('id,first_leader,level')->find();
+
+    if($p_res['level'] >= 5 ) return;
+    $where = [];
+    $where['first_leader']  = $info['first_leader'];
+    $where['level']         = ['>=' ,$p_res['level']];
+
+    $count = Db::name('users')->where($where)->count();
+    $where = [];
+    $where['id'] = $p_res['level'] + 1;
+    $where['upgrade'] = ['<=' ,$count];
+    $level = Db::name('user_level')->where($where)->find();
+    if($level){
+        Db::name('users')->where('id',$p_res['id'])->setInc('level');
+        upgrade_level($p_res['id']);
+    }
 }
 
 /**
