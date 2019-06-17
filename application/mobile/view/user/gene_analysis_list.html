@@ -70,7 +70,7 @@
 							</td>
 						</tr> -->
 						<tr>
-							<td>{$vo.id2}</td>
+							<td><a is_open="{$vo.is_open}" onclick="check_open(this)" _href="{:url('user/gene_analysis_list','',false)}?id={$vo.id2}">{$vo.id2}</a></td>
 							<td>{$vo.name2}</td>
 							<td>{$vo.nation2}</td>
 							<td>{$vo.region2}</td>
@@ -122,7 +122,7 @@
 									'<tbody class="zuijia">'+
 									'<tr>'+
 										'<td>'+
-											'<a is_open="1" onclick="check_open(this)" _href="/index/gene/analysis?id=9729">'+data.data[i].id2+'</a>'+
+											'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"user/gene_analysis_list\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
 										'</td>'+
 										'<td>'+data.data[i].name1+'</td>'+
 										'<td>'+data.data[i].name2+'</td>'+
@@ -148,11 +148,22 @@
 
 			// 滚动条滚动到底部<200px的时候
 			$(window).scroll(function () {
-				var bot = 50; //bot是底部距离的高度
+				var bot = 100; //bot是底部距离的高度
 				if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
 					ajax_sourch_submit()
 				}
 			});
+
+			function check_open(obj){
+				var is_open = $(obj).attr('is_open');
+				var _href = $(obj).attr('_href');
+				
+				if(is_open==0){
+					alert('该用户信息不公开！');
+					return;
+				}
+				window.location.replace(_href);
+			}
 
 
 // 			var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()

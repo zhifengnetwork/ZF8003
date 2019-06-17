@@ -169,7 +169,7 @@
 								  '<tbody class="zuijia">'+
 								  '<tr>'+
 									'<td>'+
-										'<a is_open="1" onclick="check_open(this)" _href="/index/gene/analysis?id=9729">'+data.data[i].id2+'</a>'+
+										'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"gene/my_information\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
 									'</td>'+
 									'<td>'+data.data[i].name1+'</td>'+
 									'<td>'+data.data[i].name2+'</td>'+

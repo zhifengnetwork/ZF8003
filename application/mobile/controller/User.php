@@ -368,7 +368,7 @@ class User extends Base
             $config[$v['name']] = $v['value'];
         }
 
-        $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        $i = Db::name('gene')->where([ 'id'=>$id])->find();
         if(!$i){
             layer_error('非法访问，无权限的资源数据！');
         }
@@ -388,7 +388,7 @@ class User extends Base
             return $this->fetch();
             exit;
         }
-        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->paginate(17,false,$pageParam);
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
         $list = $list->all();
         if(!$list){
             layer_error('抱歉！数据库没有匹配到相应的基因信息');
@@ -398,6 +398,8 @@ class User extends Base
         $data = array();
         $count = count($list);
         foreach($list as $v){
+
+            $r['is_open'] = $v['is_open'];
             $r['id1'] = $i['id'];
             $r['id2'] = $v['id'];
             $r['name1'] = $i['name'] ? $i['name'] : '--';
