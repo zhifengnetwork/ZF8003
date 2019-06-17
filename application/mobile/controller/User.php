@@ -75,7 +75,7 @@ class User extends Base
                 echo "<script>parent.error_msg('请输入正确的姓名！');</script>";
                 exit;
             }
-            if(!$gene['mobile']){
+            if(!$mobile){
                 echo "<script>parent.error_msg('请输入联系方式！');</script>";
                 exit;
             }
@@ -101,7 +101,23 @@ class User extends Base
             
             $gene['user_id'] = $this->user_id;
             $gene['addtime'] = time();
-            $res = Db::name('gene')->insert($gene);
+
+            $completion = [];
+            foreach($gene as $k=>&$v){
+                if($k=='name' || $k=='nation' || $k=='region' || $k=='desc' || $k=='user_id' || $k=='addtime'){
+                    continue;
+                }
+                if(Standard_Gene($k)){
+                    $gene[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
+                }else{
+                    $completion[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
+                }
+            }
+            if($completion){
+                $gene['completion'] = json_encode($completion);
+            }
+
+            $res = Db::name('gene')->strict(false)->insert($gene);
             if($res){
                 Session::clear('mobile');
                 echo "<script>parent.success_msg('保存成功！正在跳转...');</script>";

@@ -219,6 +219,7 @@ class Index extends Base
     public function import_data1(){
         if(request()->isPost()){
 
+            $name = input('name');
             $mobile = input('mobile');
             $nation = input('nation');
             $on_addr = input('on_addr');
@@ -233,6 +234,19 @@ class Index extends Base
                 $sex = 1;
             }else{
                 $sex = 0;
+            }
+
+            if(!$name){
+                echo "<script>parent.error_msg('请输入姓名！');</script>";
+                exit;
+            }
+            if( !preg_match("/^\W+$/",$name) ){
+                echo "<script>parent.error_msg('请输入正确的姓名！');</script>";
+                exit;
+            }
+            if(!$mobile){
+                echo "<script>parent.error_msg('请输入联系方式！');</script>";
+                exit;
             }
             
             $info['mobile'] = $mobile;
@@ -355,15 +369,15 @@ class Index extends Base
             $value = isset($_POST['value']) ? $_POST['value'] : array();
             $name = isset($_POST['name']) ? trim($_POST['name']) : '';
 
-            // if(!$name){
-            //     echo "<script>parent.error('请输入您的姓名');</script>";
-            //     exit;
-            // }
+            if(!$name){
+                echo "<script>parent.error('请输入您的姓名');</script>";
+                exit;
+            }
 
-            // if( !preg_match("/^\W+$/",$name) ){
-            //     echo "<script>parent.error('请输入正确的姓名！');</script>";
-            //     exit;
-            // }
+            if( !preg_match("/^\W+$/",$name) ){
+                echo "<script>parent.error('请输入正确的姓名！');</script>";
+                exit;
+            }
 
             if($key){
                 $completion = '';
@@ -387,9 +401,9 @@ class Index extends Base
                 $user_id = $this->user_id ? $this->user_id : 0;
                 $data['name'] = $name;
                 $data['user_id'] = $user_id;
-                $data['completion'] = $completion;
+                $data['completion'] = json_encode($completion);
                 $data['addtime'] = $data['utime'] = time();
-
+                
                 $res = Db::name('gene')->insert($data);
                 if($res){
                     echo "<script>parent.success('提交成功！正在刷新...');</script>";

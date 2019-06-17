@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	    <title>填写个人基本信息</title>
+	    <link rel="stylesheet" href="__STATIC__/css/public/public.css">
+	    <link rel="stylesheet" type="text/css" href="__STATIC__/css/home/information.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+	        <!-- 头部 -->
+	        <div class="header">
+					{include file="header"}
+			</div>
+	         
+	        <!-- 内容 -->
+	        <div class="content">
+	        	<div style="width:1200px;margin:0px auto;">
+					{$info.details}
+				</div>
+			</div>
+			<!-- 底部 -->
+			<div class="footer">
+					{include file="footer"}
+			</div>
+	        
+	    </div>  
+		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>  
+	    <!-- <script src="../../js/public/header.js"></script>  
+		<script src="../../js/public/footer.js"></script> -->
+		<script src="__STATIC__/js/public/selectDate.js"></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+		<script>
+			
+			$('.save_btn').click(function(){
+
+				$.ajax({
+					type:"POST",
+					url:"{:url('index/import_data1')}",
+					data:{
+						name:$(".name").val(),
+						nation:$(".mingzu").val(),
+						on_addr:$(".xianjudi").val(),
+						pai:$(".paizi").val(),
+						mobile:$(".dianhua").val(),
+						sex:$(".sex").val(),
+						addr_log :$(".zuji").val(),
+						is_family_tree:$(".jiapu").val(),
+						migration:$(".jilu").val(),
+						desc:$(".shuoming").val(),
+						is_open:$(".open").val()
+						},
+					dataType:"json",
+					success:function(res){	
+						if(res.code==1){
+							alert(res.msg)
+							window.location.replace(res.data);
+						}
+
+					}
+				})
+				
+
+
+			})
+
+			function error(msg){
+				layer.msg(msg,{icon:5});
+				sub = 1;
+			}
+
+			function success(msg){
+				layer.msg(msg,{icon:6});
+				setTimeout(function(){
+					window.location.replace(location.href);
+				},1500);
+				sub = 1;
+        	}
+		
+
+			function error_msg(msg){
+				layer.msg(msg,{icon:5});
+				sub = 1;
+			}
+		</script>
+	</body>
+</html>

@@ -126,6 +126,8 @@
 		<script src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>  
 	    <!-- <script src="../../js/public/header.js"></script>  
 		<script src="../../js/public/footer.js"></script> -->
+		<script src="__STATIC__/js/public/selectDate.js"></script>
+		<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 		<script>
 			
 			$('.save_btn').click(function(){
@@ -160,6 +162,11 @@
 
 			})
 
+			function error(msg){
+				layer.msg(msg,{icon:5});
+				sub = 1;
+			}
+
 			function success(msg){
 				layer.msg(msg,{icon:6});
 				setTimeout(function(){
@@ -168,6 +175,11 @@
 				sub = 1;
         	}
 		
+
+			function error_msg(msg){
+				layer.msg(msg,{icon:5});
+				sub = 1;
+			}
 		</script>
 	</body>
 </html>
