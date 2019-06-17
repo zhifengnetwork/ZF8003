@@ -17,9 +17,14 @@ class Gene extends Base
     {
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->field('id,info')->find();
+        $info = Db::name('gene')->where(['id'=>$id])->field('id,info,is_open,user_id')->find();
+
         if(!$info){
             layer_error('查询信息不存在！');die;
+        }
+
+        if($info['user_id'] != $this->user_id && !$info['is_open']){
+            layer_error('用户数据不公开！');die;
         }
         
         $info = $info['info'] ? $info['info'] : '';
