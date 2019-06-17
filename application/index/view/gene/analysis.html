@@ -77,7 +77,7 @@
 						</tr> -->
 						<tr>
                             <td>
-                            	<a is_open="{$vo.is_open}" onclick="check_open(this)" _href="{:url('gene/analysis','',false)}?id={$vo.id2}">{$vo.id2}</a>
+                            	<a is_open="{$vo.is_open}" onclick="check_open(this)" _href="{:url('gene/my_information','',false)}?id={$vo.id2}">{$vo.id2}</a>
                             </td>
                             <td>{$vo.name2}</td>
                             <td>{$vo.nation2}</td>
@@ -144,16 +144,6 @@
 		// $('.biaogege2:even').css('background', '#EFF3F6');
 		// $('.biaogege2:odd').css('background', '#E8E8E8');
 		
-		// 获取导航栏中的id的值
-		var urlid='';	
-		function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-		urlid=unescape(r[2]);
-        if (r != null) return unescape(r[2]); return null;
-        }
-		getQueryString('id') // 这里我需要获取url里面的id的值
-		console.log("本页面的id为"+urlid);
 
 		/**
 		* 继续加载猜您喜欢
@@ -167,7 +157,7 @@
 			page++;
 			$.ajax({
 				type: "get",
-				url: "http://jiying.com/index/gene/analysis?id=" + urlid+"&page="+page,
+				url: "{:url('gene/analysis','',false)}?id={$Request.param.id}"+"&page="+page,
 				dataType:"json",
 				success: function (data) {
 					console.log(data)
@@ -179,7 +169,7 @@
 								  '<tbody class="zuijia">'+
 								  '<tr>'+
 									'<td>'+
-										'<a is_open="1" onclick="check_open(this)" _href="/index/gene/analysis?id=9729">'+data.data[i].id2+'</a>'+
+										'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"gene/my_information\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
 									'</td>'+
 									'<td>'+data.data[i].name1+'</td>'+
 									'<td>'+data.data[i].name2+'</td>'+

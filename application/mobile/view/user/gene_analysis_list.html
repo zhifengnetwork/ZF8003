@@ -70,7 +70,7 @@
 							</td>
 						</tr> -->
 						<tr>
-							<td>{$vo.id2}</td>
+							<td><a is_open="{$vo.is_open}" onclick="check_open(this)" _href="{:url('user/gene_analysis_list','',false)}?id={$vo.id2}">{$vo.id2}</a></td>
 							<td>{$vo.name2}</td>
 							<td>{$vo.nation2}</td>
 							<td>{$vo.region2}</td>
@@ -102,6 +102,70 @@
 		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
 		<script>
+
+			var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+			var page = 1;
+			function ajax_sourch_submit() {
+				if (before_request == 0)// 上一次请求没回来 不进行下一次请求
+					return false;
+				before_request = 0;
+				page++;
+				$.ajax({
+					type: "get",
+					url: "{:url('user/gene_analysis_list','',false)}?id={$Request.param.id}"+"&page="+page,
+					dataType:"json",
+					success: function (data) {
+						if(data){
+							for(var i = 0; i<data.data.length; i++){
+							
+							let str = '<table frame="void" class="biaogege2">'+
+									'<tbody class="zuijia">'+
+									'<tr>'+
+										'<td>'+
+											'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"user/gene_analysis_list\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
+										'</td>'+
+										'<td>'+data.data[i].name1+'</td>'+
+										'<td>'+data.data[i].name2+'</td>'+
+										'<td>'+data.data[i].nation1+'</td>'+
+										'<td rowspan="2" class="niandai" hidden=""><span class="nian"><span>'+data.data[i].line.name+'</span><span>年</span></span><br><span>('+data.data[i].id2+')代</span></td>'+
+										'<td rowspan="2" class="chaodai">'+
+											'<img src="/public/static/index/images/home/jiantou5.png" class="jiantoudd">'+
+											'<img src="/public/gene/image/'+data.data[i].line.img+'" style="height:36px;" class="jiantou_hou">'+
+											'<span class="dynasty">'+data.data[i].line.name+'</span>'+
+										'</td>'+
+									'</tr>'+
+									'</tbody>'+
+									'</table>'
+							$(".table_ear2").append(str);
+							$('.biaogege2:even').css('background', '#EFF3F6');
+							$('.biaogege2:odd').css('background', '#E8E8E8');
+							
+							}
+						}
+					}
+				});
+			}
+
+			// 滚动条滚动到底部<200px的时候
+			$(window).scroll(function () {
+				var bot = 100; //bot是底部距离的高度
+				if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+					ajax_sourch_submit()
+				}
+			});
+
+			function check_open(obj){
+				var is_open = $(obj).attr('is_open');
+				var _href = $(obj).attr('_href');
+				
+				if(is_open==0){
+					alert('该用户信息不公开！');
+					return;
+				}
+				window.location.replace(_href);
+			}
+
+
 // 			var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
 // 			console.log(tt)
 // 			if(tt >= 1500) {

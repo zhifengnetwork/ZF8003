@@ -346,6 +346,7 @@ class User extends Base
 
         $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $page = input('page',1);
         if(!$id){
             layer_error('请选择进行匹对的基因数据');
         }
@@ -367,16 +368,18 @@ class User extends Base
             $config[$v['name']] = $v['value'];
         }
 
-        $i = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->find();
+        $i = Db::name('gene')->where([ 'id'=>$id])->find();
         if(!$i){
             layer_error('非法访问，无权限的资源数据！');
         }
         $w['id'] = ['<>', $id];
+        $pageParam = ['query' => []];
         foreach($config as $k => $v){
             $val = (double)$i[$k];
             $min = $val-200 > 0 ? $val-200 : 0;
             $max = $val+200;
             $w[strtolower($k)] = ['between',"$min,$max"];
+            $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
         if($list_count > 100 && !$re){
@@ -385,7 +388,8 @@ class User extends Base
             return $this->fetch();
             exit;
         }
-        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->select();
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
+        $list = $list->all();
         if(!$list){
             layer_error('抱歉！数据库没有匹配到相应的基因信息');
         }
@@ -394,6 +398,8 @@ class User extends Base
         $data = array();
         $count = count($list);
         foreach($list as $v){
+
+            $r['is_open'] = $v['is_open'];
             $r['id1'] = $i['id'];
             $r['id2'] = $v['id'];
             $r['name1'] = $i['name'] ? $i['name'] : '--';
@@ -459,6 +465,11 @@ class User extends Base
         if($data){
             $last_names = array_column($data,'cay');
             array_multisort($last_names,SORT_ASC,$data);
+        }
+
+        if($page>1){
+            useJson($data);
+            echo json_encode(['status'=>1,'msg'=>'获取成功！','data'=>$data],JSON_UNESCAPED_UNICODE);die;
         }
         // dump($data);exit;
         $this->assign('lately', $lately);
@@ -871,7 +882,7 @@ class User extends Base
 
         switch($t){
             case '1':
-                $lists = Db::name('recharge')->field('`id`,`platform`,`addtime`,`money`,`status`')->where('user_id',$this->user_id)->order('init_time desc')->limit(50)->cache(600)->select();
+                $lists = Db::name('recharge')->field('`id`,`platform`,`addtime`,`money`,`status`')->where('user_id',$this->user_id)->order('init_time desc')->limit(50)->cache(60)->select();
                 $pname = ['weixin'=>'微信','alipay'=>'支付宝'];
                 $sname = [0=>'处理中', 1=>'成功', 2=>'失败'];
         
@@ -880,14 +891,14 @@ class User extends Base
                 break;
 
             case '2':
-                $lists = Db::name('withdrawal')->field('`type`,`addtime`,`money`,`fee`,`status`')->where('user_id',$this->user_id)->order('id desc')->limit(50)->cache(600)->select();
+                $lists = Db::name('withdrawal')->field('`type`,`addtime`,`money`,`fee`,`status`')->where('user_id',$this->user_id)->order('id desc')->limit(50)->cache(60)->select();
                 $sname = [0=>'待审核', 1=>'成功', 2=>'失败'];
         
                 $this->assign('sname', $sname);
                 break;
 
             case '3':
-                $lists = Db::name('commission_log')->field('source_user_id,addtime,commission,source')->where('user_id',$this->user_id)->order('id desc')->cache(600)->limit(50)->select();
+                $lists = Db::name('commission_log')->field('source_user_id,addtime,commission,source')->where('user_id',$this->user_id)->order('id desc')->cache(60)->limit(50)->select();
                 if($lists){
                     foreach($lists as $v){
                         $uids[$v['source_user_id']] = $v['source_user_id'];
@@ -902,11 +913,11 @@ class User extends Base
                 }
                 break;
             case '4':
-                $lists = Db::name('transaction_log')->field('type,sn,money,init_time')->where(['user_id'=>['=', $this->user_id], 'type' => ['=', 'order']])->order('id desc')->cache(1800)->limit(50)->select();
+                $lists = Db::name('transaction_log')->field('type,sn,money,init_time')->where(['user_id'=>['=', $this->user_id], 'type' => ['=', 'order']])->order('id desc')->cache(30)->limit(50)->select();
                 $this->assign('tname', ['order'=>'购买商品']);
                 break;
             case '5':
-                $lists = Db::name('jifen_log')->where(['user_id'=>['=', $this->user_id]])->order('id desc')->cache(1800)->limit(50)->select();
+                $lists = Db::name('jifen_log')->where(['user_id'=>['=', $this->user_id]])->order('id desc')->cache(30)->limit(50)->select();
                 if($lists){
                     foreach($lists as $key=>&$value){
                         if($value['type']==1){

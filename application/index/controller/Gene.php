@@ -17,9 +17,14 @@ class Gene extends Base
     {
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = Db::name('gene')->where(['user_id'=>$this->user_id, 'id'=>$id])->field('id,info')->find();
+        $info = Db::name('gene')->where(['id'=>$id])->field('id,info,is_open,user_id')->find();
+
         if(!$info){
             layer_error('查询信息不存在！');die;
+        }
+
+        if($info['user_id'] != $this->user_id && !$info['is_open']){
+            layer_error('用户数据不公开！');die;
         }
         
         $info = $info['info'] ? $info['info'] : '';
@@ -75,7 +80,7 @@ class Gene extends Base
 
         // $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $page = input('page');
+        $page = input('page',1);
         if(!$id){
             layer_error('请选择进行匹对的基因数据');
         }
@@ -118,7 +123,7 @@ class Gene extends Base
         //     return $this->fetch();
         //     exit;
         // }
-        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(20,false,$pageParam);
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
         $list = $list->all();
         
         // $pindex = max(1, intval($page));

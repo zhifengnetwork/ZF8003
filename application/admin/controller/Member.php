@@ -237,6 +237,28 @@ class Member extends Base
             echo "<script>alert('该用户不存在')</script>";
             exit;
         }
+
+        if(request()->isPost()){
+            $data = input('post.');
+            unset($data['act']);
+            $user = new Users();
+            
+            $bool = $user->where('id',$data['id'])->update($data);
+                
+            if ($bool) {
+                $action = 'edit_member';
+                $desc   = '编辑会员';
+                $log    = adminLog($action, $desc);                    
+                $return = array('code' => 1, 'msg' => "修改成功！");
+            } elseif ($bool === 0) {
+                $return = array('code' => 0, 'msg' => "你没有任何修改");
+            }else { 
+                $return = array('code' => 0, 'msg' => "修改失败！");
+            }
+        }
+
+
+
         $act = "edit";
         $user = Db::name('users')->where('id',$id)->field('password,openid,unionid,payment_password',true)->find();
         $group = Db::name('user_group')->select();
