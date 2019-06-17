@@ -14,6 +14,12 @@
 		#weixin_qrcode{
 			padding-left:15%;
 		}
+		iframe{height:200px;}
+		.tips_ear{
+			text-align: right;
+			padding-top: 10px;
+			color:gray;
+		}
 	</style>
 <body>
 <div class="login_bigger">
@@ -51,20 +57,24 @@
 			            	</div>
 			            	<div class="login_denglu" onclick="submit();">登录</div>
 						</li>
-			            <li style="display: none;" class="erweima_ear">
-							<span id="weixin_qrcode"></span>
+			            <li style="display: none;" >
+							<span id="weixin_qrcode" class="erweima_ear"></span>
 			            	<!--二维码图片-->
 			            	<!-- <div >
 
 			            	</div>
 							<p style="text-align: center;padding-top: 10px;">请扫码登陆</p> -->
 							<!-- <div class="tips_ear"><span class="tip">注册即同意《23魔方服务协议》</span></div> -->
+							<div class="tips_ear"><a class="tip">注册即同意《服务协议》</a></div>
 						</li>
 			       </ul>
           </div>
 		</div>
 	</div>
 </div>
+<style>
+
+</style>
 	<script src="__STATIC__/js/public/footer.js"></script>
 	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
 	<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>

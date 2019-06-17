@@ -170,5 +170,11 @@ tr td a {
 	transform: translate(-50%,-50%)
 
 }
+.lookmore{
+	padding:20px 0 100px 0;
+	width: 100%;
+	text-align: center;
+	cursor: pointer;
+}
 
 
