@@ -117,9 +117,9 @@
         })
         
         function success(){
-            layer.msg('基因数据导入成功！正在刷新页面...',{icon:6});
+            layer.msg('基因数据导入成功！正在跳转页面...',{icon:6});
             setTimeout(function(){
-                window.location.replace(location.href);
+                window.location.replace('/index/index/information');
             },2000);
         }
   
@@ -149,7 +149,7 @@
                 var filevalue = myfile.value;
                 $('.sursubmit').click(function(){
 
-                    window.location.replace('/index/index/information');
+                    // window.location.replace('/index/index/information');
 
                 })
                
