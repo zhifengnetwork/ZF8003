@@ -75,7 +75,7 @@ class Gene extends Base
 
         // $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $page = input('page');
+        $page = input('page',1);
         if(!$id){
             layer_error('请选择进行匹对的基因数据');
         }
