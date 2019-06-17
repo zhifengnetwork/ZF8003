@@ -440,7 +440,7 @@ class Distribution extends Base
             $ids = [0];
             foreach($list as $v){
                 $ids[$v['user_id']] = $v['user_id'];
-                $ids[$v['add_user_id']] = $v['add_user_id'];
+                $ids[$v['source_user_id']] = $v['source_user_id'];
             }
             $ids = implode(',',$ids);
             $user_arr = Db::name('users')->field('id,nickname,avatar,email')->where(['id'=>['in',$ids]])->select();
