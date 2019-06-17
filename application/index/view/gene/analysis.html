@@ -144,16 +144,6 @@
 		// $('.biaogege2:even').css('background', '#EFF3F6');
 		// $('.biaogege2:odd').css('background', '#E8E8E8');
 		
-		// 获取导航栏中的id的值
-		var urlid='';	
-		function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-		urlid=unescape(r[2]);
-        if (r != null) return unescape(r[2]); return null;
-        }
-		getQueryString('id') // 这里我需要获取url里面的id的值
-		console.log("本页面的id为"+urlid);
 
 		/**
 		* 继续加载猜您喜欢
@@ -167,7 +157,7 @@
 			page++;
 			$.ajax({
 				type: "get",
-				url: "http://jiying.com/index/gene/analysis?id=" + urlid+"&page="+page,
+				url: "{:url('gene/analysis','',false)}?id={$Request.param.id}"+"&page="+page,
 				dataType:"json",
 				success: function (data) {
 					console.log(data)

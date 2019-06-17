@@ -388,7 +388,7 @@ class User extends Base
             return $this->fetch();
             exit;
         }
-        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->paginate(50,false,$pageParam);
+        $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->paginate(17,false,$pageParam);
         $list = $list->all();
         if(!$list){
             layer_error('抱歉！数据库没有匹配到相应的基因信息');
