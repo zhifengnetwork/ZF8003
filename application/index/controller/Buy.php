@@ -115,6 +115,22 @@ class Buy extends Base
                 exit;
             }
 
+            if(!$data['address']){
+                return json(['status'=>0,'msg'=>'详细地址必须填写']);
+                exit;
+            }
+
+            if($data['mobile']){
+                if(!preg_match("/^1[34578]\d{9}$/", $data['mobile'])){
+                    return json(['status'=>0,'msg'=>'手机号码格式不正确！']); 
+                }
+            }
+
+            if($data['email']){
+                if(!preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/", $data['email'])){
+                    return json(['status'=>0,'msg'=>'邮箱格式不正确！']); 
+                }
+            }
             # 运费
             $freight = $info['freight'];
             if($info['freight_temp'] > 0){
