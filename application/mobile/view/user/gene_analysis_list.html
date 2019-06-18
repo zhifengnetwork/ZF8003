@@ -115,7 +115,13 @@
 					url: "{:url('user/gene_analysis_list','',false)}?id={$Request.param.id}"+"&page="+page,
 					dataType:"json",
 					success: function (data) {
-						if(data){
+						if(data.stats==1){
+							if(data.data.length == 0){
+								before_request = 0;
+								return;
+							}
+							before_request = 1;
+
 							for(var i = 0; i<data.data.length; i++){
 							
 							let str = '<table frame="void" class="biaogege2">'+

@@ -173,7 +173,7 @@ class Gene extends Base{
         if($calculation_config){
             foreach($calculation_config as $v){
                 if($v['value']){
-                    $check[] = strtoupper(str_replace('_','-',$v['name']));
+                    $check[] = strtoupper($v['name']);
                 }
             }
         }

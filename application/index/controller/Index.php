@@ -368,7 +368,8 @@ class Index extends Base
         if($_POST){
             $key = isset($_POST['key']) ? $_POST['key'] : array();
             $value = isset($_POST['value']) ? $_POST['value'] : array();
-            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $info = isset($_POST['info']) ? $_POST['info'] : array();
+            $name = $info['name'];
 
             if(!$name){
                 echo "<script>parent.error('请输入您的姓名');</script>";
@@ -378,6 +379,12 @@ class Index extends Base
             if( !preg_match("/^\W+$/",$name) ){
                 echo "<script>parent.error('请输入正确的姓名！');</script>";
                 exit;
+            }
+
+            if($info['mobile']){
+                if(!preg_match("/^1[34578]\d{9}$/", $info['mobile'])){
+                    return json(['status'=>0,'msg'=>'手机号码格式不正确！']); 
+                }
             }
 
             if($key){
@@ -404,7 +411,7 @@ class Index extends Base
                 $data['user_id'] = $user_id;
                 $data['completion'] = json_encode($completion);
                 $data['addtime'] = $data['utime'] = time();
-                
+                $data['info'] = json_encode($info);
                 $res = Db::name('gene')->strict(false)->insert($data);
                 if($res){
                     echo "<script>parent.success('提交成功！正在刷新...');</script>";

@@ -101,6 +101,12 @@ class User extends Base
                 echo "<script>parent.error_msg('请输入联系方式！');</script>";
                 exit;
             }
+            if($mobile){
+                if(!preg_match("/^1[34578]\d{9}$/", $mobile)){
+                    echo "<script>parent.error_msg('请输入正确的手机号！');</script>";
+                    exit;
+                }
+            }
             
             // if(!$gene['nation']){
             //     echo "<script>parent.error_msg('请输入民族！');</script>";
@@ -141,6 +147,16 @@ class User extends Base
             if($completion){
                 $gene['completion'] = json_encode($completion);
             }
+            $gene['info']['name'] = $gene['name'];
+            $gene['info']['mobile'] = $mobile;
+            $gene['info']['nation'] = $gene['nation'];
+            $gene['info']['on_addr'] = $gene['on_addr'];
+            $gene['info']['addr_log'] = $gene['addr_log'];
+            $gene['info']['pai'] = $gene['pai'];
+            $gene['info']['is_family_tree'] = $gene['is_family_tree'];
+            $gene['info']['migration'] = $gene['migration'];
+            $gene['info']['desc'] = $desc;
+            $gene['info'] = json_encode($gene['info']);
             
             $res = Db::name('gene')->strict(false)->insert($gene);
             if($res){

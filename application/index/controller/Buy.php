@@ -106,7 +106,7 @@ class Buy extends Base
                 return json(['status'=>0,'msg'=>'订单提交失败，商品信息不存在或已下架！']);
                 exit;
             }
-            if($info['is_stock'] == 1 && $info['stock'] < $number){
+            if($info['is_stock'] == 1 && $info['stock'] < $data['number']){
                 return json(['status'=>0,'msg'=>'订单提交失败，商品库存不足，无法购买！']);
                 exit;
             }

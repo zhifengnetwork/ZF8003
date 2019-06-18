@@ -162,7 +162,12 @@
 				success: function (data) {
 					console.log(data)
 					console.log("data的长度："+data.data.length)
-					if(data){
+					if( data.data.length == 0 ){
+						before_request = 0;
+						return;
+					}
+					if(data.status == 1){
+						before_request = 1;
 						for(var i = 0; i<data.data.length; i++){
 						
 						let str = '<table frame="void" class="biaogege2">'+
