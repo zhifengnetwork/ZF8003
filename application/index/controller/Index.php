@@ -307,7 +307,6 @@ class Index extends Base
                     foreach($arr_name as $k=>$v){
                         $arr[$k]['name'] = $arr_name[$k];
                         $arr[$k][$value[0]] = $value[$k];
-                        $info['name'] = $arr_name[$k];
                     }
                 }
             }
@@ -327,7 +326,7 @@ class Index extends Base
                 if($completion){
                     $value['completion'] = json_encode($completion);
                 }
-
+                
                 $value['is_open'] = $is_open ? $is_open : 0;
                 $value['user_id'] = $user_id;
                 $value['desc'] = $desc;
@@ -335,6 +334,8 @@ class Index extends Base
                 $value['pai'] = $pai;
                 $value['is_family_tree'] = $is_family_tree;
                 $value['addtime'] = $time;
+                
+                $info['name'] = $value['name'];
                 $value['info'] = json_encode($info);
             }
             
