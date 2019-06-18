@@ -317,9 +317,9 @@ class Index extends Base
                 $completion = [];
                 foreach($value as $k=>$v){
                     if($k=='name'){continue;}
-
+                    if( strtolower($k) === $k ){continue;}
                     if(Standard_Gene($k)){
-                        $value[strtolower($k)] = $v ? $v * 100 : 0;
+                        $value[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
                     }else{
                         $completion[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
                     }
