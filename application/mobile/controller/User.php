@@ -155,7 +155,7 @@ class User extends Base
             $gene['info']['pai'] = $gene['pai'];
             $gene['info']['is_family_tree'] = $gene['is_family_tree'];
             $gene['info']['migration'] = $gene['migration'];
-            $gene['info']['desc'] = $gene['desc'];
+            $gene['info']['desc'] = $desc;
             $gene['info'] = json_encode($gene['info']);
             
             $res = Db::name('gene')->strict(false)->insert($gene);
