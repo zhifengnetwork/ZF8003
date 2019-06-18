@@ -132,31 +132,52 @@
 			
 			$('.save_btn').click(function(){
 
-				$.ajax({
-					type:"POST",
-					url:"{:url('index/import_data1')}",
-					data:{
-						name:$(".name").val(),
-						nation:$(".mingzu").val(),
-						on_addr:$(".xianjudi").val(),
-						pai:$(".paizi").val(),
-						mobile:$(".dianhua").val(),
-						sex:$(".sex").val(),
-						addr_log :$(".zuji").val(),
-						is_family_tree:$(".jiapu").val(),
-						migration:$(".jilu").val(),
-						desc:$(".shuoming").val(),
-						is_open:$(".open").val()
-						},
-					dataType:"json",
-					success:function(res){	
-						if(res.code==1){
-							alert(res.msg)
-							window.location.replace(res.data);
-						}
+				// $.ajax({
+				// 	type:"POST",
+				// 	url:"{:url('index/import_data1')}",
+				// 	data:{
+				// 		name:$(".name").val(),
+				// 		nation:$(".mingzu").val(),
+				// 		on_addr:$(".xianjudi").val(),
+				// 		pai:$(".paizi").val(),
+				// 		mobile:$(".dianhua").val(),
+				// 		sex:$(".sex").val(),
+				// 		addr_log :$(".zuji").val(),
+				// 		is_family_tree:$(".jiapu").val(),
+				// 		migration:$(".jilu").val(),
+				// 		desc:$(".shuoming").val(),
+				// 		is_open:$(".open").val()
+				// 		},
+				// 	dataType:"json",
+				// 	success:function(res){	
+				// 		if(res.code==1){
+				// 			console.log(res)
+				// 			alert(res.msg)
+				// 			window.location.replace(res.data);
+				// 		}
 
+				// 	}
+				// })
+
+				$.post("{:url('index/import_data1')}",{
+					name:$(".name").val(),
+					nation:$(".mingzu").val(),
+					on_addr:$(".xianjudi").val(),
+					pai:$(".paizi").val(),
+					mobile:$(".dianhua").val(),
+					sex:$(".sex").val(),
+					addr_log :$(".zuji").val(),
+					is_family_tree:$(".jiapu").val(),
+					migration:$(".jilu").val(),
+					desc:$(".shuoming").val(),
+					is_open:$(".open").val()
+				},function(data){
+					if(data.status==0){
+						layer.msg(data.msg,{icon:5});
+					}else if(data.status==1){
+						window.location.replace(data.data);
 					}
-				})
+				},'json');
 				
 
 

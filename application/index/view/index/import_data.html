@@ -129,7 +129,7 @@
             var p = /(?:\.zip|\.rar|\.xls|\.xlsx)$/;
             if(!p.test(fileName)){
                 $("#file").val('');
-                layer.msg('请选择.ZIP .RAR .XLS .XLSX类型的文件',{icon:5});
+                layer.msg('请选择.XLS .XLSX类型的文件',{icon:5});
                 return '点击选择文件';
             }
             return fileName;

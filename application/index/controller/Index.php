@@ -237,15 +237,15 @@ class Index extends Base
             }
 
             if(!$name){
-                echo "<script>parent.error_msg('请输入姓名！');</script>";
+                useJson([],'请输入姓名！',0);
                 exit;
             }
             if( !preg_match("/^\W+$/",$name) ){
-                echo "<script>parent.error_msg('请输入正确的姓名！');</script>";
+                useJson([],'请输入正确的姓名！',0);
                 exit;
             }
             if(!$mobile){
-                echo "<script>parent.error_msg('请输入联系方式！');</script>";
+                useJson([],'请输入联系方式！',0);
                 exit;
             }
             
@@ -277,12 +277,12 @@ class Index extends Base
 
             $user_id = $this->user_id ? $this->user_id : 0;
             if(!$user_id){
-                echo "<script>parent.layer.msg('请先登录！',{icon:5});</script>";die;
+                useJson([],'请先登录！',0);
             }
 
             $savename = Db::name('users')->where('id',$user_id)->value('gene_file');
             if(!$savename){
-                echo "<script>parent.layer.msg('请选择您要上传的检测报告',{icon:5});</script>";die;
+                useJson([],'请选择您要上传的检测报告！',0);
             }
             
             $file_name = ROOT_PATH.'public/gene/import/'.$savename;
@@ -352,11 +352,10 @@ class Index extends Base
             ]);
 
             if($res){
-                echo json_encode(['code'=>1,'msg'=>'上传成功！','data'=>url('gene/index')]);die;
-                echo "<script>parent.success();</script>";exit;
+                useJson(url('gene/index'));
             }else{
                 @unlink(ROOT_PATH . 'public' . DS . 'gene/'.$filename);
-                echo "<script>parent.layer.msg('上传数据失败，请重试！',{icon:5});</script>";exit;
+                useJson([],'上传数据失败，请重试！',0);
             }
         }
     }
