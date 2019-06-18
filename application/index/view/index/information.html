@@ -106,7 +106,7 @@
 					</div>
 		</form>			
 					<div class="personal_message_ear">
-						<input type="checkbox" checked class="is_open"/><span class="personal_message">是否公开个人信息</span>
+						<input type="checkbox" checked name="is_open" value="1" class="is_open"/><span class="personal_message">是否公开个人信息</span>
 						<br/>
 						基于寻根溯源的需要，族内鼓励选择公开，除非有特殊情况。选择不公开，则别人匹配出结果后将不能查看您的基本信息
 					</div>
@@ -158,18 +158,26 @@
 
 				// 	}
 				// })
+
+				var is_open;
+				if( $("input[name=is_open]").is(':checked') ){
+					is_open = 1;
+				}else{
+					is_open = 0;
+				}
+
 				$.post("{:url('index/import_data1')}",{
-					name:$("input[name=name]").val(),
-					nation:$("input[name=nation]").val(),
-					on_addr:$("input[name=on_addr]").val(),
-					pai:$("input[name=pai]").val(),
-					mobile:$("input[name=mobile]").val(),
-					sex:$("input[name=sex]").val(),
-					addr_log :$("input[name=addr_log]").val(),
-					is_family_tree:$("input[name=is_family_tree]").val(),
-					migration:$("input[name=migration]").val(),
-					desc:$("input[name=desc]").val(),
-					is_open:$("input[name=is_open]").val()
+					'name':$("input[name=name]").val(),
+					'nation':$("input[name=nation]").val(),
+					'on_addr':$("input[name=on_addr]").val(),
+					'pai':$("input[name=pai]").val(),
+					'mobile':$("input[name=mobile]").val(),
+					'sex':$("input[name=sex]").val(),
+					'addr_log' :$("input[name=addr_log]").val(),
+					'is_family_tree':$("input[name=is_family_tree]").val(),
+					'migration':$("input[name=migration]").val(),
+					'desc':$("input[name=desc]").val(),
+					'is_open':is_open
 				},function(data){
 					if(data.status==0){
 						layer.msg(data.msg,{icon:5});

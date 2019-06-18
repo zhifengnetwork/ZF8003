@@ -230,11 +230,7 @@ class Index extends Base
             $is_open = input('is_open');
             $desc1 = input('desc');
             $sex = input('sex');
-            if(strstr($sex,'男')){
-                $sex = 1;
-            }else{
-                $sex = 0;
-            }
+            
 
             if(!$name){
                 useJson([],'请输入姓名！',0);
@@ -247,6 +243,11 @@ class Index extends Base
             if(!$mobile){
                 useJson([],'请输入联系方式！',0);
                 exit;
+            }
+            if($mobile){
+                if(!preg_match("/^1[34578]\d{9}$/", $mobile)){
+                    return json(['status'=>0,'msg'=>'手机号码格式不正确！']); 
+                }
             }
             
             $info['mobile'] = $mobile;
@@ -306,7 +307,6 @@ class Index extends Base
                     foreach($arr_name as $k=>$v){
                         $arr[$k]['name'] = $arr_name[$k];
                         $arr[$k][$value[0]] = $value[$k];
-                        $info['name'] = $arr_name[$k];
                     }
                 }
             }
@@ -316,7 +316,7 @@ class Index extends Base
                 $completion = [];
                 foreach($value as $k=>$v){
                     if($k=='name'){continue;}
-
+                    if( strtolower($k) === $k ){continue;}
                     if(Standard_Gene($k)){
                         $value[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
                     }else{
@@ -326,14 +326,16 @@ class Index extends Base
                 if($completion){
                     $value['completion'] = json_encode($completion);
                 }
-
-                $value['is_open'] = $is_open;
+                
+                $value['is_open'] = $is_open ? $is_open : 0;
                 $value['user_id'] = $user_id;
                 $value['desc'] = $desc;
                 $value['nation'] = $nation;
                 $value['pai'] = $pai;
                 $value['is_family_tree'] = $is_family_tree;
                 $value['addtime'] = $time;
+                
+                $info['name'] = $value['name'];
                 $value['info'] = json_encode($info);
             }
             
@@ -403,7 +405,7 @@ class Index extends Base
                 $data['completion'] = json_encode($completion);
                 $data['addtime'] = $data['utime'] = time();
                 
-                $res = Db::name('gene')->insert($data);
+                $res = Db::name('gene')->strict(false)->insert($data);
                 if($res){
                     echo "<script>parent.success('提交成功！正在刷新...');</script>";
                     exit;

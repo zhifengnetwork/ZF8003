@@ -39,71 +39,64 @@
 		        					<span class="name">姓名:</span>
 	        					</div>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.name)'}{$info.name}{/if}" />
 	        					</div>
 	        				</div>
 	        				<div class="in">
-	        					<div class="xi_wrap">
-		        					<span class="name">电话:</span>
-	        					</div>
-	        					<div class="text">
-	        						<input type="text" />
-	        					</div>
-	        				</div>
+								<span class="name tr">联系电话:</span>
+								<div class="text">
+									<input type="text" value="{if condition='isset($info.mobile)'}{$info.mobile}{/if}" />
+								</div>
+							</div>
 	        				<div class="in">
 	        					<span class="name tr">民族:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.nation)'}{$info.nation}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">现居地:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.on_addr)'}{$info.on_addr}{/if}" />
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">派字:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.pai)'}{$info.pai}{/if}" />
 	        					</div>
 	        				</div>
-	        				<div class="in">
-	        					<span class="name tr">联系电话:</span>
-	        					<div class="text">
-	        						<input type="text" />
-	        					</div>
-	        				</div>
+	        				
 	        				<div class="in">
 	        					<span class="name tr">性别:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.sex)'}{$info.sex}{/if}" />
 	        					</div>
 	        				</div>
 	        				<div class="in">
 	        					<span class="name tr">祖籍地:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.addr_log)'}{$info.addr_log}{/if}" />
 	        					</div>
 	        				</div>
 	        				<div class="in">
 	        					<span class="name tr">是否拥有家谱:</span>
 	        					<div class="text">
-	        						<input type="text" />
+	        						<input type="text" value="{if condition='isset($info.is_family_tree)'}{$info.is_family_tree}{/if}" />
 	        					</div>
 	        				</div>
 	        				<div class="in">
 	        					<span class="name tr">迁移记录:</span>
 	        					<div class="text">
-	        						<input type="text" class="shuoming"/>
+	        						<input type="text" value="{if condition='isset($info.migration)'}{$info.migration}{/if}" class="shuoming"/>
 	        					</div>
 	        				</div>
 	        				<div class="in">
 	        					<span class="name tr">其他说明:</span>
 	        					<div class="text">
-	        						<input type="text" class="shuoming"/>
+	        						<input type="text" value="{if condition='isset($info.desc)'}{$info.desc}{/if}" class="shuoming"/>
 	        					</div>
 	        				</div>
 	        				
@@ -112,7 +105,7 @@
 	        		</div>
 	        		<!--按钮-->
 	        		<div class="btn_wrap">
-	        			<a class="save_btn" href="#">基因查询</a>
+	        			<a class="save_btn" href="{:url('user/gene_analysis_list','',false)}?id={$Request.param.id}">基因查询</a>
 	        		</div>
 	        	</div>
 			</div>

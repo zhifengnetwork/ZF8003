@@ -138,10 +138,9 @@
 			$(".liebiao_ear ul li").click(function(){
 				var id = $(this).attr('item');
 				if($(".span_right").css('display')=="none"){
-					
 					// $(location).attr('href',"/mobile/user/gene_info?id="+id);
 //					$(location).attr('href',"/mobile/user/gene_analysis_list?id="+id);
-					$(location).attr('href',"/mobile/user/my_information");
+					$(location).attr('href',"{:url('user/my_information','',false)}?id="+id);
 	
 				}
 			
