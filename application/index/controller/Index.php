@@ -319,7 +319,7 @@ class Index extends Base
                     if($k=='name'){continue;}
 
                     if(Standard_Gene($k)){
-                        $value[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
+                        $value[strtolower($k)] = $v ? $v * 100 : 0;
                     }else{
                         $completion[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
                     }
