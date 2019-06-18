@@ -327,7 +327,7 @@ class Index extends Base
                     $value['completion'] = json_encode($completion);
                 }
 
-                $value['is_open'] = $is_open;
+                $value['is_open'] = $is_open ? $is_open : 0;
                 $value['user_id'] = $user_id;
                 $value['desc'] = $desc;
                 $value['nation'] = $nation;
