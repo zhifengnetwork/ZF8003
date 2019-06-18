@@ -1,5 +1,8 @@
 /* 皮肤管理页 */
 
+img {
+	display: block;
+}
 .skin-list {
     margin-top: .2rem;
 }
