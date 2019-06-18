@@ -43,7 +43,7 @@
                             <input type="hidden" id="se-hid-area-id" value="" />
 							<ul>
 								<li>
-									<div class="form">收货人：</div>
+									<div class="form"><spec style="color:red;">*</spec>收货人：</div>
 									<div>
 										<input class="form-control" type="text" name="consignee" id="consignee" value="{$default_address['consignee'] ? $default_address['consignee'] : ''}" />
 									</div>
@@ -55,7 +55,7 @@
 									</div>
 								</li>
 								<li>
-									<div class="form">手机号码：</div>
+									<div class="form"><spec style="color:red;">*</spec>手机号码：</div>
 									<div>
 										<input class="form-control" type="text" name="mobile" id="mobile" value="{$default_address['mobile'] ? $default_address['mobile'] : ''}" />
 									</div>
@@ -82,7 +82,7 @@
                                     
 								</li>
 								<li>
-									<div class="form">详细地址：</div>
+									<div class="form"><spec style="color:red;">*</spec>详细地址：</div>
 									<div>
 										<input class="form-control" type="text" id="address" name="address" value="{$default_address.address ? $default_address.address : ''}" />
 									</div>

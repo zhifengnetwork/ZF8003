@@ -461,8 +461,13 @@ class Goods extends Base
         }
 
         $sname = [0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'已完成'];
-
-
+        
+        $province = $info['province'] ? Db::name('area')->where('id',$info['province'])->value('name') : '';
+        $city = $info['city'] ? Db::name('area')->where('id',$info['city'])->value('name') : '';
+        $district = $info['district'] ? Db::name('area')->where('id',$info['district'])->value('name') : '';
+        $twon = $info['twon'] ? Db::name('area')->where('id',$info['twon'])->value('name') : '';
+        $info['address'] = $province . $city . $district . $twon . $info['address'];
+        
         $this->assign('sname', $sname);
         $this->assign('info', $info);
         return $this->fetch();
