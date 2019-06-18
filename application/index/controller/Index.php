@@ -230,11 +230,7 @@ class Index extends Base
             $is_open = input('is_open');
             $desc1 = input('desc');
             $sex = input('sex');
-            if(strstr($sex,'男')){
-                $sex = 1;
-            }else{
-                $sex = 0;
-            }
+            
 
             if(!$name){
                 useJson([],'请输入姓名！',0);
