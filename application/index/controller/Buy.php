@@ -63,7 +63,7 @@ class Buy extends Base
         $province = Db::name('area')->field('`id`,`name`')->where('parent_id', 0)->select();
 
         # 用户默认收货地址
-        $default_address_id = $user['default_address_id'];
+        $default_address_id = Db::name('users')->where('id',$this->user_id)->value('default_address_id');
         if($default_address_id > 0){
             $default_address = Db::name('user_address')->where('id', $default_address_id)->find();
             if($default_address){
