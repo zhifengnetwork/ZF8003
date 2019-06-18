@@ -127,7 +127,7 @@ body{
 /* 公共底部 */
 .footer{
 	width: 100%;
-	height: 300px;
+	height: 350px;
 	color: #fff;
 	background-color: #002449;
 }
@@ -136,7 +136,7 @@ body{
 }
 .footer .bottomNav{
 	width: 940px;
-	height:220px;
+	height:250px;
 	border-bottom: 1px solid #56c8fa;
 }
 .footer .bottomNav ul{
@@ -147,7 +147,7 @@ body{
 	flex-wrap: wrap; */
 }
 .footer .bottomNav ul li{
-	width:25%;
+	width:33.333333%;
 	float:left;
 	height:40px;
 	line-height: 40px;
@@ -156,6 +156,7 @@ body{
 .footer .bottomNav ul li a{
 	color: #fff;
 	font-size: 20px;
+	display: block;
 }
 .footer .copyright{
 	height: 105px;
@@ -178,8 +179,8 @@ body{
 .copyright span{
 	display: inline-block;
 	width: 100%;
-	height:80px;
-	line-height:80px;
+	height:50px;
+	line-height:50px;
 	text-align: center;
 	display: flex;
 	display: -webkit-box;
@@ -190,6 +191,11 @@ body{
 	align-items: center
 	
 }
+.copyright p{
+	
+	width: 100%;
+	text-align: center;
+} 
 .copyright span img{
 	width:30px;
 	height:30px;
