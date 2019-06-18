@@ -34,6 +34,11 @@ class User extends Base
         $this->assign('user', $this->user);
         return $this->fetch();
     }
+    
+    public function my_information(){
+
+        return $this->fetch();
+    }
 
     # 我的基因
     public function my_gene(){
