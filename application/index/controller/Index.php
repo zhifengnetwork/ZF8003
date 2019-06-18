@@ -403,7 +403,7 @@ class Index extends Base
                 $data['completion'] = json_encode($completion);
                 $data['addtime'] = $data['utime'] = time();
                 
-                $res = Db::name('gene')->insert($data);
+                $res = Db::name('gene')->strict(false)->insert($data);
                 if($res){
                     echo "<script>parent.success('提交成功！正在刷新...');</script>";
                     exit;
