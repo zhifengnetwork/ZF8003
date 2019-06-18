@@ -125,20 +125,23 @@ class User extends Base
             $gene['addtime'] = time();
 
             $completion = [];
+            $arr = [];
             foreach($gene as $k=>&$v){
                 if($k=='name' || $k=='nation' || $k=='region' || $k=='desc' || $k=='user_id' || $k=='addtime'){
                     continue;
                 }
                 if(Standard_Gene($k)){
-                    $gene[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
+                    $arr[strtolower($k)] = $v ? intval((double)$v) * 100 : 0;
+                    
                 }else{
                     $completion[strtolower($k)] = $v ? intval((double)$v * 100) : 0;
                 }
             }
+            $gene = array_merge($gene,$arr);
             if($completion){
                 $gene['completion'] = json_encode($completion);
             }
-
+            
             $res = Db::name('gene')->strict(false)->insert($gene);
             if($res){
                 Session::clear('mobile');
