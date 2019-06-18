@@ -244,6 +244,11 @@ class Index extends Base
                 useJson([],'请输入联系方式！',0);
                 exit;
             }
+            if($mobile){
+                if(!preg_match("/^1[34578]\d{9}$/", $mobile)){
+                    return json(['status'=>0,'msg'=>'手机号码格式不正确！']); 
+                }
+            }
             
             $info['mobile'] = $mobile;
             $info['nation'] = $nation;
