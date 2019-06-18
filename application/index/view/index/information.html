@@ -29,28 +29,28 @@
 		        					<span class="name">姓名:</span>
 	        					</div>
 	        					<div class="text">
-	        						<input type="text" class="name"/>
+	        						<input type="text" name="name" class="name"/>
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">民族:</span>
 	        					<div class="text">
-	        						<input type="text" class="mingzu"/>
+	        						<input type="text" name="nation" class="nation"/>
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">现居地:</span>
 	        					<div class="text">
-	        						<input type="text" class="xianjudi"/>
+	        						<input type="text" name="on_addr" class="on_addr"/>
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">派字:</span>
 	        					<div class="text">
-	        						<input type="text"  class="paizi"/>
+	        						<input type="text" name="pai" class="pai"/>
 	        					</div>
 	        				</div>
 	        				
@@ -63,28 +63,28 @@
 		        					<span class="name">联系电话:</span>
 	        					</div>
 	        					<div class="text">
-	        						<input type="text" class="dianhua"/>
+	        						<input type="text" name="mobile" class="mobile"/>
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">性别:</span>
 	        					<div class="text">
-	        						<input type="text" class="sex"/>
+	        						<input type="text" name="sex" class="sex"/>
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">祖籍地:</span>
 	        					<div class="text">
-	        						<input type="text" class="zuji"/>
+	        						<input type="text" name="addr_log" class="addr_log"/>
 	        					</div>
 	        				</div>
 	        				
 	        				<div class="in">
 	        					<span class="name tr">是否拥有家谱:</span>
 	        					<div class="text">
-	        						<input type="text" class="jiapu"/>
+	        						<input type="text" name="is_family_tree" class="is_family_tree"/>
 	        					</div>
 	        				</div>
 	        				
@@ -94,19 +94,19 @@
 	        		<div class="are_wrap">
 	        			<span>迁移记录:</span>
 	        			<div class="are">
-    						<input type="text" class="jilu"/>
+    						<input type="text" name="migration" class="migration"/>
     					</div>
 	        		</div>
 	        		<!--其他说明:-->
 	        		<div class="are_wrap">
 	        			<span>其他说明:</span>
 	        			<div class="are">
-    						<input type="text" class="shuoming"/>
+    						<input type="text" name="desc" class="desc"/>
     					</div>
 					</div>
 		</form>			
 					<div class="personal_message_ear">
-						<input type="checkbox" checked class="open"/><span class="personal_message">是否公开个人信息</span>
+						<input type="checkbox" checked class="is_open"/><span class="personal_message">是否公开个人信息</span>
 						<br/>
 						基于寻根溯源的需要，族内鼓励选择公开，除非有特殊情况。选择不公开，则别人匹配出结果后将不能查看您的基本信息
 					</div>
@@ -137,16 +137,16 @@
 				// 	url:"{:url('index/import_data1')}",
 				// 	data:{
 				// 		name:$(".name").val(),
-				// 		nation:$(".mingzu").val(),
-				// 		on_addr:$(".xianjudi").val(),
-				// 		pai:$(".paizi").val(),
-				// 		mobile:$(".dianhua").val(),
+				// 		nation:$(".nation").val(),
+				// 		on_addr:$(".on_addr").val(),
+				// 		pai:$(".pai").val(),
+				// 		mobile:$(".mobile").val(),
 				// 		sex:$(".sex").val(),
-				// 		addr_log :$(".zuji").val(),
-				// 		is_family_tree:$(".jiapu").val(),
-				// 		migration:$(".jilu").val(),
-				// 		desc:$(".shuoming").val(),
-				// 		is_open:$(".open").val()
+				// 		addr_log :$(".addr_log").val(),
+				// 		is_family_tree:$(".is_family_tree").val(),
+				// 		migration:$(".migration").val(),
+				// 		desc:$(".desc").val(),
+				// 		is_open:$(".is_open").val()
 				// 		},
 				// 	dataType:"json",
 				// 	success:function(res){	
@@ -158,19 +158,18 @@
 
 				// 	}
 				// })
-
 				$.post("{:url('index/import_data1')}",{
-					name:$(".name").val(),
-					nation:$(".mingzu").val(),
-					on_addr:$(".xianjudi").val(),
-					pai:$(".paizi").val(),
-					mobile:$(".dianhua").val(),
-					sex:$(".sex").val(),
-					addr_log :$(".zuji").val(),
-					is_family_tree:$(".jiapu").val(),
-					migration:$(".jilu").val(),
-					desc:$(".shuoming").val(),
-					is_open:$(".open").val()
+					name:$("input[name=name]").val(),
+					nation:$("input[name=nation]").val(),
+					on_addr:$("input[name=on_addr]").val(),
+					pai:$("input[name=pai]").val(),
+					mobile:$("input[name=mobile]").val(),
+					sex:$("input[name=sex]").val(),
+					addr_log :$("input[name=addr_log]").val(),
+					is_family_tree:$("input[name=is_family_tree]").val(),
+					migration:$("input[name=migration]").val(),
+					desc:$("input[name=desc]").val(),
+					is_open:$("input[name=is_open]").val()
 				},function(data){
 					if(data.status==0){
 						layer.msg(data.msg,{icon:5});

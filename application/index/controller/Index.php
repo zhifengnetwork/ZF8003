@@ -342,7 +342,7 @@ class Index extends Base
 
             $res = Db::name('import_gene')->insert([
                 'user_id' => $user_id,
-                'name' => $arr[0]['name'],
+                'name' => $name,
                 'sex' => $sex,
                 'year' => date('Y',$time),
                 'month' => date('m',$time),
