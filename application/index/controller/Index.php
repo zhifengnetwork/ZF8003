@@ -337,7 +337,7 @@ class Index extends Base
                 $value['addtime'] = $time;
                 $value['info'] = json_encode($info);
             }
-            
+            pred($arr);
             Db::name('gene')->strict(false)->insertAll($arr);
             Db::name('users')->update(['id'=>$user_id,'gene_file'=>'']);
 
