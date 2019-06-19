@@ -103,6 +103,17 @@
 		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
 		<script>
 
+		function check_open(obj){
+			var is_open = $(obj).attr('is_open');
+			var _href = $(obj).attr('_href');
+			
+			if(is_open==0){
+				alert('该用户信息不公开！');
+				return;
+			}
+			window.location.replace(_href);
+		}
+
 			var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
 			var page = 1;
 			function ajax_sourch_submit() {
@@ -160,16 +171,7 @@
 				}
 			});
 
-			function check_open(obj){
-				var is_open = $(obj).attr('is_open');
-				var _href = $(obj).attr('_href');
-				
-				if(is_open==0){
-					alert('该用户信息不公开！');
-					return;
-				}
-				window.location.replace(_href);
-			}
+			
 
 
 // 			var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
