@@ -84,7 +84,7 @@ class Gene extends Base
         if(!$id){
             layer_error('请选择进行匹对的基因数据');
         }
-        $calculation = Db::name('config')->where(['value'=>['>', 0], 'type'=>['=', 'gene_config_calculation']])->field('name')->select();
+        $calculation = Db::name('config')->where(['value'=>['>', 0], 'type'=>['=', 'gene_config_calculation']])->where('name','neq','dys389i')->field('name')->select();
         if(!$calculation){
             layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
         }
@@ -94,7 +94,7 @@ class Gene extends Base
         }
 
         $mutation = implode(",", $mutation);
-        $config_mutation = Db::name('config')->where(['type'=>['=', 'gene_config_mutation'], 'name'=>['in',"$mutation"]])->field('name,value')->select();
+        $config_mutation = Db::name('config')->where(['type'=>['=', 'gene_config_mutation'], 'name'=>['in',"$mutation"]])->where('name','neq','dys389i')->field('name,value')->select();
         foreach($config_mutation as $v){
             if($v['value'] == 0){
                 layer_error('管理员未设置基因库检测参数，功能暂不可用！',true);
