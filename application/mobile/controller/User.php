@@ -525,6 +525,12 @@ class User extends Base
             array_multisort($last_names,SORT_ASC,$data);
         }
 
+        $pindex = max(1, intval($page));
+		$psize = 50;
+		$pageCount = ceil(count($list_count) / $psize);
+        $offset = ($pindex - 1) * $psize;
+        $data = array_slice($data,$offset,$psize);
+
         if($page>1){
             useJson($data);
             echo json_encode(['status'=>1,'msg'=>'获取成功！','data'=>$data],JSON_UNESCAPED_UNICODE);die;
