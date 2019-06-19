@@ -453,7 +453,7 @@ class Member extends Base
     /**
      * 注册邀请送积分
      */
-    public function reg_jien(){
+    public function reg_jifen(){
 
         $info = Db::name('jifen_set')->find();
 
