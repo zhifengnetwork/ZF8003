@@ -10,7 +10,6 @@
 		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
 		<link rel="stylesheet" href="__STATIC__/css/register/register.css" />
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.min.js"></script>
-
 	</head>
 
 	<body>
@@ -52,12 +51,15 @@
 
 							<!-- <img src="__STATIC__/images/resigter/tuceng.png" class="yanzhengma" /> -->
 							<img class="" style="width:90px; height: 35px;bottom: 0;"  onclick="Refresh_Captcha();" id="img-captcha" src="{:captcha_src()}" alt="captcha" />
-				
+
 						</div>
 					</div>
 
-					<div class="resigter_submit" onclick="submit();">提交</div>
-					<div class="tips_ear"><a class="tip" target="_blank" href="{:url('article/details','',false)}?id=31">注册即同意《服务协议》</a></div>
+					<div class="resigter_submit" id="confirmSubmit" onclick="submit();">提交</div>
+					<div class="tips_ear">
+						<input class="b-checkbox" onchange="changSubmitType(this)" style="margin-top: 15px; margin-right:3px;" type="checkbox"  checked/>
+						<a class="tip" target="_blank" href="{:url('article/details','',false)}?id=31">注册即同意《服务协议》《隐私政策》</a>
+					</div>
 					<!--<div class="weixin_ear">
 
 						<p><img src="__STATIC__/images/resigter/we_chat_icon.png" /></p>
@@ -104,6 +106,17 @@
 					/*初始化，倒计时'时间'*/
 					timerNum = 60;
 					return false;
+				}
+			}
+
+			function changSubmitType(flag){
+				var stu =$(flag).is(":checked");
+				if(stu){
+					$('#confirmSubmit').attr('disabled',false);
+					$('#confirmSubmit').removeClass('save-active');
+				}else{
+					$('#confirmSubmit').attr('disabled','disabled');
+					$('#confirmSubmit').addClass('save-active');
 				}
 			}
 			$(document).ready(function() {

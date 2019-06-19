@@ -200,7 +200,13 @@
 					</div>
 		       </div>
           </div> 
-          <button class="save" type="submit" style="margin-left:35%;">提交保存</button>
+          <button id="confirmSubmit" class="save" type="submit" style="margin-left:35%;" >提交保存</button>
+          <div>
+            <input  class="b-checkbox" onchange="changSubmitType(this)" style=" vertical-align: middle;" type="checkbox"  checked/> 是否公开个人信息
+            <p style=" margin: 10px 0;">基于寻根溯源的需要，族内鼓励选择公开，除非有特殊情况。选择不公开，则别人匹配出结果后将不能查看您的基本信息</p>
+          </div>
+          
+
           </form>
 		<iframe name="ajaxR" style="display:block;width:100%;height:500px;"></iframe>
 		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js"></script>
@@ -208,6 +214,16 @@
         <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
 		<script>
 		
+        function changSubmitType(flag){
+            var stu =$(flag).is(":checked");
+            if(stu){
+                $('#confirmSubmit').attr('disabled',false);
+                $('#confirmSubmit').removeClass('save-active');
+            }else{
+                $('#confirmSubmit').attr('disabled',true);
+                $('#confirmSubmit').addClass('save-active');
+            }
+        }
     	function error_msg(msg){
             layer.msg(msg,{icon:5});
         }

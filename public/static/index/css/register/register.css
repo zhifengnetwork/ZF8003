@@ -166,16 +166,16 @@
 	justify-content: center
 }
 .tips_ear .tip{
-
-	color:#CCCCCC;
-	display: inline-block;
-	font-size: 14px;
-	width: 340px;
-	height:40px;
-	line-height: 40px;
-	text-align: right;
+    color: #999;
+    display: inline-block;
+    font-size: 14px;
+    width: 303px;
+    height: 40px;
+    line-height: 40px;
 }
-
+.save-active{
+	background: #bdbdbd;
+}
 
 
 

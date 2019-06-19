@@ -119,17 +119,23 @@
 			
 			<!--注册 按钮 box，样式=>public.css-->
 			<div class="registerButBox">
-				<p class="registerButton" onclick="submit();">提交</p>
+				<p id="confirmSubmit" class="registerButton" onclick="submit();" >提交</p>
+			</div>
+
+			<div class="ticp-cont">
+				<input  class="b-checkbox" onclick="changSubmitType(this)" style=" vertical-align: middle;" type="checkbox"  checked/>
+				<a class="ticp" target="_blank" href="javascript:void(0);">注册即同意《服务协议》《隐私政策》</a>
 			</div>
 			
+
 			<!--第三方登陆-->
-				<div class="the_third_party_wrap">
+				<!-- <div class="the_third_party_wrap">
 					<p class="the_third_party_box">
 						<img class="the_third_party_icon" onclick="javascript:window.location.href='/mobile/index/wx_sign'" src="__STATIC__/img/public/we_chat_icon.png"/>
 					</p>
 					<p class="the_third_party_text">第三方登录</p>
 					
-				</div>
+				</div> -->
 			
 			
 		</div>
@@ -142,6 +148,16 @@
 			var re_email = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
 			var re_pass = /^([A-Za-z\d.]){6,20}$/;
 
+			function changSubmitType(flag){
+				var stu =$(flag).is(":checked");
+				if(stu){
+					$('#confirmSubmit').attr('disabled',false);
+					$('#confirmSubmit').removeClass('save-active');
+				}else{
+					$('#confirmSubmit').attr('disabled',true);
+					$('#confirmSubmit').addClass('save-active');
+				}
+			}
 
             $('.code').on('click',function(){
                 if(code == 0){
