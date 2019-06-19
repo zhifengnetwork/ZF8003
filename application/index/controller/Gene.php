@@ -78,7 +78,7 @@ class Gene extends Base
         ini_set('memory_limit','2048M');
         set_time_limit(0);
 
-        // $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
+        $re = isset($_GET['re']) ? intval($_GET['re']) : 0;
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
         $page = input('page',1);
         if(!$id){
@@ -117,12 +117,12 @@ class Gene extends Base
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
-        // if($list_count > 100 && !$re){
-        //     $this->assign('loading', 1);
-        //     $this->assign('id', $id);
-        //     return $this->fetch();
-        //     exit;
-        // }
+        if($list_count > 100 && !$re){
+            $this->assign('loading', 1);
+            $this->assign('id', $id);
+            return $this->fetch();
+            exit;
+        }
         // $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->paginate(50,false,$pageParam);
         // $list = $list->all();
         $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->select();
@@ -210,6 +210,12 @@ class Gene extends Base
             $last_names = array_column($data,'cay');
             array_multisort($last_names,SORT_ASC,$data);
         }
+
+        $pindex = max(1, intval($page));
+		$psize = 50;
+		$pageCount = ceil(count($list_count) / $psize);
+        $offset = ($pindex - 1) * $psize;
+        $data = array_slice($data,$offset,$psize);
         
         if($page>1){
             useJson($data);
