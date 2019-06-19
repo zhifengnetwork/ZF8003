@@ -153,9 +153,11 @@
 				if(stu){
 					$('#confirmSubmit').attr('disabled',false);
 					$('#confirmSubmit').removeClass('save-active');
+					$('#confirmSubmit').attr('onclick','submit()');
 				}else{
 					$('#confirmSubmit').attr('disabled',true);
 					$('#confirmSubmit').addClass('save-active');
+					$('#confirmSubmit').attr('onclick','');
 				}
 			}
 

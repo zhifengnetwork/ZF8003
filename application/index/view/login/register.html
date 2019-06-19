@@ -58,7 +58,7 @@
 					<div class="resigter_submit" id="confirmSubmit" onclick="submit();">提交</div>
 					<div class="tips_ear">
 						<input class="b-checkbox" onchange="changSubmitType(this)" style="margin-top: 15px; margin-right:3px;" type="checkbox"  checked/>
-						<a class="tip" target="_blank" href="{:url('article/details','',false)}?id=31">注册即同意《服务协议》《隐私政策》</a>
+						<a style="width:auto;" class="tip" target="_blank" href="{:url('article/details','',false)}?id=31">注册即同意《服务协议》《隐私政策》</a>
 					</div>
 					<!--<div class="weixin_ear">
 
@@ -114,9 +114,11 @@
 				if(stu){
 					$('#confirmSubmit').attr('disabled',false);
 					$('#confirmSubmit').removeClass('save-active');
+					$('#confirmSubmit').attr('onclick','submit()');
 				}else{
 					$('#confirmSubmit').attr('disabled','disabled');
 					$('#confirmSubmit').addClass('save-active');
+					$('#confirmSubmit').attr('onclick','');
 				}
 			}
 			$(document).ready(function() {
