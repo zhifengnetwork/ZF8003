@@ -172,7 +172,7 @@ function Standard_Gene($key = ''){
 
     $array = [
         "dys19",
-        "dys389i",
+        "dys389a",
         "dys389b",
         "dys390",
         "dys391",
