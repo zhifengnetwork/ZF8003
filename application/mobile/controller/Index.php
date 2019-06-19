@@ -92,6 +92,8 @@ class Index extends Base
                     $first_leader = Session::get('shareUp1');
                 }
 
+                $jifen = Db::name('jifen_set')->find();
+
                 $inser_data = [
                     'nickname' => $data['nickname'],
                     'sex'   => $data['sex'],
@@ -101,6 +103,7 @@ class Index extends Base
                     'first_leader' => $first_leader,
                     'register_time' => $time,
                     'login_time'    => $time,
+                    'integral'      => $jifen['reg_jifen'],
                     'avatar'    => $data['head_pic']
                 ];
                 
@@ -108,6 +111,13 @@ class Index extends Base
                 if(!$user_id){
                     layer_error('系统错误！请重试！');
                 }
+
+                $reg_jf_log_data['user_id'] = $user_id;
+                $reg_jf_log_data['son_user_id'] = 0;
+                $reg_jf_log_data['type'] = 3;
+                $reg_jf_log_data['jifen'] = $jifen['reg_jifen'];
+                $reg_jf_log_data['add_time'] = time();
+                $this->jifen_log($reg_jf_log_data);
 
                 if($first_leader){
                     //注册邀请送积分
@@ -243,6 +253,8 @@ class Index extends Base
                 $first_leader = Session::get('shareUp1');
             }
 
+            $jifen = Db::name('jifen_set')->find();
+
             $inser_date = [
                 'email'     => $email,
                 // 'email_verification'    => 1,
@@ -252,16 +264,25 @@ class Index extends Base
                 'first_leader'   => $first_leader,
                 'register_time' => $time,
                 'login_time'    => $time,
+                'integral'      => $jifen['reg_jifen'],
             ];
             
             $user_id = Db::name('users')->insertGetId($inser_date);
 
             if($user_id){
+                //积分记录
+                $reg_jf_log_data['user_id'] = $user_id;
+                $reg_jf_log_data['son_user_id'] = 0;
+                $reg_jf_log_data['type'] = 3;
+                $reg_jf_log_data['jifen'] = $jifen['reg_jifen'];
+                $reg_jf_log_data['add_time'] = time();
+                $this->jifen_log($reg_jf_log_data);
+
                 Db::name('mail_code')->where(['type'=>'register', 'sn'=>$register_id, 'code'=>$code])->delete();
 
                 if($first_leader){
                     //注册邀请送积分
-                    $jifen = Db::name('jifen_set')->find();
+                    
                     $jifen = isset($jifen['jifen']) ? $jifen['jifen'] : 0;
                     $yjf = Db::name('users')->where('id',$first_leader)->setInc('integral',$jifen);
                     

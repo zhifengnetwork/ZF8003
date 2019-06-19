@@ -106,8 +106,9 @@
 							<p><span>积分类型：{$type[$vo.type]}</span></p>
 							{if condition="$vo.type eq 1"}
 							<p><span>被邀请用户：</span><span>{$vo['son_email']}</span></p>
-							{else /}
+							{elseif condition="$vo.type eq 2" /}
 							<p><span>订单编号：</span><span>{$vo['order_sn']}</span></p>
+							{elseif condition="$vo.type eq 3" /}
 							{/if}
                             
                             <p><span>积分变动：</span><span>{$vo.jifen} </span></p>

@@ -989,7 +989,7 @@ class User extends Base
                         }
                     }
                 }
-                $type = [1=>'邀请送积分', 2=>'积分兑换商品'];
+                $type = [1=>'邀请送积分', 2=>'积分兑换商品', 3=>'注册送积分'];
                 $this->assign('type', $type);
                 break;
 
