@@ -66,7 +66,7 @@
 					<td>{$vo.region}</td>
                     <td>{$vo.desc}</td>
                     <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
-					<td>{$vo.utime|date="Y-m-d H:i:s",###}</td>
+					<td>{if condition="$vo.utime"}{$vo.utime|date="Y-m-d H:i:s",###}{else /}无{/if}</td>
                     <td class="td-manage" data-id="{$vo.id}">
 						<a title="查看详情" href="javascript:;" onclick="gene_info('查看或编辑基因数据','{$vo.id}')" class="ml-5"
                             style="text-decoration:none">
