@@ -76,19 +76,24 @@ class User extends Base
             $migration = isset($_POST['migration']) ? trim($_POST['migration']) : '';
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
             $gene['desc'] = '';
-
+            $bitian = Standard_Gene_BiTian();
             foreach($gene as $key=>&$value){
-                if( preg_match("/dys/",$key) ){
+                if( preg_match("/(dys|gata_h4)/",strtolower($key)) ){
                     if( $value ){
                         if( !preg_match("/^[0-9]+$/",$value) ){
                             echo "<script>parent.error_msg('请输入正确的频度！只能是数字！');</script>";
                             exit;
                         }
                         $value = $value * 100;
+                    }else{
+                        if( in_array(strtolower($key) ,$bitian)  ){
+                            echo "<script>parent.error_msg('红*标明的基因座必填！');</script>";
+                            exit;
+                        }
                     }
                 }
             }
-
+            
             if(!$gene['name']){
                 echo "<script>parent.error_msg('请输入姓名！');</script>";
                 exit;
