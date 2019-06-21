@@ -217,6 +217,34 @@ function Standard_Gene($key = ''){
     
 }
 
+function Standard_Gene_BiTian(){
+    $array = [
+        "DYS19",
+        "DYS385a",
+        "DYS385b",
+        "DYS389a",
+        "DYS389b",
+        "DYS390",
+        "DYS391",
+        "DYS392",
+        "DYS393",
+        "DYS437",
+        "DYS438",
+        "DYS439",
+        "DYS448",
+        "DYS456",
+        "DYS458",
+        "DYS635",
+        "GATA_H4"
+    ];
+
+    foreach($array as $v){
+        $arr[] = strtolower($v);
+    }
+    
+    return $arr;
+}
+
 # 返回大写的标准基因座
 function Standard_Gene_Up(){
     $data = Standard_Gene();
