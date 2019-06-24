@@ -444,7 +444,7 @@ class User extends Base
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
-        if($list_count > 100 && !$re){
+        if($list_count > 100 && !$re && $page==1){
             $this->assign('loading', 1);
             $this->assign('id', $id);
             return $this->fetch();
