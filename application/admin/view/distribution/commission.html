@@ -64,7 +64,7 @@
                     <td>{$vo.user_money2}</td>
                     <td>
 						{if condition="$user_info[$vo.source_user_id]['avatar']"}
-						<img style="width:25px;height:25px;" src="{$user_info[$vo.add_user_id]['avatar']}" />
+						<img style="width:25px;height:25px;" src="{$user_info[$vo.source_user_id]['avatar']}" />
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						{/if}
                         {$user_info[$vo.source_user_id]['nickname'] ? $user_info[$vo.source_user_id]['nickname'] : ''}

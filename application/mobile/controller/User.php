@@ -76,19 +76,24 @@ class User extends Base
             $migration = isset($_POST['migration']) ? trim($_POST['migration']) : '';
             $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
             $gene['desc'] = '';
-
+            $bitian = Standard_Gene_BiTian();
             foreach($gene as $key=>&$value){
-                if( preg_match("/dys/",$key) ){
+                if( preg_match("/(dys|gata_h4)/",strtolower($key)) ){
                     if( $value ){
                         if( !preg_match("/^[0-9]+$/",$value) ){
                             echo "<script>parent.error_msg('请输入正确的频度！只能是数字！');</script>";
                             exit;
                         }
                         $value = $value * 100;
+                    }else{
+                        if( in_array(strtolower($key) ,$bitian)  ){
+                            echo "<script>parent.error_msg('红*标明的基因座必填！');</script>";
+                            exit;
+                        }
                     }
                 }
             }
-
+            
             if(!$gene['name']){
                 echo "<script>parent.error_msg('请输入姓名！');</script>";
                 exit;
@@ -439,7 +444,7 @@ class User extends Base
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
-        if($list_count > 100 && !$re){
+        if($list_count > 100 && !$re && $page==1){
             $this->assign('loading', 1);
             $this->assign('id', $id);
             return $this->fetch();
@@ -454,7 +459,7 @@ class User extends Base
 
         $lately = 1;
         $data = array();
-        $count = count($list);
+        // $count = count($list);
         foreach($list as $v){
 
             $r['is_open'] = $v['is_open'];
@@ -467,19 +472,19 @@ class User extends Base
             $r['region1'] = $i['region'] ? $i['region'] : '--';
             $r['region2'] = $v['region'] ? $v['region'] : '--';
 
-            if(mb_strlen( $r['nation1'] ) > 10){
-                $r['nation1'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['nation1'] ) > 12){
+                $r['nation1'] = substr( $r['nation1'], 12 ) . '...';
             }
-            if(mb_strlen( $r['nation2'] ) > 10){
-                $r['nation2'] = substr( $r['nation1'], 10 ) . '...';
-            }
-
-            if(mb_strlen( $r['region1'] ) > 10){
-                $r['region1'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['nation2'] ) > 12){
+                $r['nation2'] = substr( $r['nation1'], 12 ) . '...';
             }
 
-            if(mb_strlen( $r['region2'] ) > 10){
-                $r['region2'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['region1'] ) > 12){
+                $r['region1'] = substr( $r['nation1'], 12 ) . '...';
+            }
+
+            if(mb_strlen( $r['region2'] ) > 12){
+                $r['region2'] = substr( $r['nation1'], 12 ) . '...';
             }
 
 
@@ -506,9 +511,6 @@ class User extends Base
             }
             $generation = intval($cay / 25);
             
-            // $r['diff'] = $diff;
-            // $r['locus'] = $locus;
-            // $r['pass'] = $pass;
             $r['cay'] = intval($cay*100)/100;
             if($generation > 2){
                 $r['generation'] = intval($generation - 2) . ' - ' . intval($generation + 2);

@@ -74,6 +74,7 @@ class Index extends Base
                 $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');
                 $excel_array = $obj_PHPExcel->getsheet(0)->toArray(); //转换为数组格式
 
+                $bitian = Standard_Gene_BiTian();
                 $arr_name = [];
                 $arr = [];
                 foreach($excel_array as $key=>$value){
@@ -86,6 +87,10 @@ class Index extends Base
                     if($key>2){
                         foreach($arr_name as $k=>$v){
                             $arr[$k]['name'] = $arr_name[$k];
+                            if( in_array( strtolower($value[0]) , $bitian) && !$value[$k] ){
+                                echo "<script>parent.error('红色字体的基因座为必填！');</script>";
+                                exit;
+                            }
                             $arr[$k][$value[0]] = $value[$k];
                         }
                     }
@@ -364,6 +369,8 @@ class Index extends Base
 
     # 在线填写报告
     public function online_import_data(){
+
+        $this->Verification_User();
         
         if($_POST){
             $key = isset($_POST['key']) ? $_POST['key'] : array();
@@ -386,6 +393,8 @@ class Index extends Base
                     return json(['status'=>0,'msg'=>'手机号码格式不正确！']); 
                 }
             }
+            
+            $bitian = Standard_Gene_BiTian();
 
             if($key){
                 $completion = '';
@@ -398,8 +407,13 @@ class Index extends Base
                             }
                         }
                         if(Standard_Gene($v)){
-                            $v = preg_replace("/-/",  '_' ,  $v);
-                            $data[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
+                            $v = strtolower($v);
+                            if( in_array($v ,$bitian) && !$value[$k] ){
+                                echo "<script>parent.error('红色字体的基因座为必填！');</script>";
+                                exit;
+                            }
+
+                            $data[$v] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
                         }else{
                             $completion[strtolower($v)] = $value[$k] ? intval((double)$value[$k] * 100) : 0;
                         }

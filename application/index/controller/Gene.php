@@ -117,7 +117,7 @@ class Gene extends Base
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
         $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
-        if($list_count > 100 && !$re){
+        if($list_count > 100 && !$re && $page==1){
             $this->assign('loading', 1);
             $this->assign('id', $id);
             return $this->fetch();
@@ -140,7 +140,7 @@ class Gene extends Base
         }
         $lately = 1;
         $data = array();
-        $count = count($list);
+        // $count = count($list);
         foreach($list as $v){
             $r['is_open'] = $v['is_open'];
             
@@ -153,19 +153,19 @@ class Gene extends Base
             $r['region1'] = $i['region'] ? $i['region'] : '--';
             $r['region2'] = $v['region'] ? $v['region'] : '--';
 
-            if(mb_strlen( $r['nation1'] ) > 10){
-                $r['nation1'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['nation1'] ) > 12){
+                $r['nation1'] = substr( $r['nation1'], 12 ) . '...';
             }
-            if(mb_strlen( $r['nation2'] ) > 10){
-                $r['nation2'] = substr( $r['nation1'], 10 ) . '...';
-            }
-
-            if(mb_strlen( $r['region1'] ) > 10){
-                $r['region1'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['nation2'] ) > 12){
+                $r['nation2'] = substr( $r['nation1'], 12 ) . '...';
             }
 
-            if(mb_strlen( $r['region2'] ) > 10){
-                $r['region2'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['region1'] ) > 12){
+                $r['region1'] = substr( $r['nation1'], 12 ) . '...';
+            }
+
+            if(mb_strlen( $r['region2'] ) > 12){
+                $r['region2'] = substr( $r['nation1'], 12 ) . '...';
             }
 
 
@@ -216,7 +216,7 @@ class Gene extends Base
 		$pageCount = ceil(count($list_count) / $psize);
         $offset = ($pindex - 1) * $psize;
         $data = array_slice($data,$offset,$psize);
-        
+        // echo $page;die;
         if($page>1){
             useJson($data);
             echo json_encode(['status'=>1,'msg'=>'获取成功！','data'=>$data],JSON_UNESCAPED_UNICODE);die;
