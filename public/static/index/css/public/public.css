@@ -50,7 +50,7 @@ body{
 	width: 100%;
 	height: 90px;
 	font-size: 20px;
-	background:rgba(0,0,0,.3);
+	background:#eeefef;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);/*兼容IE8的rgba透明度*/
 }
 .header .inner-wrap .logo{
@@ -80,7 +80,7 @@ body{
 	margin-right: 0;
 }
 .header .inner-wrap .nav li a{
-	color: #ffffff;
+	color: black;
 }
 .header .inner-wrap .nav li a:hover{
 	color: #37afe6;
@@ -101,7 +101,7 @@ body{
 }
 .header .inner-wrap .login a{
 	margin-left: 15px;
-	color: #fff;
+	color: black;
 	line-height: 50px;
 }
 .header .inner-wrap .login a:hover{
@@ -128,16 +128,16 @@ body{
 .footer{
 	width: 100%;
 	height: 350px;
-	color: #fff;
-	background-color: #002449;
+	background-color: #eeefef;
 }
 .footer .left{
 	height: 210px;
 }
 .footer .bottomNav{
+	margin-top:20px;
 	width: 940px;
-	height:250px;
-	border-bottom: 1px solid #56c8fa;
+	height:280px;
+	border-bottom: 1px solid #a8a8a8;
 }
 .footer .bottomNav ul{
 	height: 104px;
@@ -147,16 +147,19 @@ body{
 	flex-wrap: wrap; */
 }
 .footer .bottomNav ul li{
-	width:33.333333%;
+	width:76%;
 	float:left;
 	height:40px;
 	line-height: 40px;
+	margin-top: 20px;
+	
 	
 }
 .footer .bottomNav ul li a{
-	color: #fff;
+	color:black;
 	font-size: 20px;
 	display: block;
+	
 }
 .footer .copyright{
 	height: 105px;
@@ -166,8 +169,15 @@ body{
 	margin-left: 40px;
 }
 .footer .code {
-	float: right;
-	margin-top: 20px;
+	/*float: right;
+	margin-top: 20px;*/
+	margin-top: -20px;
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%,0);
+	-webkit-transform: translate(-50%,0);
+	-moz-transform: translate(-50%,0);
+	-ms-transform: translate(-50%,0);
 }
 .footer .code img{
 	display: block;

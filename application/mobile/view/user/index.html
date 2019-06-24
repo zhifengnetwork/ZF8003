@@ -23,8 +23,9 @@
 
 			<!--头像区域-->
 			<div class="my_pic">
-				<div style="width: 2rem; position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
+				<div style="width: 2.8rem; position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
 					<img src="{$user['avatar']}" onerror="this.src='/public/mobile-default-user-icon.png'" style="width: 1.4rem;height: 1.4rem; border-radius: 50%;z-index: 1222;" />
+					<p style="font-size:12px;">会员等级：二级会员</p>
 					<p style="font-size:12px;">ID：{$user['id']}</p>
 					<p>{$user['nickname']}</p>
 				</div>
@@ -48,6 +49,14 @@
 				  
 					<img class="img1" src="__STATIC__/img/my/qianbao@2x.png" />
 					<a>我的钱包</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+               	
+				</li>
+				<li onClick="window.location.href='/mobile/user/my_walet'">
+
+				  
+					<img class="img1" src="__STATIC__/img/my/liwu.png" />
+					<a>会员礼品</a>
 					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
                	
 				</li>

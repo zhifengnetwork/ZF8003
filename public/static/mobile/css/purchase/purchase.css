@@ -91,7 +91,10 @@ body{
 .item-msg .buy_box .price{
     color: #ff0000;
     font-weight: 400;
-    font-size:.4rem;
+    font-size:.3rem;
+    height: .6rem;
+    line-height: .6rem;
+  
 }
  
  
