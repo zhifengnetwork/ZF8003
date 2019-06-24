@@ -153,19 +153,19 @@ class Gene extends Base
             $r['region1'] = $i['region'] ? $i['region'] : '--';
             $r['region2'] = $v['region'] ? $v['region'] : '--';
 
-            if(mb_strlen( $r['nation1'] ) > 10){
-                $r['nation1'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['nation1'] ) > 12){
+                $r['nation1'] = substr( $r['nation1'], 12 ) . '...';
             }
-            if(mb_strlen( $r['nation2'] ) > 10){
-                $r['nation2'] = substr( $r['nation1'], 10 ) . '...';
-            }
-
-            if(mb_strlen( $r['region1'] ) > 10){
-                $r['region1'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['nation2'] ) > 12){
+                $r['nation2'] = substr( $r['nation1'], 12 ) . '...';
             }
 
-            if(mb_strlen( $r['region2'] ) > 10){
-                $r['region2'] = substr( $r['nation1'], 10 ) . '...';
+            if(mb_strlen( $r['region1'] ) > 12){
+                $r['region1'] = substr( $r['nation1'], 12 ) . '...';
+            }
+
+            if(mb_strlen( $r['region2'] ) > 12){
+                $r['region2'] = substr( $r['nation1'], 12 ) . '...';
             }
 
 

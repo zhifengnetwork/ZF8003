@@ -126,36 +126,31 @@
 					url: "{:url('user/gene_analysis_list','',false)}?id={$Request.param.id}"+"&page="+page,
 					dataType:"json",
 					success: function (data) {
-						if(data.stats==1){
-							if(data.data.length == 0){
-								before_request = 0;
-								return;
-							}
+						if(data.status == 1){
 							before_request = 1;
-
 							for(var i = 0; i<data.data.length; i++){
 							
-							let str = '<table frame="void" class="biaogege2">'+
-									'<tbody class="zuijia">'+
-									'<tr>'+
-										'<td>'+
-											'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"user/my_information\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
-										'</td>'+
-										'<td>'+data.data[i].name1+'</td>'+
-										'<td>'+data.data[i].name2+'</td>'+
-										'<td>'+data.data[i].nation1+'</td>'+
-										'<td rowspan="2" class="niandai" hidden=""><span class="nian"><span>'+data.data[i].line.name+'</span><span>年</span></span><br><span>('+data.data[i].id2+')代</span></td>'+
-										'<td rowspan="2" class="chaodai">'+
-											'<img src="/public/static/index/images/home/jiantou5.png" class="jiantoudd">'+
-											'<img src="/public/gene/image/'+data.data[i].line.img+'" style="height:36px;" class="jiantou_hou">'+
-											'<span class="dynasty">'+data.data[i].line.name+'</span>'+
-										'</td>'+
-									'</tr>'+
-									'</tbody>'+
-									'</table>'
-							$(".table_ear2").append(str);
-							$('.biaogege2:even').css('background', '#EFF3F6');
-							$('.biaogege2:odd').css('background', '#E8E8E8');
+								let str = '<table frame="void" class="biaogege2">'+
+										'<tbody class="zuijia">'+
+										'<tr>'+
+											'<td>'+
+												'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"user/my_information\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
+											'</td>'+
+											'<td>'+data.data[i].name1+'</td>'+
+											'<td>'+data.data[i].name2+'</td>'+
+											'<td>'+data.data[i].nation1+'</td>'+
+											'<td rowspan="2" class="niandai" hidden=""><span class="nian"><span>'+data.data[i].line.name+'</span><span>年</span></span><br><span>('+data.data[i].id2+')代</span></td>'+
+											'<td rowspan="2" class="chaodai">'+
+												'<img src="/public/static/index/images/home/jiantou5.png" class="jiantoudd">'+
+												'<img src="/public/gene/image/'+data.data[i].line.img+'" style="height:36px;" class="jiantou_hou">'+
+												'<span class="dynasty">'+data.data[i].line.name+'</span>'+
+											'</td>'+
+										'</tr>'+
+										'</tbody>'+
+										'</table>'
+								$(".table_ear2").append(str);
+								$('.biaogege2:even').css('background', '#EFF3F6');
+								$('.biaogege2:odd').css('background', '#E8E8E8');
 							
 							}
 						}
@@ -174,41 +169,7 @@
 			
 
 
-// 			var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
-// 			console.log(tt)
-// 			if(tt >= 1500) {
-// 				$(".table_ear2 table:nth-child(1)").show()
-// 			}
-// 			if($(".table_ear2").find("table").length == 0) {
-// 				$(".wu_pipei").show()
-// 			} else {
-// 				$(".wu_pipei").hide()
-// 			}
-// 			var length = $(".table_ear2").find("table").length
-// 			console.log(length)
-// 			for(var i = 2; i <= length; i++) {
-// 				var chaodai = $(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .dynasty").html();
-				
-// //				if(chaodai == "民朝" || chaodai == "清朝" || chaodai == "民国" || chaodai == "现今") {
-// //					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child").addClass("font_color")
-// //				}
-// 				if(chaodai == "明朝") {
-// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l9.png")
-// 				}
-// 				if(chaodai == "民国") {
-// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l11.png")
-// 				}
-// 				if(chaodai == "现代") {
-// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l6.png")
-// 				}
-// 				if(chaodai == "清朝") {
-// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l8.png")
-// 				}
-// 				if(chaodai == "古代") {
-// 					$(".table_ear2 table:nth-child(" + i + ") tbody tr:nth-child(1) td:last-child .jiantou_hou").attr("src", "__STATIC__/img/home/l7.png")
-// 				}
 
-// 			}
 
 			//奇偶性设置背景颜色
 			$('.biaogege2:even').css('background', '#EFF3F6');
