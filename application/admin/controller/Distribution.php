@@ -456,7 +456,7 @@ class Distribution extends Base
             'buy' => '购买商品',
         ];
 
-
+        // pred($list);
         $this->assign('search', $search);
         $this->assign('user_info', $user_info);
         $this->assign('source_name', $source_name);
