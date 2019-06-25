@@ -443,6 +443,7 @@ class Goods extends Base
                     //积分记录
                     $jf_log_data['user_id'] = $this->user_id;
                     $jf_log_data['goods_id'] = $info['id'];
+                    $jf_log_data['order_id'] = $o_res;
                     $jf_log_data['type'] = 2;
                     $jf_log_data['jifen'] = $info['price'];
                     $jf_log_data['add_time'] = time();
