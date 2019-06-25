@@ -315,7 +315,7 @@ class Goods extends Base
                     exit;
                 }
 
-                $order_status = 3;
+                $order_status = 1;
                 $pay_status = 1;
             }
             
