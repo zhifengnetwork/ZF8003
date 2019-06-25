@@ -1,0 +1,215 @@
+{include file="layout/head"}
+<style>
+    #goods-image a{
+        display:block;
+        width: 150px;
+        height: 150px;
+        float:left;
+        margin-right: 5px;
+    }
+    #goods-image a img{
+        display:block;
+        width:100%;
+        height:100%;
+    }
+    .del-up-image{
+        position:relative;
+        left:90%;
+        top:-100%;
+    }
+
+
+</style>
+<div class="page-container">
+	<form action="" method="post" class="form form-horizontal" target="ajaxR-from">
+
+        <input type="hidden" id="goods_id" name="goods_id" value='{if condition="isset($info)"}{$info.id}{else /}0{/if}' >
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" {if condition="isset($info)"}value="{$info.name}"{/if} placeholder="商品名称" id="" name="name">
+			</div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">描述</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" {if condition="isset($info)"}value="{$info.desc}"{/if} placeholder="商品描述" id="" name="desc">
+            </div>
+        </div>
+		
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品展示图：</label>
+            <div class="formControls col-xs-8 col-sm-9" id="goods-image">
+                {if condition="isset($info)"}
+                    {volist name="info.image" id="vo"}
+                        <a>
+                            <img class="ex-image" src="{$image_path.$vo}" />
+                            <input type="hidden" name="images[]" value="{$vo}">
+                            <i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>
+                        </a>
+                    {/volist}
+                    {if condition="count($info.image) lt 5"}
+                        <a onclick="upload_image();" id="add-goods-image">
+                            <img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+                        </a>
+                    {/if}
+                {else /}
+                    <a onclick="upload_image();" id="add-goods-image">
+                        <img src="/public/default_upload_images_add.jpg" alt="上传图片" />
+                    </a>
+                {/if}
+            </div>
+        </div>
+		
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品库存：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <input type="text" name="stock" id="stock" placeholder="商品库存" {if condition="isset($info)"} value="{$info.stock}" {else /}value="0" {/if} class="input-text" style="width:150px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="radio-box">
+                    <input type="checkbox" id="is_stock" value="0" name="is_stock" {if condition="isset($info) && $info.is_stock eq 0"}checked{/if}>
+                    <label for="is_stock">无库存限制</label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                <div class="radio-box"> 
+                    <input type="radio" id="status-1" value="0" name="status" {if condition="(isset($info) && $info.status eq 0) or !isset($info)"}checked{/if} >
+                    <label for="status-1">仓库中</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="status-2" value="1" name="status" {if condition="isset($info) && $info.status eq 1"}checked{/if}>
+                    <label for="status-2">已上架</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio"id="status-3" value="2" name="status" {if condition="isset($info) && $info.status eq 2"}checked{/if}>
+                    <label for="status-3">已下架</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">积分：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="price" id="" placeholder="需要多少积分兑换" {if condition="isset($info)"} value="{$info.price}" {/if} class="input-text" style="width:180px">
+            </div>
+        </div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">详细内容：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				<script id="editor" type="text/plain" style="width:100%;height:400px;">{if condition="isset($info)"}{$info.details}{/if}</script> 
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 提交</button>
+				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</div>
+<form id="hide-form" style="display:none;" target="ajaxR" enctype="multipart/form-data" method="POST" action="/admin/system/upload_images">
+    <input id="hide-form-file" type="file" name="image" value="" >
+    <input id="" type="text" name="module" value="goods" >
+</form>
+<iframe name="ajaxR" style="display:none;"></iframe>
+<iframe name="ajaxR-from" style="display:none;"></iframe>
+{include file="layout/footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="/__STATIC__/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+    function error(msg){
+        layer.msg(msg,{icon:5});
+    }
+    function ajax_from_callback(status,msg){
+        if(status == 1){
+            layer.msg(msg,{icon:6});
+            setTimeout(function(){
+                parent.open_closeAll();
+            },1000);
+        }else{
+            error(msg);
+        }
+    }
+
+    function del_up_image(obj){
+        layer.confirm('确认要删除图片么？', {icon: 3, title:'提示'}, function(index){
+            $(obj).parent('a').remove();
+            var size = $('#goods-image > a').size();
+            if(size < 5){
+                if($("#goods-image #add-goods-image").length == 0) {
+                    //元素不存在时执行的代码
+                    var _html = ''+
+                        '<a onclick="upload_image();" id="add-goods-image">'+
+                            '<img src="/public/default_upload_images_add.jpg" alt="上传图片" />'+
+                        '</a>';
+                    $('#goods-image').append(_html);
+                }
+                
+            }
+            layer.close(index);
+        });
+    }
+
+    function upload_image(){
+        var size = $('#goods-image > a').size();
+        if(size > 5){
+            layer.msg('最多只能有五张商品图片');
+            return false;
+        }
+        $('#hide-form-file').click();
+    }
+
+    function iframe_images_callback(status,src='',image=''){
+        if(status == 1){
+            var _html = ''+
+                '<a>'+
+                    '<img class="ex-image" src="'+src+'" />'+
+                    '<input type="hidden" name="images[]" value="'+image+'">'+
+                    '<i class="Hui-iconfont del-up-image" onclick="del_up_image(this)">&#xe6e2;</i>'+
+                '</a>';
+            $('#add-goods-image').before(_html);
+
+            var size = $('#goods-image > a').size();
+            if(size > 5){
+                $('#add-goods-image').remove();
+            }
+        }else{
+            layer.msg('图片上传失败！');
+        }
+    }
+
+    function show_msg(msg){
+        layer.msg(msg);
+    }
+
+    function open_callback(name,id){
+        $('#goods_category').html(name);
+        $('#category_id').val(id);
+    }
+
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        // 商品详情
+        var ue = UE.getEditor('editor');
+
+
+        $('#hide-form-file').change(function(){
+            $('#hide-form').submit();
+        });
+    });
+</script>
+</body>
+</html>

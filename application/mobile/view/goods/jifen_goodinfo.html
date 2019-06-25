@@ -32,7 +32,7 @@
 		<div class="wrap_frame">
 			<!-- header -->
 			<div class="lb_headWrap ">
-				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/goods/goodsList'">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/index'">
 					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png" />
 				</p>
 				<span>详情</span>
@@ -57,7 +57,7 @@
 				<div class="product_info">
 					<div class="product_item">
                         <p class="price">
-							¥{$info.price}
+							积分{$info.price}
                         </p>
                          
                          
@@ -124,9 +124,15 @@
 					</p>
 				</a>
 				{/if}
-				<a class="store_buy" onclick="javascript:location.href='/mobile/goods/check_order?goods_id={$info.id}'">
-                      立即购买
+				{if condition="$integral lt $info.price"}
+				<a class="store_buy" style="background: #b1b1b1;">
+					立即兑换
 				</a>
+				{else /}
+				<a class="store_buy" onclick="javascript:location.href='/mobile/goods/check_order?goods_id={$info.id}'">
+					立即兑换
+				</a>
+				{/if}
 
 			</div>
 			<div class="receive_coupon" style="display: none;"></div>

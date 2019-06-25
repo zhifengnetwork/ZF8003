@@ -14,6 +14,7 @@ class Goods extends Base{
             error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
         }
         $where['is_del'] = ['=', 0];
+        $where['type'] = ['neq', 6];
 
         $field = '`id`,`name`,`cate_id`,`price`,`self_price`,`promotion_price`,`promotion_to`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
         $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
@@ -946,6 +947,200 @@ class Goods extends Base{
 
         $this->assign('sname',[0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'交易成功']);
         $this->assign('info', $info[0]);
+        return $this->fetch();
+    }
+
+    public function jifen_goods(){
+        $jur = $this->check_jurisdiction_ok('r','goods/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘查看’的权限');
+        }
+        $where['is_del'] = ['=', 0];
+        $where['type'] = ['=', 6];
+
+        $field = '`id`,`name`,`cate_id`,`price`,`self_price`,`promotion_price`,`promotion_to`,`is_stock`,`stock`,`image`,`discount`,`status`,`type`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`sold`,`addtime`,`utime`';
+        $keywords = isset($_GET['keywords']) ? trim($_GET['keywords']) : '';
+        if ($keywords) {
+            $where['name'] = ['like', "%$keywords%"];
+        }
+        $list = Db::name('goods')->field($field)->where($where)->order('utime desc')->paginate(15);      
+        $count = Db::name('goods')->where($where)->count();
+        $cname[0] = '';
+
+        if($list){
+            foreach($list as $v){
+                $cids[] = $v['cate_id'];
+                if($v['freight_temp'] > 0) $ftids[] = $v['freight_temp'];
+            }
+           
+            if(isset($cids)){
+                $cids = implode("','", $cids);
+                $cids = Db::query("select `id`,`name` from `zf_category` where `id` in ('$cids')");
+                foreach($cids as $c){
+                    $cname[$c['id']] = $c['name'];
+                }
+            }
+            if(isset($ftids) && !empty($ftids)){
+                $ftids = implode("','", $ftids);
+                $ftids = Db::query("select `id`,`name` from `zf_freight_temp` where `id` in ('$ftids')");
+                foreach($ftids as $f){
+                    $fname[$f['id']] = $f['name']; 
+                }
+               
+                $this->assign('fname', $fname);
+            }
+
+        }
+
+        $sname = [
+            0   =>  '仓库中',
+            1   =>  '已上架',
+            2   =>  '已下架',
+        ];
+        
+        $tname = [
+            0   =>  '普通',
+            1   =>  '新品',
+            2   =>  '热卖',
+            3   =>  '推荐',
+            4   =>  '促销',
+            5   =>  '限时'
+        ];
+
+
+
+        $this->assign('tname', $tname);
+        $this->assign('sname', $sname);
+        $this->assign('cname', $cname);
+        $this->assign('list', $list);
+        $this->assign('count', $count);
+        return $this->fetch();     
+    }
+
+    # 添加/编辑积分商品
+    public function add_jifen_goods(){
+        $save_dir = ROOT_PATH . 'public/images/goods/';
+        $temp_dir = ROOT_PATH . 'public/images/goods/temp/';
+        $src_dir = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/public/images/goods/';
+
+        if($_POST){
+            $jur = $this->check_jurisdiction_ok('w','goods/index');
+            if(!$jur){
+                echo "<script>parent.error('访问权限受控，您无权操作此项！至少拥有‘编辑’的权限')</script>";
+                exit;
+            }
+            $goods_id = isset($_POST['goods_id']) ? intval($_POST['goods_id']) : 0;
+            $category_id = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+            $name = isset($_POST['name']) ? trim($_POST['name']) : '';
+            $desc = isset($_POST['desc']) ? trim($_POST['desc']) : '';
+            $images = isset($_POST['images']) && is_array($_POST['images']) ? $_POST['images'] : array();
+            $price = isset($_POST['price']) && Digital_Verification($_POST['price']) ? Digital_Verification($_POST['price']) : 0.00;
+            $self_price = isset($_POST['self_price']) && Digital_Verification($_POST['self_price']) ? Digital_Verification($_POST['self_price']) : 0.00;
+            $stock = isset($_POST['stock']) ? intval($_POST['stock']) : 0;
+            $is_stock = isset($_POST['is_stock']) ? intval($_POST['is_stock']) : 1;
+            $discount = isset($_POST['discount']) ? intval($_POST['discount']) : 1;
+            $type = 6;
+            $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
+            $promotion_price = isset($_POST['promotion_price']) && Digital_Verification($_POST['promotion_price']) ? Digital_Verification($_POST['promotion_price']) : 0.00;
+            $promotion_to = isset($_POST['promotion_to']) ? intval($_POST['promotion_to']) : 0;
+            $limit_stime = isset($_POST['limit_stime']) ? strtotime($_POST['limit_stime']) : 0;
+            $limit_etime = isset($_POST['limit_etime']) ? strtotime($_POST['limit_etime']) : 0;
+            $freight = isset($_POST['freight']) && Digital_Verification($_POST['freight']) ? Digital_Verification($_POST['freight']) : 0.00;
+            $freight_temp = isset($_POST['freight_temp']) ? intval($_POST['freight_temp']) : 0;
+            $details = isset($_POST['editorValue']) ? addslashes($_POST['editorValue']) : ''; 
+
+            if(!$name){
+                echo "<script>parent.error('请填写商品名称')</script>";
+                exit;
+            }
+            
+            
+            if(!isset($images[0])){
+                echo "<script>parent.error('请上传商品图片')</script>";
+                exit;
+            }
+
+            $image = implode(',', $images);
+            $time = time();
+            
+            if($goods_id){
+
+                $sql = "update `zf_goods` set `cate_id` = '$category_id', `name` = '$name',`desc` = '$desc', `price` = '$price', `self_price` = '$self_price', `image` = '$image', `is_stock` = '$is_stock', `stock` = '$stock', `details` = '$details', `discount` = '$discount', `status` = '$status', `type` = '$type', `promotion_price` = '$promotion_price', `promotion_to` = '$promotion_to', `limit_stime` = '$limit_stime', `limit_etime` = '$limit_etime', `freight` = '$freight', `freight_temp` = '$freight_temp', `utime` = '$time' where `id` = '$goods_id'";
+                $action = 'edit_goods';
+                $desc   = '编辑商品';
+                $log    = adminLog($action, $desc);   
+            }else{
+                $sql = "insert into `zf_goods` (`cate_id`,`name`,`desc`,`price`,`self_price`,`image`,`is_stock`,`stock`,`details`,`discount`,`status`,`type`,`promotion_price`,`promotion_to`,`limit_stime`,`limit_etime`,`freight`,`freight_temp`,`addtime`,`utime`) values('$category_id','$name','$desc','$price','$self_price','$image','$is_stock','$stock','$details','$discount','$status','$type','$promotion_price','$promotion_to','$limit_stime','$limit_etime','$freight','$freight_temp','$time','$time')";
+                $action = 'add_goods';
+                $desc   = '添加商品';
+                $log    = adminLog($action, $desc);   
+            }
+
+            $res = Db::execute($sql);
+            if($res){
+                if (!$goods_id) {
+                    $goods_id = Db::name('goods')->getLastInsID();
+                }
+                $i = 0;
+                if(!file_exists($save_dir.$goods_id)){
+                    mkdir($save_dir.$goods_id, 0777, true);
+                }
+
+                $thumb_path = $goods_id.'/thumb.png';
+                foreach($images as $k=>$v){
+                    if(!strstr($v,'images-')){
+                        if($k == 0){
+                            $thumb = \think\Image::open($temp_dir.$v);
+                            $thumb->thumb(150,150,\think\Image::THUMB_CENTER)->save($save_dir.$thumb_path);
+                        }
+                        $im = \think\Image::open($temp_dir.$v);
+                        $savename = $save_dir.$goods_id.'/images-'.$time.$i.'.jpg';
+                        $im->save($savename);
+                        $images[$k] = 'images-'.$time.$i.'.jpg';
+                        $i++;
+                    }
+                }
+                $images = implode(',', $images);
+                Db::execute("update `zf_goods` set `image` = '$images',`thumb` = '$thumb_path' where `id` = '$goods_id'");
+                
+                echo "<script>parent.ajax_from_callback(1,'操作成功，正在跳转...')</script>";
+            }else{
+                echo "<script>parent.ajax_from_callback(0,'操作失败，请重试！')</script>";
+            }
+
+            exit;
+        }
+
+        $jur = $this->check_jurisdiction_ok('w','goods/index');
+        if(!$jur){
+            error_h1('访问权限受控，您无权操作此项！', '至少拥有‘编辑’的权限');
+        }
+
+        $goods_id = isset($_GET['goods_id']) ? intval($_GET['goods_id']) : 0;
+
+        if($goods_id){
+            $info = Db::name('goods')->where('id',$goods_id)->find();
+            if($info){
+                $cate = Db::name('category')->where('id',$info['cate_id'])->field('name')->find();
+                $info['catename'] = $cate['name'];
+                $info['image'] = explode(',',$info['image']);
+                $image_path = $src_dir.$goods_id.'/';
+                
+                $this->assign('image_path', $image_path);
+                $this->assign('info', $info);
+            } 
+        }
+        
+        # 运费模板
+        $freight_temp = Db::name('freight_temp')->field('id,name')->select();
+
+        # 商品分类
+        $where['parent_id'] = ['=', 0];
+        $where['is_lock'] = ['=', 0];
+        $cate = Db::name('category')->field('id,name')->where($where)->select();
+
+        $this->assign('freight_temp', $freight_temp);
+        $this->assign('cate', $cate);
         return $this->fetch();
     }
 }

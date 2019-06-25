@@ -53,7 +53,11 @@
                            <span class="name">{$info.name}</span>
                        </div>
                        <div class="item-price">
-                           <p class="price price2">￥{$info.price}</p>
+                            {if condition="$info.type neq 6"}
+                            <p class="price price2">￥{$info.price}</p>
+                            {else /}
+                            <p class="price price2">积分{$info.price}</p>
+                           {/if}
                            <p class="num">x1</p>
                        </div>
                  </div>
@@ -72,6 +76,7 @@
                  <div class="mode">
                      <div class="ksps">快速配送</div>
                  </div>
+                 {if condition="$info.type neq 6"}
                  <div class="mode modq">
                      <input type="hidden" id="balance" value="0">
                     <div class="ksps">使用余额</div>
@@ -96,6 +101,7 @@
                         {/if}
                         </div>  
                  </div>
+                 {/if}
 
                  <input type="text" id="quoto" value="{$my_coupon[0]['quota'] ? $my_coupon[0]['quota'] : 0}" hidden>
                  <input type="text" id="money" value="{$my_coupon[0]['money'] ? $my_coupon[0]['money'] : 0}" hidden>
@@ -121,6 +127,7 @@
                     </div>
              </div>
                 <!-- favourable price -->
+             {if condition="$info.type neq 6"}
              <div class="favourable">
                  <div class="favourable_item">
                      <div class="item_name">邮费:</div>
@@ -147,6 +154,7 @@
                      </div>
                  </div>
              </div>
+             {/if}
              <!-- receive a coupon -->
 			<div class="receive_coupon"></div>
 			<div class="receive_box">
@@ -182,9 +190,15 @@
         </div>
                 <!-- footer -->
             <div class="footer">
-                 <div class="price_box">
-                     应付金额: <span class="price_red">￥<span class="zongqian">{$freight ? $freight+$info.price : $info.price}</span></span>
-                 </div>
+                {if condition="$info.type neq 6"}
+                <div class="price_box">
+                    应付金额: <span class="price_red">￥<span class="zongqian">{$freight ? $freight+$info.price : $info.price}</span></span>
+                </div>
+                {else /}
+                <div class="price_box">
+                        应付积分: <span class="price_red"><span class="zongqian">{$freight ? $freight+$info.price : $info.price}</span></span>
+                    </div>
+                {/if}
                  <div class="sumb" onclick="submit();">
                      提交订单
                  </div>

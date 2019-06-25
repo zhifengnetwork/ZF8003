@@ -38,6 +38,7 @@
 						</div>
 					</div>
 					<!--总价-->
+					{if condition="$info.type neq 6"}
 					<div class="prices">
 						<span>商品总价</span>
 						<span>￥{$info.goods_price}</span>
@@ -59,6 +60,7 @@
 						<span>- ￥{$info.user_money}</span>
 					</div>
 					{/if}
+					
 					<!--订单总价-->
 					<div class="order">
 						<span>订单总价</span>
@@ -69,6 +71,18 @@
 						<span>实付款</span>
 						<span>￥{$info.order_amount}</span>
 					</div>
+					{else /}
+					<!--订单总积分-->
+					<div class="order">
+						<span>订单总积分</span>
+						<span>{$info.total_amount}</span>
+					</div>
+					<!--实付积分-->
+					<div class="pay">
+						<span>实付积分</span>
+						<span>{$info.order_amount}</span>
+					</div>
+					{/if}
 				</div>
 				<!--购买详细-->
 				<div class="buy-wrap">

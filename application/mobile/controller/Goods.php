@@ -35,6 +35,7 @@ class Goods extends Base
         $where = [
             'status' => 1,
         ];
+        $where['type'] = ['neq',6];
         $list = Db::name('goods')->where($where)->select();
         $this->assign('list', $list);
         return $this->fetch();
@@ -307,6 +308,17 @@ class Goods extends Base
             #支付状态
             $pay_status = 0;
 
+            if($info['type']==6){
+                $integral = $this->user['integral'];
+                if($integral < $info['price']){
+                    return json(['status'=>0,'msg'=>'积分不足！']);
+                    exit;
+                }
+
+                $order_status = 3;
+                $pay_status = 1;
+            }
+            
             ### 价格
             # 商品总价
             $goods_price = $info['price'] * $number;
@@ -395,35 +407,48 @@ class Goods extends Base
                     Db::name('user_coupon')->where('id', $coupon_id)->update(['status' => 1]);
                 }
 
-                if($user_money > 0){
-                    $pay_name = $pay_status == 1 ? '已支付' : '部分支付';
-                    $t_log = [
-                        'user_id' => $this->user_id,
-                        'type' => 'order',
-                        'sn' => $sn,
-                        'platform' => 'system',
-                        'to' => $o_res,
-                        'money' => $user_money,
-                        'addtime' => $time,
-                        'desc' => '订单：'.$o_res.' 使用了余额支付, 时订单状态为：'.$pay_name,
-                        'init_time' => $time,
-                    ];
-                    Db::name('transaction_log')->insert($t_log);
-                    Db::name('users')->where('id', $this->user_id)->setDec('money', $user_money);
+                if($info['type']!=6){
+                    if($user_money > 0){
+                        $pay_name = $pay_status == 1 ? '已支付' : '部分支付';
+                        $t_log = [
+                            'user_id' => $this->user_id,
+                            'type' => 'order',
+                            'sn' => $sn,
+                            'platform' => 'system',
+                            'to' => $o_res,
+                            'money' => $user_money,
+                            'addtime' => $time,
+                            'desc' => '订单：'.$o_res.' 使用了余额支付, 时订单状态为：'.$pay_name,
+                            'init_time' => $time,
+                        ];
+                        Db::name('transaction_log')->insert($t_log);
+                        Db::name('users')->where('id', $this->user_id)->setDec('money', $user_money);
 
-                    $user_res = Db::name('users')->where('id',$this->user_id)->field('first_leader,level')->find();
-                    if($user_res['level'] == 1){
-                        Db::name('users')->where('id',$this->user_id)->setInc('level');
+                        $user_res = Db::name('users')->where('id',$this->user_id)->field('first_leader,level')->find();
+                        if($user_res['level'] == 1){
+                            Db::name('users')->where('id',$this->user_id)->setInc('level');
+                        }
+                        
+                        if($user_res['first_leader']){
+                            //佣金分成
+                            commission($this->user_id ,$user_res['first_leader'] ,$o_res ,$user_money);
+
+                            //升级
+                            upgrade_level($this->user_id);
+                        }
+
                     }
-                    
-                    if($user_res['first_leader']){
-                        //佣金分成
-                        commission($this->user_id ,$user_res['first_leader'] ,$o_res ,$user_money);
+                }else{
 
-                        //升级
-                        upgrade_level($this->user_id);
-                    }
+                    //积分记录
+                    $jf_log_data['user_id'] = $this->user_id;
+                    $jf_log_data['goods_id'] = $info['id'];
+                    $jf_log_data['type'] = 2;
+                    $jf_log_data['jifen'] = $info['price'];
+                    $jf_log_data['add_time'] = time();
+                    $this->jifen_log($jf_log_data);
 
+                    Db::name('users')->where('id', $this->user_id)->setDec('integral', $info['price']);
                 }
 
                 # 增加购买数量
@@ -448,7 +473,7 @@ class Goods extends Base
 
 
         $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = Db::query("select a.*,b.name,b.thumb from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where a.id = '$id'");
+        $info = Db::query("select a.*,b.name,b.thumb,b.type from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where a.id = '$id'");
         
         if(!$info){
             $this->error('订单信息不存在', '/mobile/user/index');
@@ -527,5 +552,80 @@ class Goods extends Base
         $result = json_decode($result, true);
         if ($result['code'] !== 0 || !is_array($result['data'])) return false;
         return $result['data'];
+    }
+
+    /**
+     * 积分商品列表显示
+     */
+    public function jifen_goodsList()
+    {
+        $where = [
+            'status' => 1,
+        ];
+        $where['type'] = ['eq',6];
+        $list = Db::name('goods')->where($where)->select();
+        $this->assign('list', $list);
+        return $this->fetch();
+    }
+    /**
+     * 商品详情
+     */
+    public function jifen_goodinfo()
+    {
+        
+        $id = input('id');
+        $images = '';
+
+        $user_id = $this->user_id;
+        if(!$user_id){
+            $this->redirect( url('index/login') );
+        }
+
+        $integral = Db::name('users')->where('id',$user_id)->value('integral');
+
+        //  商品信息
+        $info = Db::name('goods')->where('id', $id)->find();
+
+
+        if ($info) {
+            $image = explode(',', $info['image']);
+            foreach ($image as $key => $value) {
+                # code...
+                $images[$key]['img'] = $value;
+            }
+
+            // 默认为未收藏
+            $is_focus = 0;
+            $where = [
+                'goods_id' => $id,
+                'user_id' => $user_id
+            ];
+            // 判断是否已经收藏
+            $focus = Db::name('goods_focus')->where($where)->find();
+            if (!empty($focus)) {
+                // 已收藏
+                $is_focus = 1;
+            }
+            
+            $where = [
+                'goods_id' => $id,
+                'status' => 0,
+            ];
+            // 判断能否重复领取券在订单提交时判断，删除该数据就可以
+            
+            $coupon    = Db::name('goods_coupon')->where($where)->where('deadline', '>= time', time())->select();  
+            $in_coupon = Db::query( "select `coupon_id` from `zf_user_coupon` where `user_id` = '$user_id' and `goods_id` = '$id' or `goods_id` = 0");
+            // 用来判断用户是否已经领取优惠券
+            $cp_ids = array_column($in_coupon, 'coupon_id');
+
+            $this->assign('cp_ids', $cp_ids);
+            $this->assign('coupon', $coupon);
+            $this->assign('is_focus', $is_focus);
+            $this->assign('images', $images);
+            $this->assign('integral', $this->user['integral']);
+            $this->assign('info', $info);
+            return $this->fetch();
+        }        
+
     }
 }
