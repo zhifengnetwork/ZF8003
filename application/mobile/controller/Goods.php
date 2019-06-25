@@ -485,7 +485,7 @@ class Goods extends Base
             exit;
         }
 
-        $sname = [0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'已完成'];
+        $sname = [0=>'待付款',1=>'待发货',2=>'待收货',3=>'已完成',4=>'已完成'];
         
         $province = $info['province'] ? Db::name('area')->where('id',$info['province'])->value('name') : '';
         $city = $info['city'] ? Db::name('area')->where('id',$info['city'])->value('name') : '';
