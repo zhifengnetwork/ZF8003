@@ -588,9 +588,27 @@ class User extends Base
         }
 
         $lists = Db::query("select a.*,b.name,b.thumb from `zf_order` as a left join `zf_goods` as b on a.goods_id = b.id where $where order by a.order_status asc,a.add_time desc");
-    
-        $sname = [0=>'待支付',1=>'待发货',2=>'待收货',3=>'待评价',4=>'交易成功'];
-
+        
+        $sname = [0=>'待支付',1=>'待发货',2=>'待收货',3=>'交易成功',4=>'交易成功'];
+        if($lists){
+            foreach($lists as $key=>&$value){
+                if(!$value['order_status'] && !$value['pay_status']){
+                    $value['status'] = 0;
+                }elseif($value['order_status']==1 && !$value['shipping_status'] && $value['pay_status']==1){
+                    $value['status'] = 1;
+                }elseif($value['order_status']==1 && $value['shipping_status']==1 && $value['pay_status']==1){
+                    $value['status'] = 2;
+                }elseif($value['order_status']==3 && $value['pay_status']==1){
+                    $value['status'] = 4;
+                }elseif($value['order_status']==3){
+                    $value['status'] = 4;
+                }elseif($value['order_status']==2 && $value['pay_status']==1){
+                    $value['status'] = 2;
+                }else{
+                    $value['status'] = 0;
+                }
+            }
+        }
 
         $this->assign('status', $status);
         $this->assign('sname', $sname);

@@ -315,7 +315,7 @@ class Goods extends Base
                     exit;
                 }
 
-                $order_status = 3;
+                $order_status = 1;
                 $pay_status = 1;
             }
             
@@ -443,6 +443,7 @@ class Goods extends Base
                     //积分记录
                     $jf_log_data['user_id'] = $this->user_id;
                     $jf_log_data['goods_id'] = $info['id'];
+                    $jf_log_data['order_sn'] = $sn;
                     $jf_log_data['type'] = 2;
                     $jf_log_data['jifen'] = $info['price'];
                     $jf_log_data['add_time'] = time();
@@ -485,7 +486,7 @@ class Goods extends Base
             exit;
         }
 
-        $sname = [0=>'待付款',1=>'待发货',2=>'待收货',3=>'待评价',4=>'已完成'];
+        $sname = [0=>'待付款',1=>'待发货',2=>'待收货',3=>'已完成',4=>'已完成'];
         
         $province = $info['province'] ? Db::name('area')->where('id',$info['province'])->value('name') : '';
         $city = $info['city'] ? Db::name('area')->where('id',$info['city'])->value('name') : '';
