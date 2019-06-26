@@ -84,7 +84,7 @@ class User extends Base
                             echo "<script>parent.error_msg('请输入正确的频度！只能是数字！');</script>";
                             exit;
                         }
-                        $value = $value * 100;
+                        // $value = $value * 100;
                     }else{
                         if( in_array(strtolower($key) ,$bitian)  ){
                             echo "<script>parent.error_msg('红*标明的基因座必填！');</script>";
