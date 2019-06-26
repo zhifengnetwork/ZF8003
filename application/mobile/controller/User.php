@@ -604,6 +604,8 @@ class User extends Base
                     $value['status'] = 4;
                 }elseif($value['order_status']==2 && $value['pay_status']==1){
                     $value['status'] = 2;
+                }else{
+                    $value['status'] = 0;
                 }
             }
         }
