@@ -599,13 +599,14 @@ class User extends Base
                 }elseif($value['order_status']==1 && $value['shipping_status']==1 && $value['pay_status']==1){
                     $value['status'] = 2;
                 }elseif($value['order_status']==3 && $value['pay_status']==1){
-                    $value['status'] = 3;
+                    $value['status'] = 4;
                 }elseif($value['order_status']==3){
                     $value['status'] = 4;
+                }elseif($value['order_status']==2 && $value['pay_status']==1){
+                    $value['status'] = 2;
                 }
             }
         }
-
 
         $this->assign('status', $status);
         $this->assign('sname', $sname);
