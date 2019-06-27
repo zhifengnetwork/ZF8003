@@ -145,12 +145,12 @@
                             -￥ <span class="coupon_discount coupon_discount2">0.00</span>
                      </div>
                  </div> -->
-                 <div class="favourable_item">
+                 <!-- <div class="favourable_item">
                      <div class="item_name">余额抵扣:</div>
                         <div>
                             -￥ <span class="remaining_discount">0.00</span>
                      </div>
-                 </div>
+                 </div> -->
                  <div class="favourable_item">
                      <div class="item_name">订单总和:</div>
                         <div>
@@ -222,6 +222,14 @@
             }
         })
         function submit(){
+
+            {if condition="$info.type eq 6"}
+                if( window.confirm('是否使用积分兑换？') == false ){
+                    return;
+                }
+            {/if}
+
+
             var goods_id = '{$goods_id}';
             var balance = $('#balance').val();
             var paypass = $('#paypass').val();
@@ -246,22 +254,6 @@
                 }
             });
         }
-
-        // $('.subtract').on('click',function(){
-        //     var num = $('#number').val();
-        //     var danjia = $('.danjia').html();
-
-        //     console.log( num )
-        //     console.log( num * danjia )
-        // })
-
-        // $('.add').on('click',function(){
-        //     var num = $('#number').val();
-        //     var danjia = $('.danjia').html();
-
-        //     console.log( num )
-        //     console.log( num * danjia )
-        // })
 
     </script>
 </body>

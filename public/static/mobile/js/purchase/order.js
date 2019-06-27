@@ -83,7 +83,12 @@ $(function() {
 		var sum = $(".num2").val() * $(".danjia").html()
 		//商品邮费
 		var youfei = $(".postage2").html();
-		jiayoufei = Number(sum) + Number(youfei)
+		if(youfei!=undefined){
+
+			jiayoufei = Number(sum) + Number(youfei)
+		}else{
+			jiayoufei = Number(sum);
+		}
 		console.log(jiayoufei)
 		//赋值订单总和的内容
 		$("#total").html(jiayoufei)
@@ -155,6 +160,7 @@ $(function() {
 			$(".zongqian").html("0.00")
 
 		}
+		$(".zongqian").html(jiayoufei)
 
 	}
 

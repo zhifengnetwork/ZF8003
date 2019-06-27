@@ -307,21 +307,11 @@ class Goods extends Base
             $order_status = 0;
             #支付状态
             $pay_status = 0;
-
-            if($info['type']==6){
-                $integral = $this->user['integral'];
-                if($integral < $info['price']){
-                    return json(['status'=>0,'msg'=>'积分不足！']);
-                    exit;
-                }
-
-                $order_status = 1;
-                $pay_status = 1;
-            }
-            
-            ### 价格
             # 商品总价
             $goods_price = $info['price'] * $number;
+            
+            ### 价格
+            
             # 运费
             $shipping_price = $freight;
             # 订单总价
@@ -330,6 +320,17 @@ class Goods extends Base
             $coupon_price = 0;
             # 应付金额
             $order_amount = $total_amount;
+
+            if($info['type']==6){
+                $integral = Db::name('users')->where('id',$this->user_id)->value('integral');
+                if($integral < $goods_price){
+                    return json(['status'=>0,'msg'=>'积分不足！']);
+                    exit;
+                }
+
+                $order_status = 1;
+                $pay_status = 1;
+            }
 
             if($coupon_id > 0){
                 $coupon_info = Db::name('user_coupon')->where(['id'=>$coupon_id,'user_id'=>$this->user_id,'status'=>0])->find();
@@ -623,7 +624,7 @@ class Goods extends Base
             $this->assign('coupon', $coupon);
             $this->assign('is_focus', $is_focus);
             $this->assign('images', $images);
-            $this->assign('integral', $this->user['integral']);
+            $this->assign('integral', $integral);
             $this->assign('info', $info);
             return $this->fetch();
         }        
