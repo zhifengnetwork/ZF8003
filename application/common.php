@@ -63,8 +63,8 @@ function upgrade_level($user_id){
 
     $count = Db::name('users')->where($where)->count();
     $where = [];
-    // $where['id'] = $p_res['level'] + 1;
-    $where['upgrade'] = ['>' ,$count];
+    $where['id'] = $p_res['level'] + 1;
+    $where['upgrade'] = ['>=' ,$count];
     $level = Db::name('user_level')->where($where)->order('id ASC')->find();
     if($level){
         Db::name('users')->where('id',$p_res['id'])->update(['level'=>$level['id']]);
