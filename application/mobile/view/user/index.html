@@ -25,7 +25,19 @@
 			<div class="my_pic">
 				<div style="width: 2.8rem; position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
 					<img src="{$user['avatar']}" onerror="this.src='/public/mobile-default-user-icon.png'" style="width: 1.4rem;height: 1.4rem; border-radius: 50%;z-index: 1222;" />
-					<p style="font-size:12px;">会员等级：二级会员</p>
+					<p style="font-size:12px;">
+						{switch $user.level}
+							{case 1}会员等级：一级会员{/case}
+							{case 2}会员等级：二级会员{/case}
+							{case 3}会员等级：三级会员{/case}
+							{case 4}会员等级：四级会员{/case}
+							{case 5}会员等级：五级会员{/case}
+							{default /}普通会员
+						{/switch}
+					
+					
+					
+					</p>
 					<p style="font-size:12px;">ID：{$user['id']}</p>
 					<p>{$user['nickname']}</p>
 				</div>
