@@ -64,7 +64,11 @@
                         <P style="font-size:.4rem;">{$info.name}</P>
 						<div class="info">{$info.desc}</div>
 						<div class="volume">
+							{if condition="!$info.is_stock"}
+							<div class="sales">库存:<span id="salesNum">无库存限制</span></div>
+							{else /}
 							<div class="sales">库存:<span id="salesNum">{$info.stock}</span></div>
+							{/if}
 							<div class="sales">销量:<span id="salesNum">{$info.sold}</span></div>
 							
 							<!-- <div class="area">{//$address}</div> -->

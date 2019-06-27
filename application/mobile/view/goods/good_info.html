@@ -64,6 +64,11 @@
                         <P style="font-size:.4rem;">{$info.name}</P>
 						<div class="info">{$info.desc}</div>
 						<div class="volume">
+							{if condition="!$info.is_stock"}
+							<div class="sales">库存:<span id="salesNum">无库存限制</span></div>
+							{else /}
+							<div class="sales">库存:<span id="salesNum">{$info.stock}</span></div>
+							{/if}
 							<div class="sales">销量:<span id="salesNum">{$info.sold}</span></div>
 							
 							<!-- <div class="area">{//$address}</div> -->
@@ -124,9 +129,16 @@
 					</p>
 				</a>
 				{/if}
-				<a class="store_buy" onclick="javascript:location.href='/mobile/goods/check_order?goods_id={$info.id}'">
+
+				{if condition="$info.is_stock and !$info.stock"}
+				<a class="store_buy" style="background: #b1b1b1;">
                       立即购买
 				</a>
+				{else /}
+				<a class="store_buy" onclick="javascript:location.href='/mobile/goods/check_order?goods_id={$info.id}'">
+					立即购买
+			  	</a>
+				{/if}
 
 			</div>
 			<div class="receive_coupon" style="display: none;"></div>
