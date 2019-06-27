@@ -35,7 +35,7 @@
                         <th width="150">用户名</th>
                         <th width="130">手机</th>
                         <th width="150">邮箱</th>
-                        <th width="110">分组</th>
+                        <th width="110">会员等级</th>
                         <th width="120">余额</th>
                         <th width="110">注册时间</th>
                         <th width="70">状态</th>
@@ -51,7 +51,14 @@
                                     onclick="member_show('{$vo.nickname}','/admin/member/show?id={$vo.id}','10001','550','750')" title="用户详情">{$vo.nickname}</u></td>
                             <td>{$vo.mobile}</td>
                             <td>{$vo.email}</td>
-                            <td>{$vo.group_id|group_name}</td>
+                            <td>{switch $vo.level}
+                                    {case 1}一级会员{/case}
+                                    {case 2}二级会员{/case}
+                                    {case 3}三级会员{/case}
+                                    {case 4}四级会员{/case}
+                                    {case 5}五级会员{/case}
+                                    {default /}普通会员
+                                {/switch}</td>
                             <td>{$vo.money}</td>
                             <td>{$vo.register_time|date="Y-m-d",###}</td>
                             <td class="td-status">
