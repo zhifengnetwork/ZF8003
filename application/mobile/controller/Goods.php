@@ -432,7 +432,7 @@ class Goods extends Base
                         
                         if($user_res['first_leader']){
                             //佣金分成
-                            commission($this->user_id ,$user_res['first_leader'] ,$o_res ,$user_money);
+                            commission($this->user_id ,$user_res['first_leader'] ,$o_res ,$goods_price);
 
                             //升级
                             upgrade_level($this->user_id);
