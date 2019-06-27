@@ -169,6 +169,9 @@ class Distribution extends Base
             # 移动背景图片
             // $re = rename($image_path,$load_dir.'qr_backgroup.png');
             $qr_image = \think\Image::open($image_path);
+            if(file_exists($load_dir.'qr_backgroup.png')){
+                @unlink($load_dir.'qr_backgroup.png');
+            }
             $qr_image->save($load_dir.'qr_backgroup.png');
             
 
