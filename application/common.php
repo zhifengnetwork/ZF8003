@@ -57,15 +57,20 @@ function upgrade_level($user_id){
     $p_res = Db::name('users')->where('id',$info['first_leader'])->field('id,first_leader,level')->find();
 
     if($p_res['level'] >= 5 ) return;
+
     $where = [];
-    $where['first_leader']  = $info['first_leader'];
-    $where['level']         = ['>=' ,$p_res['level']];
+    if($p_res['level']<$info['level']){
+        $where['first_leader']  = $info['first_leader'];
+        $where['level']         = ['>=' ,$info['level']];
+    }else{
+        return;
+    }
 
     $count = Db::name('users')->where($where)->count();
     $where = [];
     $where['id'] = $p_res['level'] + 1;
-    $where['upgrade'] = ['>=' ,$count];
-    $level = Db::name('user_level')->where($where)->order('id ASC')->find();
+    $where['upgrade'] = ['<=' ,$count];
+    $level = Db::name('user_level')->where($where)->find();
     if($level){
         Db::name('users')->where('id',$p_res['id'])->update(['level'=>$level['id']]);
         upgrade_level($p_res['id']);
