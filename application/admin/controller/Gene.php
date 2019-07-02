@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use think\Db;
+use think\Cache;
 
 class Gene extends Base{
 
@@ -98,6 +99,9 @@ class Gene extends Base{
                         }else{
                             Db::name('config')->insert(['name'=>$tmin.'_'.$tmax, 'value'=>$tname, 'type'=>'gene_config_timeline']);
                         }
+                        Cache::set('config_timeline',null);
+                        $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+                        Cache::set('config_timeline',$timeline_config);
                     }
                 }
 

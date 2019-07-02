@@ -9,6 +9,7 @@ namespace app\mobile\controller;
 use app\mobile\model\Area;
 use think\Session;
 use think\Db;
+use think\Cache;
 use think\Image;
 
 class User extends Base
@@ -548,7 +549,13 @@ class User extends Base
     function check_timeline($time){
         # 时间线
         $time = intval($time);
-        $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+    
+        $timeline_config = Cache::get('config_timeline');
+        if(empty($timeline_config) ){
+            $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+            Cache::set('config_timeline',$timeline_config);
+        }
+
         if($timeline_config){
             foreach($timeline_config as $k => $v){
                 $key = explode('_', $v['name']);
