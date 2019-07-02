@@ -225,8 +225,8 @@ class Gene extends Base
     
         $timeline_config = Cache::get('config_timeline');
         if(empty($timeline_config) ){
-            $this->timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
-            Cache::set('config_timeline');
+            $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+            Cache::set('config_timeline',$timeline_config);
         }
 
         if($timeline_config){
