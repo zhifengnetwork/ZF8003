@@ -116,7 +116,7 @@ class Gene extends Base
             $w[strtolower($k)] = ['between',"$min,$max"];
             $pageParam['query'][strtolower($k)] = ['between',"$min,$max"];
         }
-        $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
+        // $list_count = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->count();
         if($list_count > 100 && !$re && $page==1){
             $this->assign('loading', 1);
             $this->assign('id', $id);
@@ -125,8 +125,8 @@ class Gene extends Base
         }
         // $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->paginate(50,false,$pageParam);
         // $list = $list->all();
-        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->select();
-        
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->buildSql();
+        echo $list;die;
         // $pindex = max(1, intval($page));
 		// $psize = 10;
 		// $pageCount = ceil(count($list_count) / $psize);
