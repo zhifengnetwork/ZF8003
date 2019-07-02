@@ -4,6 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use think\Db;
 use think\Session;
+use think\Cache;
 
 class Gene extends Base
 {
@@ -123,24 +124,15 @@ class Gene extends Base
             return $this->fetch();
             exit;
         }
-        // $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->paginate(50,false,$pageParam);
-        // $list = $list->all();
-        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->select();
         
-        // $pindex = max(1, intval($page));
-		// $psize = 10;
-		// $pageCount = ceil(count($list_count) / $psize);
-		// $offset = ($pindex - 1) * $psize;
-        // $list = Db::name('gene')->field("id,name,nation,region,$mutation")->where($w)->order('utime desc')->limit($offset,$psize)->select();
-
-
+        $list = Db::name('gene')->field("id,name,nation,region,is_open,$mutation")->where($w)->order('utime desc ,id DESC')->select();
 
         if(!$list){
             layer_error('抱歉！数据库没有匹配到相应的基因信息');
         }
         $lately = 1;
         $data = array();
-        // $count = count($list);
+        
         foreach($list as $v){
             $r['is_open'] = $v['is_open'];
             
@@ -192,9 +184,6 @@ class Gene extends Base
             }
             $generation = intval($cay / 25);
             
-            // $r['diff'] = $diff;
-            // $r['locus'] = $locus;
-            // $r['pass'] = $pass;
             $r['cay'] = intval($cay*100)/100;
             if($generation > 2){
                 $r['generation'] = intval($generation - 2) . ' - ' . intval($generation + 2);
@@ -216,24 +205,30 @@ class Gene extends Base
 		$pageCount = ceil(count($list_count) / $psize);
         $offset = ($pindex - 1) * $psize;
         $data = array_slice($data,$offset,$psize);
-        // echo $page;die;
+        
         if($page>1){
             useJson($data);
             echo json_encode(['status'=>1,'msg'=>'获取成功！','data'=>$data],JSON_UNESCAPED_UNICODE);die;
         }
-        // echo 111;die;
-        // dump($data);exit;
+        
         $this->assign('lately', $lately);
         $this->assign('data', $data);
         $this->assign('info', json_decode($i['info'],true));
         return $this->fetch();
     }
 
+
     # 匹配时间线
     function check_timeline($time){
         # 时间线
         $time = intval($time);
-        $timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+    
+        $timeline_config = Cache::get('config_timeline');
+        if(empty($timeline_config) ){
+            $this->timeline_config = Db::name('config')->field('name,value')->where(['type' => 'gene_config_timeline'])->select();
+            Cache::set('config_timeline');
+        }
+
         if($timeline_config){
             foreach($timeline_config as $k => $v){
                 $key = explode('_', $v['name']);
