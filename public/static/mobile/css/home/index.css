@@ -1,11 +1,14 @@
 /*包裹index的div*/
 .wrap_index {
-	padding-bottom: .98rem;
+	padding-bottom: .31rem;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	width: 100%;
 	height: auto;
+}
+body{
+	background: white;
 }
 /* 搜索 */
 .search{
@@ -265,9 +268,20 @@
     display: -moz-flex; /* Firefox 18+ */  
     display: -ms-flexbox; /* IE 10 */  
     display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
-    flex-wrap: wrap;
-    justify-content: space-around;
-    border-top: .01rem solid #cccccc;
+    /*flex-wrap: wrap;*/
+    /*justify-content: space-around;*/
+    border-top: .07rem solid #e3e3e3;
+    
+}
+.title h3{
+	font-weight: bolder;
+}
+.hhhhhhh{
+	display: flex;
+	justify-content: space-around;
+}
+.title{
+	display: block;
 }
 .nscramble-wrap .nscramble-list .mask{
     width: 2.2rem;
@@ -288,10 +302,12 @@
     padding:0 .2rem;
     box-sizing: border-box;
     background-color: #fff;
+   
 }
 .question-wrap h2{
-    font-size: .34rem;
+    font-size: .3rem;
     line-height: .6rem;
+    font-weight: bolder;
 }
 .question-list li{
     display: flex;
