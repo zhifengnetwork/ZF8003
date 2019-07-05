@@ -88,7 +88,7 @@
     justify-content: space-around;
     padding:0.3rem 0 0.2rem 0;
     box-sizing: border-box;
-    border-bottom:.02rem solid #37afe6
+    border-bottom:.02rem solid #e3e3e3
 }
 .nav-wrap-zp .navItem{
     text-align: center;
@@ -100,7 +100,6 @@
     width: .8rem;
     height: .8rem;
     border-radius: .08rem;
-    background-color: #37afe6;
     display: block;
     margin: 0 auto .15rem;
 }
@@ -108,7 +107,8 @@
     position: relative;
 }
 .nav-wrap-zp .navItem span img{
-    width: 0.5rem;
+    width: 100%;
+    height: 100%;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -117,19 +117,33 @@
 
 /* 基因查询 */
 .gene-query{
-    background-color: #fff;
-    padding: .2rem 0;
+    
+   /* padding: .2rem 0;*/
     box-sizing: border-box;
     margin-bottom: .2rem;
+    text-align: center;
+    background: #e3e3e3;
+    width: 4.5rem;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 0 auto;
+    font-size: .45rem;
+    font-weight: bolder;
 }
 
+
 .gene-query a{
-    width: 5.1rem;
+    /*width: 5.1rem;*/
     margin: 0 auto;
+    color: black;
 }
 .gene-query img{
     width: 100%;
     display: block;
+}
+.chaxun{
+	background: white;
+	padding: .3rem 0;
 }
 
 /* 公共标题 */
@@ -284,7 +298,7 @@
     align-items: center;
     padding: .2rem 0;
     box-sizing: border-box;
-    border-top: .01rem solid #37afe6;
+    border-top: .01rem solid #e3e3e3;
 }
 .question-list li .text{
     flex: 1;
