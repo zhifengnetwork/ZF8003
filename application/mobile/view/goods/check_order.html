@@ -15,7 +15,11 @@
         <div class="wrap_frame">
                 <!-- header -->
             <div class="lb_headWrap ">
+                {if condition="$info.type neq 6"}
                 <p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='{$return}'">
+                {else /}
+                <p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='{:url('goods/jifen_goodinfo','',false)}/id/{$info.id}'">
+                {/if}
                     <img class="lb_headWrap_return_img" src="__STATIC__/img/public/back@2x.png"/>
                 </p>
                    <span>确认订单</span>
@@ -54,9 +58,9 @@
                        </div>
                        <div class="item-price">
                             {if condition="$info.type neq 6"}
-                            <p class="price price2">￥{$info.price}</p>
+                            <p class="price price2">￥<span class="danjia">{$info.price}</span></p>
                             {else /}
-                            <p class="price price2">积分{$info.price}</p>
+                            <p class="price price2">积分<span class="danjia">{$info.price}</span></p>
                            {/if}
                            <p class="num">x1</p>
                        </div>
@@ -141,12 +145,12 @@
                             -￥ <span class="coupon_discount coupon_discount2">0.00</span>
                      </div>
                  </div> -->
-                 <div class="favourable_item">
+                 <!-- <div class="favourable_item">
                      <div class="item_name">余额抵扣:</div>
                         <div>
                             -￥ <span class="remaining_discount">0.00</span>
                      </div>
-                 </div>
+                 </div> -->
                  <div class="favourable_item">
                      <div class="item_name">订单总和:</div>
                         <div>
@@ -218,6 +222,14 @@
             }
         })
         function submit(){
+
+            {if condition="$info.type eq 6"}
+                if( window.confirm('是否使用积分兑换？') == false ){
+                    return;
+                }
+            {/if}
+
+
             var goods_id = '{$goods_id}';
             var balance = $('#balance').val();
             var paypass = $('#paypass').val();

@@ -78,12 +78,17 @@ $(function() {
 		//单品数量 
 		console.log($(".num2").val())
 		//单品价格
-		console.log($(".price2").html().substring(1));
+		console.log($(".danjia").html());
 		//计算价格=单品*数量
-		var sum = $(".num2").val() * $(".price2").html().substring(1)
+		var sum = $(".num2").val() * $(".danjia").html()
 		//商品邮费
 		var youfei = $(".postage2").html();
-		jiayoufei = Number(sum) + Number(youfei)
+		if(youfei!=undefined){
+
+			jiayoufei = Number(sum) + Number(youfei)
+		}else{
+			jiayoufei = Number(sum);
+		}
 		console.log(jiayoufei)
 		//赋值订单总和的内容
 		$("#total").html(jiayoufei)
@@ -155,6 +160,7 @@ $(function() {
 			$(".zongqian").html("0.00")
 
 		}
+		$(".zongqian").html(jiayoufei)
 
 	}
 

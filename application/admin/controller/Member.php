@@ -245,14 +245,14 @@ class Member extends Base
             
             $bool = $user->where('id',$data['id'])->update($data);
                 
-            if ($bool) {
+            if ($bool !== false) {
                 $action = 'edit_member';
                 $desc   = '编辑会员';
-                $log    = adminLog($action, $desc);                    
+                $log    = adminLog($action, $desc);      
+                $this->success('修改成功！');
                 $return = array('code' => 1, 'msg' => "修改成功！");
-            } elseif ($bool === 0) {
-                $return = array('code' => 0, 'msg' => "你没有任何修改");
             }else { 
+                $this->success('修改失败！');
                 $return = array('code' => 0, 'msg' => "修改失败！");
             }
         }

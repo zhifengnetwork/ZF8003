@@ -27,6 +27,13 @@ function commission($user_id,$pid,$order_id,$money){
     $level = Db::name('user_level')->find($p_res['level']);
     $bfb = $level['quota'] / 100;
     $yj = sprintf("%.2f",$money * $bfb);
+
+    if($yj>$level['quota_max']){
+        $yj = $level['quota_max'];
+    }else if($yj<$level['quota_min']){
+        $yj = $level['quota_min'];
+    }
+
     $yj_res = Db::name('users')->where('id',$pid)->setInc('money',$yj);
     if($yj_res){
         Db::name('order')->where('id',$order_id)->update(['is_distribut'=>1]);
@@ -50,13 +57,14 @@ function upgrade_level($user_id){
     $p_res = Db::name('users')->where('id',$info['first_leader'])->field('id,first_leader,level')->find();
 
     if($p_res['level'] >= 5 ) return;
+
     $where = [];
-    $where['first_leader']  = $info['first_leader'];
+    $where['first_leader']  = $p_res['id'];
     $where['level']         = ['>=' ,$p_res['level']];
 
     $count = Db::name('users')->where($where)->count();
     $where = [];
-    $where['id'] = $p_res['level'] + 1;
+    $where['id'] = $p_res['level'];
     $where['upgrade'] = ['<=' ,$count];
     $level = Db::name('user_level')->where($where)->find();
     if($level){
