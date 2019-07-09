@@ -48,7 +48,7 @@ body{
  } */
 .purchase_list .item-img{
     height: 2.64rem;
-    width: 30%;
+    width: 3.4rem;
     padding-right: .2rem;
 }
 .purchase_list .item-img>img{
@@ -63,7 +63,7 @@ body{
 .item-msg  .item_title{
     font-size: .3rem;
     font-weight: 700;
-    color: #333333;
+    color: #333333;  
 }
 .item-msg .item_info>span{
     padding-top: .1rem;
@@ -73,7 +73,7 @@ body{
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 .item-msg .buy_box{
@@ -96,5 +96,6 @@ body{
     line-height: .6rem;
   
 }
+
  
  

@@ -14,7 +14,8 @@
 	text-align: center;
 	color: #fefefe;
 	letter-spacing: .02rem;
-	background-color: #e3e3e3;
+	/*background-color: #e3e3e3;*/
+	background: white;
 } 
 /*头部 底部线*/
 .lb_headWrap_line {

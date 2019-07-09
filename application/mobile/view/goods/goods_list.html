@@ -15,22 +15,23 @@
 </head>
 
 <body>
-    <div class="wrap_frame">
+    <div class="frame">
         <!-- header -->
-        <div class="lb_headWrap">
+        <!--<div class="lb_headWrap">-->
             <!--<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
                          <img class="lb_headWrap_return_img" src=".__STATIC__img/public/"/> 
                     </p>-->
-            <span>购买</span>
+            <!--<span>购买</span>-->
             <!--<p class="lb_headWrap_text">领取产品</p>-->
-        </div>
+        <!--</div>-->
         <div class="purchase_box">
 
             <!-- 商品列表 -->
              {volist name="list" id="vo" empty="<p style='height:75px;line-height:75px;text-align: center;'>暂无数据！</p>"}
             <div class="purchase_list">
                 <div class="item-img">
-                    <img src="__IMAGES__goods/{$vo.thumb}" alt="">
+                    <!--<img src="__IMAGES__goods/{$vo.thumb}" alt="">-->
+                    	<img src="/mobile-default-user-icon.png" />
                 </div>
                 <div class="item-msg">
                     <p class="item_title">{$vo.name}</p>
