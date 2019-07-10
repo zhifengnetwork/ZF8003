@@ -36,6 +36,7 @@ class Goods extends Base
             'status' => 1,
         ];
         $where['type'] = ['neq',6];
+        $where['is_del'] = ['eq',0];
         $list = Db::name('goods')->where($where)->select();
         $this->assign('list', $list);
         return $this->fetch();
@@ -565,6 +566,7 @@ class Goods extends Base
             'status' => 1,
         ];
         $where['type'] = ['eq',6];
+        $where['is_del'] = ['eq',0];
         $list = Db::name('goods')->where($where)->select();
         $this->assign('list', $list);
         return $this->fetch();
