@@ -41,7 +41,7 @@ class Index extends Base
             $ignore = implode("','", $ignore);
             foreach($article_cate as $k => $v){
                 $article['list'][$k] = $v;
-                $article['list'][$k]['list'] = Db::query("select `id`,`title`,`desc`,`thumb` from `zf_article` where `cate_id` = '$v[id]' and id not in ('$ignore') order by `utime` desc");
+                $article['list'][$k]['list'] = Db::query("select `id`,`title`,`desc`,`thumb`,`details` from `zf_article` where `cate_id` = '$v[id]' and id not in ('$ignore') order by `utime` desc");
             }
 
             // dump($article);exit;
