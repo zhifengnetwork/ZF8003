@@ -145,8 +145,10 @@
 						{/if} 
 					</div>
 					
+					<div style="padding-bottom: 1.7rem;">
 					{if condition="isset($article.list) && $article.list"}
 						{volist name="$article.list" id="vo"}
+							{if condition="$vo.list"}
 							<div class="question-wrap">
 								<h2>{$vo.name}</h2>
 								<ul class="question-list">
@@ -155,7 +157,7 @@
 											<div class="text">
 												<h3><a href="/mobile/article/details?id={$vl.id}">{$vl.title}</a></h3>
 												<p>{$vl.desc}</p>
-												<p>{$vl.details}</p>
+												
 											</div>
 											<div class="img-wrap">
 												<img src="__IMAGES__article/{$vl.thumb}" />
@@ -164,11 +166,12 @@
 									{/volist}
 								</ul>
 							</div>
+							{/if}
 						{/volist}
 					{/if}
-
+				</div>
 				{/if}
-
+           
 
 
 
