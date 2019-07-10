@@ -154,7 +154,7 @@ class Goods extends Base{
                     if(!strstr($v,'images-')){
                         if($k == 0){
                             $thumb = \think\Image::open($temp_dir.$v);
-                            $thumb->thumb(150,150,\think\Image::THUMB_CENTER)->save($save_dir.$thumb_path);
+                            $thumb->thumb(450,450,\think\Image::THUMB_CENTER)->save($save_dir.$thumb_path);
                         }
                         $im = \think\Image::open($temp_dir.$v);
                         $savename = $save_dir.$goods_id.'/images-'.$time.$i.'.jpg';
