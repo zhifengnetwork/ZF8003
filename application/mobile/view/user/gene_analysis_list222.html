@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -114,4 +115,122 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css">
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/gene_analysis.css" />
+		<script src="__STATIC__/js/public/rem.js"></script>
+	</head>
+
+	<body>
+		<div>
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" onclick="javascript:location.href='/mobile/user/my_gene'" />
+				</p>
+				<span>基因分析结果</span>
+				<!--<p class="lb_headWrap_text lb_header_righticon">编辑</p>-->
+				<!--<p class="lb_headWrap_text lb_header_righticon22">编辑</p>-->
+			</div>
+			<!--表格-->
+			<div class="table_ear1">
+				<table frame="void" rules="all" class="biaogege">
+					<tr style="height:.9rem">
+						<td style="text-align: center;">编号</td>
+						<td>姓名</td>
+						<td>民族</td>
+						<td style="text-align: center;">地域</td>
+						<td>共同祖代</td>
+						<td>朝代</td>
+					</tr>
+				</table>
+            </div>
+            {if condition="isset($loading)"}
+                <img style="height:75px;margin:30% 0 5% 40%;" src='/public/static/mobile/img/home/loading.gif' />
+                <p style="text-align:center;">正在分析结果，请稍等...</p>
+                <script>
+                    setTimeout(function(){
+                        window.location.href="/mobile/user/gene_analysis_list?id={$id}&re=1";
+                    },500);
+                </script>
+            {else /}
+                <div class="table_ear2">
+                    {if condition="$lately"}
+                    <table frame="void" rules="all" class="biaogege2 wu">
+                        <tr style="height:.2rem">
+                            <td style="text-align: center;">目前尚无亲缘关系较为接近的样本</td>
+                        </tr>
+                    </table>
+                    {/if}
+                    {volist name="data" id="vo"}
+                    <table frame="void" rules="all" class="biaogege2">
+                        <tbody>
+                            <tr>
+                                <td>{$vo.id1}</td>
+                                <td>{$vo.name1}</td>
+                                <td>{$vo.nation1}</td>
+                                <td>{$vo.region1}</td>
+                                <td rowspan='2' class="niandai"><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
+								<td rowspan='2'></td>
+								<td rowspan='2' class="chaodai">
+									<img src="__STATIC__/img/home/jiantou5.png" class="jiantoudd" />
+									<img src="/public/gene/image/{$vo.line.img}" class="jiantou_hou" />
+									<span class="dynasty">{$vo.line.name}</span>
+								</td>
+                            </tr>
+                            <tr>
+                                <td>{$vo.id2}</td>
+                                <td>{$vo.name2}</td>
+                                <td>{$vo.nation2}</td>
+                                <td>{$vo.region2}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {/volist}
+                </div>
+                {if condition="empty($data)"}
+                <div class="wu_pipei">
+                    <div class="kong_ear">
+                        <img src="__STATIC__/img/home/kong.png" class="kong_pic"/>
+                    </div>
+                    <p>非常遗憾，暂未匹配到与您相关的共祖信息，“族内”数据库持续更新中，我们会继续增加更多基因数据为您匹配，请持续关注，敬请期待！</p>
+                    <span>水始——源千派别 木初同本万枝分(暂无匹配)</span>
+                </div>
+			    {/if}
+            {/if}
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script>
+			// var tt = $(".table_ear2 table:nth-child(2) tbody tr td:nth-child(5) span span:first").html()
+			// console.log(tt)
+			// if(tt >= 1500) {
+			// 	$(".table_ear2 table:nth-child(1)").show()
+			// }
+			// if($(".table_ear2").find("table").length==0){
+			// 	$(".wu_pipei").show()
+			// }else{
+			// 	$(".wu_pipei").hide()
+			// }
+			// var length=$(".table_ear2").find("table").length
+			// console.log(length)
+			// for(var i=2;i<=length;i++){
+			// 	var chaodai=$(".table_ear2 table:nth-child("+i+") tbody tr:nth-child(1) td:last-child").html();
+		    //     if(chaodai=="民朝"||chaodai=="清朝"||chaodai=="民国"||chaodai=="现今"){
+		    //     	$(".table_ear2 table:nth-child("+i+") tbody tr:nth-child(1) td:last-child").css({color:"#37afe6"})
+		    //     }
+			// }
+		</script>
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

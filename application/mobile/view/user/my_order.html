@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -136,4 +137,144 @@
 		</script>
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>我的订单</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/my_order.css" />
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/index'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" />
+				</p>
+				<span>我的订单</span>
+			</div>
+			<!--内容-->
+			<div class="contet_wrap">
+				<!--Tab切换 wrap-->
+				<div class="tab_but_box">
+					<p class="tab_but {if condition='$status eq 0'}tab_but_active{/if}" onclick="javascript:location.href='/mobile/user/my_order?status=0'">全部</p>
+					<p class="tab_but {if condition='$status eq 1'}tab_but_active{/if}" onclick="javascript:location.href='/mobile/user/my_order?status=1'">待付款</p>
+					<p class="tab_but {if condition='$status eq 2'}tab_but_active{/if}" onclick="javascript:location.href='/mobile/user/my_order?status=2'">待发货</p>
+					<p class="tab_but {if condition='$status eq 3'}tab_but_active{/if}" onclick="javascript:location.href='/mobile/user/my_order?status=3'">待收货</p>
+					<p class="tab_but {if condition='$status eq 4'}tab_but_active{/if}" onclick="javascript:location.href='/mobile/user/my_order?status=4'">已完成</p>
+				</div>
+				<!--Tab => 内容 wrap-->
+				<div class="tab_wrap">
+					<!--Tab对应的 模块 box-->
+					<div class="tab_show_box">
+						<!--(循环)商品-项-->
+						{volist name="lists" id="vo" empty="<p style='height:75px;line-height:75px;text-align:center;'>暂无数据！</p>"}
+						<div class="commodity_term">
+							<p class="commodity_term_top">
+								<span class="commodity_term_top_left">订单编号:&nbsp;{$vo.order_sn}</span>
+								<span class="commodity_term_top_right">{$sname[$vo.status]}</span>
+							</p>
+							<div class="commodity_term_bottom">
+								<p class="commodity_term_bottom_left" onclick="javascript:location.href='/mobile/goods/order_info?id={$vo.id}'">
+									<img class="commodity_term_bottom_img" src="/public/images/goods/{$vo.thumb}" />
+								</p>
+								<div class="commodity_term_bottom_right">
+									<p class="commodity_term_bottom_text" onclick="javascript:location.href='/mobile/goods/order_info?id={$vo.id}'">{$vo.name}</p>
+									<!--按钮-->
+									<div class="commodity_term_but_box">
+										<!--按钮
+											1、class='button_red'; 红色-按钮
+											2、class='button_red'; 灰色-按钮
+										-->
+										{if condition="$vo.order_status eq 0"}
+										<p class="commodity_term_but button_red" onclick="cancel_order('{$vo.id}');">取消订单</p>
+										<p class="commodity_term_but button_red" onclick="javascript:location.href='/mobile/weixin/pay?t=order_pay&id={$vo.id}'">付款</p>
+										{/if}
+										{if condition="$vo.order_status eq 2"}
+										<p class="commodity_term_but button_red" onclick="confirm_order('{$vo.id}')">确认收货</p>
+										{/if}
+										{if condition="$vo.order_status eq 3"}
+										<p class="commodity_term_but button_red" >已完成</p>
+										{/if}
+										<!-- <p class="commodity_term_but button_ash">取消订单</p> -->
+									</div>
+								</div>
+
+							</div>
+						</div>
+						{/volist}
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/public/public.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+			
+		<script>
+			function error_msg(msg){
+				layer.msg(msg,{icon:6});
+			}
+			
+			function cancel_order(id){
+				layer.confirm('确认要取消该订单? ', {icon: 3, title:'提示'}, function(index){
+				  //do something
+				  
+				  $.post('/mobile/user/cancel_order',{id:id},function(res){
+					if(res.status == 1){
+						layer.msg('操作成功!',{icon:6});
+						setTimeout(function(){
+							window.location.reload();
+						},1500);
+					}else{
+						layer.msg(res.msg,{icon:5});
+					}
+					
+					setTimeout(function(){
+						window.location.replace(location.href);
+					},1500);
+				  });
+				  
+				  
+				  layer.close(index);
+				});
+			}
+
+			function confirm_order(id){
+			
+				layer.confirm('确认已收货? ', {icon: 3, title:'提示'}, function(index){
+				  //do something
+				  
+				  $.post('/mobile/user/confirm_order',{id:id},function(res){
+					if(res.status == 1){
+						layer.msg('已确认收货!',{icon:6});
+					}else{
+						layer.msg('操作失败,请重试!',{icon:5});
+					}
+					
+					setTimeout(function(){
+						window.location.replace(location.href);
+					},1500);
+				  });
+				  
+				  
+				  layer.close(index);
+				});
+			
+			
+			}
+		</script>
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

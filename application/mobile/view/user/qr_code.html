@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -51,4 +52,59 @@
 			
 		</script>
 	</body>
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>二维码</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/set_up_zp.css" />
+		<style>
+			.qr-code{
+				width: 100%;
+				padding: 0 1px;
+			}
+			.qr-code img{
+				width:100%;
+				height:auto;
+			}
+			.Update_image{
+				display:inline-block;
+				color:#fff;
+				font-size:14px;
+				position: relative;
+				right: -105px;
+				z-index:999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			 <!-- 头部 -->
+			 <div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/index'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png"/>
+				</p>
+				<span>我的分享二维码</span>
+				<a class="Update_image" onclick="javascript:location.href='/mobile/user/qr_code?u=1'">更新</a>
+			</div>
+			<div class="qr-code">
+				<img src="{$src}" />
+			</div>
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/public/public.js"></script>
+		<script src="__STATIC__/js/my/qrcode.js"></script>
+		
+		<script type="text/javascript">
+			
+		</script>
+	</body>
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

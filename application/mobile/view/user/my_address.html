@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -69,3 +70,76 @@
 		</script>
 	</body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>我的地址</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/my_site.css" />
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='{$return}'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png"/>
+				</p>
+				<span>我的地址</span>
+			</div>
+			<div class="layout">
+				<div class="site_list">
+					{foreach name="list" item="vo"}
+						<div class="list_item">
+							<div class="user_info">
+								<p><span>{$vo.consignee}</span><span>{$vo.mobile}</span></p>
+							</div>
+							<div class="site {eq name='$vo.is_default' value='1'} active {/eq}">
+								<span>{$vo.area}</span>
+							</div>
+							<div class="btn clearfloat">
+								<div class="btn_right">
+									<span class="edit"><a href="/mobile/user/edit_address?id={$vo.id}">编辑</a></span>
+									<span class="del" data-id="{$vo.id}" data-url="{:url('mobile/user/handle_address',['id'=>$vo['id']])}" onclick="javaScript:del('{$vo.id}')">删除</span>
+								</div>
+							</div>
+						</div>
+					{/foreach}
+				</div>
+				<div class="add_site" onclick="window.location.href='/mobile/user/add_address'">
+					新建收货地址
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/public/jquery.min.js"></script>
+    	<script type="text/javascript" src="__PUBLIC__/public/layer/layer.js"></script>
+		<script type="text/javascript">
+			function del(id){
+				layer.confirm('你确定要删除该条数据吗?', {icon: 3, title:'删除提示'}, function(index){
+					loading = layer.load(2, {
+						shade: [0.2,'#000']
+					});			  
+					$.post('/mobile/user/handle_address',{type:'del',id:id},function(res){
+						if(res.code == 1){
+							layer.msg('删除成功！',{icon:1,time:1000},function(){
+								window.location.href = "/mobile/user/my_address";
+							});
+						}else{
+							layer.close(loading);
+							layer.msg('删除失败！', {icon: 2, anim: 6, time: 1000});
+						}
+					});
+				});
+			}
+		</script>
+	</body>
+</html>
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c

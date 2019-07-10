@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -61,3 +62,68 @@
 		</script>
 	</body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no"/>
+		<title class="pageTopTitle" page-id="1">示例报告</title>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/example/example.css"/>
+	</head>
+	<body>
+		<div class="frame">
+			<!--public head-->
+			<!--<div class="lb_headWrap">
+				<span>示例报告</span>
+			</div>-->
+			<div class="report">
+				<!--主题图片-->
+				{if condition="isset($recom)"}
+				<div class="report_theme">
+					<!--图片项-s-->
+					{volist name="recom" id="vo"}
+					<div class="report_theme_item" onclick="window.location.href='/mobile/article/details?id={$vo.id}'">
+						<img src="__IMAGES__article/{$vo.thumb}"/>
+						<div class="mask">
+							<h1 class="mask_title">{$vo.title}</h1>
+						</div>
+					</div>
+					{/volist}
+				</div>
+				{/if}
+				{if condition="isset($cate)"}
+				<!--报告列表-->
+				<div class="report_list">
+					{volist name="cate" id="vo"}
+					<div class="list_item clearfloat" onclick="window.location.href='/mobile/article/example_list?cate_id={$vo.id}'">
+						<div class="item_left">
+							<img src="__IMAGES__category/{$vo.thumb}"/>
+						</div>
+						<div class="item_right">
+							<div class="item_title">
+								<h3 class="title">{$vo.name}</h3>
+								<p class="detection"><span>{$vo.count}</span>项检测<img src="__STATIC__/img/example/youjian@2x.png"/></p>
+							</div>
+							<p>{$vo.desc}</p>
+						</div>
+					</div>
+					{/volist}
+				</div>
+				{/if}
+			</div>
+			<!-- 底部导航 -->
+			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
+		</div>
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/bottom_nav.js"></script>
+		<script type="text/javascript">
+			
+		</script>
+	</body>
+</html>
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c

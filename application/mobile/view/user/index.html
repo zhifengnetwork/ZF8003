@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -134,4 +135,142 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title class="pageTopTitle" page-id="3">我的</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/my.css" />
+
+	</head>
+
+	<body>
+		<div class="rame">
+			<!--<div class="lb_headWrap ">-->
+				<!--<span>我的</span>-->
+			<!--</div>-->
+
+			<!--头像区域-->
+			<div class="my_pic">
+				<div style="width: 2.8rem; position: absolute;left: 50%;top: 50%;transform: translate(-50%,-50%);">
+					<img src="{$user['avatar']}" onerror="this.src='/public/mobile-default-user-icon.png'" style="width: 1.4rem;height: 1.4rem; border-radius: 50%;z-index: 1222;" />
+					<p style="font-size:12px;">
+						{switch $user.level}
+							{case 1}会员等级：一级会员{/case}
+							{case 2}会员等级：二级会员{/case}
+							{case 3}会员等级：三级会员{/case}
+							{case 4}会员等级：四级会员{/case}
+							{case 5}会员等级：五级会员{/case}
+							{default /}普通会员
+						{/switch}
+					
+					
+					
+					</p>
+					<p style="font-size:12px;">ID：{$user['id']}</p>
+					<p>{$user['nickname']}</p>
+				</div>
+			</div>
+
+			<!--中间-->
+			<ul style="width: 92%;margin-left: 4%; ">
+				<li onClick="window.location.href='/mobile/user/distribution'">
+					<img class="img1" src="__STATIC__/img/my/team.png" />
+					<a >我的团队</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+				</li>
+				<li onclick="window.location.href='/mobile/user/my_order'">
+					<img src="__STATIC__/img/my/dingdan@2x.png" class="img1" />
+					<a>我的订单</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li>
+				<li onClick="window.location.href='/mobile/user/my_walet'">
+
+				  
+					<img class="img1" src="__STATIC__/img/my/qianbao@2x.png" />
+					<a>我的钱包</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+               	
+				</li>
+				<li onClick="window.location.href='/mobile/goods/jifen_goodsList'">
+
+				  
+					<img class="img1" src="__STATIC__/img/my/liwu.png" />
+					<a>会员礼品</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+               	
+				</li>
+				<li onclick="window.location.href='/mobile/user/my_address'">
+
+					<img class="img1" src="__STATIC__/img/my/site@2x.png" />
+					<a>我的地址</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li>
+				<li onclick="window.location.href='/mobile/user/collection'">
+
+					<img class="img1" src="__STATIC__/img/my/aixin@2x.png" />
+					<a>我的收藏</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li>
+				<!-- <li onclick="window.location.href='/mobile/user/evaluation'">
+
+					<img class="img1" src="__STATIC__/img/my/pingjia@2x.png" />
+					<a>我的评价</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li> -->
+				<li onclick="window.location.href='/mobile/user/qr_code'">
+
+					<img class="img1" src="__STATIC__/img/my/erweima@2x.png" />
+					<a>我的二维码</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li>
+				<!-- <li onclick="window.location.href='/mobile/user/coupons'">
+
+					<img class="img1" src="__STATIC__/img/my/youhuiquan@2x.png" />
+					<a>我的优惠券</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li> -->
+				<!-- <li>
+
+					<img class="img1" src="__STATIC__/img/my/kefu@2x.png" />
+					<a>客服中心</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li> -->
+				<li onclick="window.location.href='/mobile/user/set_up'">
+
+					<img class="img1" src="__STATIC__/img/my/shezhi@2x.png" />
+					<a>设置</a>
+					<img class="img2" src="__STATIC__/img/my/youjian@2x.png" />
+
+				</li>
+
+			</ul>
+
+			<!-- 底部导航 -->
+			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<!--公共底部导航栏-->
+		<script src="__STATIC__/js/public/bottom_nav.js"></script>
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

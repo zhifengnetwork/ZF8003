@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*包裹index的div*/
 .wrap_index {
 	padding-bottom: .98rem;
@@ -314,3 +315,368 @@
 .question-list li .img-wrap img{
     width: 1.4rem;
 }
+=======
+/*包裹index的div*/
+.wrap_index {
+	padding-bottom: .31rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	width: 100%;
+	height: auto;
+}
+body{
+	background: white;
+}
+/* 搜索 */
+.search{
+    width: 100%;
+    height: .88rem;    
+    background-color: #37afe6;
+}
+.search form{
+    width: 100%;
+    height: 100%;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    position: relative;
+    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */  
+    display: -moz-box; /* Firefox 17- */  
+    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */  
+    display: -moz-flex; /* Firefox 18+ */  
+    display: -ms-flexbox; /* IE 10 */  
+    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
+    align-items: center;
+}
+.search .search-input{
+    -prefix-box-flex: 1; 
+	-webkit-box-flex: 1; 
+	-webkit-flex: 1; 
+	-moz-box-flex: 1; 
+	-ms-flex: 1; 
+	flex: 1;
+    height: .5rem;
+    line-height: .5rem;
+    text-align: center;
+    color: #c2c2c2;
+    border-radius: .2rem;
+    border: none;
+    outline: none;
+    padding: 0 .1rem;
+    box-sizing: border-box;
+}
+.search .search-btn{
+    width: .85rem;
+    height: .5rem;
+    text-align: center;
+    line-height: .5rem;
+    font-size: .24rem;
+    color: #37afe6;
+    margin-left: .1rem;
+    background-color: #fff;
+    border-radius: .2rem;
+    padding: 0;
+}
+.search .search-tip{
+    background:url(../../img/home/search-icon-index@2x.png) 0 center no-repeat;
+    background-size: .22rem;
+    color: #c2c2c2;
+    padding-left: .3rem;
+    position: absolute;
+    left: 40%;
+    top: .26rem;
+}
+
+/* 轮播图 */
+.banner-wrap-zp img{
+    width: 100%;
+    display: block;
+}
+
+/* 菜单导航 */
+.nav-wrap-zp{
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+.nav-wrap-zp ul{
+    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */  
+    display: -moz-box; /* Firefox 17- */  
+    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */  
+    display: -moz-flex; /* Firefox 18+ */  
+    display: -ms-flexbox; /* IE 10 */  
+    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
+    justify-content: space-around;
+    padding:0.3rem 0 0.2rem 0;
+    box-sizing: border-box;
+    border-bottom:.02rem solid #e3e3e3
+}
+.nav-wrap-zp .navItem{
+    text-align: center;
+}
+.nav-wrap-zp .navItem a{
+    color: #000000;
+}
+.nav-wrap-zp .navItem span:first-child{
+    width: .8rem;
+    height: .8rem;
+    border-radius: .08rem;
+    display: block;
+    margin: 0 auto .15rem;
+}
+.nav-wrap-zp .navItem span{
+    position: relative;
+}
+.nav-wrap-zp .navItem span img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+/* 基因查询 */
+.gene-query{
+    
+   /* padding: .2rem 0;*/
+    box-sizing: border-box;
+    margin-bottom: .2rem;
+    text-align: center;
+    background: #e3e3e3;
+    width: 4.5rem;
+    height: .9rem;
+    line-height: .9rem;
+    margin: 0 auto;
+    font-size: .45rem;
+    font-weight: bolder;
+}
+
+
+.gene-query a{
+    /*width: 5.1rem;*/
+    margin: 0 auto;
+    color: black;
+}
+.gene-query img{
+    width: 100%;
+    display: block;
+}
+.chaxun{
+	background: white;
+	padding: .3rem 0;
+}
+
+/* 公共标题 */
+.title {
+    height: .6rem;
+    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */  
+    display: -moz-box; /* Firefox 17- */  
+    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */  
+    display: -moz-flex; /* Firefox 18+ */  
+    display: -ms-flexbox; /* IE 10 */  
+    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 .2rem;
+}
+.title a{
+    color: #999999;
+}
+.title .more{
+    font-size: .24rem;
+    background: url(../../img/home/youjian@2x.png) no-repeat right center;
+    background-size: 0.13rem; 
+    padding-right: .2rem;
+}
+
+/* 推荐商品 */
+.recommend-wrap{
+    background-color: #fff;
+    padding:0 .2rem;
+    box-sizing: border-box;
+    margin-bottom: .2rem;
+}
+.recommend-list .listItem{
+    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */  
+    display: -moz-box; /* Firefox 17- */  
+    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */  
+    display: -moz-flex; /* Firefox 18+ */  
+    display: -ms-flexbox; /* IE 10 */  
+    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
+    align-items: center;
+    border-top: .01rem solid #cccccc;
+    padding: .3rem 0;
+    box-sizing: border-box;
+}
+.recommend-list .listItem .img-wrap{
+    width: 1.8rem;
+    text-align: center;
+}
+.recommend-list .listItem .img-wrap img{
+    width: 100%;
+}
+.recommend-list .listItem .text{
+    -prefix-box-flex: 1; 
+	-webkit-box-flex: 1; 
+	-webkit-flex: 1; 
+	-moz-box-flex: 1; 
+	-ms-flex: 1; 
+	flex: 1;
+}
+.recommend-list .listItem .text h3{
+    line-height: .5rem;
+}
+.recommend-list .listItem .text h3 a{
+    color: #333333;
+    font-size: .3rem;
+}
+.recommend-list .listItem .text .dec{
+    color: #999999;
+    font-size: .2rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+.recommend-list .listItem .text .price{
+    color: #ff0000;
+    font-size: .42rem;
+}
+.recommend-list .listItem .text .buy{
+    margin-top: .3rem;
+    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */  
+    display: -moz-box; /* Firefox 17- */  
+    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */  
+    display: -moz-flex; /* Firefox 18+ */  
+    display: -ms-flexbox; /* IE 10 */  
+    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
+    justify-content: space-between;
+}
+.recommend-list .listItem .text .butBtn{
+    width: 1.64rem;
+    height: .5rem;
+    text-align: center;
+    line-height: .5rem;
+    background-color: #ff8c10;
+    color: #fff;
+    font-size: .24rem;
+    display: block;
+    border-radius: .2rem;
+}
+
+/* 微解读 */
+.nscramble-wrap{
+    padding:0 .2rem;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+.nscramble-wrap .nscrambleItem{
+    width: 2.2rem;
+    height: 1.6rem;
+    overflow: hidden;
+    position: relative;
+}
+.nscramble-wrap .nscramble-list{
+    padding: .2rem 0;
+    box-sizing: border-box;
+    display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */  
+    display: -moz-box; /* Firefox 17- */  
+    display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */  
+    display: -moz-flex; /* Firefox 18+ */  
+    display: -ms-flexbox; /* IE 10 */  
+    display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */  
+    /*flex-wrap: wrap;*/
+    /*justify-content: space-around;*/
+    border-top: .07rem solid #e3e3e3;
+    
+}
+.title h3{
+	font-weight: bolder;
+}
+.hhhhhhh{
+	display: flex;
+	justify-content: space-around;
+}
+.title{
+	display: block;
+}
+.nscramble-wrap .nscramble-list .mask{
+    width: 2.2rem;
+    height: 1.6rem;
+    background: rgba(0, 0, 0, .4);
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: .08rem;
+}
+.nscramble-wrap .nscramble-list .nscrambleItem img{
+    width: 2.2rem;
+    border-radius: .08rem
+}
+
+/* 问题 */
+.question-wrap{
+    padding:0 .2rem;
+    box-sizing: border-box;
+    background-color: #fff;
+   
+}
+.question-wrap h2{
+    font-size: .3rem;
+    line-height: .6rem;
+    font-weight: bolder;
+}
+.question-list li{
+    display: flex;
+    align-items: center;
+    padding: .2rem 0;
+    box-sizing: border-box;
+    border-top: .01rem solid #e3e3e3;
+}
+.question-list li .text{
+    flex: 1;
+}
+.question-list li .text h3{
+    margin-bottom: .15rem;
+}
+.question-list li .text h3 a{
+    color: #333333;
+    font-size: .3rem;
+}
+.question-list li .text p{
+    color: #666666;
+    font-size: .2rem;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+.question-list li .img-wrap{
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-left: .5rem;
+}
+.question-list li .img-wrap img{
+    width: 1.4rem;
+    height: 1.4rem;
+}
+.swiper-container{
+	height: 3.7rem;
+}
+.swiper-slide img{
+	width: 100%;
+	height: 100%;
+}
+.nscrambleItem a{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+.question-wrap{
+	margin-bottom: .5rem;
+}
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c

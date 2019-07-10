@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -178,4 +179,186 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css">
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/gene_analysis.css" />
+		<script src="__STATIC__/js/public/rem.js"></script>
+	</head>
+
+	<body>
+		<div>
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" onclick="returnFun()" />
+
+				</p>
+				<span>基因分析结果</span>
+				<!--<p class="lb_headWrap_text lb_header_righticon">编辑</p>-->
+				<!--<p class="lb_headWrap_text lb_header_righticon22">编辑</p>-->
+			</div>
+			<!--表格-->
+			<div class="table_ear1">
+				<table frame="void" class="biaogege">
+					<tr style="height:.4rem">
+						<td style="text-align: center;">编号</td>
+						<td>姓名</td>
+						<td>民族</td>
+						<td style="text-align: center;">地域</td>
+						<td hidden>共同祖代</td>
+						<td class="chaodai">朝代</td>
+					</tr>
+				</table>
+			</div>
+			{if condition="isset($loading)"}
+                <img style="height:75px;margin:30% 0 5% 40%;" src='/public/static/mobile/img/home/loading.gif' />
+                <p style="text-align:center;">正在分析结果，请稍等...</p>
+                <script>
+                    setTimeout(function(){
+                        window.location.href="/mobile/user/gene_analysis_list?id={$id}&re=1";
+                    },500);
+                </script>
+			{else /}
+			
+			<div class="table_ear2">
+				{if condition="$lately"}
+				<table frame="void" class="wu">
+					<tr style="height:.3rem;line-height: .3rem;">
+						<td style="text-align: center;">目前尚无亲缘关系较为接近的样本</td>
+					</tr>
+				</table>
+				{/if}
+				{volist name="data" id="vo"}
+				<table frame="void" class="biaogege2">
+					<tbody>
+						<!-- <tr>
+							<td class="dddddd">{$vo.id1}</td>
+							<td>{$vo.name1}</td>
+							<td>{$vo.nation1}</td>
+							<td>{$vo.region1}</td>
+							<td rowspan='2' class="niandai" hidden><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
+							<td rowspan='2' class="chaodai">
+								<img src="__STATIC__/img/home/jiantou5.png" class="jiantoudd" />
+								<img src="/public/gene/image/{$vo.line.img}" class="jiantou_hou" />
+								<span class="dynasty">{$vo.line.name}</span>
+							</td>
+						</tr> -->
+						<tr>
+							<td><a is_open="{$vo.is_open}" onclick="check_open(this)" _href="{:url('user/my_information','',false)}?id={$vo.id2}">{$vo.id2}</a></td>
+							<td>{$vo.name2}</td>
+							<td>{$vo.nation2}</td>
+							<td>{$vo.region2}</td>
+							<td rowspan='2' class="niandai" hidden><span class="nian"><span>{$vo.cay}</span><span>年</span></span><br/><span>({$vo.generation})代</span></td>
+							<td rowspan='2' class="chaodai">
+								<img src="__STATIC__/img/home/jiantou5.png" class="jiantoudd" />
+								{if condition="$vo.line"}
+								<img src="/public/gene/image/{$vo.line.img}" style="height:36px;" class="jiantou_hou" />
+								<span class="dynasty">{$vo.line.name}</span>
+								{/if}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				{/volist}
+			</div>
+			{if condition="empty($data)"}
+			<div class="wu_pipei">
+				<div class="kong_ear">
+					<img src="__STATIC__/img/home/kong.png" class="kong_pic" />
+				</div>
+				<p>非常遗憾，暂未匹配到与您相关的共祖信息，“族内”数据库持续更新中，我们会继续增加更多基因数据为您匹配，请持续关注，敬请期待！</p>
+				<span>水始——源千派别 木初同本万枝分(暂无匹配)</span>
+			</div>
+			{/if}
+
+		{/if}
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script>
+
+		function check_open(obj){
+			var is_open = $(obj).attr('is_open');
+			var _href = $(obj).attr('_href');
+			
+			if(is_open==0){
+				alert('该用户信息不公开！');
+				return;
+			}
+			window.location.replace(_href);
+		}
+
+			var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+			var page = 1;
+			function ajax_sourch_submit() {
+				if (before_request == 0)// 上一次请求没回来 不进行下一次请求
+					return false;
+				before_request = 0;
+				page++;
+				$.ajax({
+					type: "get",
+					url: "{:url('user/gene_analysis_list','',false)}?id={$Request.param.id}"+"&page="+page,
+					dataType:"json",
+					success: function (data) {
+						if(data.status == 1){
+							before_request = 1;
+							for(var i = 0; i<data.data.length; i++){
+							
+								let str = '<table frame="void" class="biaogege2">'+
+										'<tbody class="zuijia">'+
+										'<tr>'+
+											'<td>'+
+												'<a is_open="'+data.data[i].is_open+'" onclick="check_open(this)" _href="{:url(\"user/my_information\",\"\",false)}?id='+data.data[i].id2+'">'+data.data[i].id2+'</a>'+
+											'</td>'+
+											'<td>'+data.data[i].name2+'</td>'+
+											'<td>'+data.data[i].nation2+'</td>'+
+											'<td>'+data.data[i].region2+'</td>'+
+											'<td rowspan="2" class="niandai" hidden=""><span class="nian"><span>'+data.data[i].line.name+'</span><span>年</span></span><br><span>('+data.data[i].id2+')代</span></td>'+
+											'<td rowspan="2" class="chaodai">'+
+												'<img src="/public/static/index/images/home/jiantou5.png" class="jiantoudd">'+
+												'<img src="/public/gene/image/'+data.data[i].line.img+'" style="height:36px;" class="jiantou_hou">'+
+												'<span class="dynasty">'+data.data[i].line.name+'</span>'+
+											'</td>'+
+										'</tr>'+
+										'</tbody>'+
+										'</table>'
+								$(".table_ear2").append(str);
+								$('.biaogege2:even').css('background', '#EFF3F6');
+								$('.biaogege2:odd').css('background', '#E8E8E8');
+							
+							}
+						}
+					}
+				});
+			}
+
+			// 滚动条滚动到底部<200px的时候
+			$(window).scroll(function () {
+				var bot = 100; //bot是底部距离的高度
+				if ((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height())) {
+					ajax_sourch_submit()
+				}
+			});
+
+			
+
+
+
+
+			//奇偶性设置背景颜色
+			$('.biaogege2:even').css('background', '#EFF3F6');
+			$('.biaogege2:odd').css('background', '#E8E8E8');
+		</script>
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

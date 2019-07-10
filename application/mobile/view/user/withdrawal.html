@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -252,3 +253,259 @@
 	   </script>
 	</body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title >申请提现</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/shengqing_tixian.css" />
+
+	</head>
+	<body ontouchstart>
+		
+	<div class="wrap_frame">
+			<!--public head-->
+			<div class="sec">
+			<div class="lb_headWrap lb_headWrap_bacColor topBox_backgroundColor ">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/my_walet'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png"/>
+				</p>
+				<span>申请提现</span>
+			</div>
+
+			
+			
+			<div class="tixian">
+				<div class="tixian_text">
+					<div class="text_left">
+						<img class="text_left_img" src="__STATIC__/img/my/qianqian.png" />
+						可提现金额
+					</div>
+					
+				</div>
+				
+				<p class="tixian_money">	
+					<span>￥</span><span class="zi_money">{$info['money']}</span>		
+				</p>
+			</div>
+			<input type="hidden" id="weixin-account" value="{$info['re_wx_account']}">
+			<input type="hidden" id="alipay-account" value="{$info['re_alipay_account']}">
+			<input type="hidden" id="withdrawal-type" value="alipay">
+		   <!--提现方式区块-->
+		   <div class="way">
+		   	
+		   	 <div class="content">
+		   		<!--1-->
+		   		<p>
+		   			选择提现方式	   			
+		   		</p>
+		   		<!--2-->
+		   		<div class="fangshi">
+						<span class="span1" >
+							<img src="__STATIC__/img/my/xuanzhong@2x.png" style="width: .3rem;" class="img1"/>
+							<img src="__STATIC__/img/my/zhifubao@2x.png" style="width: .48rem;" class="img3"/>
+							<span style="margin-right: .2rem;margin-left: 1.5rem;" >支付宝</span>
+						</span>
+						<span class="span2" >
+							<img src="__STATIC__/img/my/weixuanzhong@2x.png" style="width: .3rem;" class="img2">
+							<img src="__STATIC__/img/my/weixin@2x.png" style="width: .48rem;" class="img4"/>
+							<span style="margin-left: 1.5rem;margin-right: .2rem;">微信</span>
+						</span>
+		   		</div>
+		   		<!--3-->
+		   		<div class="youjian" onclick="set_account();">
+		   			<img src="__STATIC__/img/my/zhifubao@2x.png" style="width: .48rem;" class="img33"/>
+		   			<span style="margin-left: .7rem;" id="bangding" >{if condition="$info['re_alipay_account']"} {$info['re_alipay_account']} {else /}请先绑定一个支付宝账号{/if}</span>
+		   			<img src="__STATIC__/img/example/youjian@2x.png" style="width: .2rem;" class="jian">
+		   		</div>
+		   		
+		   	</div>
+		 
+		   </div>
+			
+			
+			<!--提现金额-->
+		   <div class="tixianjinger">
+		   	
+		   	 <div class="section1">提现金额(单次可提最大金额：<span class="erdu">{if condition="$money_max gt 0"}{$money_max}{else /}无限制{/if}</span>)</div>
+		   	 <div class="section2">
+		   	 	
+		   	 	￥<input type="number" onkeyup="kou_shouxu();" onchange="kou_shouxu();"  id="money" placeholder="请输入提现金额" class="tiqian"/>
+		   	 	
+		   	 </div>
+		   	 <div class="section3">
+		   	 	<span id="fee">手续费：<span class="kou_shouxu">0.00</span></span>
+		   	 	<span style="float: right;color: #FF3B3B;" class="tixian_button">全部提现</span>
+		   	 </div>
+		   </div>	
+         <div class="button" onclick="submit();">
+         	提交申请
+         </div>
+	
+		</div>
+		
+		
+	</div>	
+	   <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>	
+	   <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+		 <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+	   <script>
+	   	
+			var money_max = '{$money_max}';
+			var money_min = '{$money_min}';
+			var fee = '{$fee}';
+			var fee_max = '{$fee_max}';
+			var fee_min = '{$fee_min}';
+
+			
+
+			function kou_shouxu(){
+				
+				var num = $('.tiqian').val();
+				if(!num){
+					$('.kou_shouxu').html('0');
+					return false;
+				}
+				
+				if(money_max > 0 && parseFloat(num) > money_max){
+					num = money_max;
+				}
+				if(money_min > 0 && parseFloat(num) < money_min){
+					num = money_min;
+				}
+
+
+				var wfee = parseFloat(num) * (fee * 0.01);
+				if((fee_max > 0) && (wfee > fee_max)){
+					wfee = fee_max;
+				}
+				if((fee_min > 0) && (wfee < fee_min)){
+					wfee = fee_min;
+				}
+
+				$('.tiqian').val(num);
+				$('.kou_shouxu').html(wfee);
+				
+				
+				
+			};
+
+			// 设置提现账号
+			function set_account(){
+
+				var type = $('#withdrawal-type').val();
+				var url ='/mobile/user/set_withdrawal_account?type='+type;
+				window.location.href=url;
+			}
+
+			function submit(){
+				var type = $('#withdrawal-type').val();
+				var money = $('#money').val();
+				if(!money){
+					layer.msg('请输入提现金额！');
+					return false;
+				}
+				$.post('/mobile/user/withdrawal',{type:type,money:money},function(res){
+					if(res.status == 1){
+						layer.open({
+							title:'提示',
+							content:'<p style="text-align:center;">提现申请已提交，请留意审核状态！</p>',
+							btn:['确定'],
+							btnAlign:'c',
+							end:function(){
+								window.location.href='/mobile/user/my_walet';
+							}
+						});
+					}else{
+						layer.msg(res.msg,{icon:5});
+					}
+				});
+			}
+
+			// 支付方式的选择开始
+	   	$(".span1").click(function(){
+
+				var type = $('#withdrawal-type').val();
+				if(type !== 'alipay'){
+					var account = $('#alipay-account').val();
+					if(!account){
+						account = '请先绑定一个支付宝账号！';
+					}
+					$(".img2").attr("src", "__STATIC__/img/my/weixuanzhong@2x.png");
+					$(".img1").attr("src","__STATIC__/img/my/xuanzhong@2x.png");
+					$(".img33").attr("src","__STATIC__/img/my/zhifubao@2x.png");
+					$('#withdrawal-type').val('alipay');
+					$('#bangding').html(account);
+				}
+	   	});
+	   	 	
+	   	$(".span2").click(function(){
+	   		
+				var type = $('#withdrawal-type').val();
+				
+				if(type !== 'weixin'){
+					var account = $('#weixin-account').val();
+					if(!account){
+						account = '请先绑定一个微信账号！';
+					}
+					$(".img1").attr("src","__STATIC__/img/my/weixuanzhong@2x.png");
+					$(".img2").attr("src","__STATIC__/img/my/xuanzhong@2x.png");
+					$(".img33").attr("src","__STATIC__/img/my/weixin@2x.png");
+					$('#bangding').attr('data-type','weixin');
+					$('#withdrawal-type').val('weixin');
+					$('#bangding').html(account);
+				}
+	   			
+	   	});
+
+		//	支付方式的选择结束	   	
+		//input标签获取焦点
+		
+		$(".tiqian,.zhifumima").focus(function(){
+			var u = navigator.userAgent;
+							var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+							if(isAndroid){
+							$('.wrap_frame').height( $('.wrap_frame').height()+200)
+				$('.wrap_frame').scrollTop(100)
+				// console.log($('.wrap_frame').scrollTop())
+				}
+		})
+
+		.blur(function(){  
+			var u = navigator.userAgent; //失去焦点时重新回到原来的状态
+							var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+							if(isAndroid){
+							$('.wrap_frame').height( $('.wrap_frame').height()-200)
+							$('.wrap_frame').scrollTop(0)
+							}
+		})
+		
+		$('.tixian_button').click(function(){
+			
+			var num=$('.zi_money').html(); 
+			var text=Number(num); 
+			var num1=$('.erdu').html(); 
+			var text1=Number(num1);	 
+			if(text>text1){
+				layer.msg("单次可提最大金额"+$('.erdu').html());
+				$('.tiqian').val($('.erdu').html())
+				
+			}else{
+				
+				$('.tiqian').val($('.zi_money').html())
+				
+				
+			}
+		});
+	   </script>
+	</body>
+</html>
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c

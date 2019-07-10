@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -60,4 +61,68 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css">
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/result.css" />
+		<script src="__STATIC__/js/public/rem.js"></script>
+	</head>
+
+	<body>
+		<div>
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" onclick="returnFun()" />
+
+				</p>
+				<span>基因分析结果</span>
+				<!--<p class="lb_headWrap_text lb_header_righticon">__STATIC__</p>-->
+				<!--<p class="lb_headWrap_text lb_header_righticon22">__STATIC__</p>-->
+			</div>
+			<!--表格-->
+		<div>
+			<table frame="void" rules="all" class="biaogege">
+				<tr style="height:.9rem">
+					<td style="text-align: center;">编号</td>
+					<td>民族</td>
+					<td style="text-align: center;">地域</td>
+					<td>共同祖代</td>
+				</tr>
+            </table>
+            {volist name="data" id="vo"}
+			<table frame="void" rules="all" class="biaogege2">
+				<tbody>
+					<tr>
+						<td>{$vo.id1}</td>
+						<td>{$vo.nation1}</td>
+						<td>{$vo.region1}</td>
+						<td rowspan='2'>{$vo.cay}</td>
+					</tr>
+					<tr>
+                            <td>{$vo.id2}</td>
+                            <td>{$vo.nation2}</td>
+                            <td>{$vo.region2}</td>
+					</tr>
+				</tbody>
+            </table>
+            {/volist}
+		</div>		
+
+		</div>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script>
+		</script>
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

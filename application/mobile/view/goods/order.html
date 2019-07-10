@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -230,4 +231,238 @@
 
 </script>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>确认订单</title>
+    <link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+    <link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+    <link rel="stylesheet" href="__STATIC__/css/purchase/order.css">
+    <link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
+    <script src="__STATIC__/js/public/rem.js"></script>
+</head>
+
+<body>
+    <div class="wrap_frame">
+        <!-- header -->
+        <div class="lb_headWrap ">
+            <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                <img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" />
+            </p>
+            <span>确认订单</span>
+        </div>
+        <!-- main -->
+        <div class="personal-main">
+            <!-- personal -->
+            <div class="personal-list" onclick="javascript:location.href='/mobile/user/my_address'">
+                <div class="item-msg">
+                    <p class="compellation">
+                      
+                        <span class="name">{$user_info['nickname']}</span>
+                        
+                        <span class="phone">{$user_info['mobile']}</span>
+                    </p>
+                    <p class="location">
+                        {$get_address['dizhi']}
+                    </p>
+                </div>
+                <div class="item-img"> 
+                    <img src="__STATIC__/img/purchase/back-a@2x.png" alt="">
+                </div>
+            </div>
+            <!-- product  -->
+            <div class="product">
+                <div class="product-list">
+                    <div class="item-img">
+                        <img src="__IMAGES__goods/{$info.thumb}" alt="">
+                    </div>
+                    <div class="item-name">
+                        <span class="name">{$info.name}</span>
+                    </div>
+                    <div class="item-price">
+                        <p class="price">￥{$info.price}</p>
+                        <p class="num">x1</p>
+                    </div>
+                </div>
+                <div class="product-num">
+                    <span> 购买数量</span>
+                    <div class="quantity">
+                        <a href="javascript:void(0);" class="subtract">-</a>
+                        <input type="number" class="num" value="1" max="100" min="1" disabled />
+                        <a href="javascript:void(0);" class="add">+</a>
+                    </div>
+                </div>
+            </div>
+            <!-- dispatching -->
+            <div class="dispatching">
+                <p class="d-title">配送方式</p>
+                <div class="mode">
+                    <div class="ksps">快速配送</div>
+                </div>
+                <div class="mode modq">
+                    <div class="ksps">使用余额</div>
+                    <input type="hidden" id="balance" value="0"/>
+                    <div class="select difference">
+                        <img src="__STATIC__/img/purchase/Button-box@2x.png" alt="">
+                    </div>
+                    <div class="balance" style="display: none">
+                        <!-- 商品id -->
+                        <input type="hidden" name="goods_id" id="goods_id" value="{$info.id}">
+                        <input type="text" disabled value="可用余额:￥{$user_info.money}" class="balance_text">
+                    </div>
+                </div>
+                <div class="mode zfmm" style="display: none">
+                    <div class=" pwd">支付密码:</div>
+                    <div class="balance">
+                        <form name="cart_form" id="cart_form" method="post">
+                            <!-- 数据提交 -->
+                            <!-- 用户信息 -->
+                            <input type="hidden" name="user_id" value="{$user_info['id']}">
+                            <input type="hidden" name="nickname" value="{$get_address['consignee']}">
+                            <input type="hidden" name="mobile" value="{$get_address['mobile']}">
+                            <input type="hidden" name="province" value="{$get_address['province']}">
+                            <input type="hidden" name="city" value="{$get_address['city']}">
+                            <input type="hidden" name="district" value="{$get_address['district']}">
+                            <input type="hidden" name="address" value="{$get_address['address']}">
+                            <!-- <input type="hidden" name="pay_name" value=""> -->
+                            <!-- 商品价 -->
+                            <input type="hidden" name="goods_price" value="{$info.price}">
+                            <!-- 邮费 -->
+                            <input type="hidden" name="shipping_price" value="{$s_price}">
+                            <!-- <input type="hidden" name="user_money" id="user_money" value=""> -->
+                            <!-- 使用优惠券 -->
+                            <input type="hidden" name="coupon_price" id="coupon_price" value="">
+                            <!-- 应付金额 -->
+                            <input type="hidden" name="order_amount" id="order_amount" value="">
+                            <!-- 订单总价 -->
+                            <input type="hidden" name="total_amount" id="total_amount" value="">
+                            <!-- <input type="text" name="user_note" class="user_note" value=""> -->
+                            <!-- <input type="text" name="pay_password" id="pay_password" value=""> -->
+                            <!-- 可用余额 -->
+                            <input type="hidden" name="remain" value="{$user_info.money}">                           
+                            <input type="password" value='' name="pay_password" class="pwdnum" id="pay_password" placeholder="请输入支付密码"
+                                autocomplete />
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- discount coupon -->
+            <div class="coupon">
+                <div class="mode mode-yhq">
+                    <div class=" yhq">优惠券</div>
+                    <div class="discount">
+                        <div class="yhqq numm" >
+                            <span class="discount_num">0</span> 张可用
+                        </div>
+                        <div class="yhqq man" style="margin-left: 1.5rem; display: none">
+                            <span>
+                                <span class="discount_num">满599减100</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="select usable">
+                        <img src="__STATIC__/img/purchase/back-a@2x.png" alt="" class="goRight">
+                    </div>
+                </div>
+                <div class="mode mode-bz">
+                    <div class=" bz">备注</div>
+                    <textarea name="note" id="note"  cols="103" rows="10" placeholder="暂无备注!" class="remark"></textarea>
+                </div>
+            </div>
+                        
+            <!-- favourable price -->
+            <div class="favourable">
+                <div class="favourable_item">
+                    <div class="item_name">邮费:</div>
+                    <div>
+                        ￥ <span class="postage">{$s_price}</span>
+                    </div>
+                </div>
+                <div class="favourable_item">
+                    <div class="item_name">优惠券折扣:</div>
+                    <div>
+                        -￥ <span class="coupon_discount">0.00</span>
+                    </div>
+                </div>
+                <div class="favourable_item">
+                    <div class="item_name">余额抵扣:</div>
+                    <div>
+                        -￥ <span class="remaining_discount">0.00</span>
+                    </div>
+                </div>
+                <div class="favourable_item">
+                    <div class="item_name">订单总和:</div>
+                    <div>
+                        ￥ <span id="total">0.00</span>
+                    </div>
+                </div>
+            </div>
+            <!-- receive a coupon -->
+            <div class="receive_coupon" style="display: none;"></div>
+            <div class="receive_box">
+                <p class="receive_tit">领取优惠券</p>
+                <div class="coupon_box">
+                    {if condition="isset($coupon_list)"}
+                    {volist name="coupon_list" id="v"}  
+                    <div class="coupon_list">
+                    
+                        <div class="coupon_msg">
+                            <div class="price_box">
+                                ￥
+                                <input type="hidden" name="quota" id="quota" value="{$v.quota}">
+                                <span class="price">{$v.money}</span>
+                                <span class="original">满{$v.quota}减{$v.money}</span>
+                            </div>
+                            <p class="pro_ori">{if condition="isset($cname[$v.coupon_id])"}{$cname[$v.coupon_id]}{else /}-{/if}</p>
+                            <p class="time publicEllipsis">{:date('Y-m-d',$v.stime)}-{:date('Y-m-d',$v.etime)}</p>
+                        </div>
+                        <div class="coupon_use " data-id="{$v.coupon_id}">
+                            <p class="use">立即使用</p>
+                        </div>
+                       
+                    </div> 
+                    {/volist}
+                    {/if}
+                </div>
+                <div class="popup">
+                    使用成功
+                </div>
+                <div class="achieve">
+                    完成
+                </div>
+            </div>
+        <!-- footer -->
+        <div class="footer">
+            <div class="price_box">
+                应付金额: <span class="price_red">￥0</span>
+            </div>
+            <div class="sumb" onclick="submit();">
+                提交订单
+            </div>
+        </div>
+    </div>
+    <script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+    <script src="__STATIC__/js/public/public.js"></script>
+    <script src="__STATIC__/js/purchase/order.js"></script>
+</body>
+<script>
+    function submit(){
+        var balance = $('#balance').val();
+        alert(balance);
+
+
+
+    }
+
+</script>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

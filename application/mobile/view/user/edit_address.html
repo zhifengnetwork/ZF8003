@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -188,3 +189,195 @@
 		</script>
 	</body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title class="pageTopTitle" page-id="3">添加地址</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/add_site.css" />
+		<!--地区联动-->
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/region/layout.min.css"/>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/region/scs.min.css"/>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png"/>
+				</p>
+				<span>编辑地址</span>
+				<!--<p class="lb_headWrap_text">领取产品</p>-->
+			</div>
+			<div class="layout">
+				<input type="hidden" id="address_id" value="{$info.id}">
+				<!--添加信息-s-->
+				<div class="add_list">
+					<div class="item name">
+						<label>收货人</label><input type="text" id="name" placeholder="收货人姓名" value="{$info.consignee ?? ''}"/>
+					</div>
+					<div class="item phone">
+						<label>手机号码</label><input type="number" id="phone" placeholder="输入手机号码" value="{$info.mobile ?? ''}"/>
+					</div>
+					<div class="item site">
+						<label>收货地址</label><input type="text" readonly placeholder="点击选择地区" id="myAddrs" class="publicTROInputMN" name="addr" data-key="{$info.key}" value="{$info.area ?? ''}" />
+						<img src="__STATIC__/img/example/youjian@2x.png"/>
+					</div>
+					<div class="item detail">
+						<label>详细地址</label><input type="text" id="site" placeholder="具体的街巷单元等" value="{$info.address ?? ''}"/>
+					</div>
+				</div>
+				<!--添加信息-e-->
+				<!--设为默认-->
+				<div class="default clearfloat">
+					<div class="default_text">
+						设为默认地址
+					</div>
+					<!--开关 Wrap(switchWrapC)、开关Box(switchBoxC)
+						1、wrap的(未开启)样式：switchWrapOneC;
+						2、box的(未开启)样式：switchBoxOneC;
+						3、wrap的(开启后)样式：switchWrapTwoC;
+						4、box的(开启后)样式：switchBoxTwoC;
+					-->
+					
+					{eq name="$info.is_default" value="1"}
+						<!-- 开启 -->
+						<div class="switchWrapC switchWrapTwoC">
+							<p class="switchBoxC switchBoxTwoC"></p>
+						</div>
+					{else/}
+						<!-- 未-开启 -->
+						<div class="switchWrapC switchWrapOneC">
+							<p class="switchBoxC switchBoxOneC"></p>
+						</div>
+					{/eq}
+				</div>
+			</div>
+			<div class="saveBtn">
+				保存
+			</div>
+		</div>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js"></script>
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<!--地区联动-->
+		<script type="text/javascript" src="__STATIC__/js/public/region/cnaddrarr.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/region/jquery.scs.min.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/region/region.js"></script>
+		<!-- <script type="text/javascript" src="__STATIC__/js/my/site.js"></script> -->
+		<script type="text/javascript" src="__PUBLIC__/public/jquery.min.js"></script>
+    	<script type="text/javascript" src="__PUBLIC__/public/layer/layer.js"></script>
+		<script>
+			$(function(){
+				//input获取焦点
+				$("input").focus(function(){
+					$(".saveBtn").hide();
+				});
+				$("input").blur(function(){
+					$(".saveBtn").show();
+				});
+				/**
+				 * 全局变量
+				 * **/
+				/*开关按钮的状态（后台）*/
+				var switchJudge = null;
+				/*获取-是否设置-默认*/
+				if($('.switchBoxC').css('left') != '0px'){
+					/*开启状态*/
+					switchJudge = true;
+					
+				} else {
+					/*未-开启状态*/
+					switchJudge = false;
+				}
+				console.log(switchJudge);
+				/*'开关'-切换按钮*/
+				$('.switchWrapC').on('click',function(){
+					console.log('点击-开关');
+					/*console.log($('.switchBoxC').css('left')); //0px*/
+					/*逆思维*/
+					if($('.switchBoxC').css('left') == '0px'){
+						/*开关按钮=>滑动*/
+						$('.switchBoxC').animate({
+							'left': '.32rem',
+						}, 300);
+						/*开关按钮 wrap => css样式（未开启=>开启）*/
+						$('.switchWrapC').removeClass('switchWrapOneC');
+						$('.switchWrapC').addClass('switchWrapTwoC');
+						/*开关按钮box=>css样式（未开启=>开启）*/
+						$('.switchBoxC').removeClass('switchBoxOneC');
+						$('.switchBoxC').addClass('switchBoxTwoC');
+						/*开启状态*/
+						switchJudge = true;
+						// console.log('开启',switchJudge);
+						return false;
+						
+					} else {
+						/*开关按钮=>滑动*/
+						$('.switchBoxC').animate({
+							'left': 0,
+						}, 300);
+						/*开关按钮 wrap => css样式（未开启=>开启）*/
+						$('.switchWrapC').removeClass('switchWrapTwoC');
+						$('.switchWrapC').addClass('switchWrapOneC');
+						/*开关按钮box=>css样式（未开启=>开启）*/
+						$('.switchBoxC').removeClass('switchBoxTwoC');
+						$('.switchBoxC').addClass('switchBoxOneC');
+						
+						/*未-开启状态*/
+						switchJudge = false;
+						console.log('关闭',switchJudge);
+						return false;
+						
+					}
+				})
+				//点击保存按钮获取页面数据
+				$(".saveBtn").click(function(){
+					let name=$("#name").val();
+					let myAddrs=$("#myAddrs").val();
+					let myAdd=$("#myAddrs").attr('data-key');
+					let site=$("#site").val();
+					
+					let phonestr=$("#phone").val();
+					let reg="^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$";
+					let phonereg=new RegExp(reg)
+					if (!name) {
+						layer.msg("请输入收货人姓名！",{icon:7,time:1000});
+						return false;
+					}
+					if (!phonestr) {
+						layer.msg("请输入手机号！",{icon:7,time:1000});
+						return false;
+					}
+					//判断手机号码
+					if(!phonereg.test(phonestr)){
+						layer.msg("请输入正确的手机号码！",{icon:7,time:1000});
+						return false;
+					}
+					console.log("收货人----"+name+"\n电话----"+phonestr+"\n地区----"+myAddrs+"\n地区所需key值----"+myAdd+"\n地址----"+site+"\n默认地址----"+switchJudge)
+
+					let is_default = switchJudge ? 1 : 0;
+					let id = $("#address_id").val();
+
+					$.post('/mobile/user/handle_address',{type:'edit',consignee:name,mobile:phonestr,myAddrs:myAdd,site:site,is_default:is_default,address_id:id},function(res){
+						if(res.code == 1){
+							layer.msg('修改成功！',{icon:1,time:1000},function(){
+								window.location.href = "/mobile/user/my_address";
+							});
+						} else {
+							layer.msg('修改失败！',{icon:2,time:1000});
+						}
+					});
+				})
+			})
+		</script>
+	</body>
+</html>
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c

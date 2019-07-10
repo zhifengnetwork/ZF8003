@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -129,4 +130,137 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title class="pageTopTitle" page-id="3">基因查询</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/gene_query.css" />
+
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap ">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" />
+				</p>
+
+				<span>基因查询</span>
+			</div>
+
+			<p class="gene_title">选择基因数据</p>
+
+			<!--下拉框start-->
+			<div>
+				<div id="main">
+					<div id="content">请选择数据</div>
+					<div id="tan">▲</div>
+					<!--▲▼-->
+				</div>
+				<div id="div">
+					<ul id="ul">
+						{volist name="$list" id="vo"}
+						<li onclick="change(this,'{$vo.id}')">{$vo.name}</li>
+						{/volist}
+					</ul>
+				</div>
+				<p class="at_least">至少选择两份数据</p>
+			</div>
+			<!--下拉框end-->
+
+			<!--选择的内容-->
+			<div class="check_text">
+			</div>
+			
+			
+			<!--按钮-->
+			<div class="analysis" onclick="analysis()">基因分析</div>
+			<!--onclick="window.location.href='gene_analysis.html?q='+cc"-->
+
+		</div>
+     
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/js/public/public.js"></script>
+		<!--公共底部导航栏-->
+		<script src="__STATIC__/js/public/bottom_nav.js"></script>
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+	
+		
+		<script>
+			//下拉框start
+			$("#main").click(function() {
+
+				
+
+					if($("#div").css("display") == "none") { //判断下拉还是上拉
+						$("#tan").text("▼");
+						$("#div").slideDown(); //设置下拉动画
+						$(".at_least").hide();
+						$(".check_text").hide();
+
+					} else {
+						$("#tan").text("▲");
+						$("#div").slideUp(400, function() {
+
+							$(".at_least").show();
+							$(".check_text").show();
+
+						}); //设置上拉动画
+
+					}
+				
+			})
+			var i = 0;
+            var cc=[];
+			function change(e,id) { //把内容写入输入的div中
+
+				var a = $(e).text();
+				$("#content").text(a);
+				
+				if($("#div").css("display") !== "none") {
+					$(".at_least").hide();
+					$("#div").slideUp(400, function() {
+
+						$(".at_least").show();
+						var context = $(".check_text").html()
+						if(cc.includes(id)){
+							layer.msg('不能选择重复的数据',{icon:5});
+						} else {
+							$(".check_text").append(a + '</br>');
+							i++;
+							cc.push(id)
+						}
+						$(".check_text").show();
+					});
+					$("#tan").text("▲");
+
+				}
+
+			}
+			//下拉框end
+			function analysis(){
+			
+				if(cc.length<2){
+					layer.msg('至少添加两份数据',{icon:5});
+				}else{
+					 location.href="/mobile/user/gene_analysis?q="+cc
+					
+				}
+			}
+		</script>
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

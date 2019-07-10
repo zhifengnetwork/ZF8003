@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -350,4 +351,358 @@
 
 	</script>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>详情</title>
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/purchase/product.css">
+		<link rel="stylesheet" href="__STATIC__/css/public/swiper.css">
+		<script src="__STATIC__/js/public/rem.js"></script>
+	</head>
+<style>
+.use1 {
+    border-left: 1px solid #50a1c7;
+    border-left-style: dashed;
+    line-height: 1.1rem;
+    text-align: center;
+    width: 100%;
+    margin: .14rem 0;
+    font-size: .28rem;
+    color: #000000;
+    font-weight: 600;
+}
+.employ .use1 {
+    color: #89b8ce;
+}
+</style>
+	<body>
+		<div class="wrap_frame">
+			<!-- header -->
+			<div class="lb_headWrap ">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/index'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" />
+				</p>
+				<span>详情</span>
+				<!--<p class="lb_headWrap_text">领取产品</p>-->
+			</div>
+			<!-- main -->
+			<input type="hidden" name="id" id="id" value="{$info.id}">
+			<div class="product_main">
+				<!-- swipe -->
+				<div class="swiper-container banner-wrap-zp">
+					<div class="swiper-wrapper">
+                        {volist name="images" id="v"}
+						<div class="swiper-slide">
+							<img src="__IMAGES__goods/{$info.id}/{$v.img}" />
+						</div>
+                        {/volist}
+
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<!-- product -->
+				<div class="product_info">
+					<div class="product_item">
+                        <p class="price">
+							积分{$info.price}
+                        </p>
+                         
+                         
+                        <P style="font-size:.4rem;">{$info.name}</P>
+						<div class="info">{$info.desc}</div>
+						<div class="volume">
+							{if condition="!$info.is_stock"}
+							<div class="sales">库存:<span id="salesNum">无库存限制</span></div>
+							{else /}
+							<div class="sales">库存:<span id="salesNum">{$info.stock}</span></div>
+							{/if}
+							<div class="sales">销量:<span id="salesNum">{$info.sold}</span></div>
+							
+							<!-- <div class="area">{//$address}</div> -->
+						</div>
+					</div>
+				</div>
+
+				<!-- coupon -->
+				<!-- <div class="coupon">
+					<span class="cou_ll">优惠券</span>
+					<div class="coupon_site">
+						<span class="receive_ll">领劵</span>
+						<span class="goright">
+							<img src="__STATIC__/img/purchase/back-a@2x.png" alt="">
+						</span>
+					</div>
+				</div> -->
+
+				<!-- particulars -->
+				<div class="particulars_box">
+					<div class="particulars_item">
+						<p class="title">详情报告</p>
+                    </div>
+                    
+					<div class="particulars_item">
+                        <!-- <img src="__IMAGES__goods/{//$info.id}/{//$v.img}" alt="" class="item_img"> -->
+                        {$info['details']}
+					</div>
+            
+				</div>
+			</div>
+			<!-- bottom -->
+			<div class="store footer">
+				<a href="javascript:void(0);" class="store_item">
+					<p class="item_img">
+						<img src="__STATIC__/img/purchase/product/service@2x.png" alt="">
+					</p>
+					<p class="item_name">
+						客服
+					</p>
+				</a>
+				{if condition = '$is_focus eq 0'}
+				<a href="javascript:void(0);" class="store_item shou">
+					<p class="item_img">
+						<img src="__STATIC__/img/purchase/product/collection@2x.png" alt="">
+					</p>
+					<p class="item_name" id="focus">
+						收藏
+					</p>
+				</a>
+				{else/}
+				<a href="javascript:void(0);" class="store_item shou">
+					<p class="item_img">
+						<img class="active" src="__STATIC__/img/purchase/product/collection-r@2x.png" alt="">
+					</p>
+					<p class="item_name" id="focus">
+						收藏
+					</p>
+				</a>
+				{/if}
+				{if condition="$integral lt $info.price"}
+				<a class="store_buy" style="background: #b1b1b1;">
+					立即兑换
+				</a>
+				{elseif condition="$info.is_stock and !$info.stock"}
+				<a class="store_buy" style="background: #b1b1b1;">
+					立即兑换
+				</a>
+				{else /}
+				<a class="store_buy" onclick="javascript:location.href='/mobile/goods/check_order?goods_id={$info.id}'">
+					立即兑换
+				</a>
+				{/if}
+
+			</div>
+			<div class="receive_coupon" style="display: none;"></div>
+			<div class="receive_box">
+				<p class="receive_tit">领取优惠券</p>
+				<div class="coupon_box">
+					<!-- 如果限制次数<使用次数，则不显示该券 -->
+					
+
+					{volist name="coupon" id="vo" empty="<p style='text-align: center;height: 75px;line-height: 75px;'>暂无数据！</p>"}
+					<div class="coupon_list">
+
+						<div class="coupon_msg">
+							<div class="price_box">
+								￥
+								<span class="price">{$vo.money}</span>
+								<span class="original">满{$vo.quota}减{$vo.money}</span>
+							</div>
+							<p class="pro_ori">{$vo.name}</p>
+							<p class="time publicEllipsis">{:date('Y-m-d',$vo.addtime)}-{:date('Y-m-d',$vo.deadline)}</p>
+						</div>
+						{if condition="in_array($vo.id,$cp_ids)"}
+							<div class="employ" data-id="">
+								<p class="use1">立即领取</p>
+								<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">
+							</div>
+						{else /}
+							<div class="coupon_use" data-id="{$vo.id}">
+								<p class="use">立即领取</p>
+								<!-- <img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been"> -->
+							</div>
+						{/if}
+						
+					</div>
+
+                   {/volist}
+
+				</div>
+				<div class="popup">
+					领取成功
+				</div>
+				<div class="achieve">
+					完成
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="/public/static/admin/lib/layer/2.4/layer.js"></script>
+	<script src="__STATIC__/js/public/swiper.js"></script>
+	<script src="__STATIC__/js/public/public.js"></script>
+	<script src="__STATIC__/js/purchase/product.js"></script>
+	<script>
+		window.onload = function() {
+			// 首页轮播图
+			var swiper = new Swiper('.banner-wrap-zp', {
+				loop: true,
+				pagination: '.swiper-pagination',
+				paginationClickable: true,
+				spaceBetween: 30,
+				autoplay: 3000,
+				autoplayDisableOnInteraction: false
+			});
+		}
+		//点击收藏
+		$('.shou').click(function(){
+
+			var acc = $(this)
+            var id  = $('#id').val()
+			if(acc.children().children().hasClass('active')){
+				$.ajax({
+					type: 'post',
+					url: "{:url('mobile/goods/focus')}",
+					data: { 'id': id ,'act':'cancel'},
+
+					success: function (data) {
+						if (data.status == 1) {		
+							layer.msg(data.msg, { icon: 1, time: 1000 },function () {
+                                     acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection@2x.png').removeClass('active')
+							})								
+						} else {
+							layer.msg(data.msg, { icon: 2, time: 1000 },function () {
+
+							})
+						}
+					},
+					error: function (data) {
+						layer.msg('服务器繁忙，请稍后再试', function () {
+
+						})
+					}
+
+
+				});				
+			}else{
+				$.ajax({
+					type: 'post',
+					url: "{:url('mobile/goods/focus')}",
+					data: { 'id': id, 'act': 'focus' },
+                    
+					success: function (data) {
+						if (data.status == 1) {
+							layer.msg(data.msg, { icon: 1, time: 1000 },function () {
+								acc.children().children().attr('src', '__STATIC__/img/purchase/product/collection-r@2x.png').addClass('active')
+							})	
+								// layer.msg(data.msg)
+						}else if(data.status == -1){
+							layer.msg(data.msg, { icon: 2, time: 1000 }, function () {
+								window.location.href="{:url('index/login')}";
+							
+							})	
+						}else {
+							// layer.msg(data.msg)
+							layer.msg(data.msg,function () {
+
+							})							
+						}
+
+					},
+					error: function (data) {
+						layer.msg('服务器繁忙，请稍后再试', function () {
+
+						})
+					}					
+
+				});					
+			}
+
+		})		
+
+    //使用优惠券
+    $('.use').click(function(){
+		var employ = $(this)
+		var img = `<img src="/public/static/mobile/img/purchase/logo@2x.png" alt="" class="been">`
+	    if(employ.hasClass('use1')){
+            return false
+		}
+		var goods_id = $('#id').val()
+		var coupon = $('.coupon_use').data('id')
+        
+		$.ajax({
+			type: 'post',
+			url: "{:url('mobile/goods/get_coupon')}",
+			data: { 'goods_id': goods_id,'coupon_id':coupon},
+             
+			success: function (data) {
+				if (data.status == 1) {
+					layer.msg(data.msg, { time: 1000 }, function () {
+						if (employ.parent().hasClass('coupon_use')) {
+							employ.parent().addClass('employ').removeClass('coupon_use')
+							employ.addClass('use1').removeClass('use')
+							employ.parent().append(img)
+							// $('.popup').fadeIn(500)
+							// $('.popup').animate({
+							// 	opactiy: 1
+							// }
+							// 	, 1000, function () {
+							// 		$('.popup').fadeOut(500)
+							// 	})
+						}					
+					})
+					// layer.msg(data.msg)
+				}else if(data.status == -1){
+					layer.msg(data.msg, { time: 1000 }, function () {
+                        window.location.href="{:url('index/login')}";
+					
+					})	
+				}else {
+					// layer.msg(data.msg)
+					layer.msg(data.msg, function () {
+
+					})
+				}
+
+			},
+
+		});
+
+
+    })		
+	// $('#buy').click(function () {
+	// 	var id = $('#id').val()
+	// 	$.ajax({
+	// 		type: 'post',
+	// 		url: "{:url('mobile/goods/order')}",
+	// 		data: { 'id': id },
+
+	// 		success: function (data) {
+	// 			if (data.status == 1) {
+	// 				layer.msg(data.msg, { time: 1000 }, function () {
+						
+	// 				})
+	// 				// layer.msg(data.msg)
+	// 			} 
+	// 			else {
+	// 				// layer.msg(data.msg)
+	// 				layer.msg(data.msg, function () {
+
+	// 				})
+	// 			}
+
+	// 		},
+
+	// 	});		    	
+	// })
+
+	</script>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

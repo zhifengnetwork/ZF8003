@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 	<head>
@@ -54,4 +55,62 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>充值记录</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/chongzhi_detail.css" />
+
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap  ">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/my_walet'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png"/>
+				</p>
+				<span>充值记录</span>
+				
+			</div>
+			
+			
+			
+			<!--列表-->
+			<ul class="teamlistbiao">
+				
+				<li style="font-weight: bolder;font-size: .3rem;color:black;">
+					
+					<span >支付方式</span>
+					<span >日期</span>
+					<span >金额</span>
+					<span style="color: black;">状态</span>
+					
+				</li>
+				{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+					<li>
+						<span>{$pname[$vo['platform']]}</span>
+						<span>{$vo['addtime']|date="Y-m-d",###}</span>
+						<span>{$vo['money']}</span>
+						<span>{$sname[$vo['status']]}</span>
+					</li>
+				{/volist}
+			</ul>
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<!--公共底部导航栏-->
+		 <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>

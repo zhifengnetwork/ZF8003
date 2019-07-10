@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -67,4 +68,75 @@
 
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>余额明细</title>
+		<script src="__STATIC__/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/my/yuer_detail.css" />
+
+	</head>
+
+	<body>
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap  ">
+				<p class="lb_headWrap_return" data-num="1" onclick="javascript:location.href='/mobile/user/my_walet'">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png"/>
+				</p>
+				<span>余额明细</span>
+				
+			</div>
+			
+			<!--tab切换-->
+			<div id="wrap">
+		        <div id="tit">
+		            <span {if condition="$t eq 0"}class="select"{/if} onclick="javascript:location.href='/mobile/user/billing_detail'">全部</span>
+		            <span {if condition="$t eq 1"}class="select"{/if} onclick="javascript:location.href='/mobile/user/billing_detail?t=1'">赚取</span>
+		            <span {if condition="$t eq 2"}class="select"{/if} onclick="javascript:location.href='/mobile/user/billing_detail?t=2'">消费</span>
+		        </div>
+	        <ul id="con">
+	            <li class="show">	            	
+	            	<div>
+	            		
+	            		<div class="title">
+	            			<span>编号</span>
+	            			<span>金额</span>
+	            			<span>时间</span>
+						</div>
+						{volist name="lists" id="vo" empty="<p style='height:75px;line-height: 75px;text-align:center;'>暂无数据！</p>"}
+	            		<div class="text">
+	            			<span>{$vo.id}</span>
+	            			<span>{$vo.money}</span>
+	            			<span>{$vo.addtime|date="Y-m-d",###}</span>
+	            		</div>
+	            		{/volist}           		
+	            	</div>	            	
+	            </li>
+	        </ul>
+    </div>
+		</div>
+
+		<script src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<!--公共底部导航栏-->
+		 <script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+		 <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		 <script>
+		 	
+		 </script>
+		 
+		 
+
+	</body>
+
+>>>>>>> a0b890ce1b212c463a382e2eedf1e16fcf585a3c
 </html>
