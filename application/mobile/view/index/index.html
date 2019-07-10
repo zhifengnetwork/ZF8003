@@ -113,6 +113,12 @@
 						</ul>
 					</div>
 				</div>
+           　
+
+
+
+
+
 				{/if}
 				{if condition="isset($article)"}
 					<div class="nscramble-wrap">
@@ -149,6 +155,7 @@
 											<div class="text">
 												<h3><a href="/mobile/article/details?id={$vl.id}">{$vl.title}</a></h3>
 												<p>{$vl.desc}</p>
+												<p>{$vl.details}</p>
 											</div>
 											<div class="img-wrap">
 												<img src="__IMAGES__article/{$vl.thumb}" />
@@ -161,6 +168,14 @@
 					{/if}
 
 				{/if}
+
+
+
+
+
+
+
+
 			</div>
 			<!-- 底部导航 -->
 			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
