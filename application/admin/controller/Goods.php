@@ -40,6 +40,7 @@ class Goods extends Base{
             }
             if(isset($ftids) && !empty($ftids)){
                 $ftids = implode("','", $ftids);
+                $fname = [];
                 $ftids = Db::query("select `id`,`name` from `zf_freight_temp` where `id` in ('$ftids')");
                 foreach($ftids as $f){
                     $fname[$f['id']] = $f['name']; 
