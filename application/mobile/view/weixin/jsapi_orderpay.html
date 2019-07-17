@@ -61,8 +61,8 @@
 		);
 	}
 
-	function callpay()
-	{
+	// function callpay()
+	// {
 		if (typeof WeixinJSBridge == "undefined"){
 		    if( document.addEventListener ){
 		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
@@ -73,13 +73,13 @@
 		}else{
 		    jsApiCall();
 		}
-	}
+	// }
 
-    window.onload = function(){ 
-        setTimeout(function(){
-            jsApiCall();
-        },2500);
-    }
+    // window.onload = function(){ 
+    //     setTimeout(function(){
+    //         jsApiCall();
+    //     },2500);
+    // }
 	</script>
 	<script type="text/javascript">
 	//获取共享地址
