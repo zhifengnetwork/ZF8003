@@ -84,10 +84,10 @@
 	font-size: .3rem;
 	line-height: .88rem;
 	text-align: center;
-	color: #fefefe;
+	color: black;
 	letter-spacing: .02rem;
 	/*background-color: #e3e3e3;*/
-	background: white;
+	background: #f5f5f5;
 } 
 /*头部 底部线*/
 .lb_headWrap_line {

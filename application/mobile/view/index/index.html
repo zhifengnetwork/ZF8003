@@ -205,6 +205,13 @@
 		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
 		<link rel="stylesheet" href="__STATIC__/css/home/index.css">
 		<link rel="stylesheet" href="__STATIC__/css/public/bottom_nav.css" />
+		<style>
+			.bottomNavWrap{
+				height:1.15rem!important;
+				display: flex;
+				align-items: center;
+			}
+		</style>
 
 	</head>
 
@@ -307,6 +314,12 @@
 						</ul>
 					</div>
 				</div>
+           　
+
+
+
+
+
 				{/if}
 				{if condition="isset($article)"}
 					<div class="nscramble-wrap">
@@ -333,8 +346,10 @@
 						{/if} 
 					</div>
 					
+					<div style="padding-bottom: 1.7rem;">
 					{if condition="isset($article.list) && $article.list"}
 						{volist name="$article.list" id="vo"}
+							{if condition="$vo.list"}
 							<div class="question-wrap">
 								<h2>{$vo.name}</h2>
 								<ul class="question-list">
@@ -343,6 +358,7 @@
 											<div class="text">
 												<h3><a href="/mobile/article/details?id={$vl.id}">{$vl.title}</a></h3>
 												<p>{$vl.desc}</p>
+												
 											</div>
 											<div class="img-wrap">
 												<img src="__IMAGES__article/{$vl.thumb}" />
@@ -351,10 +367,19 @@
 									{/volist}
 								</ul>
 							</div>
+							{/if}
 						{/volist}
 					{/if}
-
+				</div>
 				{/if}
+           
+
+
+
+
+
+
+
 			</div>
 			<!-- 底部导航 -->
 			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -217,4 +218,226 @@
 		</script>
 	</body>
 
+=======
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+		<title>基因关系</title>
+		<script type="text/javascript" src="__STATIC__/js/public/rem.js"></script>
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/css/home/relation.css" />
+	</head>
+
+	<body>
+        <form method="POST" target="ajaxR" id="form">
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap" style="background: #F5F5F5;color: black;">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/img/public/return_icon.png" />
+				</p>
+				<span>上传数据</span>
+			</div>
+			<!--表格-->
+                <p class="tip">
+                    填写说明：请认真填写并且检查数据信息。姓名和联系方式必填。没有的信息可不填 DYS389b=DYS389II-DYS389I。
+                </p>
+                
+                <!--填写信息-->
+                <p class="person_message">
+                	<label><span style="color:red;width:unset;border:0px;">*</span>姓名:</label>
+                	<span><input type="text" name="gene[name]" value='{:session("gene[name]","","mobile")}' /></span>
+                </p>
+                <p class="person_message">
+                	<label><span style="color:red;width:unset;border:0px;">*</span>联系方式:</label>
+                	<span><input type="text" name="mobile" value='{:session("mobile","","mobile")}' /></span>
+                </p>
+                <p class="person_message">
+                	<label>民族:</label>
+                	<span><input type="text" name="gene[nation]" value='{:session("gene[nation]","","mobile")}' /></span>
+                </p>
+                <p class="person_message">
+                	<label>现居地:</label>
+                	<span><input type="text" name="gene[on_addr]" value='{:session("gene[on_addr]","","mobile")}' /></span>
+                </p>
+                 <p class="person_message">
+                	<label>祖籍地:</label>
+                	<span><input type="text" name="gene[addr_log]" value='{:session("gene[addr_log]","","mobile")}' /></span>
+                </p>
+                 <p class="person_message">
+                	<label>派字:</label>
+                	<span><input type="text" name="gene[pai]" value='{:session("gene[pai]","","mobile")}' /></span>
+                </p>
+                 <p class="person_message">
+                	<label>是否拥有家谱:</label>
+                	<span><input type="text" name="gene[is_family_tree]" value='{:session("gene[is_family_tree]","","mobile")}' /></span>
+                </p>
+                <p class="person_message">
+                	<label>迁移记录:</label>
+                	<span><input type="text" name="gene[migration]" value='{:session("gene[migration]","","mobile")}' /></span>
+                </p>
+                <p class="person_message">
+                	<label>其他说明:</label>
+                	<span><input type="text" name="gene[desc]" value='{:session("gene[desc]","","mobile")}' /></span>
+                </p>
+              
+                <div class="l3h51" >
+					<div class="l3h5d1" >
+						<ul class="xiala" style="margin-bottom:0rem">
+							
+							<li>基因座/样本号</li>
+							<li>基因座/样本号</li>
+							<li>基因座/样本号</li>
+							
+						</ul>
+				    </div>
+				</div>
+                 <div class="l3h51" style="margin-top: -.1rem;">
+					<div class="l3h5d1">
+						<ul class="xiala">
+							<li><span style="color:red;">*</span>DYS19</li>
+							<li><span style="color:red;">*</span>DYS385a</li>
+							<li><span style="color:red;">*</span>DYS385b</li>
+						</ul>
+						<ul class="xiala">
+							<li><input type="text" name="gene[DYS19]" value='{:session("gene[DYS19]","","mobile")}'li>
+							<li><input type="text" name="gene[DYS385a]" value='{:session("gene[DYS385a]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS385b]" value='{:session("gene[DYS385b]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+							<li><span style="color:red;">*</span>DYS389a</li>
+							<li><span style="color:red;">*</span>DYS389b</li>
+							<li><span style="color:red;">*</span>DYS390</li>
+						</ul>
+						<ul class="xiala">
+							<li><input type="text" name="gene[DYS389a]" value='{:session("gene[DYS389a]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS389b]" value='{:session("gene[DYS389b]","","mobile")}' /></li>
+							<li><input type="text" name="gene[DYS390]" value='{:session("gene[DYS390]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><span style="color:red;">*</span>DYS391</li>
+                            <li><span style="color:red;">*</span>DYS392</li>
+                            <li><span style="color:red;">*</span>DYS393</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS391]" value='{:session("gene[DYS391]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS392]" value='{:session("gene[DYS392]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS393]" value='{:session("gene[DYS393]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><span style="color:red;">*</span>DYS437</li>
+                            <li><span style="color:red;">*</span>DYS438</li>
+                            <li><span style="color:red;">*</span>DYS439</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS437]" value='{:session("gene[DYS437]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS438]" value='{:session("gene[DYS438]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS439]" value='{:session("gene[DYS439]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><span style="color:red;">*</span>DYS448</li>
+                            <li><span style="color:red;">*</span>DYS456</li>
+                            <li><span style="color:red;">*</span>DYS458</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS448]" value='{:session("gene[DYS448]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS456]" value='{:session("gene[DYS456]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS458]" value='{:session("gene[DYS458]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><span style="color:red;">*</span>DYS635</li>
+                            <li><span style="color:red;">*</span>GATA_H4</li>
+                            <li>DYF387Sa</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS635]" value='{:session("gene[DYS635]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[GATA_H4]" value='{:session("gene[GATA_H4]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYF387Sa]" value='{:session("gene[DYF387Sa]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYF387Sb</li>
+                            <li>DYS449</li>
+                            <li>DYS460</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYF387Sb]" value='{:session("gene[DYF387Sb]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS449]" value='{:session("gene[DYS449]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS460]" value='{:session("gene[DYS460]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS481a</li>
+                            <li>DYS481b</li>
+                            <li>DYS518</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS481a]" value='{:session("gene[DYS481a]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS481b]" value='{:session("gene[DYS481b]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS518]" value='{:session("gene[DYS518]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS527</li>
+                            <li>DYS533</li>
+                            <li>DYS570</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS527]" value='{:session("gene[DYS527]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS533]" value='{:session("gene[DYS533]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS570]" value='{:session("gene[DYS570]","","mobile")}' /></li>
+                        </ul>
+                        <ul class="xiala">
+                            <li>DYS576</li>
+                            <li>DYS627</li>
+                        </ul>
+                        <ul class="xiala">
+                            <li><input type="text" name="gene[DYS576]" value='{:session("gene[DYS576]","","mobile")}' /></li>
+                            <li><input type="text" name="gene[DYS627]" value='{:session("gene[DYS627]","","mobile")}' /></li>
+                        </ul>
+                        
+					</div>
+		       </div>
+          </div> 
+          <button id="confirmSubmit" class="save" type="submit" style="margin-left:35%;" >提交保存</button>
+          <div>
+            <input  class="b-checkbox" style=" vertical-align: middle;" type="checkbox"  checked/> 是否公开个人信息
+            <p style=" margin: 10px 0;">基于寻根溯源的需要，族内鼓励选择公开，除非有特殊情况。选择不公开，则别人匹配出结果后将不能查看您的基本信息</p>
+          </div>
+          
+
+          </form>
+		<iframe name="ajaxR" style="display:block;width:100%;height:500px;"></iframe>
+		<script type="text/javascript" src="__STATIC__/js/public/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="__STATIC__/js/public/public.js" ></script>
+        <!-- <script type="text/javascript" src="__STATIC__/js/public/public.js"></script> -->
+        <script type="text/javascript" src="/public/static/public/layer/layer.js"></script>
+		<script>
+		
+        
+    	function error_msg(msg){
+            layer.msg(msg,{icon:5});
+        }
+        
+        function success_msg(msg){
+            layer.msg(msg,{icon:6});
+            setTimeout(function(){
+                window.location.href='/mobile/user/my_gene';
+            },1000);
+        }
+			
+        $('input').on('keyup paste',function(){
+            var name = $(this).attr('name');
+            var value = $(this).val();
+
+            $.get("{:url('user/set_user_upload_data_cache')}",{'name':name,'value':value},function(data){
+                // console.log(data);
+            },'json');
+
+        })
+		</script>
+	</body>
+
+>>>>>>> 5b48293b5f25d02053e9d96992fd7684986a0d36
 </html>
